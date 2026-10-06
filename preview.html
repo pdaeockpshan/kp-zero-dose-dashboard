@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 15:20</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 15:35</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -429,6 +429,28 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hbig.hbm{background:radial-gradient(circle at 35% 30%,#fed7aa,#ffedd5 60%,#fff);border-color:#fdba74;color:#9a3412}
 .hbig.hbm small{color:#7c2d12}
 </style>
+
+<style>
+/* ================= (10) action tracker ================= */
+.ngrp.ga{--gc:#0f766e}.tab[data-tab="act"],#p-act{--tc:#0f766e}
+.hbig.hba{background:radial-gradient(circle at 35% 30%,#99f6e4,#ccfbf1 60%,#fff);border-color:#5eead4;color:#115e59}
+.hbig.hba small{color:#134e4a}
+#tAct td{vertical-align:top}
+#tAct select,#tAct input{font:12px var(--font-sans);padding:3px 5px;border:1px solid var(--color-border);border-radius:6px;background:#fff;max-width:100%}
+#tAct input.an{width:150px}#tAct input.ao{width:120px}#tAct input[type=date]{width:128px}
+#tAct select.as{font-weight:600}
+#tAct select.as[data-v="Done"]{background:#dcfce7;color:#166534;border-color:#86efac}
+#tAct select.as[data-v="In progress"]{background:#e0f2fe;color:#075985;border-color:#7dd3fc}
+#tAct select.as[data-v="Blocked"]{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+#tAct tr.od td{background:#fff7ed}
+#tAct .atx{min-width:300px;max-width:520px;font-size:12.5px;line-height:1.35}
+.acttools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0 10px}
+.acttools .btn{font-size:12px}
+.actadd{display:none;gap:8px;flex-wrap:wrap;align-items:center;background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:10px;margin-bottom:10px}
+.actadd.on{display:flex}
+.actadd input,.actadd select{font:12.5px var(--font-sans);padding:5px 7px;border:1px solid var(--color-border);border-radius:6px}
+.actwarn{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:8px;padding:8px 11px;font-size:12.5px;margin-bottom:10px}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -437,7 +459,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <button class="tab tsum on" data-tab="home"><span class="tl">Home</span><span class="badge">KP at a glance</span></button>
    <button class="tab tsum" data-tab="summary"><span class="tl">Summary</span><span id="bS" class="tnrow"></span></button>
    <button class="tab" data-tab="export"><span class="tl">Export data</span><span class="badge" id="bX">–</span></button>
-   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">16 slides</span></button>
+   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">17 slides</span></button>
   </div>
   <div class="nsec">Detailed analysis</div>
   <div class="ngrp gz"><div class="nhd">① ZD Reported &amp; Covered</div>
@@ -476,6 +498,9 @@ body.home .hdr, body.home .content .topbar{display:none}
   <div class="ngrp gm"><div class="nhd">⑨ Campaign missed children</div>
    <button class="tab" data-tab="mis"><span class="tl">Missed children &amp; refusals</span><span class="badge" id="bM1">–</span></button>
   </div>
+  <div class="ngrp ga"><div class="nhd">⑩ Action tracker</div>
+   <button class="tab" data-tab="act"><span class="tl">Actions &amp; follow-up</span><span class="badge" id="bAT1">–</span></button>
+  </div>
  </div>
 </nav>
 <main class="content">
@@ -503,7 +528,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 06-Oct-2026 15:20</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 06-Oct-2026 15:35</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -581,6 +606,14 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hhd"><span class="hn">10</span><span class="ht">Campaign missed children &amp; surveillance quality</span><span class="cnt" id="hM10s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
    <div class="hbody"><div class="hbig hbm" id="hM10n"></div><div class="hfacts" id="hF10"></div><div class="hrtop" id="hM10t"></div></div>
    <div class="halarm" id="hA10"></div>
+  </div>
+ </div>
+
+ <div class="hgrid" style="margin-top:16px">
+  <div class="hcard wide" style="--hc:#0f766e" data-go="act" tabindex="0">
+   <div class="hhd"><span class="hn">11</span><span class="ht">Action tracker: who is doing what, by when</span><span class="cnt" id="hT11s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hba" id="hT11n"></div><div class="hfacts" id="hF11"></div><div class="hrtop" id="hT11t"></div></div>
+   <div class="halarm" id="hA11"></div>
   </div>
  </div>
 
@@ -698,7 +731,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
 <section class="pane" id="p-present">
-<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 13-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
+<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 14-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
 <div class="card" style="margin-bottom:14px"><h3 style="margin:0">Quick briefs</h3>
 <div class="bgrid">
 <div class="bcard" style="--bc:#1e3a8a"><b>🏛 EOC brief</b><small>Whole province: division scorecard, districts needing attention, digitization, validation and routine EPI coverage by district, and decisions requested from EOC.</small><button class="btn" id="btnBEOC">Prepare EOC brief</button></div>
@@ -1201,7 +1234,46 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="tblhdr"><h3 style="margin:0">UCs with the most children still missed</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntMU"></span><button class="btn" id="btnMU">Download (CSV)</button></div></div>
 <div class="rkpills" id="mPills"></div>
 <div class="scroll"><table id="tMU"></table></div>
-<div class="cap">Still missed = children recorded as missed (not available or refused) who were still not vaccinated after the campaign, catch-up and extended catch-up, plus "left over" children in areas the teams did not finish. Percentages are of the household target (children under 5). Persistent refusals = 5 or more children still refusing in every 2026 campaign the UC took part in.</div>
+<div class="cap">Still missed = children recorded as missed (not available or refused) who were still not vaccinated after the campaign, catch-up and extended catch-up, plus "left over" children in areas the teams did not finish. Percentages are of the household target (children under 5). Persistent refusals = 20 or more children still refusing in every 2026 campaign the UC took part in.</div>
+</div>
+</section>
+
+<!-- ================= (10) ACTION TRACKER ================= -->
+<section class="pane" id="p-act">
+<div class="hint" id="atHint"></div>
+<div id="atWarn"></div>
+<div class="kpis">
+<div class="card"><div class="kl">Actions</div><div class="kv" id="at1">–</div><div class="ks" id="at1s"></div></div>
+<div class="card"><div class="kl">Assigned</div><div class="kv" id="at2" style="color:#0f766e">–</div><div class="ks" id="at2s"></div></div>
+<div class="card"><div class="kl">Done</div><div class="kv" id="at3" style="color:var(--color-success-dark)">–</div><div class="ks" id="at3s"></div></div>
+<div class="card"><div class="kl">Overdue</div><div class="kv" id="at4" style="color:#b91c1c">–</div><div class="ks" id="at4s"></div></div>
+<div class="card"><div class="kl">Blocked</div><div class="kv" id="at5" style="color:#b45309">–</div><div class="ks" id="at5s"></div></div>
+</div>
+<div class="grid2">
+<div class="card"><div id="cat1" class="ch"></div><div class="cap" id="capat1"></div></div>
+<div class="card"><div id="cat2" class="ch"></div><div class="cap" id="capat2"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">Actions and follow-up</h3><span class="cnt" id="cntAT"></span></div>
+<div class="acttools">
+<button class="btn" id="btnATadd">+ Add an action</button>
+<button class="btn" id="btnATcsv">Download (CSV)</button>
+<button class="btn" id="btnATsave">Save backup file</button>
+<button class="btn" id="btnATload">Load backup file</button><input type="file" id="atFile" accept=".json,application/json" style="display:none">
+<span style="flex:1"></span>
+<button class="btn" id="btnATclear" style="color:#b91c1c">Clear saved entries</button>
+</div>
+<div class="actadd" id="atAdd">
+<select id="atAArea"></select>
+<input id="atAText" placeholder="What needs to be done" style="flex:1;min-width:260px">
+<select id="atARole"></select>
+<input id="atAOwner" placeholder="Name (optional)">
+<input type="date" id="atADue">
+<button class="btn" id="btnATaddGo">Add</button>
+</div>
+<div class="rkpills" id="atPills"></div>
+<div class="scroll"><table id="tAct"></table></div>
+<div class="cap" id="capAT"></div>
 </div>
 </section>
 
@@ -2070,7 +2142,8 @@ const PPT_SLIDES=[['Title','Area, campaigns and date','#4338ca'],['Summary','Fou
  ['⑦ Polio risk watch list','Watch-list UCs and districts, with backtest','#4338ca'],
  ['⑧ Critical review',"Claims that don't match, data quality and gaps to target",'#475569'],
  ['⑨ Missed children & surveillance','Still missed, refusals and AFP surveillance sensitivity','#c2410c'],
- ['Recommended actions','Next steps based on the data','#b45309']];
+ ['Recommended actions','Next steps based on the data','#b45309'],
+ ['⑩ Action follow-up','Owners, due dates and status of actions','#0f766e']];
 el('pList').innerHTML=PPT_SLIDES.map((x,i)=>`<label class="pitem" style="--pc:${x[2]}"><input type="checkbox" id="px${i+1}" checked><span><b>${i+1}. ${esc(x[0])}</b><small>${esc(x[1])}</small></span></label>`).join('');
 const pptCount=()=>PPT_SLIDES.filter((x,i)=>{const c=el('px'+(i+1));return !c||c.checked!==false;}).length;
 el('pList').addEventListener('change',()=>{el('bP').textContent=pptCount()+' slides';});
@@ -2103,7 +2176,7 @@ function collectDeckData(){
  const _af=afpStats(AFP.filter(matchG),WPV.filter(matchG)), _gf=r=>(!fDiv.value||r.dv===fDiv.value)&&(!fDist.value||r.d===fDist.value);
  _af.tot=(fTeh.value||q.value.trim())?null:(!fDiv.value&&!fDist.value?afpTot():afpScopeTot(_gf));
  _af.top=(fTeh.value||q.value.trim())?[]:afpDistRows(AFP.filter(matchG),WPV.filter(matchG),[...new Set(ZD.filter(_gf).map(r=>r.d))]).filter(x=>x.p!=null&&x.n).sort((a,b)=>b.p-a.p).slice(0,3);
- return {mis:(()=>{const X=misStats(matchG,lvlOf().key); X.key=lvlOf().Lvl; return X;})(),surv:svStats(crInD()),crit:(()=>{const X=critStats(matchG,lvlOf().key,crInD()); X.key=lvlOf().Lvl; return X;})(),watch:(()=>{const A=watchAll().filter(matchG), ds=new Set(A.map(r=>r.d)); return {A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:watchD().filter(x=>ds.has(x.d)),ND:watchD().length,T:watchBTsum()};})(),risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+ return {act:atRows().filter(atScope()),mis:(()=>{const X=misStats(matchG,lvlOf().key); X.key=lvlOf().Lvl; return X;})(),surv:svStats(crInD()),crit:(()=>{const X=critStats(matchG,lvlOf().key,crInD()); X.key=lvlOf().Lvl; return X;})(),watch:(()=>{const A=watchAll().filter(matchG), ds=new Set(A.map(r=>r.d)); return {A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:watchD().filter(x=>ds.has(x.d)),ND:watchD().length,T:watchBTsum()};})(),risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
   L:{lvl:L.lvl,Lvl:L.Lvl,pl:L.pl},camp:{A:CAMP.A,M:CAMP.M,S:CAMP.S},zsame:ZSAME,clf:'SNID Sept 2026',vcamps:VCAMP.map(x=>x.l).join(', '),
   z:{rA:z.rA,rM:z.rM,rS:z.rS,cM:z.cM,rcM:z.rcM,lfA:z.lfA,lfM:z.lfM,nL:z.nL,gM:z.gM,crM:z.crM,p:zl.p,cp:zl.cp,g:zl.g,pl:zR.filter(r=>r.tr==='Persistent low').length},
   zG,d:{has:dR.length>0,rep:drep,ll:dll,p:drep?dll/drep*100:null,gap:S_(dR,gapOf),zero:dR.filter(r=>r.rep>0&&r.ll===0).length,fu:fu.length,P1:fc('P1'),P2:fc('P2'),P3:fc('P3'),P4:fc('P4')},
@@ -2333,6 +2406,8 @@ function renderDeck(P,D){
   const AA=AF.slice(0,2).concat(AR,A.slice(0,4),AE.slice(0,2)).slice(0,10);
   if(!AA.length)AA.push('No major gaps in this selection. Keep monitoring at the next campaign.');
   bullets(s,AA,{x:0.5,y:1.45,w:12.3,h:5.4,fs:AA.length>8?11:AA.length>6?13:15});}
+ // 17 Action follow-up
+ if(D.sel[17]){const s=base('⑩ Action follow-up','0F766E','Who is responsible, by when, and what has been done'); actSlide(s,D.act||[],{kpis,table,note,F,TXT,RED,AMB,n0},false);}
  return pptx;
 }
 
@@ -2686,6 +2761,8 @@ function renderBrief(P,B){
  // 13 Actions
  {const s=base(B.level==='kp'?'Decisions requested from EOC':B.level==='dv'?'Actions for the division team':'Actions for the district team',AMB,'Generated from the data for '+B.scope);
   const A=briefActions(B); bullets(s,A,{x:0.5,y:1.4,w:12.3,h:5.45,fs:A.length>8?12:A.length>6?13:15});}
+ // 14 Action follow-up
+ if(B.act){const s=base('⑩ Action follow-up','0F766E','Who is responsible, by when, and what has been done'); actSlide(s,B.act,{kpis,table,note,F,TXT,RED,AMB,n0},true);}
  return pptx;
 }
 async function runBrief(level,val,btn){
@@ -2831,7 +2908,7 @@ const ICO={
  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
  chart:'<path d="M4 20h16"/><path d="M6 16l4-5 3 3 5-7"/>',
  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>'};
-const TABICO={home:'home',afp:'alert',risk:'flag',watch:'alert',crit:'list',surv:'shield',mis:'users',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
+const TABICO={home:'home',afp:'alert',risk:'flag',watch:'alert',crit:'list',surv:'shield',mis:'users',act:'check',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
 // ring types: [target, warning level]
 const RT={ri:[90,80],cov:[90,80],dig:[95,80],vac:[98,95],reg:[95,90],epi:[95,90],share:[null,null]};
 // card value id -> [icon, ring type or null, tab to open on click]
@@ -3035,7 +3112,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -3052,8 +3129,8 @@ function setTab(t){
 }
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
- renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); atBadge();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -3193,7 +3270,7 @@ function renderHome(){
  const p3D=gE.filter(x=>x.p_p3!=null&&x.p_p3<80).length, p3U=EPI.filter(r=>r.s>0&&(r.p3||0)/r.s*100<80).length;
  const bo=EPI.filter(r=>/BO/.test(r.fl||'')).length;
  hAlarm('hA4','Below 80% Penta-3',[[p3D,'districts',`${p3D} districts below 80% Penta-3 coverage`,'efu'],[p3U,'UCs',`${p3U} UCs below 80% Penta-3 coverage`,'efu'],[bo,'UCs weak in both EPI &amp; polio',`${bo} UCs with low Penta-3 and a high number of polio zero-dose children`,'efu']]);
- renderHomeAFP(); renderHomeRisk(); renderHomeWatch(); renderHomeCrit(); renderHomeMis();
+ renderHomeAFP(); renderHomeRisk(); renderHomeWatch(); renderHomeCrit(); renderHomeMis(); renderHomeAct();
  // wiring + ring animation
  const P=el('p-home');
  P.querySelectorAll('.hcard').forEach(c=>{c.onclick=()=>setTab(c.dataset.go);c.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(c.dataset.go);}};});
@@ -3338,7 +3415,7 @@ function navInit(){
 function navSync(){const on=document.querySelector('.sidenav .tab.on'), g=on&&on.closest('.ngrp');
  document.querySelectorAll('.sidenav .ngrp').forEach(x=>{if(!x.querySelector('.nhd'))return; x.classList.toggle('hason',x===g); navSet(x,x===g);});}
 function navHdr(){const tv=c=>{const s=document.querySelector('#bS .tn.'+c);if(!s)return '';const i=s.querySelector('i');return s.textContent.replace(i?i.textContent:'','').trim();};
- const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||'',gw:(el('bW1')||{}).textContent||'',gc:(el('bC1')||{}).textContent||'',gm:(el('bM1')||{}).textContent||''};
+ const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||'',gw:(el('bW1')||{}).textContent||'',gc:(el('bC1')||{}).textContent||'',gm:(el('bM1')||{}).textContent||'',ga:(el('bAT1')||{}).textContent||''};
  Object.entries(V).forEach(([k,v])=>{const e=document.querySelector('.sidenav .ngrp.'+k+' .nhv');if(e){e.textContent=v&&v!=='–'?v:'';e.style.display=e.textContent?'':'none';}});}
 {const _st=setTab; setTab=function(t){_st(t); navSync();};}
 {const _rd=render; render=function(){_rd(); navHdr();};}
@@ -3904,7 +3981,7 @@ const misSt=r=>(r.sna||0)+(r.srf||0)+(r.slo||0);
 function misUC(){ if(_MISU)return _MISU; const by={};
  misHyd().forEach(r=>{if(!r.d)return; (by[r.c]=by[r.c]||[]).push(r);});
  _MISU={}; Object.entries(by).forEach(([c,rs])=>{rs.sort((a,b)=>a.ci-b.ci); const L=rs[0], st=misSt(L), rec=(L.rna||0)+(L.rrf||0);
-  const pers=rs.length>=2&&rs.every(x=>(x.srf||0)>=5);
+  const pers=rs.length>=2&&rs.every(x=>(x.srf||0)>=20);
   _MISU[c]={dv:L.dv,d:L.d,t:L.t,u:L.u,c,ci:L.ci,cp:(MISM.camps||[])[L.ci]||'',tg:L.tg,vc:L.vc,vp:L.tg?L.vc/L.tg*100:null,rec,rrf:L.rrf||0,sna:L.sna||0,srf:L.srf||0,slo:L.slo||0,st,
    stp:L.tg?st/L.tg*100:null,srp:L.tg?(L.srf||0)/L.tg*100:null,recov:rec?Math.max(0,rec-(L.sna||0)-(L.srf||0))/rec*100:null,pers,
    hist:(MISM.camps||[]).map((_,k)=>{const x=rs.find(y=>y.ci===k); return x?{st:misSt(x),srf:x.srf||0,tg:x.tg}:null;})};});
@@ -3955,7 +4032,7 @@ function renderSurv(){
  el('sv5').textContent=fmt(X.blind.length); el('sv5s').textContent=`districts with low AFP reporting or no sewage site · ${X.noes.length} with no sewage site`;
  const I=[], low=X.low.slice().sort((a,b)=>a.rel-b.rel);
  if(low.length)I.push(`<b>${low.length} district${low.length>1?'s report':' reports'} under half the KP median AFP rate:</b> `+low.map(r=>`${esc(r.d)} (${svRate(r.r26)}, ${Math.round(r.rel)}% of median)`).join(', ')+'. Low reporting can hide circulating virus.');
- {const wl=low.filter(r=>r.w||r.zd||(r.er&&r.er>0)); if(wl.length)I.push(`<b>Most worrying:</b> ${wl.map(r=>esc(r.d)+' ('+[r.w?r.w+' WPV1':'',r.zd?r.zd+' ZD AFP':'',r.er?'sewage '+pc(r.er):''].filter(Boolean).join(', ')+')').join(', ')} combine low AFP reporting with confirmed virus or zero-dose cases. Strengthen active case search, community reporting and health-facility visits there first.`);}
+ {const wl=low.filter(r=>r.w||r.zd||(r.er&&r.er>0)); if(wl.length)I.push(`<b>Most worrying:</b> ${wl.map(r=>esc(r.d)+' ('+[r.w?r.w+' WPV1':'',r.zd?r.zd+' ZD AFP':'',r.er?'sewage '+pc(r.er):''].filter(Boolean).join(', ')+')').join(', ')} combine low AFP reporting with virus found there (a polio case or positive sewage) or zero-dose AFP cases. Strengthen active case search, community reporting and health-facility visits there first.`);}
  {const p=X.R.filter(r=>r.pdp!=null&&r.pdp>=10&&r.a26>=10).sort((a,b)=>b.pdp-a.pdp); if(p.length)I.push(`<b>Classification backlog:</b> ${p.slice(0,5).map(r=>`${esc(r.d)} ${pc(r.pdp)} (${r.pd})`).join(', ')} of 2026 AFP cases are still pending. Follow up stool shipment and lab results.`);}
  {const dr=X.R.filter(r=>r.drop!=null&&r.drop<=-30&&r.a25>=20).sort((a,b)=>a.drop-b.drop); if(dr.length)I.push(`<b>Reporting has fallen</b> compared with 2025 in ${dr.slice(0,5).map(r=>`${esc(r.d)} (${Math.round(r.drop)}%)`).join(', ')}.`);}
  if(X.noes.length)I.push(`${X.noes.length} district${X.noes.length>1?'s have':' has'} no sewage sampling site (${X.noes.map(r=>esc(r.d)).slice(0,8).join(', ')}${X.noes.length>8?' …':''}); there, AFP surveillance is the only early warning.`);
@@ -3991,14 +4068,15 @@ function renderMis(){
  el('mk2').textContent=fmt(S.srf); el('mk2s').textContent=S.st?`${pc(S.srf/S.st*100)} of still-missed children`+(S.r50?` · ${S.r50} UCs hold half`:''):'';
  el('mk3').textContent=S.recov==null?'–':pc(S.recov); el('mk3s').textContent=`of ${fmt(S.rec)} children recorded as missed were vaccinated later`;
  el('mk4').textContent=fmt(S.u5); el('mk4s').textContent=`${fmt(S.u3)} UCs with 3%+ still missed`;
- el('mk5').textContent=fmt(S.pers.length); el('mk5s').textContent='5+ children still refusing in every 2026 campaign';
+ el('mk5').textContent=fmt(S.pers.length); el('mk5s').textContent=S.srf?`20+ children still refusing in every 2026 campaign · ${pc(S.pers.reduce((a,r)=>a+r.srf,0)/S.srf*100)} of all refusals`:'20+ children still refusing in every 2026 campaign';
  const I=[];
  {const g=S.groups.filter(x=>x.srf).sort((a,b)=>b.srf-a.srf).slice(0,4); if(g.length&&S.srf)I.push(`<b>Refusals are concentrated:</b> ${g.map(x=>`${esc(x.k)} ${fmt(x.srf)} (${pc(x.srf/S.srf*100)})`).join(', ')} of the ${fmt(S.srf)} children still refusing in ${esc(scope)}.`+(S.r50?` Half of them are in just ${S.r50} UCs.`:''));}
  {const g=S.groups.filter(x=>x.slo&&x.tg).sort((a,b)=>b.slo/b.tg-a.slo/a.tg).slice(0,4); if(g.length&&S.slo)I.push(`<b>Areas not finished ("left over"):</b> ${fmt(S.slo)} children, mostly in ${g.map(x=>`${esc(x.k)} (${pc(x.slo/x.tg*100)} of target)`).join(', ')}. These are usually access or security problems rather than team performance.`);}
+ {const nc=S.U.filter(r=>r.tg>0&&r.slo>=0.5*r.tg).sort((a,b)=>b.slo-a.slo); if(nc.length)I.push(`<b>${nc.length} UC${nc.length>1?'s were':' was'} largely not reached</b> (half or more of the target left over): ${nc.slice(0,5).map(r=>`${esc(r.u)}, ${esc(r.d)} (${fmt(r.slo)})`).join('; ')}${nc.length>5?' …':''}. Confirm whether the campaign happened there and plan a special round.`);}
  if(S.recov!=null)I.push(`<b>Catch-up works for most:</b> ${pc(S.recov)} of recorded missed children were vaccinated later, but refusals recover less: ${fmt(S.srf)} refusals remain against ${fmt(S.sna)} not-available children.`);
  {const c=S.camps.filter(x=>x.tg); if(c.length>1){const a=c[c.length-1], b=c[0]; I.push(`<b>Trend:</b> still missed ${pc(a.st/a.tg*100)} in ${esc(a.l)} → ${pc(b.st/b.tg*100)} in ${esc(b.l)}; still refusing ${fmt(a.srf)} → ${fmt(b.srf)}.`);}}
  {const dp=dpLatest(), dd=Object.entries(dp).filter(([d])=>crInD()(d)&&dp[d]&&dp[d].irf!=null).sort((a,b)=>b[1].irf-a[1].irf).slice(0,3); if(dd.length)I.push(`<b>Independent monitoring disagrees with admin data:</b> ICM found the highest refusal shares in ${dd.map(([d,x])=>`${esc(d)} (${pc(x.irf)})`).join(', ')}, while administrative coverage reports above 95% almost everywhere. Use ICM and LQAS, not admin coverage, to judge campaign quality.`);}
- if(S.pers.length)I.push(`<b>${S.pers.length} UCs have refusals that do not go away</b> (5+ children still refusing in every campaign): ${S.pers.sort((a,b)=>b.srf-a.srf).slice(0,4).map(r=>`${esc(r.u)} (${esc(r.d)})`).join(', ')}. These need community engagement and religious/elder support, not repeat visits alone.`);
+ if(S.pers.length)I.push(`<b>${S.pers.length} UCs have refusals that do not go away</b> (20+ children still refusing in every campaign): ${S.pers.sort((a,b)=>b.srf-a.srf).slice(0,4).map(r=>`${esc(r.u)} (${esc(r.d)})`).join(', ')}. These need community engagement and religious/elder support, not repeat visits alone.`);
  el('mIns').innerHTML=I.map(x=>'<li>'+x+'</li>').join('')||'<li>No campaign data for this selection.</li>';
  const g=S.groups.filter(x=>x.st).sort((a,b)=>b.st-a.st).slice(0,15);
  el('cm1').style.height=Math.max(320,g.length*26+110)+'px';
@@ -4043,7 +4121,7 @@ function renderHomeMis(){
  el('hF10').innerHTML=`<div class="hf"><b>${fmt(S.srf)} still refusing</b>${S.r50?S.r50+' UCs hold half · ':''}${fmt(S.pers.length)} UCs with refusals every campaign</div>`+
   `<div class="hf"><b>${X.low.length} districts</b>report under half the KP median AFP rate${X.low.length?': '+X.low.slice(0,3).map(r=>esc(r.d)).join(', '):''}</div>`;
  el('hM10t').innerHTML='<div class="hrh">Most children still refusing</div>'+S.U.slice().sort((a,b)=>b.srf-a.srf).slice(0,5).map(r=>`<div class="hrt"><i style="background:#b91c1c"></i><span>${esc(r.u)} (${esc(r.d)})</span><b style="color:#b91c1c">${fmt(r.srf)}</b></div>`).join('');
- hAlarm('hA10','Alarm',[[S.u5,'UCs with 5%+ still missed','Children still missed after catch-up are 5% or more of the target','mis'],[S.pers.length,'persistent refusal UCs','5+ children still refusing in every 2026 campaign','mis'],
+ hAlarm('hA10','Alarm',[[S.u5,'UCs with 5%+ still missed','Children still missed after catch-up are 5% or more of the target','mis'],[S.pers.length,'persistent refusal UCs','20+ children still refusing in every 2026 campaign','mis'],
   [X.low.length,'districts with low AFP reporting','Non-polio AFP rate under half the KP median','surv'],[X.blind.length,'surveillance blind spots','Low AFP reporting or no sewage site','surv']]);
 }
 
@@ -4092,6 +4170,137 @@ function misSlide(s,M,X,K){
  const R=X.R.slice().sort((a,b)=>(a.rel??1e9)-(b.rel??1e9)).slice(0,9);
  table(s,['District','AFP rate','% median','Pending','Sewage'],R.map(r=>[cut(r.d,14),r.r26==null?'–':String(Math.round(r.r26)),r.rel==null?'–':Math.round(r.rel)+'%',String(r.pd),r.es?'Yes':'No']),{x:8.15,y:3.28,w:4.7,colW:[1.45,0.85,0.85,0.75,0.8],col:'B91C1C',fs:9,rh:0.3});
  note(s,'Still missed = recorded missed children not vaccinated after catch-up, plus left-over children (% of under-5 target). AFP rate = non-polio AFP per 100,000 children under 5, annualised; compare with the KP median ('+(X.med==null?'–':Math.round(X.med))+').',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
+}
+
+
+// ================= (10) ACTION TRACKER =================
+const ATKEY='kpzd_actions_v1';
+const AT_ST=['Not started','In progress','Blocked','Done'];
+const AT_ROLES=['EOC KP','DEOC coordinator','DC / DPEC','DHO','District EPI coordinator','DSO (surveillance)','UCMO','Data / IDIMS focal person','M&E / data focal person','Communication (SBCC)','Partner (WHO / UNICEF)','Other'];
+const AT_CAT=[[/^Confirmed polio|^Polio: confirmed/i,'wpv','Outbreak response','DEOC coordinator'],[/zero-dose AFP case/i,'afp','ZD AFP follow-up','DSO (surveillance)'],
+ [/^Risk:/i,'risk','UC risk','DEOC coordinator'],[/^Polio watch/i,'watch','Watch list','DSO (surveillance)'],[/^Verify the numbers/i,'verify','Critical review','M&E / data focal person'],
+ [/^Campaign and surveillance/i,'mis','Missed children & surveillance','DEOC coordinator'],[/below 80% coverage in both|stayed below 80%/i,'pl','Persistent low ZD coverage','DHO'],
+ [/recovery plans|below 80% ZD coverage|^Coverage:/i,'cov','ZD coverage','DHO'],[/^Re-visit/i,'revisit','ZD coverage gaps','UCMO'],[/^Report .*coverage/i,'report','Coverage reporting','DEOC coordinator'],
+ [/data-entry staff|no linelist entries/i,'dig0','Digitization','Data / IDIMS focal person'],[/over-entry|missing IDIMS|duplicate records/i,'digv','Digitization','Data / IDIMS focal person'],
+ [/linelist|IDIMS|Digitization/i,'dig','Digitization','Data / IDIMS focal person'],[/permanent register/i,'reg','Validation','District EPI coordinator'],
+ [/^Trace and vaccinate/i,'trace','Validation','UCMO'],[/EPI-card|Clean the validation|^Validation:/i,'val','Validation','M&E / data focal person'],
+ [/joint EPI and polio/i,'both','EPI + polio','District EPI coordinator'],[/MR-2/i,'mr2','Routine EPI','District EPI coordinator'],[/review the targets/i,'target','Routine EPI targets','District EPI coordinator'],
+ [/Routine EPI/i,'epi','Routine EPI','District EPI coordinator']];
+let _ASUG=null, _ACTB=false, ATF='open', AT_OK=true;
+const atToday=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+function atLoad(){try{const s=JSON.parse(localStorage.getItem(ATKEY)||'{}'); AT_OK=true; return s&&s.items?s:{ver:1,items:{}};}catch(e){AT_OK=false; return {ver:1,items:{}};}}
+let ATS=atLoad();
+function atSave(){try{localStorage.setItem(ATKEY,JSON.stringify(ATS)); AT_OK=true;}catch(e){AT_OK=false; toast('This browser view cannot save. Open the dashboard in Chrome or Edge.');}}
+function atCat(t){for(const [re,k,l,r] of AT_CAT)if(re.test(t))return {k,l,r}; return {k:'x_'+String(t).toLowerCase().replace(/\([^)]*\)/g,'').replace(/[^a-z ]/g,'').trim().split(/\s+/).slice(0,5).join('_'),l:'Other',r:'DEOC coordinator'};}
+function actSug(){ if(_ASUG)return _ASUG; _ACTB=true; const out=[];
+ try{const ds=[...new Set(ZD.map(z=>z.d))].sort();
+  [['KP','kp','']].concat(ds.map(d=>[d,'d',d])).forEach(([area,lv,val])=>{let A=[]; try{A=briefActions(collectBrief(lv,val));}catch(e){A=[];}
+   const seen={}; A.forEach(t=>{const c=atCat(t); seen[c.k]=(seen[c.k]||0)+1; const id=area+'|'+c.k+(seen[c.k]>1?'#'+seen[c.k]:'');
+    out.push({id,area,dv:area==='KP'?'':D2DV[area]||'',cat:c.k,sec:c.l,text:t,role0:area==='KP'?'EOC KP':c.r,auto:true});});});}
+ finally{_ACTB=false;}
+ _ASUG=out; return out;}
+function atRows(){const S=actSug(), ids=new Set(S.map(x=>x.id)), T=atToday();
+ const R=S.map(s=>{const u=ATS.items[s.id]||{}; return Object.assign({},s,{role:u.role||s.role0,owner:u.owner||'',due:u.due||'',status:u.status||'Not started',notes:u.notes||'',upd:u.upd||'',tracked:!!ATS.items[s.id],gone:false});});
+ Object.values(ATS.items).forEach(u=>{if(ids.has(u.id))return; R.push({id:u.id,area:u.area||'KP',dv:u.area&&u.area!=='KP'?D2DV[u.area]||'':'',cat:u.cat||'custom',sec:u.auto===false?'Added by you':(u.sec||'Other'),text:u.text||'',role:u.role||'DEOC coordinator',owner:u.owner||'',due:u.due||'',status:u.status||'Not started',notes:u.notes||'',upd:u.upd||'',tracked:true,auto:u.auto!==false,gone:u.auto!==false});});
+ R.forEach(r=>{r.od=!!r.due&&r.due<T&&r.status!=='Done'; r.asg=!!r.due&&!!(r.owner||ATS.items[r.id]&&ATS.items[r.id].role);});
+ return R;}
+function atScope(){const inD=crInD(); return r=>{if(!r.area)return false; if(r.area==='KP')return !fDiv.value&&!fDist.value; return inD(r.area);};}
+function atSet(id,f,v){const r=atRows().find(x=>x.id===id); if(!r)return; const u=ATS.items[id]||{id,area:r.area,cat:r.cat,sec:r.sec,auto:r.auto!==false,text:r.text};
+ u[f]=v; u.text=r.text; u.sec=r.sec; u.upd=atToday(); if(f==='status'&&v==='Done')u.done=atToday(); ATS.items[id]=u; atSave();}
+function atStats(R){const s={n:R.length,asg:0,done:0,od:0,bl:0,ip:0,ns:0}; R.forEach(r=>{if(r.asg)s.asg++; if(r.status==='Done')s.done++; else if(r.status==='Blocked')s.bl++; else if(r.status==='In progress')s.ip++; else s.ns++; if(r.od)s.od++;}); return s;}
+function atBadge(){const b=el('bAT1'); if(b){const S=atStats(atRows().filter(atScope())); b.textContent=S.od?S.od+' overdue':(S.n-S.done)+' open';}}
+Object.assign(KX,{at1:['list',null,null],at2:['users',null,null],at3:['check',null,null],at4:['alert',null,null],at5:['flag',null,null]});
+const atStCol={'Not started':'#94a3b8','In progress':'#0284c7','Blocked':'#dc2626','Done':'#16a34a'};
+const atDt=s=>{if(!s)return '';const p=s.split('-');const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (+p[2])+' '+M[(+p[1])-1]+' '+p[0].slice(2);};
+
+function renderAct(){
+ const R=atRows().filter(atScope()), S=atStats(R), scope=fDist.value||(fDiv.value?fDiv.value+' division':'KP and all districts');
+ el('atHint').innerHTML=`<b>Turn the dashboard's recommendations into tracked work.</b> Every action suggested in the briefs is listed here for KP and each district. Set the responsible role${VSHOWN?', a name':''}, a due date and the status; overdue actions turn orange. When the data no longer flags a problem, the action stays here marked "not flagged in latest data" so you can close it. <b>Entries are saved in this browser on this computer only.</b> Use <i>Save backup file</i> to keep a copy or move it to another computer, and <i>Load backup file</i> to restore it.${VSHOWN?'':' On the public link only the role is shown; names are not kept.'}`;
+ el('atWarn').innerHTML=AT_OK?'':'<div class="actwarn">This browser view cannot save entries (storage is blocked). Open the dashboard directly in Chrome or Edge.</div>';
+ el('at1').textContent=fmt(S.n); el('at1s').textContent=`for ${esc(scope)} · ${fmt(R.filter(r=>r.auto!==false&&!r.gone).length)} suggested by the data`;
+ el('at2').textContent=fmt(S.asg); el('at2s').textContent=S.n?`${pc(S.asg/S.n*100)} have a responsible person and a due date`:'';
+ el('at3').textContent=fmt(S.done); el('at3s').textContent=S.n?`${pc(S.done/S.n*100)} · ${fmt(S.ip)} in progress`:'';
+ el('at4').textContent=fmt(S.od); el('at4s').textContent='past the due date and not done';
+ el('at5').textContent=fmt(S.bl); el('at5s').textContent=`${fmt(S.ns)} not started`;
+ // chart 1: status by area
+ const G={}; R.forEach(r=>{const g=G[r.area]=G[r.area]||{k:r.area,n:0}; g[r.status]=(g[r.status]||0)+1; g.n++; if(r.od)g.od=(g.od||0)+1;});
+ const g=Object.values(G).sort((a,b)=>(b.od||0)-(a.od||0)||((b.n-(b.Done||0))-(a.n-(a.Done||0)))).slice(0,20);
+ el('cat1').style.height=Math.max(300,g.length*24+110)+'px';
+ HC('cat1',{chart:{type:'bar'},title:{text:'Action status by area'},subtitle:{text:'Most overdue / open first'},xAxis:{categories:g.map(x=>x.k)},yAxis:{title:{text:'Actions (count)'},allowDecimals:false},tooltip:{shared:true},
+  plotOptions:{bar:{stacking:'normal',borderRadius:2}},series:AT_ST.map(s=>({name:s,color:atStCol[s],data:g.map(x=>x[s]||null)}))});
+ el('capat1').textContent=S.od?`${fmt(S.od)} action${S.od>1?'s are':' is'} overdue; ${g[0]&&g[0].od?g[0].k+' has the most ('+g[0].od+').':''}`:'No overdue actions.';
+ const C={}; R.forEach(r=>{const c=C[r.sec]=C[r.sec]||{k:r.sec,n:0}; c[r.status]=(c[r.status]||0)+1; c.n++;});
+ const c=Object.values(C).sort((a,b)=>b.n-a.n);
+ el('cat2').style.height=Math.max(300,c.length*24+110)+'px';
+ HC('cat2',{chart:{type:'bar'},title:{text:'Actions by topic'},subtitle:{text:'Which recommendations are being acted on'},xAxis:{categories:c.map(x=>x.k)},yAxis:{title:{text:'Actions (count)'},allowDecimals:false},tooltip:{shared:true},
+  plotOptions:{bar:{stacking:'normal',borderRadius:2}},series:AT_ST.map(s=>({name:s,color:atStCol[s],data:c.map(x=>x[s]||null)}))});
+ el('capat2').textContent=S.n?`${pc(S.done/S.n*100)} of actions are done, ${pc(S.ns/S.n*100)} not started.`:'';
+ // pills + table
+ const PL=[['open','Open'],['od','Overdue'],['un','Not assigned'],['bl','Blocked'],['done','Done'],['gone','Not flagged in latest data'],['all','All']];
+ const fl={open:r=>r.status!=='Done',od:r=>r.od,un:r=>!r.asg&&r.status!=='Done',bl:r=>r.status==='Blocked',done:r=>r.status==='Done',gone:r=>r.gone,all:()=>true};
+ el('atPills').innerHTML=PL.map(([k,l])=>`<button data-f="${k}" class="${ATF===k?'on':''}">${l} (${R.filter(fl[k]).length})</button>`).join('');
+ el('atPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{ATF=b.dataset.f;renderAct();});
+ const qq=q.value.trim().toLowerCase(), rows=R.filter(fl[ATF]).filter(r=>!qq||(r.area+' '+r.text+' '+r.role+' '+r.owner+' '+r.notes).toLowerCase().includes(qq));
+ const ord=r=>(r.area==='KP'?'0':'1')+r.area;
+ const selR=r=>`<select data-id="${esc(r.id)}" data-f="role">`+AT_ROLES.concat(AT_ROLES.includes(r.role)?[]:[r.role]).map(x=>`<option${x===r.role?' selected':''}>${esc(x)}</option>`).join('')+'</select>';
+ const selS=r=>`<select class="as" data-v="${esc(r.status)}" data-id="${esc(r.id)}" data-f="status">`+AT_ST.map(x=>`<option${x===r.status?' selected':''}>${x}</option>`).join('')+'</select>';
+ const cols=[{k:'area',l:'Area',sv:ord,f:x=>'<b>'+esc(x.area)+'</b>'},{k:'sec',l:'Topic',f:x=>esc(x.sec)},
+  {k:'text',l:'Action',ns:1,cls:'atx',f:x=>esc(x.text)+(x.gone?' <span class="crtag ok">not flagged in latest data</span>':'')+(x.od?' <span class="crtag">overdue</span>':'')},
+  {k:'role',l:'Responsible',f:selR}];
+ if(VSHOWN)cols.push({k:'owner',l:'Name',f:x=>`<input class="ao" data-id="${esc(x.id)}" data-f="owner" value="${esc(x.owner)}" placeholder="name">`});
+ cols.push({k:'due',l:'Due',sv:x=>x.due||'9999',f:x=>`<input type="date" data-id="${esc(x.id)}" data-f="due" value="${esc(x.due)}">`},{k:'status',l:'Status',sv:x=>AT_ST.indexOf(x.status),f:selS},
+  {k:'notes',l:'Notes / progress',ns:1,f:x=>`<input class="an" data-id="${esc(x.id)}" data-f="notes" value="${esc(x.notes)}" placeholder="update">`},{k:'upd',l:'Updated',f:x=>atDt(x.upd)});
+ drawTable('tAct',cols,rows,'area',1);
+ const t=el('tAct'); el('cntAT').textContent=rows.length+' action'+(rows.length===1?'':'s');
+ t.querySelectorAll('input[type=date]').forEach(inp=>{const tr=inp.closest('tr'); if(inp.value&&inp.value<atToday()){const s=tr.querySelector('select.as'); if(s&&s.value!=='Done')tr.classList.add('od');}});
+ if(!t._atWired){t._atWired=1; t.addEventListener('change',e=>{const x=e.target; if(!x.dataset||!x.dataset.id)return; atSet(x.dataset.id,x.dataset.f,x.value.trim());
+  if(x.dataset.f==='status'||x.dataset.f==='due'){renderAct();} else {atBadge(); navHdr&&navHdr();}});}
+ el('capAT').textContent=`Suggested actions are regenerated from the data at every refresh; your entries stay attached to them. "Not flagged in latest data" means the problem behind the action no longer appears; close it if it is resolved. Saved ${Object.keys(ATS.items).length} entr${Object.keys(ATS.items).length===1?'y':'ies'} in this browser.`;
+ // add form
+ const aa=el('atAArea'); if(!aa.options.length){aa.innerHTML=['KP'].concat([...new Set(ZD.map(z=>z.d))].sort()).map(d=>`<option>${esc(d)}</option>`).join(''); el('atARole').innerHTML=AT_ROLES.map(x=>`<option>${esc(x)}</option>`).join(''); if(!VSHOWN)el('atAOwner').style.display='none';}
+ if(fDist.value)aa.value=fDist.value;
+ el('btnATadd').onclick=()=>el('atAdd').classList.toggle('on');
+ el('btnATaddGo').onclick=()=>{const tx=el('atAText').value.trim(); if(!tx){toast('Type the action first');return;}
+  const id='U|'+Date.now().toString(36); ATS.items[id]={id,area:aa.value,cat:'custom',sec:'Added by you',auto:false,text:tx,role:el('atARole').value,owner:VSHOWN?el('atAOwner').value.trim():'',due:el('atADue').value,status:'Not started',upd:atToday()};
+  atSave(); el('atAText').value=''; el('atAOwner').value=''; el('atADue').value=''; el('atAdd').classList.remove('on'); ATF='open'; renderAct(); toast('Action added');};
+ el('btnATcsv').onclick=()=>{const H=['Area','Division','Topic','Action','Responsible'].concat(VSHOWN?['Name']:[]).concat(['Due','Status','Overdue','Notes','Updated','Source']);
+  csvDownload('Action_tracker_'+_slug()+'.csv',H,R.slice().sort((a,b)=>ord(a)<ord(b)?-1:1).map(r=>[r.area,r.dv,r.sec,r.text,r.role].concat(VSHOWN?[r.owner]:[]).concat([r.due,r.status,r.od?'Yes':'',r.notes,r.upd,r.auto===false?'Added by you':r.gone?'Suggested earlier, not flagged now':'Suggested by the data'])));};
+ el('btnATsave').onclick=()=>{const data=JSON.parse(JSON.stringify(ATS)); if(!VSHOWN)Object.values(data.items).forEach(u=>delete u.owner); data.saved=new Date().toISOString();
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:'application/json'}));a.download='KP_ZD_action_tracker_'+atToday()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);toast('Backup file saved');}catch(e){toast('Could not save the file here');}};
+ el('btnATload').onclick=()=>el('atFile').click();
+ el('atFile').onchange=ev=>{const f=ev.target.files[0]; if(!f)return; const rd=new FileReader(); rd.onload=()=>{try{const J=JSON.parse(rd.result); const it=(J&&J.items)||{}; let n=0;
+   Object.values(it).forEach(u=>{if(!u||!u.id)return; if(!VSHOWN)delete u.owner; const cur=ATS.items[u.id]; if(!cur||(u.upd||'')>=(cur.upd||'')){ATS.items[u.id]=u;n++;}});
+   atSave(); renderAct(); toast(n+' entr'+(n===1?'y':'ies')+' loaded');}catch(e){toast('That file is not a tracker backup');} ev.target.value='';}; rd.readAsText(f);};
+ el('btnATclear').onclick=()=>{if(!confirm('Remove all saved owners, dates, statuses and added actions from this browser? Save a backup first if you may need them.'))return; ATS={ver:1,items:{}}; atSave(); renderAct();};
+}
+
+function renderHomeAct(){
+ if(!el('hA11'))return;
+ const R=atRows(), S=atStats(R), od=R.filter(r=>r.od).sort((a,b)=>a.due<b.due?-1:1);
+ el('hT11n').innerHTML=`<b>${fmt(S.n-S.done)}</b><small>open<br>actions</small>`;
+ el('hT11s').textContent=`Suggested by the data for KP and ${new Set(R.map(r=>r.area)).size-1} districts · saved in this browser`;
+ el('hF11').innerHTML=`<div class="hf"><b>${fmt(S.asg)} assigned · ${fmt(S.done)} done</b>${S.n?pc(S.asg/S.n*100)+' have a responsible person and due date':''}</div>`+
+  `<div class="hf"><b>${fmt(S.od)} overdue · ${fmt(S.bl)} blocked</b>${S.od?'oldest due '+atDt(od[0].due):'nothing past its due date'}</div>`;
+ el('hT11t').innerHTML='<div class="hrh">'+(od.length?'Overdue':'KP-level actions')+'</div>'+(od.length?od:R.filter(r=>r.area==='KP'&&r.status!=='Done')).slice(0,5).map(r=>`<div class="hrt" title="${esc(r.text)}"><i style="background:${r.od?'#dc2626':atStCol[r.status]}"></i><span>${esc(r.area)}: ${esc(r.text.slice(0,60))}</span><b style="color:#0f766e">${esc(r.due?atDt(r.due):r.status)}</b></div>`).join('');
+ hAlarm('hA11','Alarm',[[S.od,'overdue actions','Past the due date and not done','act'],[S.bl,'blocked actions','Marked as blocked','act'],[R.filter(r=>!r.asg&&r.area==='KP'&&r.status!=='Done').length,'KP actions not assigned','EOC-level actions without a responsible person and due date','act']]);
+}
+
+// briefs + deck
+{const _cb=collectBrief; collectBrief=function(level,val){const B=_cb(level,val); if(_ACTB)return B;
+ const inA=a=>level==='kp'?a==='KP':level==='dv'?(a!=='KP'&&D2DV[a]===val):a===val; B.act=atRows().filter(r=>inA(r.area)); return B;};}
+function actSlide(s,R,K,brief){
+ const {kpis,table,note,F,TXT,RED,AMB,n0}=K, TL='0F766E', cut=(t,n)=>{t=t==null?'':String(t);return t.length>n?t.slice(0,n-1)+'…':t;}, S=atStats(R);
+ kpis(s,[{l:'Actions',v:n0(S.n),s:'for this area'},{l:'Assigned',v:n0(S.asg),vc:TL,s:'responsible + due date'},{l:'Done',v:n0(S.done),vc:'15803D',s:S.n?Math.round(S.done/S.n*100)+'% of actions':''},
+  {l:'Overdue',v:n0(S.od),vc:S.od?RED:null,s:'past due, not done'},{l:'Blocked',v:n0(S.bl),vc:S.bl?AMB:null,s:n0(S.ns)+' not started'}],TL,1.4);
+ const ord=r=>(r.od?0:r.status==='Blocked'?1:r.status==='In progress'?2:r.status==='Not started'?3:4);
+ const rows=R.slice().sort((a,b)=>ord(a)-ord(b)||(a.due||'9999').localeCompare(b.due||'9999')).slice(0,9);
+ const hd=['Area','Action','Responsible'].concat(VSHOWN?['Name']:[]).concat(['Due','Status']);
+ const cw=VSHOWN?[1.15,5.4,1.75,1.4,1.1,1.5]:[1.2,6.4,1.95,1.25,1.5];
+ const tc=VSHOWN?[13,78,22,16]:[13,92,24];
+ const data=rows.map(r=>{const st=r.od?'Overdue':r.status; const a=[cut(r.area,tc[0]),cut(r.text,tc[1]),cut(r.role,tc[2])]; if(VSHOWN)a.push(cut(r.owner||'–',tc[3])); a.push(r.due?atDt(r.due):'–', brief?{t:st,c:r.od||r.status==='Blocked'?['FEE2E2','991B1B']:r.status==='Done'?['DCFCE7','166534']:r.status==='In progress'?['E0F2FE','075985']:null,b:r.od}:st); return a;});
+ s.addText('Actions to follow up (overdue and open first)',{x:0.5,y:2.9,w:12.3,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ table(s,hd,data,brief?{x:0.5,y:3.28,w:12.3,colW:cw,col:TL,fs:9,rh:0.3,empty:'No actions for this area.'}:{x:0.5,y:3.28,w:12.3,colW:cw,col:TL});
+ note(s,(S.asg?'':'No owners or due dates recorded yet: fill them in on the Action tracker page, or use this slide to agree them in the meeting. ')+'Status as saved in the dashboard on this computer ('+atDt(atToday())+').',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
 }
 
 kxInit();
