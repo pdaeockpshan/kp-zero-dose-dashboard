@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 05-Oct-2026 17:13</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 09:30</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -362,7 +362,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <button class="tab tsum on" data-tab="home"><span class="tl">Home</span><span class="badge">KP at a glance</span></button>
    <button class="tab tsum" data-tab="summary"><span class="tl">Summary</span><span id="bS" class="tnrow"></span></button>
    <button class="tab" data-tab="export"><span class="tl">Export data</span><span class="badge" id="bX">–</span></button>
-   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">11 slides</span></button>
+   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">12 slides</span></button>
   </div>
   <div class="nsec">Detailed analysis</div>
   <div class="ngrp gz"><div class="nhd">① ZD Reported &amp; Covered</div>
@@ -415,7 +415,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 05-Oct-2026 17:13</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 06-Oct-2026 09:30</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -1748,6 +1748,7 @@ const PPT_SLIDES=[['Title','Area, campaigns and date','#4338ca'],['Summary','Fou
  ['② Digitization','Completion % by area and children not entered','#6d28d9'],['② Follow-up','P1–P4 counts and areas with the most work','#6d28d9'],
  ['③ Validation','% vaccinated by area and results by method','#15803d'],['③ Records to check','Counts of flagged records (no names)','#15803d'],
  ['④ EPI routine coverage','Coverage by antigen and lowest areas for Penta-3','#1d4ed8'],['④ EPI priority UCs','Dropouts, weak in EPI and polio, target checks','#1d4ed8'],
+ ['⑤ ZD AFP & polio cases','Zero-dose AFP cases, confirmed polio cases and their UCs','#b91c1c'],
  ['Recommended actions','Next steps based on the data','#b45309']];
 el('pList').innerHTML=PPT_SLIDES.map((x,i)=>`<label class="pitem" style="--pc:${x[2]}"><input type="checkbox" id="px${i+1}" checked><span><b>${i+1}. ${esc(x[0])}</b><small>${esc(x[1])}</small></span></label>`).join('');
 const pptCount=()=>PPT_SLIDES.filter((x,i)=>{const c=el('px'+(i+1));return !c||c.checked!==false;}).length;
@@ -1778,7 +1779,8 @@ function collectDeckData(){
   ag:EAG.map(a=>({l:a.l,p:e['p_'+a.k],d:e[a.k]})),fl:{LP:efc('LP'),DO:efc('DO'),DM:efc('DM'),BO:efc('BO'),OV:efc('OV'),NT:efc('NT')},
   G:groupE(eR,L.key).filter(x=>x.s>0).map(x=>({k:x.k,p1:x.p_p1,p3:x.p_p3,mr1:x.p_mr1,mr2:x.p_mr2,fi:x.p_fi,d13:x.d13,dmr:x.dmr,u:x.u})),
   bo:eR.filter(r=>r.fl.includes('BO')).map(r=>({u:r.en,d:r.d,p3:eP(r,'p3'),p1:eP(r,'p1'),zp:r.zp,zr:r.zr})).sort((a,b)=>(a.p3??999)-(b.p3??999)).slice(0,10)};
- return {e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+ const _af=afpStats(AFP.filter(matchG),WPV.filter(matchG)); _af.tot=(!fDiv.value&&!fDist.value&&!fTeh.value&&!q.value.trim())?afpTot():null;
+ return {afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
   L:{lvl:L.lvl,Lvl:L.Lvl,pl:L.pl},camp:{A:CAMP.A,M:CAMP.M,S:CAMP.S},zsame:ZSAME,clf:'SNID Sept 2026',vcamps:VCAMP.map(x=>x.l).join(', '),
   z:{rA:z.rA,rM:z.rM,rS:z.rS,cM:z.cM,rcM:z.rcM,lfA:z.lfA,lfM:z.lfM,nL:z.nL,gM:z.gM,crM:z.crM,p:zl.p,cp:zl.cp,g:zl.g,pl:zR.filter(r=>r.tr==='Persistent low').length},
   zG,d:{has:dR.length>0,rep:drep,ll:dll,p:drep?dll/drep*100:null,gap:S_(dR,gapOf),zero:dR.filter(r=>r.rep>0&&r.ll===0).length,fu:fu.length,P1:fc('P1'),P2:fc('P2'),P3:fc('P3'),P4:fc('P4')},
@@ -1833,11 +1835,11 @@ function renderDeck(P,D){
  if(D.sel[1]){const s=pptx.addSlide(); pg++; s.background={color:IND};
   s.addText('Zero Dose Update',{x:0.8,y:1.9,w:11.7,h:1.0,fontFace:F,fontSize:44,bold:true,color:'FFFFFF'});
   s.addText(D.scope,{x:0.8,y:2.95,w:11.7,h:0.6,fontFace:F,fontSize:22,color:'E0E7FF'});
-  s.addText([{text:'ZD Reported & Covered: '+camps.join(' · '),options:{breakLine:true}},{text:'Digitization: '+D.clf+' linelist vs IDIMS',options:{breakLine:true}},{text:'Validation: '+(D.vcamps.length>90?VCAMP.length+' campaigns, '+VCAMP[0].l+' to '+VCAMP[VCAMP.length-1].l:D.vcamps),options:{breakLine:true}},{text:'EPI routine coverage: KP EPI-MIS, '+D.e.per}],
-   {x:0.8,y:3.75,w:11.7,h:1.6,fontFace:F,fontSize:14,color:'C7D2FE',valign:'top',paraSpaceAfter:4});
-  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage']].forEach((c,i)=>{const x=0.8+i*3.0;
-   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:2.85,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
-   s.addText(c[1],{x,y:5.55,w:2.85,h:0.55,fontFace:F,fontSize:13,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
+  s.addText([{text:'ZD Reported & Covered: '+camps.join(' · '),options:{breakLine:true}},{text:'Digitization: '+D.clf+' linelist vs IDIMS',options:{breakLine:true}},{text:'Validation: '+(D.vcamps.length>90?VCAMP.length+' campaigns, '+VCAMP[0].l+' to '+VCAMP[VCAMP.length-1].l:D.vcamps),options:{breakLine:true}},{text:'EPI routine coverage: KP EPI-MIS, '+D.e.per,options:{breakLine:true}},{text:'AFP & polio cases: ZD List'+(AMETA.per?' ('+AMETA.per+')':'')+' and EOC line list'}],
+   {x:0.8,y:3.65,w:11.7,h:1.75,fontFace:F,fontSize:14,color:'C7D2FE',valign:'top',paraSpaceAfter:4});
+  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage'],['B91C1C','⑤ AFP & Polio']].forEach((c,i)=>{const x=0.8+i*2.36;
+   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:2.26,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
+   s.addText(c[1],{x,y:5.55,w:2.26,h:0.55,fontFace:F,fontSize:12,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
   s.addText('Prepared '+D.date,{x:0.8,y:6.6,w:6,h:0.4,fontFace:F,fontSize:12,color:'C7D2FE'});}
 
  // 2 Summary
@@ -1857,7 +1859,8 @@ function renderDeck(P,D){
   if(d.has)B.push(`${n0(d.gap)} children are still to be entered in the linelist, and ${n0(d.zero)} UCs have no entries.`);
   if(v.n)B.push(`${n0(v.vn)} validated children were found unvaccinated, and ${n0(v.rn)} were not in the permanent register.`);
   if(D.e.s)B.push(`Routine EPI (${D.e.per}): Penta-3 ${p1(D.e.p3)}, MR-1 ${p1(D.e.mr1)}, MR-2 ${p1(D.e.mr2)}; ${n0(D.e.fl.BO)} UCs are weak in both routine EPI and the polio zero-dose data.`);
-  bullets(s,B,{x:0.5,y:4.0,w:12.3,h:2.85,fs:B.length>4?13:15});}
+  if(D.afp&&(D.afp.n||D.afp.W.length))B.push(`AFP & polio: ${n0(D.afp.W.length)} confirmed polio case${D.afp.W.length===1?'':'s'} and ${n0(D.afp.n)} zero-dose children among AFP cases (${n0(D.afp.pend)} pending).`);
+  bullets(s,B,{x:0.5,y:4.0,w:12.3,h:2.85,fs:B.length>5?12:B.length>4?13:15});}
 
  // 3 Reported & Covered
  if(D.sel[3]){const s=base('① ZD Reported & Covered',TEAL,'Coverage % = ZD covered ÷ ZD reported · target 90%');
@@ -1932,8 +1935,30 @@ function renderDeck(P,D){
    s.addText('UCs weak in both routine EPI and polio data',{x:6.95,y:2.9,w:5.88,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
    table(s,['UC (EPI-MIS)','District','Penta-3','ZD cov. %'],e.bo.map(x=>[x.u,x.d,p1(x.p3),p1(x.zp)]),{x:6.95,y:3.28,w:5.88,colW:[2.2,1.68,1.0,1.0],col:BLU});}}
 
- // 11 Actions
- if(D.sel[11]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
+ // 11 ZD AFP & polio cases
+ if(D.sel[11]){const S=D.afp, s=base('⑤ Zero-dose AFP & polio cases',RED,'ZD List: zero-dose children among AFP cases'+(AMETA.per?' (onset '+AMETA.per+')':'')+' · confirmed cases: EOC line list'+(AMETA.asof?' as of '+AMETA.asof:''));
+  if(!S||(!S.n&&!S.W.length))note(s,'No zero-dose AFP case or confirmed polio case for this selection.',{x:0.5,y:2,w:12.3,fs:14});
+  else{
+   kpis(s,[{l:'ZD AFP cases',v:n0(S.n),vc:S.n?RED:TXT,s:S.tot?p1(S.n/S.tot*100)+' of '+n0(S.tot)+' AFP cases':S.nd+' district'+(S.nd===1?'':'s')},
+    {l:'Pending result',v:n0(S.pend),vc:S.pend?AMB:TXT,s:n0(S.disc)+' discarded'},
+    {l:'Confirmed polio cases',v:n0(S.W.length),vc:S.W.length?RED:GRN,s:S.W.length?S.wd+' district'+(S.wd>1?'s':'')+' · '+S.wzd+' zero-dose':'None in this selection'},
+    {l:'In persistent-low UCs',v:n0(S.pl),vc:S.pl?RED:TXT,s:'ZD coverage <80% twice'},{l:'In UCs <80% Penta-3',v:n0(S.lp3),vc:S.lp3?RED:TXT,s:'routine EPI weak'}],RED,1.4);
+   const cut=(t,n)=>{t=t==null?'':String(t);return t.length>n?t.slice(0,n-1)+'…':t;};
+   const pr=r=>/WPV|VDPV/.test(r.res)?0:r.res==='Pending'?1:2, N=9;
+   const rows=S.X.slice().sort((a,b)=>pr(a)-pr(b)||((a.zp==null?999:a.zp)-(b.zp==null?999:b.zp)));
+   s.addText('Zero-dose AFP cases and their UC indicators',{x:0.5,y:2.9,w:7.6,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+   table(s,['District','UC','Onset','Result','ZD cov.','Digitized','Penta-3'],rows.slice(0,N).map(x=>[cut(x.d,14),cut(x.u,20),_moL(x.mo),x.res,p1(x.zp),p1(x.dp),p1(x.p3)]),
+    {x:0.5,y:3.28,w:7.6,colW:[1.3,1.9,0.95,0.95,0.85,0.85,0.8],col:RED});
+   if(rows.length>N)note(s,'+ '+(rows.length-N)+' more cases in the dashboard (⑤ AFP & Polio cases).',{x:0.5,y:6.55,w:7.6,h:0.3,fs:9});
+   s.addText('Confirmed polio cases',{x:8.35,y:2.9,w:4.48,h:0.35,fontFace:F,fontSize:12,bold:true,color:RED});
+   const W=S.W.slice().sort((a,b)=>String(b.mo).localeCompare(a.mo)).slice(0,6);
+   if(W.length)table(s,['UC (district)','Onset','Zero-dose','Penta-3'],W.map(x=>[cut(x.u+' ('+x.d+')',24),_moL(x.mo),x.zd?'Yes':'No',p1(x.p3)]),{x:8.35,y:3.28,w:4.48,colW:[2.05,0.85,0.8,0.78],col:RED});
+   else note(s,'No confirmed polio case in this selection this year.',{x:8.35,y:3.3,w:4.48,fs:11});
+   note(s,'Each zero-dose AFP case is a child never reached by routine or campaign vaccination. Prioritise these UCs for catch-up, defaulter tracing and RI outreach.',
+    {x:8.35,y:3.28+(W.length?(W.length+1)*0.32+0.25:0.6),w:4.48,h:1.2,fs:10,i:true});}}
+
+ // 12 Actions
+ if(D.sel[12]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
   const A=[], top=(a,f)=>a.slice(0,3).map(f).join(', ')+(a.length>3?' and '+(a.length-3)+' more':'');
   const lowZ=D.zG.filter(x=>x.p!=null&&x.p<80).sort((a,b)=>a.p-b.p);
   if(lowZ.length)A.push('Coverage: focus supervision on '+top(lowZ,x=>x.k+' ('+p1(x.p)+')')+', which are below 80% ZD coverage.');
@@ -1953,7 +1978,10 @@ function renderDeck(P,D){
    if(e.dmr!=null&&e.dmr>10)AE.push('Strengthen MR-2 follow-up: '+n0(e.gmr)+' children got MR-1 but not MR-2 ('+p1(e.dmr)+' dropout).');
    if(e.fl.BO)AE.push('Hold joint EPI and polio reviews in the '+n0(e.fl.BO)+' UCs that are weak in both routine coverage and the zero-dose data.');
    if(e.fl.OV)AE.push('Ask EPI to review the targets of the '+n0(e.fl.OV)+' UCs reporting over 110% coverage.');}
-  const AA=A.slice(0,7).concat(AE.slice(0,3));
+  const AF=[], S5=D.afp;
+  if(S5&&S5.W.length)AF.push('Polio: confirmed case'+(S5.W.length>1?'s':'')+' in '+[...new Set(S5.W.map(r=>r.u+' ('+r.d+')'))].join(', ')+'. Keep outbreak response going and close zero-dose and routine gaps in the surrounding UCs.');
+  if(S5&&S5.n)AF.push('Follow up the '+n0(S5.n)+' zero-dose AFP case'+(S5.n>1?'s':'')+(S5.pend?' ('+n0(S5.pend)+' still pending)':'')+': vaccinate siblings and neighbours and add the case UCs to the catch-up plan.');
+  const AA=AF.slice(0,2).concat(A.slice(0,6),AE.slice(0,3));
   if(!AA.length)AA.push('No major gaps in this selection. Keep monitoring at the next campaign.');
   bullets(s,AA,{x:0.5,y:1.45,w:12.3,h:5.4,fs:AA.length>8?12:AA.length>6?13:15});}
  return pptx;
