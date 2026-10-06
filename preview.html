@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 12:05</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 14:40</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -406,6 +406,21 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hmsvg .wdot:hover{stroke:#0f172a;stroke-width:1.5}
 .hmsvg .wcase{fill:none;stroke:#0f172a;stroke-width:1.3;pointer-events:none}
 </style>
+
+<style>
+/* ================= (8) critical review ================= */
+.ngrp.gc{--gc:#475569}.tab[data-tab="crit"],#p-crit{--tc:#475569}
+.hbig.hbc{background:radial-gradient(circle at 35% 30%,#e2e8f0,#f1f5f9 60%,#fff);border-color:#cbd5e1;color:#334155}
+.hbig.hbc small{color:#1e293b}
+.crsec{display:none}.crsec.on{display:block}
+.crpills{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 12px}
+.crpills button{font:600 12.5px var(--font-sans);padding:7px 13px;border-radius:18px;border:1px solid var(--color-border);background:#fff;cursor:pointer;color:var(--color-text)}
+.crpills button.on{background:#475569;border-color:#475569;color:#fff}
+.crpills.sm button{font-size:11.5px;padding:4px 10px}
+.crtag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:10px;margin:1px 3px 1px 0;background:#fee2e2;color:#991b1b;white-space:nowrap}
+.crtag.dq{background:#fef3c7;color:#92400e}
+.crtag.ok{background:#dcfce7;color:#166534}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -414,7 +429,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <button class="tab tsum on" data-tab="home"><span class="tl">Home</span><span class="badge">KP at a glance</span></button>
    <button class="tab tsum" data-tab="summary"><span class="tl">Summary</span><span id="bS" class="tnrow"></span></button>
    <button class="tab" data-tab="export"><span class="tl">Export data</span><span class="badge" id="bX">–</span></button>
-   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">14 slides</span></button>
+   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">15 slides</span></button>
   </div>
   <div class="nsec">Detailed analysis</div>
   <div class="ngrp gz"><div class="nhd">① ZD Reported &amp; Covered</div>
@@ -446,6 +461,9 @@ body.home .hdr, body.home .content .topbar{display:none}
   <div class="ngrp gw"><div class="nhd">⑦ Polio risk watch list</div>
    <button class="tab" data-tab="watch"><span class="tl">Watch list</span><span class="badge" id="bW1">–</span></button>
   </div>
+  <div class="ngrp gc"><div class="nhd">⑧ Critical review</div>
+   <button class="tab" data-tab="crit"><span class="tl">Critical review</span><span class="badge" id="bC1">–</span></button>
+  </div>
  </div>
 </nav>
 <main class="content">
@@ -473,7 +491,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 06-Oct-2026 12:05</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 06-Oct-2026 14:40</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -538,6 +556,14 @@ body.home .hdr, body.home .content .topbar{display:none}
   </div>
  </div>
 
+ <div class="hgrid" style="margin-top:16px">
+  <div class="hcard wide" style="--hc:#475569" data-go="crit" tabindex="0">
+   <div class="hhd"><span class="hn">9</span><span class="ht">Critical review: can we trust the numbers?</span><span class="cnt" id="hC9s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbc" id="hC9n"></div><div class="hfacts" id="hF9"></div><div class="hrtop" id="hC9t"></div></div>
+   <div class="halarm" id="hA9"></div>
+  </div>
+ </div>
+
  <div class="hsec"><h2>District map</h2><span>Each district coloured against the indicator's target · hover for values · click a district to open its details</span></div>
  <div class="hmap">
   <div class="hmtop">
@@ -549,6 +575,7 @@ body.home .hdr, body.home .content .topbar{display:none}
     <button data-m="afp" style="--mc:#b91c1c"><b>5</b>ZD AFP cases</button>
     <button data-m="risk" style="--mc:#9f1239"><b>6</b>UC risk</button>
     <button data-m="watch" style="--mc:#4338ca"><b>7</b>Polio watch</button>
+    <button data-m="dq" style="--mc:#475569"><b>8</b>Data quality</button>
    </div>
    <label class="hmant" id="hMAw">Antigen <select id="hMA"></select></label>
    <label class="hmant" id="hMFw">Colour by <select id="hMF"><option value="n">Number of zero-dose AFP cases</option><option value="p">Zero-dose % of all AFP cases</option></select></label>
@@ -649,7 +676,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
 <section class="pane" id="p-present">
-<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 11-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
+<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 12-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
 <div class="card" style="margin-bottom:14px"><h3 style="margin:0">Quick briefs</h3>
 <div class="bgrid">
 <div class="bcard" style="--bc:#1e3a8a"><b>🏛 EOC brief</b><small>Whole province: division scorecard, districts needing attention, digitization, validation and routine EPI coverage by district, and decisions requested from EOC.</small><button class="btn" id="btnBEOC">Prepare EOC brief</button></div>
@@ -966,7 +993,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="cap" id="capAD"></div>
 </div>
 <div class="card" style="margin-bottom:14px">
-<div class="tblhdr"><h3 style="margin:0">Confirmed polio cases</h3><span class="cnt" id="cntW"></span></div>
+<div class="tblhdr"><h3 style="margin:0">Confirmed polio cases</h3><span class="cnt" id="cntWP"></span></div>
 <div class="scroll"><table id="tWPV"></table></div>
 <div class="cap">From the EOC portal line lists of WPV and cVDPV cases. "Zero-dose" = the same child (EPID) is on the ZD AFP list.</div>
 </div>
@@ -1010,7 +1037,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="kpis">
 <div class="card"><div class="kl">Watch-list UCs</div><div class="kv" id="wk1" style="color:#3730a3">–</div><div class="ks" id="wk1s"></div></div>
 <div class="card"><div class="kl">Watch districts</div><div class="kv" id="wk2" style="color:#3730a3">–</div><div class="ks" id="wk2s"></div></div>
-<div class="card"><div class="kl">UCs with a virus signal</div><div class="kv" id="wk3">–</div><div class="ks" id="wk3s"></div></div>
+<div class="card"><div class="kl">UCs with a case nearby</div><div class="kv" id="wk3">–</div><div class="ks" id="wk3s"></div></div>
 <div class="card"><div class="kl">Backtest: cases caught</div><div class="kv" id="wk4" style="color:var(--color-success-dark)">–</div><div class="ks" id="wk4s"></div></div>
 <div class="card"><div class="kl">Blind spots</div><div class="kv" id="wk5" style="color:var(--color-warning-dark)">–</div><div class="ks" id="wk5s"></div></div>
 </div>
@@ -1025,10 +1052,84 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="cap">District watch score = average of its 5 highest UC scores. The top 6 districts are the watch districts. "No sewage site" means the district has no environmental sampling, so virus could circulate without being seen.</div>
 </div>
 <div class="card">
-<div class="tblhdr"><h3 style="margin:0">UCs ranked by polio risk</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntW"></span><button class="btn" id="btnWCsv">Download (CSV)</button></div></div>
+<div class="tblhdr"><h3 style="margin:0">UCs ranked by polio risk</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntWU"></span><button class="btn" id="btnWCsv">Download (CSV)</button></div></div>
 <div class="rkpills" id="wPills"></div>
 <div class="scroll"><table id="tWU"></table></div>
 <div class="wnote">This is a <b>watch list for focusing supervision, catch-up campaigns, AFP active search and sewage sampling</b>, not a prediction. With about 20 cases a year, most UCs on the list will not have a case, and a case can still appear outside it.</div>
+</div>
+</section>
+
+<!-- ================= (8) CRITICAL REVIEW ================= -->
+<section class="pane" id="p-crit">
+<div class="hint" id="xHint"></div>
+<div class="kpis">
+<div class="card"><div class="kl">Claims that don't match</div><div class="kv" id="xk1" style="color:#b91c1c">–</div><div class="ks" id="xk1s"></div></div>
+<div class="card"><div class="kl">Data-quality score</div><div class="kv" id="xk2">–</div><div class="ks" id="xk2s"></div></div>
+<div class="card"><div class="kl">To reach 90% ZD coverage</div><div class="kv" id="xk3" style="color:#0e7490">–</div><div class="ks" id="xk3s"></div></div>
+<div class="card"><div class="kl">Where the missed children are</div><div class="kv" id="xk4">–</div><div class="ks" id="xk4s"></div></div>
+<div class="card"><div class="kl">Digitization since last report</div><div class="kv" id="xk5">–</div><div class="ks" id="xk5s"></div></div>
+</div>
+<div class="card" style="margin-bottom:12px"><h3>What the critical review says</h3><ul class="ins" id="xIns"></ul></div>
+<div class="crpills" id="xPills"></div>
+
+<div class="crsec" id="xs-claims">
+<div class="grid2">
+<div class="card"><div id="cx1" class="ch"></div><div class="cap" id="capx1"></div></div>
+<div class="card"><div id="cx2" class="ch"></div><div class="cap" id="capx2"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">UCs where reported coverage and other checks disagree</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntXM"></span><button class="btn" id="btnXM">Download (CSV)</button></div></div>
+<div class="scroll"><table id="tXM"></table></div>
+<div class="cap">Reported ZD coverage = covered ÷ reported zero-dose children in the latest campaign with coverage data. A UC is listed when it reports 90%+ coverage but an independent check disagrees (latest LQAS lot not passed, under 90% of validated children vaccinated, Penta-3 under 60%, or a zero-dose AFP case), or when more children were entered in IDIMS than were reported. These UCs need a field check before their numbers are used.</div>
+</div>
+</div>
+
+<div class="crsec" id="xs-dq">
+<div class="grid2">
+<div class="card"><div id="cx3" class="ch"></div><div class="cap" id="capx3"></div></div>
+<div class="card"><div id="cx4" class="ch"></div><div class="cap" id="capx4"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">Data quality by area</h3><span class="cnt" id="cntXD"></span></div>
+<div class="scroll"><table id="tXD"></table></div>
+<div class="cap" id="capXD"></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">UCs with data problems</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntXDU"></span><button class="btn" id="btnXDU">Download (CSV)</button></div></div>
+<div class="scroll"><table id="tXDU"></table></div>
+</div>
+</div>
+
+<div class="crsec" id="xs-gap">
+<div class="grid2">
+<div class="card"><div id="cx5" class="ch"></div><div class="cap" id="capx5"></div></div>
+<div class="card"><div id="cx6" class="ch"></div><div class="cap" id="capx6"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">Children still to reach, by area</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntXG"></span><button class="btn" id="btnXG">Download (CSV)</button></div></div>
+<div class="scroll"><table id="tXG"></table></div>
+<div class="cap" id="capXG"></div>
+</div>
+</div>
+
+<div class="crsec" id="xs-conc">
+<div class="crpills sm" id="xcPills"></div>
+<div class="grid2">
+<div class="card"><div id="cx7" class="ch"></div><div class="cap" id="capx7"></div></div>
+<div class="card"><div id="cx8" class="ch"></div><div class="cap" id="capx8"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">UCs holding most of the children</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntXC"></span><button class="btn" id="btnXC">Download (CSV)</button></div></div>
+<div class="scroll"><table id="tXC"></table></div>
+</div>
+</div>
+
+<div class="crsec" id="xs-chg">
+<div class="card"><div id="cx9" class="ch" style="height:380px"></div><div class="cap" id="capx9"></div></div>
+<div class="grid2">
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Digitization change by district</h3><span class="cnt" id="cntXH"></span></div><div class="scroll"><table id="tXH"></table></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">What changed since the last refresh (KP)</h3></div><div class="scroll"><table id="tXL"></table></div><div class="cap" id="capXL"></div></div>
+</div>
 </div>
 </section>
 
@@ -1893,6 +1994,7 @@ const PPT_SLIDES=[['Title','Area, campaigns and date','#4338ca'],['Summary','Fou
  ['⑤ ZD AFP & polio cases','Zero-dose AFP cases, confirmed polio cases and their UCs','#b91c1c'],
  ['⑥ Highest-risk UCs','Combined UC risk score: top UCs and where they cluster','#9f1239'],
  ['⑦ Polio risk watch list','Watch-list UCs and districts, with backtest','#4338ca'],
+ ['⑧ Critical review',"Claims that don't match, data quality and gaps to target",'#475569'],
  ['Recommended actions','Next steps based on the data','#b45309']];
 el('pList').innerHTML=PPT_SLIDES.map((x,i)=>`<label class="pitem" style="--pc:${x[2]}"><input type="checkbox" id="px${i+1}" checked><span><b>${i+1}. ${esc(x[0])}</b><small>${esc(x[1])}</small></span></label>`).join('');
 const pptCount=()=>PPT_SLIDES.filter((x,i)=>{const c=el('px'+(i+1));return !c||c.checked!==false;}).length;
@@ -1926,7 +2028,7 @@ function collectDeckData(){
  const _af=afpStats(AFP.filter(matchG),WPV.filter(matchG)), _gf=r=>(!fDiv.value||r.dv===fDiv.value)&&(!fDist.value||r.d===fDist.value);
  _af.tot=(fTeh.value||q.value.trim())?null:(!fDiv.value&&!fDist.value?afpTot():afpScopeTot(_gf));
  _af.top=(fTeh.value||q.value.trim())?[]:afpDistRows(AFP.filter(matchG),WPV.filter(matchG),[...new Set(ZD.filter(_gf).map(r=>r.d))]).filter(x=>x.p!=null&&x.n).sort((a,b)=>b.p-a.p).slice(0,3);
- return {watch:(()=>{const A=watchAll().filter(matchG), ds=new Set(A.map(r=>r.d)); return {A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:watchD().filter(x=>ds.has(x.d)),ND:watchD().length,T:watchBTsum()};})(),risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+ return {crit:(()=>{const X=critStats(matchG,lvlOf().key,crInD()); X.key=lvlOf().Lvl; return X;})(),watch:(()=>{const A=watchAll().filter(matchG), ds=new Set(A.map(r=>r.d)); return {A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:watchD().filter(x=>ds.has(x.d)),ND:watchD().length,T:watchBTsum()};})(),risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
   L:{lvl:L.lvl,Lvl:L.Lvl,pl:L.pl},camp:{A:CAMP.A,M:CAMP.M,S:CAMP.S},zsame:ZSAME,clf:'SNID Sept 2026',vcamps:VCAMP.map(x=>x.l).join(', '),
   z:{rA:z.rA,rM:z.rM,rS:z.rS,cM:z.cM,rcM:z.rcM,lfA:z.lfA,lfM:z.lfM,nL:z.nL,gM:z.gM,crM:z.crM,p:zl.p,cp:zl.cp,g:zl.g,pl:zR.filter(r=>r.tr==='Persistent low').length},
   zG,d:{has:dR.length>0,rep:drep,ll:dll,p:drep?dll/drep*100:null,gap:S_(dR,gapOf),zero:dR.filter(r=>r.rep>0&&r.ll===0).length,fu:fu.length,P1:fc('P1'),P2:fc('P2'),P3:fc('P3'),P4:fc('P4')},
@@ -1983,9 +2085,9 @@ function renderDeck(P,D){
   s.addText(D.scope,{x:0.8,y:2.95,w:11.7,h:0.6,fontFace:F,fontSize:22,color:'E0E7FF'});
   s.addText([{text:'ZD Reported & Covered: '+camps.join(' · '),options:{breakLine:true}},{text:'Digitization: '+D.clf+' linelist vs IDIMS',options:{breakLine:true}},{text:'Validation: '+(D.vcamps.length>90?VCAMP.length+' campaigns, '+VCAMP[0].l+' to '+VCAMP[VCAMP.length-1].l:D.vcamps),options:{breakLine:true}},{text:'EPI routine coverage: KP EPI-MIS, '+D.e.per,options:{breakLine:true}},{text:'AFP & polio cases: ZD List'+(AMETA.per?' ('+AMETA.per+')':'')+' and EOC line list'}],
    {x:0.8,y:3.65,w:11.7,h:1.75,fontFace:F,fontSize:14,color:'C7D2FE',valign:'top',paraSpaceAfter:4});
-  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage'],['B91C1C','⑤ AFP & Polio'],['9F1239','⑥ UC risk'],['4338CA','⑦ Watch list']].forEach((c,i)=>{const x=0.8+i*1.69;
-   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:1.62,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
-   s.addText(c[1],{x,y:5.55,w:1.62,h:0.55,fontFace:F,fontSize:10,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
+  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage'],['B91C1C','⑤ AFP & Polio'],['9F1239','⑥ UC risk'],['4338CA','⑦ Watch list'],['475569','⑧ Review']].forEach((c,i)=>{const x=0.8+i*1.48;
+   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:1.42,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
+   s.addText(c[1],{x,y:5.55,w:1.42,h:0.55,fontFace:F,fontSize:9,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
   s.addText('Prepared '+D.date,{x:0.8,y:6.6,w:6,h:0.4,fontFace:F,fontSize:12,color:'C7D2FE'});}
 
  // 2 Summary
@@ -2122,8 +2224,11 @@ function renderDeck(P,D){
  // 13 Polio risk watch list
  if(D.sel[13]){const s=base('⑦ Polio risk watch list','4338CA','UCs and districts that most need protection: past and nearby cases, sewage samples and immunity gaps'); watchSlide(s,D.watch,'District',{kpis,table,note,F,TXT,RED,n0,p1});}
 
- // 14 Actions
- if(D.sel[14]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
+ // 14 Critical review
+ if(D.sel[14]){const s=base('⑧ Critical review','475569',"Can we trust the numbers? Claims that don't match, data quality and children still to reach"); critSlide(s,D.crit,{kpis,table,note,F,TXT,RED,AMB,n0,p1});}
+
+ // 15 Actions
+ if(D.sel[15]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
   const A=[], top=(a,f)=>a.slice(0,3).map(f).join(', ')+(a.length>3?' and '+(a.length-3)+' more':'');
   const lowZ=D.zG.filter(x=>x.p!=null&&x.p<80).sort((a,b)=>a.p-b.p);
   if(lowZ.length)A.push('Coverage: focus supervision on '+top(lowZ,x=>x.k+' ('+p1(x.p)+')')+', which are below 80% ZD coverage.');
@@ -2146,7 +2251,7 @@ function renderDeck(P,D){
   const AF=[], S5=D.afp;
   if(S5&&S5.W.length)AF.push('Polio: confirmed case'+(S5.W.length>1?'s':'')+' in '+[...new Set(S5.W.map(r=>r.u+' ('+r.d+')'))].join(', ')+'. Keep outbreak response going and close zero-dose and routine gaps in the surrounding UCs.');
   if(S5&&S5.n)AF.push('Follow up the '+n0(S5.n)+' zero-dose AFP case'+(S5.n>1?'s':'')+(S5.pend?' ('+n0(S5.pend)+' still pending)':'')+': vaccinate siblings and neighbours and add the case UCs to the catch-up plan.');
-  const AR=(riskAction(D.risk)?[riskAction(D.risk)]:[]).concat(watchAction(D.watch)?[watchAction(D.watch)]:[]);
+  const AR=(riskAction(D.risk)?[riskAction(D.risk)]:[]).concat(watchAction(D.watch)?[watchAction(D.watch)]:[]).concat(critAction(D.crit)?[critAction(D.crit)]:[]);
   const AA=AF.slice(0,2).concat(AR,A.slice(0,6),AE.slice(0,3));
   if(!AA.length)AA.push('No major gaps in this selection. Keep monitoring at the next campaign.');
   bullets(s,AA,{x:0.5,y:1.45,w:12.3,h:5.4,fs:AA.length>8?12:AA.length>6?13:15});}
@@ -2494,7 +2599,10 @@ function renderBrief(P,B){
  // 10 Polio risk watch list
  if(B.watch){const s=base('⑦ Polio risk watch list','4338CA','UCs and districts that most need protection: past and nearby cases, sewage samples and immunity gaps'); watchSlide(s,B.watch,'District',{kpis,table,note,F,TXT,RED,n0,p1});}
 
- // 11 Actions
+ // 11 Critical review
+ if(B.crit){const s=base('⑧ Critical review','475569',"Can we trust the numbers? Claims that don't match, data quality and children still to reach"); critSlide(s,B.crit,{kpis,table,note,F,TXT,RED,AMB,n0,p1});}
+
+ // 12 Actions
  {const s=base(B.level==='kp'?'Decisions requested from EOC':B.level==='dv'?'Actions for the division team':'Actions for the district team',AMB,'Generated from the data for '+B.scope);
   const A=briefActions(B); bullets(s,A,{x:0.5,y:1.4,w:12.3,h:5.45,fs:A.length>8?12:A.length>6?13:15});}
  return pptx;
@@ -2642,7 +2750,7 @@ const ICO={
  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
  chart:'<path d="M4 20h16"/><path d="M6 16l4-5 3 3 5-7"/>',
  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>'};
-const TABICO={home:'home',afp:'alert',risk:'flag',watch:'alert',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
+const TABICO={home:'home',afp:'alert',risk:'flag',watch:'alert',crit:'list',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
 // ring types: [target, warning level]
 const RT={ri:[90,80],cov:[90,80],dig:[95,80],vac:[98,95],reg:[95,90],epi:[95,90],share:[null,null]};
 // card value id -> [icon, ring type or null, tab to open on click]
@@ -2846,7 +2954,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -2863,8 +2971,8 @@ function setTab(t){
 }
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
- renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -3002,7 +3110,7 @@ function renderHome(){
  const p3D=gE.filter(x=>x.p_p3!=null&&x.p_p3<80).length, p3U=EPI.filter(r=>r.s>0&&(r.p3||0)/r.s*100<80).length;
  const bo=EPI.filter(r=>/BO/.test(r.fl||'')).length;
  hAlarm('hA4','Below 80% Penta-3',[[p3D,'districts',`${p3D} districts below 80% Penta-3 coverage`,'efu'],[p3U,'UCs',`${p3U} UCs below 80% Penta-3 coverage`,'efu'],[bo,'UCs weak in both EPI &amp; polio',`${bo} UCs with low Penta-3 and a high number of polio zero-dose children`,'efu']]);
- renderHomeAFP(); renderHomeRisk(); renderHomeWatch();
+ renderHomeAFP(); renderHomeRisk(); renderHomeWatch(); renderHomeCrit();
  // wiring + ring animation
  const P=el('p-home');
  P.querySelectorAll('.hcard').forEach(c=>{c.onclick=()=>setTab(c.dataset.go);c.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(c.dataset.go);}};});
@@ -3118,7 +3226,7 @@ function renderAFP(){
  const uc=[{k:'zp',l:'UC ZD cov. %',n:1,f:x=>pcol(x.zp)},{k:'tr',l:'ZD trend',f:x=>x.tr?esc(x.tr):'–'},{k:'dp',l:'Digitized %',n:1,f:x=>x.dp==null?'–':pc(x.dp)},{k:'vp',l:'Validated vacc. %',n:1,f:x=>pV(x.vp)},{k:'p3',l:'Penta-3 %',n:1,f:x=>pE(x.p3)}];
  const geo=[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},...(EP?[{k:'ep',l:'EPID'}]:[])];
  drawTable('tWPV',[...geo,{k:'mo',l:'Onset',f:on},{k:'ag',l:'Age (m)',n:1},{k:'ty',l:'Type',f:rt},{k:'zd',l:'Zero-dose',f:x=>x.zd?'<b class="dn">Yes</b>':'Not on ZD list'},...uc],S.W,'mo',-1);
- el('cntW').textContent=W.length+' case'+(W.length===1?'':'s');
+ el('cntWP').textContent=W.length+' case'+(W.length===1?'':'s');
  drawTable('tAFP',[...geo,{k:'mo',l:'Onset',f:on},{k:'ag',l:'Age (m)',n:1},{k:'sx',l:'Sex'},{k:'adq',l:'Stool'},{k:'res',l:'Result',f:rt},...uc],S.X,'mo',-1);
  el('cntA').textContent=A.length+' case'+(A.length===1?'':'s');
  el('btnAcsv').onclick=()=>csvDownload('ZD_AFP_cases_'+_slug()+'.csv',['District','Tehsil','UC','UC code',...(EP?['EPID']:[]),'Onset','Age (months)','Sex','Stool adequacy','Final result','UC ZD coverage %','UC ZD trend','UC digitized %','UC validated vaccinated %','UC Penta-3 %'],
@@ -3147,7 +3255,7 @@ function navInit(){
 function navSync(){const on=document.querySelector('.sidenav .tab.on'), g=on&&on.closest('.ngrp');
  document.querySelectorAll('.sidenav .ngrp').forEach(x=>{if(!x.querySelector('.nhd'))return; x.classList.toggle('hason',x===g); navSet(x,x===g);});}
 function navHdr(){const tv=c=>{const s=document.querySelector('#bS .tn.'+c);if(!s)return '';const i=s.querySelector('i');return s.textContent.replace(i?i.textContent:'','').trim();};
- const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||'',gw:(el('bW1')||{}).textContent||''};
+ const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||'',gw:(el('bW1')||{}).textContent||'',gc:(el('bC1')||{}).textContent||''};
  Object.entries(V).forEach(([k,v])=>{const e=document.querySelector('.sidenav .ngrp.'+k+' .nhv');if(e){e.textContent=v&&v!=='–'?v:'';e.style.display=e.textContent?'':'none';}});}
 {const _st=setTab; setTab=function(t){_st(t); navSync();};}
 {const _rd=render; render=function(){_rd(); navHdr();};}
@@ -3382,7 +3490,7 @@ function renderWatch(){
   `<div class="cap" style="margin-top:6px">Sources: EOC line list of WPV cases since ${esc(String(WMETA.hist_from||'2019').slice(0,4))} (${fmt(WMETA.n||0)} KP cases); EOC environmental surveillance by district (${esc((WMETA.es_years||[]).join(', '))}, up to ${esc(WMETA.es_asof||'')}); immunity gap from section ⑥. Scored on ${esc(WMETA.ref||'')}.</div>`;
  el('wk1').textContent=fmt(W.length); el('wk1s').textContent=scope==='KP'?`top 10% of ${fmt(A.length)} KP UCs`:`of ${kAll} KP watch-list UCs`;
  const wd=DS.filter(x=>x.w); el('wk2').textContent=fmt(wd.length); el('wk2s').textContent=wd.length?wd.map(x=>x.d).join(', '):'none in this selection';
- const vs=R.filter(r=>r.vir>0).length; el('wk3').textContent=fmt(vs); el('wk3s').textContent=`${pc(R.length?vs/R.length*100:0)} of UCs shown · cases, nearby cases or sewage`;
+ const loc=r=>r.p.uc+r.p.th+r.p.ds>0, vs=R.filter(loc).length; el('wk3').textContent=fmt(vs); el('wk3s').textContent=`${pc(R.length?vs/R.length*100:0)} of UCs shown · case in the UC, tehsil or within 50 km (2 yr)`;
  el('wk4').textContent=T.n?pc(T.u/T.n*100):'–'; el('wk4s').textContent=T.n?`${T.u} of ${T.n} cases in ${T.yrs} were in that year's top 10% (vs 10% by chance)`:'';
  const bl=W.filter(r=>r.noES).length; el('wk5').textContent=fmt(bl); el('wk5s').textContent='watch UCs in districts with no sewage site';
  // chart 1: backtest
@@ -3401,11 +3509,11 @@ function renderWatch(){
  // insights
  const I=[], top=W.slice().sort((a,b)=>a.rk-b.rk);
  if(W.length)I.push(`<b>${W.length} watch-list UCs in ${esc(scope)}.</b> Highest: `+top.slice(0,4).map(r=>`${esc(r.u)} (${esc(r.d)}, ${r.sc} pts)`).join(', ')+'.');
- if(wd.length)I.push(`<b>Watch districts:</b> ${wd.map(x=>`${esc(x.d)} (${x.nw} UCs`+(x.er!=null?`, sewage ${pc(x.er)}`:'')+')').join(', ')}.`);
+ if(wd.length)I.push(`<b>Watch districts:</b> ${wd.map(x=>`${esc(x.d)} (${x.nw} UC${x.nw===1?'':'s'}`+(x.er!=null?`, sewage ${pc(x.er)}`:'')+')').join(', ')}.`);
  const vo=W.filter(r=>r.imp===0).length, io=W.filter(r=>r.vir<=2&&r.imp>=2).length;
  if(W.length)I.push(`${W.length-vo} of the watch-list UCs also have an immunity gap; ${vo} are on the list for virus signals alone. ${io?io+' are listed mainly for weak immunity with little recent virus nearby: keep these on routine and SIA quality focus.':''}`);
- if(bl)I.push(`<b>Blind spots:</b> ${bl} watch-list UCs are in districts with no sewage sampling site (${[...new Set(W.filter(r=>r.noES).map(r=>r.d))].slice(0,5).map(esc).join(', ')}). Consider adding sites or strengthening AFP active search there.`);
- if(T.n)I.push(`Tested on past years, the top 10% of UCs held ${pc(T.u/T.n*100)} of the next year's cases, about ${(T.u/T.n/0.10).toFixed(1)}× better than chance. A case can still appear outside the list.`);
+ if(bl)I.push(`<b>Blind spots:</b> ${bl} watch-list UC${bl===1?' is':'s are'} in districts with no sewage sampling site (${[...new Set(W.filter(r=>r.noES).map(r=>r.d))].slice(0,5).map(esc).join(', ')}). Consider adding sites or strengthening AFP active search there.`);
+ if(T.n)I.push(`Tested on past years, the top 10% of UCs held ${pc(T.u/T.n*100)} of the next year's cases, about ${(T.u/T.n/0.10).toFixed(1)}× better than chance, and the top 6 districts held ${pc(T.d/T.n*100)}. A case can still appear outside the list. (Immunity data are recent, so earlier years are tested mostly on the virus signals.)`);
  el('wIns').innerHTML=I.length?I.map(x=>'<li>'+x+'</li>').join(''):'<li>No UCs in this selection.</li>';
  // district table
  const pcN=v=>v==null?'–':pc(v);
@@ -3414,16 +3522,16 @@ function renderWatch(){
   {k:'er',l:'Sewage positive',n:1,sv:x=>x.er??-1,f:x=>x.noES?'<span class="cnt">No sewage site</span>':pcN(x.er)},{k:'top',l:'Highest UC',sv:x=>x.top.rk,f:x=>esc(x.top.u)+' <span class="cnt">#'+x.top.rk+'</span>'}],DS,'rk',1);
  el('cntWD').textContent=DS.length+' district'+(DS.length===1?'':'s');
  // UC table
- const PL=[['w','Watch list'],['v','Virus signal'],['all','All UCs']];
+ const PL=[['w','Watch list'],['v','Case nearby'],['all','All UCs']];
  el('wPills').innerHTML=PL.map(([k,l])=>`<button data-f="${k}" class="${WF===k?'on':''}">${l} (${k==='w'?W.length:k==='v'?vs:R.length})</button>`).join('');
  el('wPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{WF=b.dataset.f;renderWatch();});
- const rows=R.filter(r=>WF==='w'?r.w:WF==='v'?r.vir>0:true);
+ const rows=R.filter(r=>WF==='w'?r.w:WF==='v'?loc(r):true);
  drawTable('tWU',[{k:'rk',l:'KP rank',n:1,f:x=>x.w?`<b style="color:#3730a3">${x.rk}</b>`:x.rk},{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},
   {k:'sc',l:'Score',n:1,f:x=>`<b style="color:${x.w?'#3730a3':'inherit'}">${x.sc}</b>`},{k:'vir',l:'Virus pts',n:1},{k:'imp',l:'Immunity pts',n:1},
   {k:'la',l:'Last case in UC',n:1,sv:x=>x.la??1e9,f:wMo},{k:'dk',l:'Nearest case',n:1,sv:x=>x.dk??1e9,f:wKm},{k:'tn',l:'Tehsil cases 2 yr',n:1,f:x=>x.tn||''},
   {k:'er',l:'Sewage +',n:1,sv:x=>x.er??-1,f:x=>x.noES?'<span class="cnt">no site</span>':pcN(x.er)},{k:'im',l:'Immunity gap',n:1,sv:x=>x.im??-1,f:x=>pcN(x.im)},
   {k:'why',l:'Why it scores',ns:1,f:x=>esc(x.why.join(' · '))}],rows,'rk',1);
- el('cntW').textContent=rows.length+' UC'+(rows.length===1?'':'s');
+ el('cntWU').textContent=rows.length+' UC'+(rows.length===1?'':'s');
  const r1=v=>v==null?'':Math.round(v*10)/10;
  el('btnWCsv').onclick=()=>csvDownload('Polio_watch_list_'+_slug()+'.csv',['KP rank','On watch list','Division','District','Tehsil','UC','UC code','Score','Virus points','Immunity points','Months since last case in UC','Nearest case UC (km)','Other cases in tehsil (2 yr)','District cases (2 yr)','District cases (5 yr)','District sewage positive %','Sewage site','Immunity gap %','Why it scores'],
   R.slice().sort((a,b)=>a.rk-b.rk).map(x=>[x.rk,x.w?'Yes':'',x.dv,x.d,x.t,x.u,x.c,x.sc,x.vir,x.imp,x.la==null?'':Math.round(x.la/30.4),x.dk==null?'':Math.round(x.dk),x.tn,x.dn,x.n5,r1(x.er),x.noES?'No':'Yes',r1(x.im),x.why.join('; ')]));
@@ -3476,6 +3584,228 @@ function watchSlide(s,X,lvlName,K){
  s.addText('District watch ranking',{x:9.35,y:2.9,w:3.48,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
  table(s,[lvlName||'District','Rank','Watch UCs','Sewage +'],X.D.slice(0,9).map(x=>[cut(x.d,15),n0(x.rk),n0(x.nw),x.noES?'no site':(x.er==null?'–':p1(x.er))]),{x:9.35,y:3.28,w:3.48,colW:[1.35,0.6,0.78,0.75],col:IND,fs:9,rh:0.3});
  note(s,'Watch list, not a prediction: points for past and nearby polio cases, district cases, sewage positives and immunity gaps; top 10% of KP UCs. Tested on '+T.yrs+': '+T.u+' of '+T.n+' cases were in that year\'s top 10%.',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
+}
+
+
+// ================= (8) CRITICAL REVIEW =================
+const DHIST = {"camp": "SNID Sept 2026", "dates": ["2026-09-28", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-05"], "d": {"2026-09-28": {"BANNU": [4205, 3087], "DIKHAN": [5284, 4583], "KHYBER": [1850, 1759], "LAKKIMRWT": [4555, 3968], "PESHAWAR": [13547, 10363], "TANK": [967, 851], "WAZIR-N": [492, 364], "WAZIR-S Lower": [572, 416], "WAZIR-S Upper": [290, 224]}, "2026-09-30": {"BANNU": [4205, 3233], "DIKHAN": [5284, 4667], "KHYBER": [1850, 1799], "LAKKIMRWT": [4555, 4433], "PESHAWAR": [13547, 10870], "TANK": [967, 857], "WAZIR-N": [492, 414], "WAZIR-S Lower": [572, 450], "WAZIR-S Upper": [290, 262]}, "2026-10-01": {"BANNU": [4205, 3538], "DIKHAN": [5284, 4854], "KHYBER": [1850, 1829], "LAKKIMRWT": [4555, 4509], "PESHAWAR": [13547, 11209], "TANK": [967, 859], "WAZIR-N": [492, 437], "WAZIR-S Lower": [572, 480], "WAZIR-S Upper": [290, 301]}, "2026-10-02": {"BANNU": [4205, 3679], "DIKHAN": [5284, 4939], "KHYBER": [1850, 1857], "LAKKIMRWT": [4555, 4540], "PESHAWAR": [13547, 12341], "TANK": [967, 868], "WAZIR-N": [492, 504], "WAZIR-S Lower": [572, 499], "WAZIR-S Upper": [290, 309]}, "2026-10-05": {"BANNU": [4205, 3744], "DIKHAN": [5284, 4965], "KHYBER": [1850, 1863], "LAKKIMRWT": [4555, 4551], "PESHAWAR": [13547, 12568], "TANK": [967, 871], "WAZIR-N": [492, 522], "WAZIR-S Lower": [572, 510], "WAZIR-S Upper": [290, 344]}}};
+const RLOG = [{"date": "2026-10-01", "dig_rep": 31762, "dig_ll": 28016, "dig_pct": 88.2, "val_n": 17982, "val_pct": 97.3, "report": "2026-10-01", "note": "seeded from earlier refresh"}, {"date": "2026-10-02", "dig_rep": 31762, "dig_ll": 29536, "dig_pct": 93.0, "val_n": 17997, "val_pct": 97.3, "report": "2026-10-02", "note": "seeded from earlier refresh"}, {"date": "2026-10-05", "dig_rep": 31762, "dig_ll": 29938, "dig_pct": 94.3, "val_n": 18052, "val_pct": 97.3, "p3_pct": 93.4, "mr2_pct": 79.7, "afp_zd": 30, "wpv": 3, "report": "2026-10-05", "note": "seeded from earlier refresh"}, {"date": "2026-10-06", "dig_rep": 31762, "dig_ll": 29938, "dig_pct": 94.3, "val_n": 18052, "val_pct": 97.3, "zd_rep_latest": 62128, "zd_cov_pct": 80.8, "p3_pct": 93.4, "mr2_pct": 79.7, "lqas_lots": 840, "afp_zd": 30, "wpv": 3, "report": "2026-10-05"}];
+RT.dq=[85,70];
+const CR_MM=[['lq','ZD coverage 90%+ but latest LQAS lot not passed'],['val','ZD coverage 90%+ but under 90% validated as vaccinated'],['p3','ZD coverage 90%+ but Penta-3 under 60%'],['afp','ZD coverage 90%+ but a zero-dose AFP case'],['dig','More entered in IDIMS than reported (over 105%)']];
+const CR_MMS={lq:'LQAS not passed',val:'Validated <90%',p3:'Penta-3 <60%',afp:'ZD AFP case',dig:'IDIMS >105%'};
+const CR_DQ=[['cov110','ZD covered over 110% of reported',1,'Cov. >110%'],['zr0','No ZD children reported in any campaign',0.5,'Zero ZD'],['dig0','ZD children reported but none entered in IDIMS',1,'None entered'],['dig105','More entered in IDIMS than reported (over 105%)',1,'IDIMS >105%'],['dup','Duplicate IDIMS records',0.5,'Duplicates'],['epi0','EPI target set but no Penta-1 doses reported',1,'EPI no doses'],['epi110','EPI coverage over 110% (target looks too low)',0.5,'EPI >110%'],['noepi','No EPI data matched to the UC',0.5,'No EPI'],['valx','10%+ of validated children need checking',1,'Val. records']];
+const CR_DQW={}, CR_DQS={}; CR_DQ.forEach(([k,,w,s])=>{CR_DQW[k]=w;CR_DQS[k]=s;});
+const CR_ZK=ZD.some(r=>r.cM!=null)?'M':'A';
+let _CR=null, XS='claims', XC='zd';
+function critUC(){ if(_CR)return _CR;
+ const byc={}; riskAll().forEach(r=>byc[r.c]=r);
+ const dg={}; DATA.forEach(r=>{dg[r.c]=r;});
+ const ee={}; EPI.forEach(r=>{if(r.c)(ee[r.c]=ee[r.c]||[]).push(r);});
+ const vv={}; VAL.forEach(r=>{const g=vv[r.c]=vv[r.c]||{n:0,x:0}; g.n+=r.n||0; g.x+=(r.vx||0)+(r.du||0)+(r.a5||0);});
+ _CR=ZD.map(z=>{const c=z.c, r=byc[c]||{}, I=[], M=[], cv=r.cov;
+  if(cv!=null&&cv>=90){ if(r.lq&&r.lq.last!=='P')M.push('lq'); if(r.vac!=null&&r.vac<90)M.push('val'); if(r.p3!=null&&r.p3<60)M.push('p3'); if(r.afp)M.push('afp'); }
+  if(r.dig!=null&&r.dig>105)M.push('dig');
+  if((z.pA!=null&&z.pA>110)||(z.pM!=null&&z.pM>110))I.push('cov110');
+  if(!(z.rA>0)&&!(z.rM>0)&&!(z.rS>0))I.push('zr0');
+  const d=dg[c]; if(d){ if(d.rep>0&&!d.ll)I.push('dig0'); else if(d.rep>0&&d.ll/d.rep>1.05)I.push('dig105'); if(d.dup>0)I.push('dup'); }
+  const e=ee[c]; if(!e)I.push('noepi'); else {const s=e.reduce((a,x)=>a+(x.s||0),0), p1=e.reduce((a,x)=>a+(x.p1||0),0), p3=e.reduce((a,x)=>a+(x.p3||0),0);
+   if(s>0&&!p1)I.push('epi0'); else if(s>0&&(p1/s>1.1||p3/s>1.1))I.push('epi110');}
+  const v=vv[c]; if(v&&v.n>=10&&v.x/v.n>=0.1)I.push('valx');
+  const pen=Math.min(1,I.reduce((a,k)=>a+CR_DQW[k],0));
+  const rep=z['r'+CR_ZK], cov=z['c'+CR_ZK], ok=rep!=null&&cov!=null;
+  return {dv:z.dv,d:z.d,t:z.t,u:z.u,c,cov:cv,lq:r.lq,vac:r.vac,vn:r.vn,p3:r.p3,dig:r.dig,afp:r.afp||0,M,I,pen,rep:ok?rep:null,unc:ok?Math.max(0,rep-cov):null,g90:ok?Math.max(0,Math.ceil(rep*0.9)-cov):null};});
+ return _CR;}
+function critConc(inS,m){
+ let it=[];
+ if(m==='zd')it=critUC().filter(inS).filter(r=>r.unc!=null).map(r=>({d:r.d,t:r.t,u:r.u,c:r.c,v:r.unc}));
+ else if(m==='dig')it=DATA.filter(inS).map(r=>({d:r.d,t:r.t,u:r.u,c:r.c,v:Math.max(0,r.rep-r.ll)}));
+ else it=EPI.filter(inS).filter(r=>r.s>0).map(r=>({d:r.d,t:r.t,u:r.u,c:r.c,v:Math.max(0,(r.s||0)-(r.p3||0))}));
+ it.sort((a,b)=>b.v-a.v); const tot=it.reduce((a,x)=>a+x.v,0); let cum=0,k50=null,k80=null;
+ it.forEach((x,i)=>{cum+=x.v; x.cum=tot?cum/tot*100:0; if(k50==null&&tot&&cum>=tot*0.5)k50=i+1; if(k80==null&&tot&&cum>=tot*0.8)k80=i+1;});
+ return {it,tot,n:it.length,k50,k80,nz:it.filter(x=>x.v>0).length};}
+const CRCM={zd:['ZD children not covered',`zero-dose children reported but not covered (${CAMP[CR_ZK]})`],dig:['ZD children not entered in IDIMS','zero-dose children reported but not entered in IDIMS'],p3:['Infants without Penta-3','infants on the EPI target without Penta-3 (Jan–Aug)']};
+function critDH(inD){
+ const dates=(DHIST.dates||[]), ds=Object.keys((DHIST.d||{})[dates[dates.length-1]]||{}).filter(inD).sort();
+ const ser=ds.map(d=>({d,v:dates.map(t=>{const x=(DHIST.d[t]||{})[d]; return x&&x[0]?{r:x[0],l:x[1],p:x[1]/x[0]*100}:null;})}));
+ const kp=dates.map((t,i)=>{let r=0,l=0; ser.forEach(s=>{const x=s.v[i]; if(x){r+=x.r;l+=x.l;}}); return r?{r,l,p:l/r*100}:null;});
+ return {dates,ser,kp};}
+function critStats(inS,key,inD){key=key||'d'; inD=inD||(()=>true);
+ const U=critUC().filter(inS), mm=U.filter(r=>r.M.length).sort((a,b)=>b.M.length-a.M.length||(b.cov||0)-(a.cov||0));
+ const mmT={}; CR_MM.forEach(([k])=>mmT[k]=U.filter(r=>r.M.includes(k)).length);
+ const dqT={}; CR_DQ.forEach(([k])=>dqT[k]=U.filter(r=>r.I.includes(k)).length);
+ const G={}, mk=k=>G[k]=G[k]||{k,n:0,pen:0,iss:0,mm:0,unc:0,g90:0,dnot:0,d95:0,p3g:0,mr2g:0,I:{}};
+ U.forEach(r=>{const g=mk(r[key]); g.n++; g.pen+=r.pen; if(r.I.length)g.iss++; if(r.M.length)g.mm++; g.unc+=r.unc||0; g.g90+=r.g90||0; r.I.forEach(k=>g.I[k]=(g.I[k]||0)+1);});
+ let dnot=0,d95=0; DATA.filter(inS).forEach(r=>{const a=Math.max(0,r.rep-r.ll), b=Math.max(0,Math.ceil(r.rep*0.95)-r.ll); dnot+=a; d95+=b; const g=mk(r[key]); g.dnot+=a; g.d95+=b;});
+ let p3g=0,mr2g=0; EPI.filter(inS).forEach(r=>{const a=Math.max(0,Math.ceil((r.s||0)*0.9)-(r.p3||0)), b=Math.max(0,Math.ceil((r.s||0)*0.9)-(r.mr2||0)); p3g+=a; mr2g+=b; const g=mk(r[key]); g.p3g+=a; g.mr2g+=b;});
+ const groups=Object.values(G).map(g=>{g.sc=g.n?100-g.pen/g.n*100:null; return g;});
+ const pen=U.reduce((a,r)=>a+r.pen,0), C=critConc(inS,'zd'), H=critDH(inD), k=H.kp.length;
+ const last=k?H.kp[k-1]:null, prev=k>1?H.kp[k-2]:null;
+ return {U,n:U.length,mm,mmT,dqT,groups,sc:U.length?100-pen/U.length*100:null,iss:U.filter(r=>r.I.length).length,
+  unc:U.reduce((a,r)=>a+(r.unc||0),0),g90:U.reduce((a,r)=>a+(r.g90||0),0),dnot,d95,p3g,mr2g,C,H,last,prev,
+  ldate:k?H.dates[k-1]:'',pdate:k>1?H.dates[k-2]:'',hi110:U.filter(r=>r.I.includes('cov110')).length};}
+const crInD=()=>d=>fDist.value?d===fDist.value:fDiv.value?D2DV[d]===fDiv.value:true;
+const crDt=s=>{if(!s)return '';const p=String(s).split('-');const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (+p[2])+' '+M[(+p[1])-1];};
+const crSc=v=>v==null?'–':`<b style="color:${v>=RT.dq[0]?'#15803d':v>=RT.dq[1]?'#b45309':'#b91c1c'}">${Math.round(v)}</b>`;
+const crTags=(a,cls,map)=>a.map(k=>`<span class="crtag ${cls}">${esc(map[k])}</span>`).join('');
+const crSgn=(v,dg)=>v==null?'–':(v>0?'+':'')+(dg?v.toFixed(dg):fmt(Math.round(v)));
+function critBadge(){const b=el('bC1'); if(b){const n=critUC().filter(matchG).filter(r=>r.M.length).length; b.textContent=n+' to verify';}}
+Object.assign(KX,{xk1:['alert',null,null],xk2:['shield',null,null],xk3:['users',null,null],xk4:['bars',null,null],xk5:['list',null,null]});
+
+function renderHomeCrit(){
+ if(!el('hA9'))return;
+ const S=critStats(()=>true,'d'), dl70=S.groups.filter(g=>g.sc!=null&&g.sc<RT.dq[1]).length;
+ el('hC9n').innerHTML=`<b>${fmt(S.mm.length)}</b><small>UCs where<br>claims don't match</small>`;
+ el('hC9s').textContent='Cross-checks reported numbers against LQAS, validation, EPI and AFP';
+ el('hF9').innerHTML=`<div class="hf"><b>${S.sc==null?'–':Math.round(S.sc)+' / 100'}</b>KP data-quality score (${fmt(S.iss)} UCs with a data problem)</div>`+
+  `<div class="hf"><b>${fmt(S.g90)} children</b>still to reach for 90% ZD coverage · ${S.C.k50?fmt(S.C.k50)+' UCs hold half of the uncovered':''}</div>`+
+  (S.last&&S.prev?`<div class="hf"><b>${crSgn(S.last.l-S.prev.l)} entered</b>in IDIMS since ${crDt(S.pdate)} (now ${pc(S.last.p)})</div>`:'');
+ el('hC9t').innerHTML='<div class="hrh">Check these UCs first</div>'+S.mm.slice(0,5).map(r=>`<div class="hrt" title="${esc(r.M.map(k=>CR_MMS[k]).join(' · '))}"><i style="background:#b91c1c"></i><span>${esc(r.u)} (${esc(r.d)})</span><b style="color:#b91c1c">${r.cov==null?'':pc(r.cov)}</b></div>`).join('');
+ hAlarm('hA9','Alarm',[[S.mm.length,'UCs to verify','UCs reporting 90%+ ZD coverage that another check contradicts, or over-entered in IDIMS','crit'],
+  [dl70,'districts with data-quality score under 70','Share of UCs without a data problem, weighted; under 70 is poor','crit'],[S.hi110,'UCs reporting over 110% ZD coverage','More zero-dose children covered than reported','crit']]);
+}
+
+function renderCrit(){
+ const L=lvlOf(), S=critStats(matchG,L.key,crInD());
+ const scope=fTeh.value?fTeh.value+' tehsil':fDist.value?fDist.value:fDiv.value?fDiv.value+' division':'KP';
+ el('xHint').innerHTML=`<b>A second look at the numbers before they are used.</b> This page cross-checks what UCs report against independent sources (LQAS, validation, EPI-MIS, AFP surveillance), flags values that cannot be right, shows how many children are still to reach, where they are concentrated and how fast things are changing. Follows the Division / District / Tehsil filters.`;
+ el('xk1').textContent=fmt(S.mm.length); el('xk1s').textContent=`UCs to verify in ${scope} · ${S.mmT.lq} LQAS, ${S.mmT.val} validation, ${S.mmT.dig} over-entry`;
+ el('xk2').innerHTML=S.sc==null?'–':Math.round(S.sc)+'<small style="font-size:14px;color:var(--color-text-muted)"> /100</small>'; el('xk2').style.color=S.sc==null?'':S.sc>=RT.dq[0]?'#15803d':S.sc>=RT.dq[1]?'#b45309':'#b91c1c';
+ el('xk2s').textContent=`${fmt(S.iss)} of ${fmt(S.n)} UCs have at least one data problem`;
+ el('xk3').textContent=fmt(S.g90); el('xk3s').textContent=`more ZD children to cover · ${fmt(S.unc)} not covered in ${CAMP[CR_ZK]}`;
+ el('xk4').textContent=S.C.k50?fmt(S.C.k50)+' UCs':'–'; el('xk4s').textContent=S.C.k50?`hold half of the uncovered ZD children (${pc(S.C.k50/S.C.n*100)} of UCs)`:'';
+ el('xk5').textContent=S.last&&S.prev?crSgn(S.last.l-S.prev.l):'–'; el('xk5s').textContent=S.last&&S.prev?`children entered since ${crDt(S.pdate)} · now ${pc(S.last.p)} (${crSgn(S.last.p-S.prev.p,1)} pts)`:'needs two IDIMS reports';
+ // insights
+ const I=[];
+ if(S.mm.length){const t=CR_MM.filter(([k])=>S.mmT[k]).sort((a,b)=>S.mmT[b[0]]-S.mmT[a[0]]);
+  I.push(`<b>${S.mm.length} UCs need a field check:</b> `+t.map(([k,l])=>`${S.mmT[k]} where ${esc(l.charAt(0).toLowerCase()+l.slice(1))}`).join('; ')+'. Highest: '+S.mm.slice(0,3).map(r=>`${esc(r.u)} (${esc(r.d)})`).join(', ')+'.');}
+ {const lo=S.groups.filter(g=>g.sc!=null&&g.n>=3).sort((a,b)=>a.sc-b.sc).slice(0,3), top=CR_DQ.filter(([k])=>S.dqT[k]).sort((a,b)=>S.dqT[b[0]]-S.dqT[a[0]]).slice(0,3);
+  if(top.length)I.push(`<b>Data quality ${S.sc==null?'':Math.round(S.sc)+'/100'}.</b> Most common problems: `+top.map(([k,l])=>`${esc(l.toLowerCase())} (${S.dqT[k]} UCs)`).join(', ')+'.'+(lo.length?` Lowest scores: ${lo.map(g=>`${esc(g.k)} ${Math.round(g.sc)}`).join(', ')}.`:''));}
+ I.push(`<b>Workload:</b> ${fmt(S.g90)} more zero-dose children to cover for 90% ZD coverage, ${fmt(S.d95)} more to enter in IDIMS for 95% digitized, and ${fmt(S.p3g)} infants to vaccinate for 90% Penta-3 (${esc(EMETA.per||'Jan–Aug')}).`);
+ if(S.C.k50)I.push(`<b>Concentration:</b> just ${fmt(S.C.k50)} of ${fmt(S.C.n)} UCs (${pc(S.C.k50/S.C.n*100)}) hold half of the ${fmt(S.C.tot)} uncovered zero-dose children; ${fmt(S.C.k80)} UCs hold 80%. Focusing on these gives the fastest gain.`);
+ if(S.last&&S.prev)I.push(`<b>Change:</b> digitization ${pc(S.prev.p)} → ${pc(S.last.p)} between ${crDt(S.pdate)} and ${crDt(S.ldate)} (${crSgn(S.last.l-S.prev.l)} children entered).`+((()=>{const st=S.H.ser.map(s=>{const a=s.v[s.v.length-2],b=s.v[s.v.length-1];return a&&b?{d:s.d,ch:b.l-a.l,p:b.p}:null;}).filter(x=>x&&x.p<95&&x.ch<=0);return st.length?` No progress in ${st.map(x=>esc(x.d)).join(', ')} while still under 95%.`:'';})()));
+ el('xIns').innerHTML=I.map(x=>'<li>'+x+'</li>').join('');
+ const P=[['claims',"1 · Claims that don't match"],['dq','2 · Data quality'],['gap','3 · Gap to target'],['conc','4 · Concentration'],['chg','5 · Change over time']];
+ el('xPills').innerHTML=P.map(([k,l])=>`<button data-s="${k}" class="${XS===k?'on':''}">${l}</button>`).join('');
+ el('xPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{XS=b.dataset.s;renderCrit();});
+ P.forEach(([k])=>el('xs-'+k).classList.toggle('on',XS===k));
+ ({claims:crClaims,dq:crDQ,gap:crGap,conc:crConc,chg:crChg})[XS](S,L);
+}
+function crClaims(S,L){
+ HC('cx1',{chart:{type:'column'},title:{text:"Why the claims don't match"},subtitle:{text:'UCs per check (a UC can fail more than one)'},xAxis:{categories:CR_MM.map(([k])=>CR_MMS[k])},yAxis:{title:{text:'UCs (count)'},allowDecimals:false},legend:{enabled:false},
+  plotOptions:{column:{borderRadius:2,dataLabels:{...dl,format:'{y}'}}},series:[{name:'UCs',color:'#b91c1c',data:CR_MM.map(([k])=>S.mmT[k])}]});
+ el('capx1').textContent=S.mm.length?`${S.mm.length} UCs are listed; ${S.mm.filter(r=>r.M.length>1).length} fail two or more checks.`:'No conflicting claims in this selection.';
+ const pts=S.U.filter(r=>r.cov!=null&&r.vac!=null&&r.vn>=10), A=pts.filter(r=>!r.M.length), B=pts.filter(r=>r.M.length), cap=v=>Math.min(v,150);
+ HC('cx2',{chart:{type:'scatter',zoomType:'xy'},title:{text:'Reported ZD coverage vs validated as vaccinated'},subtitle:{text:`UCs with 10+ children validated (${pts.length})`},
+  xAxis:{title:{text:'Reported ZD coverage (%)'},min:0,max:150,plotLines:[{value:90,color:'#94a3b8',dashStyle:'Dash',width:1}]},yAxis:{title:{text:'Validated as vaccinated (%)'},max:100,plotLines:[{value:90,color:'#94a3b8',dashStyle:'Dash',width:1}]},
+  tooltip:{pointFormat:'<b>{point.name}</b><br>ZD coverage {point.x:.1f}% · validated {point.y:.1f}%'},
+  series:[{name:'Consistent',color:'rgba(100,116,139,.45)',marker:{radius:3},data:A.map(r=>({x:cap(r.cov),y:r.vac,name:r.u+' ('+r.d+')'}))},{name:"Doesn't match",color:'#dc2626',marker:{radius:4.5},data:B.map(r=>({x:cap(r.cov),y:r.vac,name:r.u+' ('+r.d+')'}))}]});
+ el('capx2').textContent='Bottom-right = reports high coverage, but fewer children were confirmed vaccinated when checked. Coverage over 150% is drawn at 150.';
+ drawTable('tXM',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},{k:'cov',l:'Reported ZD cov.',n:1,f:x=>pcol(x.cov)},
+  {k:'lqs',l:'LQAS (latest)',sv:x=>x.lq?({F:0,I:1,P:2})[x.lq.last]:3,f:x=>x.lq?`<span style="color:${x.lq.last==='F'?'#dc2626':x.lq.last==='I'?'#d97706':'#16a34a'};font-weight:600">${lqR[x.lq.last]}</span>`:'–'},
+  {k:'vac',l:'Validated %',n:1,f:x=>pV(x.vac)},{k:'p3',l:'Penta-3 %',n:1,f:x=>pE(x.p3)},{k:'dig',l:'Digitized %',n:1,f:x=>x.dig==null?'–':pc(x.dig)},{k:'afp',l:'ZD AFP',n:1,f:x=>x.afp?'<b class="dn">'+x.afp+'</b>':''},
+  {k:'mn',l:"Doesn't match",sv:x=>x.M.length,ns:1,f:x=>crTags(x.M,'',CR_MMS)}],S.mm,'mn',-1);
+ el('cntXM').textContent=S.mm.length+' UC'+(S.mm.length===1?'':'s');
+ const r1=v=>v==null?'':Math.round(v*10)/10;
+ el('btnXM').onclick=()=>csvDownload('Claims_to_verify_'+_slug()+'.csv',['Division','District','Tehsil','UC','UC code','Reported ZD coverage %','LQAS latest','Validated vaccinated %','Penta-3 %','Digitized %','ZD AFP cases',"What doesn't match"],
+  S.mm.map(x=>[x.dv,x.d,x.t,x.u,x.c,r1(x.cov),x.lq?lqR[x.lq.last]:'',r1(x.vac),r1(x.p3),r1(x.dig),x.afp,x.M.map(k=>CR_MMS[k]).join('; ')]));
+}
+function crDQ(S,L){
+ const g=S.groups.filter(x=>x.sc!=null).sort((a,b)=>a.sc-b.sc).slice(0,25);
+ el('cx3').style.height=Math.max(320,g.length*24+110)+'px';
+ HC('cx3',{chart:{type:'bar'},title:{text:`Data-quality score by ${L.lvl}`},subtitle:{text:'100 = no data problems found · lowest first'},xAxis:{categories:g.map(x=>x.k)},yAxis:{title:{text:'Score (0–100)'},min:0,max:100,plotLines:[{value:RT.dq[0],color:'#16a34a',dashStyle:'Dash',width:1},{value:RT.dq[1],color:'#d97706',dashStyle:'Dash',width:1}]},legend:{enabled:false},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:.0f}'}}},series:[{name:'Score',data:g.map(x=>({y:x.sc,color:x.sc>=RT.dq[0]?'#16a34a':x.sc>=RT.dq[1]?'#d97706':'#dc2626'}))}]});
+ el('capx3').textContent=g.length?`${g[0].k} scores lowest (${Math.round(g[0].sc)}). Score = 100 minus the weighted share of UCs with a problem.`:'';
+ const t=CR_DQ.slice().sort((a,b)=>S.dqT[b[0]]-S.dqT[a[0]]);
+ HC('cx4',{chart:{type:'bar'},title:{text:'Data problems found'},subtitle:{text:`UCs with each problem (${fmt(S.n)} UCs checked)`},xAxis:{categories:t.map(x=>x[1])},yAxis:{title:{text:'UCs (count)'},allowDecimals:false},legend:{enabled:false},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y}'}}},series:[{name:'UCs',data:t.map(x=>({y:S.dqT[x[0]],color:x[2]>=1?'#b45309':'#94a3b8'}))}]});
+ el('capx4').textContent='Dark bars count fully against the score; grey bars (possible but not certain errors) count half.';
+ drawTable('tXD',[{k:'k',l:L.Lvl,f:x=>'<b>'+esc(x.k)+'</b>'},{k:'sc',l:'Score',n:1,f:x=>crSc(x.sc)},{k:'n',l:'UCs',n:1},{k:'iss',l:'With a problem',n:1}].concat(CR_DQ.map(([k,,,s])=>({k:'i_'+k,l:s,n:1,sv:x=>x.I[k]||0,f:x=>x.I[k]?'<b>'+x.I[k]+'</b>':''}))),S.groups,'sc',1);
+ el('cntXD').textContent=S.groups.length+' '+L.pl; el('capXD').textContent=CR_DQ.map(([,l,w,s])=>`${s}: ${l}${w<1?' (half weight)':''}`).join(' · ');
+ const U=S.U.filter(r=>r.I.length).sort((a,b)=>b.pen-a.pen||b.I.length-a.I.length);
+ drawTable('tXDU',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},{k:'pen',l:'Severity',n:1,f:x=>x.pen>=1?'<b style="color:#b91c1c">High</b>':x.pen>=0.5?'<span style="color:#b45309">Medium</span>':'Low'},{k:'iss',l:'Problems',sv:x=>x.I.length,ns:1,f:x=>crTags(x.I,'dq',CR_DQS)}],U,'pen',-1);
+ el('cntXDU').textContent=U.length+' UCs';
+ el('btnXDU').onclick=()=>csvDownload('Data_quality_UCs_'+_slug()+'.csv',['Division','District','Tehsil','UC','UC code','Severity (0-1)','Problems'],U.map(x=>[x.dv,x.d,x.t,x.u,x.c,x.pen,x.I.map(k=>CR_DQ.find(q=>q[0]===k)[1]).join('; ')]));
+}
+function crGap(S,L){
+ const g=S.groups.slice().sort((a,b)=>(b.g90+b.d95)-(a.g90+a.d95)).filter(x=>x.g90+x.d95>0).slice(0,15);
+ el('cx5').style.height=Math.max(320,g.length*28+110)+'px';
+ HC('cx5',{chart:{type:'bar'},title:{text:'Zero-dose children still to reach'},subtitle:{text:`To 90% ZD coverage (${CAMP[CR_ZK]}) and 95% entered in IDIMS`},xAxis:{categories:g.map(x=>x.k)},yAxis:{title:{text:'Children (count)'}},tooltip:{shared:true},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:,.0f}'}}},series:[{name:'To 90% ZD coverage',color:'#0e7490',data:g.map(x=>x.g90)},{name:'To 95% digitized',color:'#7c3aed',data:g.map(x=>x.d95)}]});
+ el('capx5').textContent=g.length?`${g[0].k} has the largest workload (${fmt(g[0].g90)} to cover, ${fmt(g[0].d95)} to enter).`:'All targets met in this selection.';
+ const e=S.groups.slice().sort((a,b)=>(b.p3g+b.mr2g)-(a.p3g+a.mr2g)).filter(x=>x.p3g+x.mr2g>0).slice(0,15);
+ el('cx6').style.height=Math.max(320,e.length*28+110)+'px';
+ HC('cx6',{chart:{type:'bar'},title:{text:'Infants still to vaccinate (routine)'},subtitle:{text:`To 90% Penta-3 and MR-2 · ${EMETA.per||'Jan–Aug'}`},xAxis:{categories:e.map(x=>x.k)},yAxis:{title:{text:'Infants (count)'}},tooltip:{shared:true},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:,.0f}'}}},series:[{name:'To 90% Penta-3',color:'#1d4ed8',data:e.map(x=>x.p3g)},{name:'To 90% MR-2',color:'#93c5fd',data:e.map(x=>x.mr2g)}]});
+ el('capx6').textContent=e.length?`${e[0].k} needs the most routine catch-up (${fmt(e[0].p3g)} Penta-3, ${fmt(e[0].mr2g)} MR-2).`:'';
+ const R=S.groups.filter(x=>x.n||x.dnot||x.p3g);
+ drawTable('tXG',[{k:'k',l:L.Lvl,f:x=>'<b>'+esc(x.k)+'</b>'},{k:'unc',l:'ZD not covered',n:1,f:x=>fmt(x.unc)},{k:'g90',l:'To 90% ZD cov.',n:1,f:x=>x.g90?'<b>'+fmt(x.g90)+'</b>':'0'},
+  {k:'dnot',l:'Not entered (IDIMS)',n:1,f:x=>fmt(x.dnot)},{k:'d95',l:'To 95% digitized',n:1,f:x=>x.d95?'<b>'+fmt(x.d95)+'</b>':'0'},{k:'p3g',l:'To 90% Penta-3',n:1,f:x=>fmt(x.p3g)},{k:'mr2g',l:'To 90% MR-2',n:1,f:x=>fmt(x.mr2g)}],R,'g90',-1);
+ el('cntXG').textContent=R.length+' '+L.pl;
+ el('capXG').textContent=`Children to reach = target × base − achieved, counted UC by UC (UCs already above target add 0, so totals are larger than the area gap). ZD coverage base = ZD children reported in ${CAMP[CR_ZK]}; digitization base = ZD children reported in the IDIMS comparison; routine base = surviving infants on the EPI target.`;
+ el('btnXG').onclick=()=>csvDownload('Gap_to_target_'+_slug()+'.csv',[L.Lvl,'ZD not covered','To 90% ZD coverage','Not entered in IDIMS','To 95% digitized','To 90% Penta-3','To 90% MR-2'],R.map(x=>[x.k,x.unc,x.g90,x.dnot,x.d95,x.p3g,x.mr2g]));
+}
+function crConc(S,L){
+ el('xcPills').innerHTML=Object.entries(CRCM).map(([k,v])=>`<button data-m="${k}" class="${XC===k?'on':''}">${v[0]}</button>`).join('');
+ el('xcPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{XC=b.dataset.m;renderCrit();});
+ const C=critConc(matchG,XC), nm=CRCM[XC];
+ const step=Math.max(1,Math.floor(C.n/200)), pts=[[0,0]]; C.it.forEach((x,i)=>{if(i%step===0||i===C.n-1)pts.push([(i+1)/C.n*100,x.cum]);});
+ HC('cx7',{chart:{type:'area'},title:{text:'How concentrated are the missed children?'},subtitle:{text:`${nm[0]} · UCs ranked from most to fewest`},xAxis:{title:{text:'Share of UCs (%)'},min:0,max:100},yAxis:{title:{text:'Share of children (%)'},min:0,max:100},
+  tooltip:{formatter:function(){return `Top ${this.x.toFixed(1)}% of UCs hold <b>${this.y.toFixed(1)}%</b> of ${esc(nm[1])}`;}},legend:{enabled:false},
+  plotOptions:{area:{fillOpacity:.15,marker:{enabled:false}}},series:[{name:nm[0],color:'#475569',data:pts},{type:'line',name:'Even spread',color:'#cbd5e1',dashStyle:'Dash',enableMouseTracking:false,data:[[0,0],[100,100]]}]});
+ el('capx7').textContent=C.k50?`${fmt(C.k50)} UCs (${pc(C.k50/C.n*100)}) hold 50% and ${fmt(C.k80)} UCs (${pc(C.k80/C.n*100)}) hold 80% of the ${fmt(C.tot)} ${nm[1]}.`:'No children in this measure for this selection.';
+ const top=C.it.slice(0,20);
+ el('cx8').style.height='380px';
+ HC('cx8',{chart:{type:'column'},title:{text:'Top 20 UCs'},subtitle:{text:nm[0]},xAxis:{categories:top.map(x=>x.u+' ('+x.d+')'),labels:{rotation:-55,style:{fontSize:'10px'}}},yAxis:{title:{text:'Children (count)'}},legend:{enabled:false},
+  plotOptions:{column:{borderRadius:2,dataLabels:{...dl,format:'{y:,.0f}'}}},series:[{name:nm[0],color:'#64748b',data:top.map(x=>x.v)}]});
+ el('capx8').textContent=top.length&&C.tot?`These 20 UCs hold ${pc(top[top.length-1].cum)} of the total.`:'';
+ const R=C.it.filter(x=>x.v>0).slice(0,Math.max(50,C.k80||0)).map((x,i)=>({...x,rk:i+1}));
+ drawTable('tXC',[{k:'rk',l:'Rank',n:1},{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},{k:'v',l:'Children',n:1,f:x=>fmt(x.v)},{k:'cum',l:'Cumulative share',n:1,f:x=>pc(x.cum)}],R,'rk',1);
+ el('cntXC').textContent=`${R.length} UCs shown (up to the 80% point)`;
+ el('btnXC').onclick=()=>csvDownload('Concentration_'+XC+'_'+_slug()+'.csv',['Rank','District','Tehsil','UC','UC code',nm[0],'Cumulative share %'],C.it.filter(x=>x.v>0).map((x,i)=>[i+1,x.d,x.t,x.u,x.c,x.v,Math.round(x.cum*10)/10]));
+}
+function crChg(S,L){
+ const H=S.H, cats=H.dates.map(crDt);
+ HC('cx9',{chart:{type:'line'},title:{text:`Linelist digitization over time · ${esc(DHIST.camp||'')}`},subtitle:{text:'% of reported zero-dose children entered in IDIMS, from each IDIMS comparison report'},xAxis:{categories:cats},yAxis:{title:{text:'Digitized (%)'},max:110,plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1,label:{text:'95% target',style:{color:'#16a34a',fontSize:'10px'}}}]},
+  tooltip:{shared:true,valueDecimals:1,valueSuffix:'%'},plotOptions:{line:{marker:{radius:3}}},
+  series:[{name:fDist.value||fDiv.value||'KP (all 9 districts)',color:'#0f172a',lineWidth:3.5,data:H.kp.map(x=>x?Math.round(x.p*10)/10:null)}].concat(H.ser.length>1?H.ser.map(s=>({name:s.d,lineWidth:1.5,data:s.v.map(x=>x?Math.round(x.p*10)/10:null)})):[])});
+ el('capx9').textContent=H.dates.length>1?`${H.dates.length} reports from ${crDt(H.dates[0])} to ${crDt(H.dates[H.dates.length-1])}. Each new IDIMS report adds a point.`:'Only one IDIMS report so far; the trend appears from the next report.';
+ const R=H.ser.map(s=>{const n=s.v.length, f=s.v.find(x=>x), a=n>1?s.v[n-2]:null, b=s.v[n-1]; return {d:s.d,f:f?f.p:null,a:a?a.p:null,b:b?b.p:null,ch:a&&b?b.p-a.p:null,add:a&&b?b.l-a.l:null,cf:f&&b?b.p-f.p:null};});
+ drawTable('tXH',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'f',l:crDt(H.dates[0]),n:1,f:x=>pc(x.f)},{k:'a',l:crDt(S.pdate)||'Previous',n:1,f:x=>pc(x.a)},{k:'b',l:crDt(S.ldate)||'Latest',n:1,f:x=>pcol(x.b)},
+  {k:'add',l:'Entered since previous',n:1,f:x=>x.add==null?'–':`<b style="color:${x.add>0?'#15803d':x.add<0?'#b91c1c':'#64748b'}">${crSgn(x.add)}</b>`},{k:'ch',l:'Change (pts)',n:1,f:x=>crSgn(x.ch,1)},{k:'cf',l:'Since first',n:1,f:x=>crSgn(x.cf,1)}],R,'b',1);
+ el('cntXH').textContent=R.length+' districts';
+ const lg=RLOG.slice().sort((a,b)=>a.date<b.date?-1:1), b=lg[lg.length-1], a=lg[lg.length-2];
+ const MET=[['dig_pct','Linelist digitized (%)',1],['dig_ll','Children entered in IDIMS',0],['val_n','Children validated',0],['val_pct','Validated as vaccinated (%)',1],['zd_cov_pct','ZD covered by next round (%)',1],['p3_pct','Penta-3 coverage (%)',1],['mr2_pct','MR-2 coverage (%)',1],['lqas_lots','LQAS lots on file',0],['afp_zd','Zero-dose AFP cases',0],['wpv','Confirmed polio cases (KP 2026)',0]];
+ const rows=b?MET.map(([k,l,dg])=>({l,a:a?a[k]:null,b:b[k],ch:a&&a[k]!=null&&b[k]!=null?b[k]-a[k]:null,dg})):[];
+ drawTable('tXL',[{k:'l',l:'Measure',f:x=>'<b>'+esc(x.l)+'</b>'},{k:'a',l:a?crDt(a.date):'Previous',n:1,f:x=>x.a==null?'–':x.dg?x.a.toFixed(1):fmt(x.a)},{k:'b',l:b?crDt(b.date):'Latest',n:1,f:x=>x.b==null?'–':x.dg?x.b.toFixed(1):fmt(x.b)},
+  {k:'ch',l:'Change',n:1,f:x=>x.ch==null?'–':`<b style="color:${x.ch>0?'#15803d':x.ch<0?'#b91c1c':'#64748b'}">${crSgn(x.ch,x.dg)}</b>`}],rows,'l',1);
+ el('capXL').textContent=lg.length>1?`Compares the last two refreshes (${crDt(a.date)} and ${crDt(b.date)}); KP level, not filtered. Blank = not recorded at that refresh. For MR-2 and confirmed cases a fall is good news.`:'Builds up from the next refresh.';
+}
+
+// ---------- Home map: data-quality layer ----------
+HMDEF.dq={l:'Data-quality score (0–100)',ty:'dq',go:'crit'};
+{const _hd=hmData; hmData=function(m){ if(m!=='dq')return _hd(m); const o={}; critStats(()=>true,'d').groups.forEach(g=>{o[g.k]={p:g.sc,s:`Score out of 100 · ${g.iss} of ${g.n} UCs with a data problem`};}); return o;};}
+
+// briefs + deck
+{const _cb=collectBrief; collectBrief=function(level,val){const B=_cb(level,val); const inS=r=>level==='kp'||(level==='dv'?r.dv===val:r.d===val);
+ B.crit=critStats(inS,level==='d'?'t':'d',d=>level==='kp'||(level==='dv'?D2DV[d]===val:d===val)); B.crit.key=level==='d'?'Tehsil':'District'; return B;};}
+const critAction=X=>{if(!X)return ''; const p=[];
+ if(X.mm.length)p.push(`field-check the ${X.mm.length} UC${X.mm.length>1?'s':''} whose reported ZD coverage is contradicted by other checks (${X.mm.slice(0,3).map(r=>r.u+', '+r.d).join('; ')})`);
+ const lo=X.groups.filter(g=>g.sc!=null&&g.sc<RT.dq[1]&&g.n>=3).sort((a,b)=>a.sc-b.sc).slice(0,3);
+ if(lo.length)p.push(`correct data problems in ${lo.map(g=>g.k).join(', ')} (data-quality score under ${RT.dq[1]})`);
+ return p.length?'Verify the numbers: '+p.join('; and ')+'.':'';};
+{const _ba=briefActions; briefActions=function(B){const A=_ba(B), t=critAction(B.crit); if(!t)return A; let i=A.findIndex(x=>!/^Confirmed polio|^Follow up the|^Risk:|^Polio watch/.test(x)); if(i<0)i=A.length; A.splice(i,0,t); return A.slice(0,10);};}
+function critSlide(s,X,K){
+ const {kpis,table,note,F,TXT,RED,AMB,n0,p1}=K, SL='475569', cut=(t,n)=>{t=t==null?'':String(t);return t.length>n?t.slice(0,n-1)+'…':t;};
+ kpis(s,[{l:"Claims that don't match",v:n0(X.mm.length),vc:X.mm.length?RED:null,s:'UCs to field-check'},{l:'Data-quality score',v:X.sc==null?'–':String(Math.round(X.sc)),vc:X.sc==null?null:X.sc>=RT.dq[0]?'15803D':X.sc>=RT.dq[1]?AMB:RED,s:'out of 100'},
+  {l:'To 90% ZD coverage',v:n0(X.g90),vc:'0E7490',s:'more ZD children to cover'},{l:'To 95% digitized',v:n0(X.d95),vc:'7C3AED',s:'more to enter in IDIMS'},
+  {l:'Concentration',v:X.C.k50?n0(X.C.k50)+' UCs':'–',s:'hold half the uncovered ZD'}],SL,1.4);
+ s.addText("UCs where reported coverage and other checks disagree",{x:0.5,y:2.9,w:8.0,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ table(s,['District','UC','ZD cov.','LQAS','Validated','Penta-3',"Doesn't match"],X.mm.slice(0,9).map(r=>[cut(r.d,13),cut(r.u,20),p1(r.cov),r.lq?lqR[r.lq.last]:'–',p1(r.vac),p1(r.p3),cut(r.M.map(k=>CR_MMS[k]).join(', '),32)]),
+  {x:0.5,y:3.28,w:8.0,colW:[1.15,1.55,0.7,0.85,0.8,0.7,2.25],col:SL,fs:9,rh:0.3,empty:'No conflicting claims in this area.'});
+ const key=X.key||'District', G=X.groups.slice().sort((a,b)=>(b.g90+b.d95)-(a.g90+a.d95)).slice(0,9);
+ s.addText('Data quality and workload by '+key.toLowerCase(),{x:8.75,y:2.9,w:4.1,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ table(s,[key,'DQ score','To 90% cov.','To 95% dig.'],G.map(g=>[cut(g.k,15),g.sc==null?'–':String(Math.round(g.sc)),n0(g.g90),n0(g.d95)]),{x:8.75,y:3.28,w:4.1,colW:[1.35,0.85,0.95,0.95],col:SL,fs:9,rh:0.3});
+ note(s,'Claims that don\'t match: 90%+ reported ZD coverage contradicted by LQAS, validation, Penta-3 or a ZD AFP case, or IDIMS over-entry. Data-quality score = 100 minus the weighted share of UCs with impossible or missing values.',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
 }
 
 kxInit();
