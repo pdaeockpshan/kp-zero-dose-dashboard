@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 11:24</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 05-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,052 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 06-Oct-2026 12:10</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -395,6 +395,17 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hmsvg .rdot:hover{stroke:#0f172a;stroke-width:1.5}
 @media (max-width:900px){.hrtop{max-width:none;margin-left:0}}
 </style>
+
+<style>
+/* ================= (7) polio risk watch list ================= */
+.ngrp.gw{--gc:#4338ca}.tab[data-tab="watch"],#p-watch{--tc:#4338ca}
+.hbig.hbw{background:radial-gradient(circle at 35% 30%,#c7d2fe,#e0e7ff 60%,#fff);border-color:#a5b4fc;color:#3730a3}
+.hbig.hbw small{color:#312e81}
+.wnote{font-size:12px;color:var(--color-text-secondary);background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:8px 11px;margin:8px 0 0}
+.hmsvg .wdot{stroke:#fff;stroke-width:.8;cursor:pointer}
+.hmsvg .wdot:hover{stroke:#0f172a;stroke-width:1.5}
+.hmsvg .wcase{fill:none;stroke:#0f172a;stroke-width:1.3;pointer-events:none}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -403,7 +414,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <button class="tab tsum on" data-tab="home"><span class="tl">Home</span><span class="badge">KP at a glance</span></button>
    <button class="tab tsum" data-tab="summary"><span class="tl">Summary</span><span id="bS" class="tnrow"></span></button>
    <button class="tab" data-tab="export"><span class="tl">Export data</span><span class="badge" id="bX">–</span></button>
-   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">13 slides</span></button>
+   <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">14 slides</span></button>
   </div>
   <div class="nsec">Detailed analysis</div>
   <div class="ngrp gz"><div class="nhd">① ZD Reported &amp; Covered</div>
@@ -432,6 +443,9 @@ body.home .hdr, body.home .content .topbar{display:none}
   <div class="ngrp gr"><div class="nhd">⑥ UC risk score</div>
    <button class="tab" data-tab="risk"><span class="tl">Combined UC risk</span><span class="badge" id="bR1">–</span></button>
   </div>
+  <div class="ngrp gw"><div class="nhd">⑦ Polio risk watch list</div>
+   <button class="tab" data-tab="watch"><span class="tl">Watch list</span><span class="badge" id="bW1">–</span></button>
+  </div>
  </div>
 </nav>
 <main class="content">
@@ -459,7 +473,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 06-Oct-2026 11:24</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 06-Oct-2026 12:10</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -516,6 +530,14 @@ body.home .hdr, body.home .content .topbar{display:none}
   </div>
  </div>
 
+ <div class="hgrid" style="margin-top:16px">
+  <div class="hcard wide" style="--hc:#4338ca" data-go="watch" tabindex="0">
+   <div class="hhd"><span class="hn">8</span><span class="ht">Polio risk watch list</span><span class="cnt" id="hW8s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbw" id="hW8n"></div><div class="hfacts" id="hF8"></div><div class="hrtop" id="hW8t"></div></div>
+   <div class="halarm" id="hA8"></div>
+  </div>
+ </div>
+
  <div class="hsec"><h2>District map</h2><span>Each district coloured against the indicator's target · hover for values · click a district to open its details</span></div>
  <div class="hmap">
   <div class="hmtop">
@@ -526,6 +548,7 @@ body.home .hdr, body.home .content .topbar{display:none}
     <button data-m="epi" style="--mc:#1d4ed8"><b>4</b>Routine</button>
     <button data-m="afp" style="--mc:#b91c1c"><b>5</b>ZD AFP cases</button>
     <button data-m="risk" style="--mc:#9f1239"><b>6</b>UC risk</button>
+    <button data-m="watch" style="--mc:#4338ca"><b>7</b>Polio watch</button>
    </div>
    <label class="hmant" id="hMAw">Antigen <select id="hMA"></select></label>
    <label class="hmant" id="hMFw">Colour by <select id="hMF"><option value="n">Number of zero-dose AFP cases</option><option value="p">Zero-dose % of all AFP cases</option></select></label>
@@ -626,7 +649,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
 <section class="pane" id="p-present">
-<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 10-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
+<div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 11-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
 <div class="card" style="margin-bottom:14px"><h3 style="margin:0">Quick briefs</h3>
 <div class="bgrid">
 <div class="bcard" style="--bc:#1e3a8a"><b>🏛 EOC brief</b><small>Whole province: division scorecard, districts needing attention, digitization, validation and routine EPI coverage by district, and decisions requested from EOC.</small><button class="btn" id="btnBEOC">Prepare EOC brief</button></div>
@@ -978,6 +1001,34 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="rkpills" id="rkPills"></div>
 <div class="scroll"><table id="tRisk"></table></div>
 <div class="cap">Score = points earned ÷ points possible for the indicators each UC has data for. Surveillance covers every UC, so the zero-dose AFP (3) and polio case (5) points always count as possible. LQAS (4) counts only for UCs assessed in the last rounds, so a passed lot is evidence that lowers the score. "Data" = how many of the 4 main indicators (ZD coverage, digitized, validated, Penta-3) the UC has. Treat scores based on 1 indicator with care.</div>
+</div>
+</section>
+
+<!-- ================= (7) POLIO RISK WATCH LIST ================= -->
+<section class="pane" id="p-watch">
+<div class="hint" id="wHint"></div>
+<div class="kpis">
+<div class="card"><div class="kl">Watch-list UCs</div><div class="kv" id="wk1" style="color:#3730a3">–</div><div class="ks" id="wk1s"></div></div>
+<div class="card"><div class="kl">Watch districts</div><div class="kv" id="wk2" style="color:#3730a3">–</div><div class="ks" id="wk2s"></div></div>
+<div class="card"><div class="kl">UCs with a case nearby</div><div class="kv" id="wk3">–</div><div class="ks" id="wk3s"></div></div>
+<div class="card"><div class="kl">Backtest: cases caught</div><div class="kv" id="wk4" style="color:var(--color-success-dark)">–</div><div class="ks" id="wk4s"></div></div>
+<div class="card"><div class="kl">Blind spots</div><div class="kv" id="wk5" style="color:var(--color-warning-dark)">–</div><div class="ks" id="wk5s"></div></div>
+</div>
+<div class="card" style="margin-bottom:14px"><h3>What the watch list says</h3><ul class="ins" id="wIns"></ul></div>
+<div class="grid2">
+<div class="card"><div id="cw1" class="ch"></div><div class="cap" id="capw1"></div></div>
+<div class="card"><div id="cw2" class="ch"></div><div class="cap" id="capw2"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">District watch ranking</h3><span class="cnt" id="cntWD"></span></div>
+<div class="scroll"><table id="tWD"></table></div>
+<div class="cap">District watch score = average of its 5 highest UC scores. The top 6 districts are the watch districts. "No sewage site" means the district has no environmental sampling, so virus could circulate without being seen.</div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">UCs ranked by polio risk</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntW"></span><button class="btn" id="btnWCsv">Download (CSV)</button></div></div>
+<div class="rkpills" id="wPills"></div>
+<div class="scroll"><table id="tWU"></table></div>
+<div class="wnote">This is a <b>watch list for focusing supervision, catch-up campaigns, AFP active search and sewage sampling</b>, not a prediction. With about 20 cases a year, most UCs on the list will not have a case, and a case can still appear outside it.</div>
 </div>
 </section>
 
@@ -1841,6 +1892,7 @@ const PPT_SLIDES=[['Title','Area, campaigns and date','#4338ca'],['Summary','Fou
  ['④ EPI routine coverage','Coverage by antigen and lowest areas for Penta-3','#1d4ed8'],['④ EPI priority UCs','Dropouts, weak in EPI and polio, target checks','#1d4ed8'],
  ['⑤ ZD AFP & polio cases','Zero-dose AFP cases, confirmed polio cases and their UCs','#b91c1c'],
  ['⑥ Highest-risk UCs','Combined UC risk score: top UCs and where they cluster','#9f1239'],
+ ['⑦ Polio risk watch list','Watch-list UCs and districts, with backtest','#4338ca'],
  ['Recommended actions','Next steps based on the data','#b45309']];
 el('pList').innerHTML=PPT_SLIDES.map((x,i)=>`<label class="pitem" style="--pc:${x[2]}"><input type="checkbox" id="px${i+1}" checked><span><b>${i+1}. ${esc(x[0])}</b><small>${esc(x[1])}</small></span></label>`).join('');
 const pptCount=()=>PPT_SLIDES.filter((x,i)=>{const c=el('px'+(i+1));return !c||c.checked!==false;}).length;
@@ -1874,7 +1926,7 @@ function collectDeckData(){
  const _af=afpStats(AFP.filter(matchG),WPV.filter(matchG)), _gf=r=>(!fDiv.value||r.dv===fDiv.value)&&(!fDist.value||r.d===fDist.value);
  _af.tot=(fTeh.value||q.value.trim())?null:(!fDiv.value&&!fDist.value?afpTot():afpScopeTot(_gf));
  _af.top=(fTeh.value||q.value.trim())?[]:afpDistRows(AFP.filter(matchG),WPV.filter(matchG),[...new Set(ZD.filter(_gf).map(r=>r.d))]).filter(x=>x.p!=null&&x.n).sort((a,b)=>b.p-a.p).slice(0,3);
- return {risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+ return {watch:(()=>{const A=watchAll().filter(matchG), ds=new Set(A.map(r=>r.d)); return {A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:watchD().filter(x=>ds.has(x.d)),ND:watchD().length,T:watchBTsum()};})(),risk:riskStats(riskAll().filter(matchG),lvlOf().key),afp:_af,e:eD,scope:pptScope(),date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
   L:{lvl:L.lvl,Lvl:L.Lvl,pl:L.pl},camp:{A:CAMP.A,M:CAMP.M,S:CAMP.S},zsame:ZSAME,clf:'SNID Sept 2026',vcamps:VCAMP.map(x=>x.l).join(', '),
   z:{rA:z.rA,rM:z.rM,rS:z.rS,cM:z.cM,rcM:z.rcM,lfA:z.lfA,lfM:z.lfM,nL:z.nL,gM:z.gM,crM:z.crM,p:zl.p,cp:zl.cp,g:zl.g,pl:zR.filter(r=>r.tr==='Persistent low').length},
   zG,d:{has:dR.length>0,rep:drep,ll:dll,p:drep?dll/drep*100:null,gap:S_(dR,gapOf),zero:dR.filter(r=>r.rep>0&&r.ll===0).length,fu:fu.length,P1:fc('P1'),P2:fc('P2'),P3:fc('P3'),P4:fc('P4')},
@@ -1931,9 +1983,9 @@ function renderDeck(P,D){
   s.addText(D.scope,{x:0.8,y:2.95,w:11.7,h:0.6,fontFace:F,fontSize:22,color:'E0E7FF'});
   s.addText([{text:'ZD Reported & Covered: '+camps.join(' · '),options:{breakLine:true}},{text:'Digitization: '+D.clf+' linelist vs IDIMS',options:{breakLine:true}},{text:'Validation: '+(D.vcamps.length>90?VCAMP.length+' campaigns, '+VCAMP[0].l+' to '+VCAMP[VCAMP.length-1].l:D.vcamps),options:{breakLine:true}},{text:'EPI routine coverage: KP EPI-MIS, '+D.e.per,options:{breakLine:true}},{text:'AFP & polio cases: ZD List'+(AMETA.per?' ('+AMETA.per+')':'')+' and EOC line list'}],
    {x:0.8,y:3.65,w:11.7,h:1.75,fontFace:F,fontSize:14,color:'C7D2FE',valign:'top',paraSpaceAfter:4});
-  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage'],['B91C1C','⑤ AFP & Polio'],['9F1239','⑥ UC risk']].forEach((c,i)=>{const x=0.8+i*1.97;
-   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:1.89,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
-   s.addText(c[1],{x,y:5.55,w:1.89,h:0.55,fontFace:F,fontSize:11,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
+  [[TEAL,'① Reported & Covered'],[PUR,'② Digitization'],[GRN,'③ Validation'],[BLU,'④ EPI Coverage'],['B91C1C','⑤ AFP & Polio'],['9F1239','⑥ UC risk'],['4338CA','⑦ Watch list']].forEach((c,i)=>{const x=0.8+i*1.69;
+   s.addShape(pptx.ShapeType.rect,{x,y:5.55,w:1.62,h:0.55,fill:{color:c[0]},line:{color:'FFFFFF',width:1}});
+   s.addText(c[1],{x,y:5.55,w:1.62,h:0.55,fontFace:F,fontSize:10,bold:true,color:'FFFFFF',align:'center',valign:'middle'});});
   s.addText('Prepared '+D.date,{x:0.8,y:6.6,w:6,h:0.4,fontFace:F,fontSize:12,color:'C7D2FE'});}
 
  // 2 Summary
@@ -2067,8 +2119,11 @@ function renderDeck(P,D){
    else note(s,'No very-high or high-risk UC in this selection.',{x:9.35,y:3.3,w:3.48,fs:11});
    note(s,'Points: ZD coverage up to 3 · persistent low 2 · digitized up to 2 · validated up to 2 · Penta-3 up to 3 · MR-2 1 · LQAS up to 4 · ZD AFP case 3 · polio case 5.',{x:0.5,y:6.6,w:12.3,h:0.32,fs:8});}}
 
- // 13 Actions
- if(D.sel[13]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
+ // 13 Polio risk watch list
+ if(D.sel[13]){const s=base('⑦ Polio risk watch list','4338CA','UCs and districts that most need protection: past and nearby cases, sewage samples and immunity gaps'); watchSlide(s,D.watch,'District',{kpis,table,note,F,TXT,RED,n0,p1});}
+
+ // 14 Actions
+ if(D.sel[14]){const s=base('Recommended actions',AMB,'Suggested next steps, generated from the data for '+D.scope);
   const A=[], top=(a,f)=>a.slice(0,3).map(f).join(', ')+(a.length>3?' and '+(a.length-3)+' more':'');
   const lowZ=D.zG.filter(x=>x.p!=null&&x.p<80).sort((a,b)=>a.p-b.p);
   if(lowZ.length)A.push('Coverage: focus supervision on '+top(lowZ,x=>x.k+' ('+p1(x.p)+')')+', which are below 80% ZD coverage.');
@@ -2091,7 +2146,7 @@ function renderDeck(P,D){
   const AF=[], S5=D.afp;
   if(S5&&S5.W.length)AF.push('Polio: confirmed case'+(S5.W.length>1?'s':'')+' in '+[...new Set(S5.W.map(r=>r.u+' ('+r.d+')'))].join(', ')+'. Keep outbreak response going and close zero-dose and routine gaps in the surrounding UCs.');
   if(S5&&S5.n)AF.push('Follow up the '+n0(S5.n)+' zero-dose AFP case'+(S5.n>1?'s':'')+(S5.pend?' ('+n0(S5.pend)+' still pending)':'')+': vaccinate siblings and neighbours and add the case UCs to the catch-up plan.');
-  const AR=riskAction(D.risk)?[riskAction(D.risk)]:[];
+  const AR=(riskAction(D.risk)?[riskAction(D.risk)]:[]).concat(watchAction(D.watch)?[watchAction(D.watch)]:[]);
   const AA=AF.slice(0,2).concat(AR,A.slice(0,6),AE.slice(0,3));
   if(!AA.length)AA.push('No major gaps in this selection. Keep monitoring at the next campaign.');
   bullets(s,AA,{x:0.5,y:1.45,w:12.3,h:5.4,fs:AA.length>8?12:AA.length>6?13:15});}
@@ -2436,7 +2491,10 @@ function renderBrief(P,B){
   table(s,[S.key,'Very high','High'],G.map(g=>[cut(g.k,18),C_(n0(g.vh),g.vh?TC.vh:null,!!g.vh),n0(g.hi)]),{x:9.35,y:3.3,w:3.48,colW:[1.7,0.89,0.89],col:ROSE,fs:9,rh:0.3,empty:'No very-high or high-risk UC here.'});
   note(s,'Points: ZD coverage up to 3 · persistent low 2 · digitized up to 2 · validated up to 2 · Penta-3 up to 3 · MR-2 1 · LQAS up to 4 · ZD AFP case 3 · polio case 5.',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});}
 
- // 10 Actions
+ // 10 Polio risk watch list
+ if(B.watch){const s=base('⑦ Polio risk watch list','4338CA','UCs and districts that most need protection: past and nearby cases, sewage samples and immunity gaps'); watchSlide(s,B.watch,'District',{kpis,table,note,F,TXT,RED,n0,p1});}
+
+ // 11 Actions
  {const s=base(B.level==='kp'?'Decisions requested from EOC':B.level==='dv'?'Actions for the division team':'Actions for the district team',AMB,'Generated from the data for '+B.scope);
   const A=briefActions(B); bullets(s,A,{x:0.5,y:1.4,w:12.3,h:5.45,fs:A.length>8?12:A.length>6?13:15});}
  return pptx;
@@ -2584,7 +2642,7 @@ const ICO={
  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
  chart:'<path d="M4 20h16"/><path d="M6 16l4-5 3 3 5-7"/>',
  drop:'<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/>'};
-const TABICO={home:'home',afp:'alert',risk:'flag',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
+const TABICO={home:'home',afp:'alert',risk:'flag',watch:'alert',summary:'dash',export:'download',present:'present',zov:'shield',zcmp:'trend',zperf:'bars',zins:'bulb',overview:'keyboard',compare:'swap',followup:'flag',notes:'note',vsum:'clip',vfu:'search',eov:'syringe',efu:'flag'};
 // ring types: [target, warning level]
 const RT={ri:[90,80],cov:[90,80],dig:[95,80],vac:[98,95],reg:[95,90],epi:[95,90],share:[null,null]};
 // card value id -> [icon, ring type or null, tab to open on click]
@@ -2788,7 +2846,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -2805,8 +2863,8 @@ function setTab(t){
 }
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
- renderBar(); updateBadges(); afpBadge(); riskBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -2818,7 +2876,7 @@ el('btnReset').onclick=()=>{[fDiv,fDist,fTeh,fBand,fTr,fPri,fZT,fVC,q].forEach(x
 // ---------- Home: district map with indicator switch ----------
 let HMM='cov', HMA=null;
 const HMC={g:'#16a34a',a:'#d97706',r:'#dc2626',o:'#7c3aed',n:'#d1d5db'};
-const HMDEF={cov:{l:'ZD covered by next round',ty:'cov',go:'zov'},dig:{l:'Linelist digitized in IDIMS',ty:'dig',go:'overview'},vac:{l:'Validated as vaccinated',ty:'vac',go:'vsum'},afp:{l:'Zero-dose AFP cases',ty:null,go:'afp'},risk:{l:'Combined UC risk score',ty:null,go:'risk'},epi:{l:'Routine coverage',ty:'ri',go:'eov'}};
+const HMDEF={cov:{l:'ZD covered by next round',ty:'cov',go:'zov'},dig:{l:'Linelist digitized in IDIMS',ty:'dig',go:'overview'},vac:{l:'Validated as vaccinated',ty:'vac',go:'vsum'},afp:{l:'Zero-dose AFP cases',ty:null,go:'afp'},risk:{l:'Combined UC risk score',ty:null,go:'risk'},watch:{l:'Polio risk watch list',ty:null,go:'watch'},epi:{l:'Routine coverage',ty:'ri',go:'eov'}};
 const hmBand=(ty,p)=>{if(p==null)return 'n';const t=RT[ty];if(p>110)return 'o';return p>=t[0]?'g':p>=t[1]?'a':'r';};
 function hmData(m){
  const o={};
@@ -2844,6 +2902,7 @@ function renderHomeMap(){
  {const g0=el('hMap').querySelector('#hMk'); if(g0)g0.remove();}
  if(HMM==='afp'){hmAFP();return;}
  if(HMM==='risk'){hmRisk();return;}
+ if(HMM==='watch'){hmWatch();return;}
  const def=HMDEF[HMM], ty=def.ty, t=RT[ty], V=hmData(HMM), cnt={g:0,a:0,r:0,o:0,n:0};
  const lab=HMM==='epi'?((EAGK[HMA]||{}).l||'Routine')+' coverage':def.l;
  const svg=el('hMap'), tip=el('hMTip');
@@ -2943,7 +3002,7 @@ function renderHome(){
  const p3D=gE.filter(x=>x.p_p3!=null&&x.p_p3<80).length, p3U=EPI.filter(r=>r.s>0&&(r.p3||0)/r.s*100<80).length;
  const bo=EPI.filter(r=>/BO/.test(r.fl||'')).length;
  hAlarm('hA4','Below 80% Penta-3',[[p3D,'districts',`${p3D} districts below 80% Penta-3 coverage`,'efu'],[p3U,'UCs',`${p3U} UCs below 80% Penta-3 coverage`,'efu'],[bo,'UCs weak in both EPI &amp; polio',`${bo} UCs with low Penta-3 and a high number of polio zero-dose children`,'efu']]);
- renderHomeAFP(); renderHomeRisk();
+ renderHomeAFP(); renderHomeRisk(); renderHomeWatch();
  // wiring + ring animation
  const P=el('p-home');
  P.querySelectorAll('.hcard').forEach(c=>{c.onclick=()=>setTab(c.dataset.go);c.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(c.dataset.go);}};});
@@ -3088,7 +3147,7 @@ function navInit(){
 function navSync(){const on=document.querySelector('.sidenav .tab.on'), g=on&&on.closest('.ngrp');
  document.querySelectorAll('.sidenav .ngrp').forEach(x=>{if(!x.querySelector('.nhd'))return; x.classList.toggle('hason',x===g); navSet(x,x===g);});}
 function navHdr(){const tv=c=>{const s=document.querySelector('#bS .tn.'+c);if(!s)return '';const i=s.querySelector('i');return s.textContent.replace(i?i.textContent:'','').trim();};
- const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||''};
+ const V={gz:tv('z'),gd:tv('d'),gv:tv('v'),ge:tv('e'),gp:(el('bA1')||{}).textContent||'',gr:(el('bR1')||{}).textContent||'',gw:(el('bW1')||{}).textContent||''};
  Object.entries(V).forEach(([k,v])=>{const e=document.querySelector('.sidenav .ngrp.'+k+' .nhv');if(e){e.textContent=v&&v!=='–'?v:'';e.style.display=e.textContent?'':'none';}});}
 {const _st=setTab; setTab=function(t){_st(t); navSync();};}
 {const _rd=render; render=function(){_rd(); navHdr();};}
@@ -3248,6 +3307,176 @@ function hmRisk(){
  B.risk=riskStats(riskAll().filter(inS),level==='d'?'t':'d'); B.risk.key=level==='d'?'Tehsil':'District'; return B;};}
 const riskAction=S=>S&&S.vh?`Risk: hold joint EPI–polio microplan reviews in the ${S.vh} very-high-risk UC${S.vh>1?'s':''} first (${S.top.slice(0,3).map(r=>r.u+', '+r.d).join('; ')})${S.hi?`, then the ${S.hi} high-risk UCs`:''}.`:'';
 {const _ba=briefActions; briefActions=function(B){const A=_ba(B), t=riskAction(B.risk); if(!t)return A; let i=A.findIndex(x=>!/^Confirmed polio|^Follow up the/.test(x)); if(i<0)i=A.length; A.splice(i,0,t); return A.slice(0,10);};}
+
+
+// ================= (7) POLIO RISK WATCH LIST =================
+const WPVH = [{"dv": "BANNU", "d": "BANNU", "t": "MIRYAN", "u": "NURAR", "c": "36107007", "on": "2026-08"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "JANI KHEL COLONY", "c": "36102012", "on": "2026-04"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "GARYOUM", "u": "GARYOUM", "c": "36406001", "on": "2026-03"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "SPINWAM", "u": "SPINWAM 2", "c": "36409002", "on": "2025-12"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "KANDAR", "u": "GHARI", "c": "31502018", "on": "2025-09"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 2", "c": "36401033", "on": "2025-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "SALAMANKHEL", "c": "36205011", "on": "2025-08"}, {"dv": "DIKHAN", "d": "TANK", "t": "JANDOLA", "u": "PING A", "c": "36303004", "on": "2025-08"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIRAN SHAH", "u": "MIRAN SHAH 3", "c": "36402044", "on": "2025-08"}, {"dv": "HAZARA", "d": "KOHISTANLOWER", "t": "PATTAN", "u": "PATTAN", "c": "37301008", "on": "2025-07"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "MULAZAI", "c": "36302007", "on": "2025-07"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "SALAMANKHEL", "c": "36205011", "on": "2025-07"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "MULAZAI", "c": "36302007", "on": "2025-07"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 3", "c": "36401034", "on": "2025-07"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2025-06"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "AMAKHEL", "c": "36302001", "on": "2025-06"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIRAN SHAH", "u": "MIRAN SHAH 3", "c": "36402044", "on": "2025-06"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "SHAMSHI KHEL", "c": "36101032", "on": "2025-05"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "SAIN TANGA", "c": "36102006", "on": "2025-05"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2025-04"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "SAIN TANGA", "c": "36102006", "on": "2025-04"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "KANDAR", "u": "MANJAKOT", "c": "31502016", "on": "2025-03"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DERA ISMAIL KHAN", "u": "LACHRA", "c": "36002015", "on": "2025-01"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "BEHRAAN", "c": "36008003", "on": "2024-12"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "SHEIKH UTTAR", "c": "36302012", "on": "2024-12"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2024-11"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "DARAZINDA", "c": "36008002", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "BEHRAAN", "c": "36008003", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DERA ISMAIL KHAN", "u": "KOTLA SAIDAN", "c": "36002013", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "MORGA", "c": "36008005", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "MORGA", "c": "36008005", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "BEHRAAN", "c": "36008003", "on": "2024-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "MORGA", "c": "36008005", "on": "2024-10"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "BEHRAAN", "c": "36008003", "on": "2024-10"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "MULAZAI", "c": "36302007", "on": "2024-10"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "DARAZINDA", "c": "36008002", "on": "2024-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "PARKHEL TALL", "c": "36203017", "on": "2024-10"}, {"dv": "KOHAT", "d": "KOHAT", "t": "DARRA ADAM KHEL", "u": "BOSTI KHEL", "c": "35003005", "on": "2024-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "BETTANI", "u": "GABBAR BAGH", "c": "36204011", "on": "2024-09"}, {"dv": "PESHAWAR", "d": "NOWSHERA", "t": "NOWSHERA", "u": "GANDHERI", "c": "33202017", "on": "2024-09"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "MULAZAI", "c": "36302007", "on": "2024-09"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DARAZINDA", "u": "MORGA", "c": "36008005", "on": "2024-09"}, {"dv": "KOHAT", "d": "KOHAT", "t": "DARRA ADAM KHEL", "u": "PAYA", "c": "35003007", "on": "2024-09"}, {"dv": "PESHAWAR", "d": "MOHMAND", "t": "SAFI LAKARO", "u": "SANDO KHEL", "c": "33507025", "on": "2024-08"}, {"dv": "KOHAT", "d": "ORAKZAI", "t": "CENTRAL ORAKZAI", "u": "TATANI ESAKHEL", "c": "35301025", "on": "2023-10"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "GHURA BAKA KHEL", "c": "36103002", "on": "2023-09"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "GHURA BAKA KHEL", "c": "36103002", "on": "2023-07"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "GHURA BAKA KHEL", "c": "36103002", "on": "2023-02"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "GHULAM KHAN", "u": "GHULAM KHAN", "c": "36407002", "on": "2022-09"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "RAZMAK", "u": "RAZMAK", "c": "36403023", "on": "2022-08"}, {"dv": "DIKHAN", "d": "WAZIR-S Lower", "t": "SHAKAI", "u": "Mantoi", "c": "36702001", "on": "2022-08"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "GHULAM KHAN", "u": "GHULAM KHAN", "c": "36407002", "on": "2022-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "MARMANDI AZIM", "c": "36203024", "on": "2022-08"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "GHULAM KHAN", "u": "GHULAM KHAN", "c": "36407002", "on": "2022-08"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIRAN SHAH", "u": "MIRAN SHAH 2", "c": "36402043", "on": "2022-06"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "GANDI", "c": "36203014", "on": "2022-06"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 2", "c": "36401033", "on": "2022-06"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 7", "c": "36401038", "on": "2022-06"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 7", "c": "36401038", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIRAN SHAH", "u": "MIRAN SHAH 3", "c": "36402044", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 7", "c": "36401038", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 2", "c": "36401033", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "DOSSALI", "u": "DOSALI 1", "c": "36405001", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 6", "c": "36401037", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIRAN SHAH", "u": "MIRAN SHAH 3", "c": "36402044", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 4", "c": "36401035", "on": "2022-05"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 6", "c": "36401037", "on": "2022-04"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "MIR ALI", "u": "MIR ALI 7", "c": "36401038", "on": "2022-04"}, {"dv": "PESHAWAR", "d": "PESHAWAR", "t": "CITY", "u": "SUFAID DHERI", "c": "33004029", "on": "2020-07"}, {"dv": "DIKHAN", "d": "WAZIR-S Lower", "t": "SHAKAI", "u": "Sangtoi", "c": "36702002", "on": "2020-06"}, {"dv": "BANNU", "d": "BANNU", "t": "MIRYAN", "u": "MAMA KHEL", "c": "36107003", "on": "2020-04"}, {"dv": "DIKHAN", "d": "TANK", "t": "JANDOLA", "u": "KHAISRAY", "c": "36303003", "on": "2020-03"}, {"dv": "KOHAT", "d": "KARAK", "t": "TAKHT-E-NASRATI", "u": "S.G.KHEL", "c": "35103004", "on": "2020-03"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "ABDULKHEL", "c": "36205001", "on": "2020-03"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "BETTANI", "u": "GABBAR BAGH", "c": "36204011", "on": "2020-02"}, {"dv": "DIKHAN", "d": "WAZIR-S Lower", "t": "SHAKAI", "u": "Mantoi", "c": "36702001", "on": "2020-02"}, {"dv": "DIKHAN", "d": "TANK", "t": "JANDOLA", "u": "JANDOLA A", "c": "36303002", "on": "2020-02"}, {"dv": "DIKHAN", "d": "TANK", "t": "JANDOLA", "u": "KHAISRAY", "c": "36303003", "on": "2020-02"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "ABBAKHEL", "c": "36202022", "on": "2020-02"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "ABBAKHEL", "c": "36202022", "on": "2020-02"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2020-01"}, {"dv": "", "d": "LAKKIMRWT", "t": "BETTANI", "u": "GHUNDI HUSSAINKHEL", "c": null, "on": "2020-01"}, {"dv": "", "d": "LAKKIMRWT", "t": "BETTANI", "u": "KOTKA ARAB KHAN", "c": null, "on": "2020-01"}, {"dv": "", "d": "LAKKIMRWT", "t": "BETTANI", "u": "GHUNDI HUSSAINKHEL", "c": null, "on": "2020-01"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "KOTKASHMIR", "c": "36203015", "on": "2020-01"}, {"dv": "KOHAT", "d": "KARAK", "t": "TAKHT-E-NASRATI", "u": "S.G.KHEL", "c": "35103004", "on": "2020-01"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2020-01"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "BEHRAM KHEL", "c": "36205002", "on": "2020-01"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2020-01"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "ABBAKHEL", "c": "36202022", "on": "2020-01"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "TAJAZAI", "c": "36205008", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BIASTKHEL", "c": "36203023", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-12"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DERA ISMAIL KHAN", "u": "KOTLA SAIDAN", "c": "36002013", "on": "2019-12"}, {"dv": "PESHAWAR", "d": "MOHMAND", "t": "BAIZAI", "u": "WARSAK", "c": "33508017", "on": "2019-12"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2019-12"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2019-12"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DERA ISMAIL KHAN", "u": "KURAI", "c": "36002014", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "MAMAKHEL", "c": "36203016", "on": "2019-12"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "MAMAKHEL", "c": "36203016", "on": "2019-12"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-12"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "SIKANDAR KHEL BALLA", "c": "36101033", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "DERATANG", "c": "36202030", "on": "2019-11"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "TATTA", "c": "36302015", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "DERATANG", "c": "36202030", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-11"}, {"dv": "MARDAN", "d": "SWABI", "t": "TOPI", "u": "BATAKARA", "c": "34104001", "on": "2019-11"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "PAROA", "u": "KIRRI SHAMOZAI", "c": "36006007", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "LAKKI", "c": "36202033", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "ABBAKHEL", "c": "36202022", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "TITERKHEL", "c": "36205010", "on": "2019-11"}, {"dv": "BANNU", "d": "BANNU", "t": "KAKKI", "u": "NAR SHUKRULLAH", "c": "36106006", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BIASTKHEL", "c": "36203023", "on": "2019-11"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "LAKKI MARWAT", "u": "DERATANG", "c": "36202030", "on": "2019-11"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "JANI KHEL COLONY", "c": "36102012", "on": "2019-10"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "WARASPOON", "c": "36302016", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "MASHAMANSOOR", "c": "36205006", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "KOTKASHMIR", "c": "36203015", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "KOTKASHMIR", "c": "36203015", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-10"}, {"dv": "DIKHAN", "d": "TANK", "t": "TANK", "u": "PAI", "c": "36302008", "on": "2019-10"}, {"dv": "BANNU", "d": "WAZIR-N", "t": "DATTAKHEL", "u": "DATTA KHEL 1", "c": "36404001", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "PARKHEL TALL", "c": "36203017", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "GHAZNI KHEL", "u": "SALAMANKHEL", "c": "36205011", "on": "2019-10"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "ABUSAMAND BEGOKHE", "c": "36203013", "on": "2019-09"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "SHATAL", "c": "31501030", "on": "2019-09"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "MAMAKHEL", "c": "36203016", "on": "2019-08"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "THAKHTIKHEL", "c": "36203021", "on": "2019-08"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "BAKHMAL AHMAD ZAI", "c": "36203022", "on": "2019-08"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "GHURA BAKA KHEL", "c": "36103002", "on": "2019-08"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "SHATAL", "c": "31501030", "on": "2019-08"}, {"dv": "KOHAT", "d": "HANGU", "t": "THALL", "u": "DALLAN", "c": "35402001", "on": "2019-07"}, {"dv": "PESHAWAR", "d": "CHARSADA", "t": "TANGI", "u": "SHERPAO", "c": "33103010", "on": "2019-07"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "KALAKHEIL", "c": "36101036", "on": "2019-07"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "HINDI KHEL", "c": "36102011", "on": "2019-07"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-07"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-07"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "KOTKASHMIR", "c": "36203015", "on": "2019-07"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "KALAKHEIL", "c": "36101036", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "JANI KHEL COLONY", "c": "36102012", "on": "2019-06"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "HARNAIL", "c": "31501029", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "SAIN TANGA", "c": "36102006", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "MIRYAN", "u": "HAVED LANDIDAK", "c": "36107001", "on": "2019-06"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "HARNAIL", "c": "31501029", "on": "2019-06"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "HARNAIL", "c": "31501029", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "MIRYAN", "u": "LEWAN", "c": "36107002", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "JHANDOO KHEL", "c": "36101018", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "SARDI KHEL", "c": "36103007", "on": "2019-06"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-06"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "HARNAIL", "c": "31501029", "on": "2019-05"}, {"dv": "BANNU", "d": "LAKKIMRWT", "t": "SERAI NAURANG", "u": "MAMAKHEL", "c": "36203016", "on": "2019-05"}, {"dv": "HAZARA", "d": "TORGHAR", "t": "JUDBAH", "u": "HARNAIL", "c": "31501029", "on": "2019-05"}, {"dv": "BANNU", "d": "BANNU", "t": "WAZIR", "u": "JANI KHEL COLONY", "c": "36102012", "on": "2019-05"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "TAKHTI KHEL", "c": "36103008", "on": "2019-05"}, {"dv": "MALAKAND", "d": "SHANGLA", "t": "MARTUNG", "u": "NASRATKHEL", "c": "32605003", "on": "2019-05"}, {"dv": "BANNU", "d": "BANNU", "t": "DOMEL", "u": "BIZEN KHEL 1", "c": "36105003", "on": "2019-05"}, {"dv": "DIKHAN", "d": "DIKHAN", "t": "DERA ISMAIL KHAN", "u": "YARIK", "c": "36002019", "on": "2019-05"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "LALO ZAI", "c": "36101023", "on": "2019-04"}, {"dv": "BANNU", "d": "BANNU", "t": "MIRYAN", "u": "HAVED LANDIDAK", "c": "36107001", "on": "2019-04"}, {"dv": "BANNU", "d": "BANNU", "t": "BAKAKHEL", "u": "GHURA BAKA KHEL", "c": "36103002", "on": "2019-04"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "FATIMA KHEL", "c": "36101012", "on": "2019-04"}, {"dv": "KOHAT", "d": "HANGU", "t": "THALL", "u": "DALLAN", "c": "35402001", "on": "2019-01"}, {"dv": "BANNU", "d": "BANNU", "t": "BANNU", "u": "MIRA KHEL", "c": "36101027", "on": "2019-01"}];
+const ESD = {"ABOTABAD": {"2024": [12, 2], "2025": [12, 6], "2026": [9, 0]}, "BAJOUR": {"2024": [12, 3], "2025": [12, 1], "2026": [9, 0]}, "BANNU": {"2024": [22, 7], "2025": [24, 19], "2026": [18, 13]}, "BATAGRAM": {"2024": [12, 0], "2025": [12, 1], "2026": [9, 0]}, "CHARSADA": {"2024": [12, 1], "2025": [15, 2], "2026": [9, 0]}, "DIKHAN": {"2024": [36, 10], "2025": [36, 11], "2026": [27, 0]}, "DIRLOWER": {"2024": [12, 1], "2025": [12, 1], "2026": [9, 0]}, "HANGU": {"2024": [12, 1], "2025": [12, 0], "2026": [9, 0]}, "KARAK": {"2024": [12, 1], "2025": [12, 0], "2026": [9, 0]}, "KHYBER": {"2024": [6, 0], "2025": [12, 0], "2026": [9, 0]}, "KOHAT": {"2024": [12, 4], "2025": [15, 2], "2026": [9, 1]}, "KURRAM": {"2024": [12, 0], "2025": [9, 0], "2026": [9, 0]}, "LAKKIMRWT": {"2024": [26, 9], "2025": [24, 9], "2026": [18, 3]}, "MANSEHRA": {"2024": [12, 1], "2025": [12, 5], "2026": [9, 0]}, "MARDAN": {"2024": [13, 1], "2025": [12, 1], "2026": [9, 0]}, "NOWSHERA": {"2024": [12, 0], "2025": [15, 0], "2026": [9, 0]}, "PESHAWAR": {"2024": [72, 25], "2025": [72, 21], "2026": [54, 12]}, "SWABI": {"2024": [12, 2], "2025": [15, 2], "2026": [9, 0]}, "SWAT": {"2024": [12, 1], "2025": [12, 2], "2026": [9, 0]}, "TANK": {"2024": [12, 6], "2025": [12, 10], "2026": [9, 0]}, "WAZIR-N": {"2024": [19, 0], "2025": [24, 6], "2026": [18, 5]}, "WAZIR-S Lower": {"2024": [24, 1], "2025": [24, 15], "2026": [18, 1]}, "WAZIR-S Upper": {"2024": [12, 0], "2025": [12, 10], "2026": [9, 1]}};
+const WMETA = {"ref": "2026-10-06", "es_asof": "2026-09-30", "es_years": ["2024", "2025", "2026"], "hist_from": "2019-01", "n": 173, "unmatched": 3};
+const WKM=1.2, WTOP=0.10, WDTOP=6;
+const WPTS=[['uc','Polio case in the UC: last 12 months 4 · 13–24 months 3 · 25–36 months 2',4],['th','Other cases in the same tehsil, last 24 months: 1 → 1 · 2–3 → 2 · 4+ → 3',3],
+ ['ds','Nearest other case UC, last 24 months: under 10 km 3 · 10–25 km 2 · 25–50 km 1',3],['dc','Cases in the district, last 24 months: 1–4 → 1 · 5+ → 2',2],
+ ['d5','Cases in the district, last 5 years: 1–9 → 1 · 10+ → 3',3],['es','District sewage samples positive (this and last year): 50%+ 3 · 20–50% 2 · any 1',3],
+ ['im','Immunity gap = ⑥ risk score without polio-case points: 50%+ 3 · 35–50% 2 · 20–35% 1',3]];
+function esRate(d,yrs){const m=ESD[d]; if(!m)return null; let t=0,q=0; yrs.forEach(y=>{const v=m[y]; if(v){t+=+v[0]||0;q+=+v[1]||0;}}); return t?q/t*100:null;}
+function watchCalc(ref,live){
+ const R=+ref, dy=x=>(R-x)/864e5;
+ const H=WPVH.map(x=>({...x,t0:+new Date(x.on+'-15T12:00:00')})).filter(x=>x.t0<R);
+ const last={},tC={},oC={},dC={},d5={},near=[];
+ H.forEach(x=>{const a=dy(x.t0);
+  if(x.c&&(last[x.c]==null||a<last[x.c]))last[x.c]=a;
+  if(a<=730){const k=x.d+'|'+x.t; tC[k]=(tC[k]||0)+1; if(x.c)oC[x.c]=(oC[x.c]||0)+1; dC[x.d]=(dC[x.d]||0)+1; if(x.c&&UCPT[x.c])near.push([x.c,UCPT[x.c]]);}
+  if(a<=1826)d5[x.d]=(d5[x.d]||0)+1;});
+ const ry=new Date(R).getFullYear(), esY=(WMETA.es_years||[]).filter(y=>+y<ry||(live&&+y===ry)).slice(live?-2:-1);
+ const imm={}; riskAll().forEach(r=>{imm[r.c]=(r.n4===0&&!r.afp)?null:(r.pts-(r.p.wpv||0))/((r.max-5)||1)*100;});
+ return ZD.map(z=>{const c=z.c, P={}, why=[];
+  const la=last[c]; P.uc=la==null?0:la<=365?4:la<=730?3:la<=1095?2:0; if(P.uc)why.push('polio case in UC '+Math.max(1,Math.round(la/30.4))+' months ago');
+  const tn=(tC[z.d+'|'+z.t]||0)-(oC[c]||0); P.th=tn>=4?3:tn>=2?2:tn>=1?1:0; if(P.th)why.push(tn+' other case'+(tn>1?'s':'')+' in tehsil (2 yr)');
+  let dk=null; const pt=UCPT[c]; if(pt)near.forEach(([cc,q])=>{if(cc===c)return; const d=Math.hypot(pt[0]-q[0],pt[1]-q[1])*WKM; if(dk==null||d<dk)dk=d;});
+  P.ds=dk==null?0:dk<10?3:dk<25?2:dk<50?1:0; if(P.ds)why.push('case UC '+Math.round(dk)+' km away');
+  const dn=dC[z.d]||0, n5=d5[z.d]||0; P.dc=dn>=5?2:dn>=1?1:0; P.d5=n5>=10?3:n5>=1?1:0;
+  if(P.dc||P.d5)why.push('district: '+dn+' cases in 2 yr, '+n5+' in 5 yr');
+  const er=esY.length?esRate(z.d,esY):null; P.es=er==null?0:er>=50?3:er>=20?2:er>0?1:0; if(P.es)why.push('sewage '+pc(er)+' positive');
+  const im=imm[c]; P.im=im==null?0:im>=50?3:im>=35?2:im>=20?1:0; if(P.im)why.push('immunity gap '+pc(im));
+  const vir=P.uc+P.th+P.ds+P.dc+P.d5+P.es;
+  return {dv:z.dv,d:z.d,t:z.t,u:z.u,c,sc:vir+P.im,vir,imp:P.im,p:P,la,tn,dk,dn,n5,er,im,noES:!ESD[z.d],why};});
+}
+function watchRank(A){const S=A.slice().sort((a,b)=>b.sc-a.sc||(b.im??-1)-(a.im??-1)||(a.dk??1e9)-(b.dk??1e9)||String(a.u).localeCompare(String(b.u)));
+ const k=Math.round(A.length*WTOP); S.forEach((r,i)=>{r.rk=i+1; r.w=i<k;}); return A;}
+function watchDist(A){const G={}; A.forEach(r=>{(G[r.d]=G[r.d]||[]).push(r);});
+ const D=Object.entries(G).map(([d,rs])=>{const s=rs.map(r=>r.sc).sort((a,b)=>b-a).slice(0,5), r0=rs.slice().sort((a,b)=>a.rk-b.rk)[0];
+  return {d,dv:r0.dv,ds:s.reduce((a,b)=>a+b,0)/s.length,nw:rs.filter(r=>r.w).length,n:rs.length,dn:r0.dn,n5:r0.n5,er:r0.er,noES:r0.noES,top:r0};}).sort((a,b)=>b.ds-a.ds||b.nw-a.nw||a.d.localeCompare(b.d));
+ D.forEach((x,i)=>{x.rk=i+1; x.w=i<WDTOP;}); return D;}
+let _WA=null,_WD=null,_WBT=null,WF='w';
+function watchAll(){if(!_WA){const ref=WMETA.ref?new Date(WMETA.ref+'T12:00:00'):new Date(); _WA=watchRank(watchCalc(ref,true)); _WD=watchDist(_WA);} return _WA;}
+function watchD(){watchAll(); return _WD;}
+function watchBT(){ if(_WBT)return _WBT; const yrs=[...new Set(WPVH.map(x=>+String(x.on).slice(0,4)))].filter(y=>y>=2024).sort();
+ _WBT=yrs.map(y=>{const A=watchRank(watchCalc(new Date(y+'-01-01T00:00:00'),false)), D=watchDist(A), W=new Set(A.filter(r=>r.w).map(r=>r.c)), WD=new Set(D.filter(x=>x.w).map(x=>x.d));
+  const cs=WPVH.filter(x=>+String(x.on).slice(0,4)===y); return {y,n:cs.length,uc:cs.filter(x=>x.c&&W.has(x.c)).length,ds:cs.filter(x=>WD.has(x.d)).length};});
+ return _WBT;}
+function watchBTsum(){const B=watchBT(), n=B.reduce((s,x)=>s+x.n,0), u=B.reduce((s,x)=>s+x.uc,0), d=B.reduce((s,x)=>s+x.ds,0);
+ return {B,n,u,d,yrs:B.length?B[0].y+(B.length>1?'–'+String(B[B.length-1].y).slice(2):''):''};}
+const wMo=r=>r.la==null?'–':Math.max(1,Math.round(r.la/30.4))+' mo';
+const wKm=r=>r.dk==null?'–':Math.round(r.dk)+' km';
+function watchBadge(){const b=el('bW1'); if(b){const n=watchAll().filter(r=>r.w&&matchG(r)).length; b.textContent=n+' UCs';}}
+Object.assign(KX,{wk1:['flag',null,null],wk2:['alert',null,null],wk3:['users',null,null],wk4:['bars',null,null],wk5:['list',null,null]});
+
+function renderHomeWatch(){
+ if(!el('hA8'))return;
+ const A=watchAll(), W=A.filter(r=>r.w), D=watchD(), T=watchBTsum(), bl=W.filter(r=>r.noES).length;
+ el('hW8n').innerHTML=`<b>${fmt(W.length)}</b><small>watch-list<br>UCs (top 10%)</small>`;
+ el('hW8s').textContent='Past cases, nearby cases, sewage and immunity gaps';
+ el('hF8').innerHTML=`<div class="hf"><b>${D.filter(x=>x.w).map(x=>esc(x.d)).join(' · ')}</b>watch districts</div>`+
+  (T.n?`<div class="hf"><b>${T.u} of ${T.n} cases (${pc(T.u/T.n*100)})</b>in ${T.yrs} fell in that year's top-10% UCs (random choice: 10%)</div>`:'');
+ el('hW8t').innerHTML='<div class="hrh">Top watch-list UCs</div>'+W.slice().sort((a,b)=>a.rk-b.rk).slice(0,5).map(r=>`<div class="hrt" title="${esc(r.why.join(' · '))}"><i style="background:#4338ca"></i><span>${esc(r.u)} (${esc(r.d)})</span><b style="color:#3730a3">${r.sc} pts</b></div>`).join('');
+ hAlarm('hA8','Alarm',[[W.length,'watch-list UCs','Top 10% of UCs by polio risk score','watch'],[D.filter(x=>x.w).length,'watch districts','Top 6 districts by watch score','watch'],
+  [bl,'watch UCs without sewage site',`${bl} watch-list UCs are in districts with no environmental sampling site`,'watch']]);
+}
+
+function renderWatch(){
+ const A=watchAll(), R=A.filter(matchG), D=watchD(), T=watchBTsum(), L=lvlOf();
+ const W=R.filter(r=>r.w), kAll=A.filter(r=>r.w).length, ds=new Set(R.map(r=>r.d)), DS=D.filter(x=>ds.has(x.d));
+ const scope=fTeh.value?fTeh.value+' tehsil':fDist.value?fDist.value:fDiv.value?fDiv.value+' division':'KP';
+ el('wHint').innerHTML=`<b>Which UCs and districts most need protection from polio right now.</b> Each UC gets points for signs of virus nearby and for gaps in immunity. The <b>top 10% of KP UCs</b> (${kAll}) form the watch list and the <b>top 6 districts</b> are watch districts. The ranking is province-wide; the filters only change what is shown. The weights were chosen by testing on past years: scoring UCs with data from before each year and checking where that year's cases happened.`+
+  `<div class="rkmeth">${WPTS.map(([k,l,m])=>`<div><span>${esc(l)}</span><b>${m} pts</b></div>`).join('')}</div>`+
+  `<div class="cap" style="margin-top:6px">Sources: EOC line list of WPV cases since ${esc(String(WMETA.hist_from||'2019').slice(0,4))} (${fmt(WMETA.n||0)} KP cases); EOC environmental surveillance by district (${esc((WMETA.es_years||[]).join(', '))}, up to ${esc(WMETA.es_asof||'')}); immunity gap from section ⑥. Scored on ${esc(WMETA.ref||'')}.</div>`;
+ el('wk1').textContent=fmt(W.length); el('wk1s').textContent=scope==='KP'?`top 10% of ${fmt(A.length)} KP UCs`:`of ${kAll} KP watch-list UCs`;
+ const wd=DS.filter(x=>x.w); el('wk2').textContent=fmt(wd.length); el('wk2s').textContent=wd.length?wd.map(x=>x.d).join(', '):'none in this selection';
+ const loc=r=>r.p.uc+r.p.th+r.p.ds>0, vs=R.filter(loc).length; el('wk3').textContent=fmt(vs); el('wk3s').textContent=`${pc(R.length?vs/R.length*100:0)} of UCs shown · case in the UC, tehsil or within 50 km (2 yr)`;
+ el('wk4').textContent=T.n?pc(T.u/T.n*100):'–'; el('wk4s').textContent=T.n?`${T.u} of ${T.n} cases in ${T.yrs} were in that year's top 10% (vs 10% by chance)`:'';
+ const bl=W.filter(r=>r.noES).length; el('wk5').textContent=fmt(bl); el('wk5s').textContent='watch UCs in districts with no sewage site';
+ // chart 1: backtest
+ HC('cw1',{chart:{type:'column'},title:{text:'How well the watch list would have worked'},subtitle:{text:'Scored on 1 January with earlier data only, then compared with that year’s cases'},
+  xAxis:{categories:T.B.map(x=>x.y+(x.y===new Date().getFullYear()?' (to date)':'')+' · '+x.n+' cases')},yAxis:{title:{text:'Cases caught (%)'},max:100},
+  plotOptions:{column:{borderRadius:2,dataLabels:{...dl,format:'{y:.0f}%'}}},tooltip:{shared:true,valueDecimals:0,valueSuffix:'%'},
+  series:[{name:'In top-10% UCs',color:'#4338ca',data:T.B.map(x=>x.n?x.uc/x.n*100:null)},{name:'In top-6 districts',color:'#a5b4fc',data:T.B.map(x=>x.n?x.ds/x.n*100:null)},
+   {type:'line',name:'By chance (10% of UCs)',color:'#94a3b8',dashStyle:'Dash',marker:{enabled:false},dataLabels:{enabled:false},data:T.B.map(()=>10)}]});
+ el('capw1').textContent=T.n?`Overall ${T.u} of ${T.n} cases (${pc(T.u/T.n*100)}) were in the top-10% UCs and ${T.d} (${pc(T.d/T.n*100)}) in the top-6 districts. Weakest year: `+T.B.slice().sort((a,b)=>a.uc/a.n-b.uc/b.n)[0].y+', when the virus moved into areas with few recent cases.':'';
+ // chart 2: watch UCs by area
+ const G={}; W.forEach(r=>G[r[L.key]]=(G[r[L.key]]||0)+1); const g=Object.entries(G).sort((a,b)=>b[1]-a[1]).slice(0,15);
+ el('cw2').style.height=Math.max(300,g.length*26+110)+'px';
+ HC('cw2',{chart:{type:'bar'},title:{text:`Watch-list UCs by ${L.lvl}`},xAxis:{categories:g.map(x=>x[0])},yAxis:{title:{text:'UCs (count)'},allowDecimals:false},legend:{enabled:false},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y}'}}},series:[{name:'Watch-list UCs',color:'#4338ca',data:g.map(x=>x[1])}]});
+ el('capw2').textContent=g.length?`${g[0][0]} has the most watch-list UCs (${g[0][1]}).`:'No watch-list UC in this selection.';
+ // insights
+ const I=[], top=W.slice().sort((a,b)=>a.rk-b.rk);
+ if(W.length)I.push(`<b>${W.length} watch-list UCs in ${esc(scope)}.</b> Highest: `+top.slice(0,4).map(r=>`${esc(r.u)} (${esc(r.d)}, ${r.sc} pts)`).join(', ')+'.');
+ if(wd.length)I.push(`<b>Watch districts:</b> ${wd.map(x=>`${esc(x.d)} (${x.nw} UC${x.nw===1?'':'s'}`+(x.er!=null?`, sewage ${pc(x.er)}`:'')+')').join(', ')}.`);
+ const vo=W.filter(r=>r.imp===0).length, io=W.filter(r=>r.vir<=2&&r.imp>=2).length;
+ if(W.length)I.push(`${W.length-vo} of the watch-list UCs also have an immunity gap; ${vo} are on the list for virus signals alone. ${io?io+' are listed mainly for weak immunity with little recent virus nearby: keep these on routine and SIA quality focus.':''}`);
+ if(bl)I.push(`<b>Blind spots:</b> ${bl} watch-list UC${bl===1?' is':'s are'} in districts with no sewage sampling site (${[...new Set(W.filter(r=>r.noES).map(r=>r.d))].slice(0,5).map(esc).join(', ')}). Consider adding sites or strengthening AFP active search there.`);
+ if(T.n)I.push(`Tested on past years, the top 10% of UCs held ${pc(T.u/T.n*100)} of the next year's cases, about ${(T.u/T.n/0.10).toFixed(1)}× better than chance, and the top 6 districts held ${pc(T.d/T.n*100)}. A case can still appear outside the list. (Immunity data are recent, so earlier years are tested mostly on the virus signals.)`);
+ el('wIns').innerHTML=I.length?I.map(x=>'<li>'+x+'</li>').join(''):'<li>No UCs in this selection.</li>';
+ // district table
+ const pcN=v=>v==null?'–':pc(v);
+ drawTable('tWD',[{k:'rk',l:'Rank',n:1,f:x=>x.w?`<b style="color:#3730a3">${x.rk}</b>`:x.rk},{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'+(x.w?' <span class="tag" style="background:#e0e7ff;color:#3730a3">Watch</span>':'')},{k:'ds',l:'Watch score',n:1,f:x=>x.ds.toFixed(1)},
+  {k:'nw',l:'Watch-list UCs',n:1,f:x=>x.nw?'<b>'+x.nw+'</b> of '+x.n:'0 of '+x.n},{k:'dn',l:'Cases 2 yr',n:1,f:x=>x.dn?'<b class="dn">'+x.dn+'</b>':'0'},{k:'n5',l:'Cases 5 yr',n:1},
+  {k:'er',l:'Sewage positive',n:1,sv:x=>x.er??-1,f:x=>x.noES?'<span class="cnt">No sewage site</span>':pcN(x.er)},{k:'top',l:'Highest UC',sv:x=>x.top.rk,f:x=>esc(x.top.u)+' <span class="cnt">#'+x.top.rk+'</span>'}],DS,'rk',1);
+ el('cntWD').textContent=DS.length+' district'+(DS.length===1?'':'s');
+ // UC table
+ const PL=[['w','Watch list'],['v','Case nearby'],['all','All UCs']];
+ el('wPills').innerHTML=PL.map(([k,l])=>`<button data-f="${k}" class="${WF===k?'on':''}">${l} (${k==='w'?W.length:k==='v'?vs:R.length})</button>`).join('');
+ el('wPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{WF=b.dataset.f;renderWatch();});
+ const rows=R.filter(r=>WF==='w'?r.w:WF==='v'?loc(r):true);
+ drawTable('tWU',[{k:'rk',l:'KP rank',n:1,f:x=>x.w?`<b style="color:#3730a3">${x.rk}</b>`:x.rk},{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},
+  {k:'sc',l:'Score',n:1,f:x=>`<b style="color:${x.w?'#3730a3':'inherit'}">${x.sc}</b>`},{k:'vir',l:'Virus pts',n:1},{k:'imp',l:'Immunity pts',n:1},
+  {k:'la',l:'Last case in UC',n:1,sv:x=>x.la??1e9,f:wMo},{k:'dk',l:'Nearest case',n:1,sv:x=>x.dk??1e9,f:wKm},{k:'tn',l:'Tehsil cases 2 yr',n:1,f:x=>x.tn||''},
+  {k:'er',l:'Sewage +',n:1,sv:x=>x.er??-1,f:x=>x.noES?'<span class="cnt">no site</span>':pcN(x.er)},{k:'im',l:'Immunity gap',n:1,sv:x=>x.im??-1,f:x=>pcN(x.im)},
+  {k:'why',l:'Why it scores',ns:1,f:x=>esc(x.why.join(' · '))}],rows,'rk',1);
+ el('cntW').textContent=rows.length+' UC'+(rows.length===1?'':'s');
+ const r1=v=>v==null?'':Math.round(v*10)/10;
+ el('btnWCsv').onclick=()=>csvDownload('Polio_watch_list_'+_slug()+'.csv',['KP rank','On watch list','Division','District','Tehsil','UC','UC code','Score','Virus points','Immunity points','Months since last case in UC','Nearest case UC (km)','Other cases in tehsil (2 yr)','District cases (2 yr)','District cases (5 yr)','District sewage positive %','Sewage site','Immunity gap %','Why it scores'],
+  R.slice().sort((a,b)=>a.rk-b.rk).map(x=>[x.rk,x.w?'Yes':'',x.dv,x.d,x.t,x.u,x.c,x.sc,x.vir,x.imp,x.la==null?'':Math.round(x.la/30.4),x.dk==null?'':Math.round(x.dk),x.tn,x.dn,x.n5,r1(x.er),x.noES?'No':'Yes',r1(x.im),x.why.join('; ')]));
+}
+
+// ---------- Home map: watch layer ----------
+function hmWatch(){
+ const svg=el('hMap'), tip=el('hMTip'), A=watchAll(), D=watchD(), by={}; D.forEach(x=>by[x.d]=x);
+ const col=n=>n>=11?'#312e81':n>=6?'#4f46e5':n>=3?'#818cf8':n>=1?'#c7d2fe':'#eef2f7', bk=n=>n>=11?4:n>=6?3:n>=3?2:n>=1?1:0, C=[0,0,0,0,0];
+ const showTip=(ev,html)=>{const r=svg.parentNode.getBoundingClientRect();tip.innerHTML=html;let lx=ev.clientX-r.left+14,ly=ev.clientY-r.top+14;if(lx>r.width-230)lx=ev.clientX-r.left-240;tip.style.left=lx+'px';tip.style.top=ly+'px';tip.style.opacity=1;};
+ const hide=()=>{tip.style.opacity=0;svg.classList.remove('hov');};
+ svg.querySelectorAll('path').forEach(pa=>{const d=pa.dataset.d, g=by[d], n=g?g.nw:0; C[bk(n)]++; pa.style.fill=col(n); pa.classList.remove('nd');
+  pa.onmousemove=ev=>{svg.classList.add('hov');showTip(ev,`<b>${esc(d)}</b>${g&&g.w?' · watch district':''}<br><span class="v" style="color:#c7d2fe">${n} watch-list UC${n===1?'':'s'}</span><br>${g?`District rank ${g.rk} of ${D.length} · ${g.dn} cases in 2 yr · ${g.noES?'no sewage site':'sewage '+(g.er==null?'–':pc(g.er))}`:''}<br><i style="opacity:.7">Click to open details</i>`);};
+  pa.onmouseleave=hide; pa.onclick=()=>hmGo(d);});
+ const NS='http://www.w3.org/2000/svg', gg=document.createElementNS(NS,'g'); gg.id='hMk'; svg.appendChild(gg);
+ const ref=WMETA.ref?+new Date(WMETA.ref+'T12:00:00'):Date.now(), rc=new Set(WPVH.filter(x=>x.c&&UCPT[x.c]&&(ref-+new Date(x.on+'-15T12:00:00'))/864e5<=730).map(x=>x.c));
+ rc.forEach(c=>{const pt=UCPT[c], q=document.createElementNS(NS,'circle'); q.setAttribute('cx',pt[0]); q.setAttribute('cy',pt[1]); q.setAttribute('r',5.2); q.setAttribute('class','wcase'); gg.appendChild(q);});
+ A.filter(r=>r.w&&UCPT[r.c]).sort((a,b)=>b.rk-a.rk).forEach(r=>{const pt=UCPT[r.c], c=document.createElementNS(NS,'circle');
+  c.setAttribute('cx',pt[0]); c.setAttribute('cy',pt[1]); c.setAttribute('r',r.rk<=30?3.6:2.6); c.setAttribute('class','wdot'); c.setAttribute('fill',r.rk<=30?'#1e1b4b':'#6366f1');
+  c.onmousemove=ev=>showTip(ev,`<b>${esc(r.u)}</b> · ${esc(r.d)}<br><span class="v" style="color:#c7d2fe">KP rank ${r.rk} · ${r.sc} pts</span><br>${esc(r.why.slice(0,4).join(' · '))}`); c.onmouseleave=hide; c.onclick=()=>hmGo(r.d); gg.appendChild(c);});
+ const W=A.filter(r=>r.w);
+ el('hMTtl').innerHTML=`Polio risk watch list<small>${W.length} watch-list UCs · dots: dark = top 30 · rings = UCs with a case in the last 2 years</small>`;
+ const rows=[[4,'11 or more watch-list UCs',11],[3,'6–10',6],[2,'3–5',3],[1,'1–2',1],[0,'None',0]];
+ el('hMLeg').innerHTML=rows.map(([k,l,v])=>`<div><i style="background:${col(v)};${k?'':'border:1px solid #cbd5e1'}"></i>${l}<b>${C[k]}</b></div>`).join('')+
+  `<div><i style="background:#1e1b4b;border-radius:50%;width:11px;height:11px;margin:0 2px"></i>Top-30 UC<b>${W.filter(r=>r.rk<=30&&UCPT[r.c]).length}</b></div>`+
+  `<div><i style="border:2px solid #0f172a;border-radius:50%;width:10px;height:10px;margin:0 2px;background:transparent"></i>Case in last 2 years<b>${rc.size}</b></div>`;
+ el('hMLh').textContent='Watch districts (ranked)';
+ el('hMLow').innerHTML=D.slice(0,8).map(g=>`<li data-d="${esc(g.d)}"><i style="background:${col(g.nw)}"></i><span>${g.rk}. ${esc(g.d)}${g.w?' <b style="color:#3730a3">watch</b>':''}</span><b>${g.nw}</b></li>`).join('');
+ el('hMLow').querySelectorAll('li').forEach(li=>{const pa=svg.querySelector(`path[data-d="${CSS.escape(li.dataset.d)}"]`);
+  li.onmouseenter=()=>{if(pa){pa.classList.add('hl');pa.parentNode.insertBefore(pa,gg);}}; li.onmouseleave=()=>pa&&pa.classList.remove('hl'); li.onclick=()=>hmGo(li.dataset.d);});
+}
+
+// briefs + deck: watch data and an action line
+{const _cb=collectBrief; collectBrief=function(level,val){const B=_cb(level,val); const inS=r=>level==='kp'||(level==='dv'?r.dv===val:r.d===val);
+ const A=watchAll().filter(inS), D=watchD(); B.watch={A,W:A.filter(r=>r.w).sort((a,b)=>a.rk-b.rk),D:D.filter(x=>level==='kp'||(level==='dv'?x.dv===val:x.d===val)),ND:D.length,T:watchBTsum()}; return B;};}
+const watchAction=X=>{if(!X||!X.W.length)return ''; const t=X.W.slice(0,3).map(r=>r.u+', '+r.d).join('; ');
+ return `Polio watch list: keep AFP active search, sewage sampling and catch-up focused on the ${X.W.length} watch-list UC${X.W.length>1?'s':''} (${t}).`;};
+{const _ba=briefActions; briefActions=function(B){const A=_ba(B), t=watchAction(B.watch); if(!t)return A; let i=A.findIndex(x=>!/^Confirmed polio|^Follow up the|^Risk:/.test(x)); if(i<0)i=A.length; A.splice(i,0,t); return A.slice(0,10);};}
+function watchSlide(s,X,lvlName,K){
+ const {kpis,table,note,F,TXT,RED,n0,p1}=K;
+ const IND='4338CA', cut=(t,n)=>{t=t==null?'':String(t);return t.length>n?t.slice(0,n-1)+'…':t;}, T=X.T;
+ const dsN=X.D.filter(x=>x.w).length, cases=X.D.reduce((a,x)=>a+x.dn,0), es=X.D.filter(x=>x.er!=null);
+ kpis(s,[{l:'Watch-list UCs',v:n0(X.W.length),vc:IND,s:'in the KP top 10%'},{l:'Watch districts',v:n0(dsN),vc:IND,s:X.D.length===1?'district rank '+X.D[0].rk+' of '+X.ND:'KP top 6'},
+  {l:'Cases, last 2 yr',v:n0(cases),vc:cases?RED:null,s:'in this area'},{l:'Sewage positive',v:es.length?p1(es.reduce((a,x)=>a+x.er,0)/es.length):'–',s:es.length?'district average':'no sewage site'},
+  {l:'Backtest',v:T.n?p1(T.u/T.n*100):'–',vc:'15803D',s:T.n?T.u+' of '+T.n+' cases caught':''}],IND,1.4);
+ const rows=(X.W.length?X.W:X.A.slice().sort((a,b)=>a.rk-b.rk)).slice(0,9);
+ s.addText(X.W.length?'Watch-list UCs':'Highest-ranked UCs (none in the KP top 10%)',{x:0.5,y:2.9,w:8.6,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ table(s,['District','UC','KP rank','Score','Last case','Nearest case','Why it scores'],rows.map(r=>[cut(r.d,13),cut(r.u,20),n0(r.rk),n0(r.sc),wMo(r),wKm(r),cut(r.why.slice(0,2).join('; '),34)]),
+  {x:0.5,y:3.28,w:8.6,colW:[1.2,1.6,0.75,0.65,0.8,0.9,2.7],col:IND,fs:9,rh:0.3,empty:'No UCs in this area.'});
+ s.addText('District watch ranking',{x:9.35,y:2.9,w:3.48,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ table(s,[lvlName||'District','Rank','Watch UCs','Sewage +'],X.D.slice(0,9).map(x=>[cut(x.d,15),n0(x.rk),n0(x.nw),x.noES?'no site':(x.er==null?'–':p1(x.er))]),{x:9.35,y:3.28,w:3.48,colW:[1.35,0.6,0.78,0.75],col:IND,fs:9,rh:0.3});
+ note(s,'Watch list, not a prediction: points for past and nearby polio cases, district cases, sewage positives and immunity gaps; top 10% of KP UCs. Tested on '+T.yrs+': '+T.u+' of '+T.n+' cases were in that year\'s top 10%.',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
+}
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
