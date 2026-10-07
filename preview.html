@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:01</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:09</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -639,7 +639,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 15:01</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 15:09</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -5244,7 +5244,7 @@ function closeAll(){ if(_CL)return _CL;
    else{ if(prev&&last.stp!=null&&prev.stp!=null&&prev.stp-last.stp>=0.5)imp++;
     const lqs=R.filter(x=>x.lq); if(lqs.length>=2&&lqRank(lqs[lqs.length-1].lq)>lqRank(lqs[lqs.length-2].lq))imp++;
     const zs=R.filter(x=>x.zc!=null); if(zs.length>=2&&zs[zs.length-1].zc-zs[zs.length-2].zc>=5)imp++;
-    st=(last.ok||imp>=2)?'cg':'op';}
+    st=imp>=2?'cg':'op';}
    why=last.fail.slice();}
   const g=GP[c]||{};
   return {dv:z.dv,d:z.d,t:z.t,u:z.u,c,R,n,st,imp,why,p3,p3ov:p3!=null&&p3>110,last:last||null,tier:g.tier||'ND',gi:g.gi};});
@@ -5268,9 +5268,9 @@ function igOutcomes(){const Y={}; WPVH.forEach(x=>{const y=String(x.on).slice(0,
  const E={}; Object.values(ESD).forEach(d=>Object.entries(d).forEach(([y,v])=>{const g=E[y]=E[y]||[0,0]; g[0]+=v[0]; g[1]+=v[1];}));
  return {ys,Y,E,es:Object.keys(E).sort()};}
 function renderClosed(){ const S=closeStats(matchG), C=S.C, wd=S.wd||1, inE=gpInE(), mc=(MISM.camps||[]).slice().reverse();
- el('igHint').innerHTML=`A UC's gap is <b>closed</b> when it meets every condition in <b>two campaigns in a row</b> (the campaigns it took part in): children still missed under 2% of target, its LQAS lot passed (where assessed), at least 90% of its zero-dose children covered by the next round (where reported) and routine Penta-3 at least 90%. <b>Closing</b> = met the rule in the latest campaign only, or improving on at least 2 indicators. <b>Reopened</b> = was closed and now fails. <b>Open</b> = everything else. Campaigns: ${mc.map(esc).join(' → ')}. Follows the filters.`;
+ el('igHint').innerHTML=`A UC's gap is <b>closed</b> when it meets every condition in <b>two campaigns in a row</b> (the campaigns it took part in): children still missed under 2% of target, its LQAS lot passed (where assessed), at least 90% of its zero-dose children covered by the next round (where reported) and routine Penta-3 at least 90%. <b>Closing</b> = not yet closed but improving on at least 2 indicators (still missed down 0.5+ points, LQAS result better, zero-dose covered up 5+ points). A UC that met every condition in the latest campaign only is still <b>Open</b> until it meets them again next round. <b>Reopened</b> = was closed and now fails. <b>Open</b> = everything else. Campaigns: ${mc.map(esc).join(' → ')}. Follows the filters.`;
  el('ig1').textContent=fmt(C.cl); el('ig1s').textContent=`${pc(C.cl/wd*100)} of ${fmt(S.wd)} UCs with data`;
- el('ig2').textContent=fmt(C.cg); el('ig2s').textContent=`${pc(C.cg/wd*100)} · met the rule once, or improving`;
+ el('ig2').textContent=fmt(C.cg); el('ig2s').textContent=`${pc(C.cg/wd*100)} · improving on 2+ indicators`;
  el('ig3').textContent=fmt(C.op); el('ig3s').textContent=`${pc(C.op/wd*100)} of UCs with data`;
  el('ig4').textContent=fmt(C.ro); el('ig4s').textContent='were closed, now failing again';
  el('ig5').textContent=S.top&&S.top[1]?CL_FS[S.top[0]]:'–'; el('ig5s').textContent=S.top&&S.top[1]?`${fmt(S.top[1])} open or reopened UCs fail on ${CL_F[S.top[0]]}`:'';
@@ -5415,7 +5415,7 @@ async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; ppt
   K.note(s,'Stand-out cause = at least 5 points above the KP mix. Elsewhere children away dominate: plan revisits and migrant tracking.',{x:7.0,y:6.55,w:5.8,h:0.35,fs:9});}
  // 7 closed status
  {const s=K.base('③ Has the programme closed the gap?','Closed = meets every condition in two campaigns in a row');
-  K.kpis(s,[{l:'Closed',v:n0(C.cl),s:p1(C.cl/wd*100)+' of UCs with data',c:GRN,vc:GRN},{l:'Closing',v:n0(C.cg),s:'met once, or improving',c:'84CC16'},{l:'Open',v:n0(C.op),c:RED,vc:RED},{l:'Reopened',v:n0(C.ro),s:'were closed, now failing',c:'7F1D1D'},{l:'Main blocker',v:CS.top&&CS.top[1]?CL_FS[CS.top[0]]:'–',s:CS.top&&CS.top[1]?fmt(CS.top[1])+' UCs':'',c:AMB}],1.35);
+  K.kpis(s,[{l:'Closed',v:n0(C.cl),s:p1(C.cl/wd*100)+' of UCs with data',c:GRN,vc:GRN},{l:'Closing',v:n0(C.cg),s:'improving on 2+ indicators',c:'84CC16'},{l:'Open',v:n0(C.op),c:RED,vc:RED},{l:'Reopened',v:n0(C.ro),s:'were closed, now failing',c:'7F1D1D'},{l:'Main blocker',v:CS.top&&CS.top[1]?CL_FS[CS.top[0]]:'–',s:CS.top&&CS.top[1]?fmt(CS.top[1])+' UCs':'',c:AMB}],1.35);
   const D=CS.G.slice().sort((a,b)=>(b.op+b.ro)-(a.op+a.ro)).slice(0,14);
   K.bars(s,D.map(g=>g.k),['ro','op','cg','cl'].map(k=>[CL_ST[k][0],D.map(g=>g[k]||0)]),{x:0.5,y:2.85,w:7.4,h:4.05,stack:true,title:'UC status by district (most open first)',cols:['7F1D1D','DC2626','84CC16','15803D'],vt:'UCs'});
   const F=Object.entries(CS.F).sort((a,b)=>b[1]-a[1]); K.bullets(s,['What keeps open and reopened UCs from closing:',...F.map(([k,v])=>`${CL_F[k]}: ${fmt(v)} UCs`)],{x:8.2,y:2.95,w:4.6,h:3.9,fs:12});}
@@ -5437,7 +5437,7 @@ async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; ppt
  {const s=K.base('Method and limits','How the answers are calculated');
   K.bullets(s,['Where: per UC, five layers (still missed after the campaign, zero-dose not covered, never Penta-1, Penta-1→3 dropout, still refusing) scored red/amber/green; gap index = points ÷ points possible. Priority 1 = gap index 50%+ with polio risk (watch list UC or watch district).',
    'Why: reasons from ICM monitors (40%), LQAS (40%) and admin data after catch-up (20%) grouped into access, team, demand and mobility; the stand-out cause (5+ points above KP) sets the fix. Data problems are flagged separately.',
-   'Closed: every condition met in two campaigns in a row: still missed under 2% of target, LQAS passed (where assessed), 90%+ zero-dose covered (where reported), Penta-3 90%+. Closing = met once or improving on 2+ indicators. Reopened = was closed, now fails.',
+   'Closed: every condition met in two campaigns in a row: still missed under 2% of target, LQAS passed (where assessed), 90%+ zero-dose covered (where reported), Penta-3 90%+. Closing = not yet closed but improving on at least 2 indicators (still missed down 0.5+ pts, LQAS result better, ZD covered up 5+ pts). Reopened = was closed, now fails.',
    'Limits: UC-level estimates, not named children (no shared child ID across IDIMS, EOC and EPI-MIS). Routine targets are unreliable in some UCs (over 110%). Only 3 campaigns of 2026 history; SNIDs cover part of KP. "Closed" is a programme measure, not measured population immunity.'],{x:0.5,y:1.35,w:12.3,h:5.5,fs:13});}
  return pptx;}
 async function runIGB(scope,btn){const st=el('igbStatus'); btn.disabled=true; st.textContent='Preparing the immunity gap brief…';
