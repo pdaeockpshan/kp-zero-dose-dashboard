@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:31</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:36</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -625,7 +625,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 14:31</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 14:36</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -4740,7 +4740,7 @@ function hubBadges(){ try{ const S=cqSum(cqDist(CQI).R), bs=(id,t)=>{const e=el(
 {const _rd=render; render=function(){_rd(); hubBadges();};}
 
 // ---------- Map: indicator dropdown, district names, PNG download ----------
-const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)'],['why','Why children are missed: main root cause']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
+const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)'],['why','Why children are missed: stand-out cause']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
  ['Routine EPI',EAG.map(a=>['epi:'+a.k,a.l+' coverage'])],
  ['Campaigns',[['perf','Campaign performance (good / average / poor / needs focus)'],['pre','Pre-campaign readiness'],['icm','ICM recall coverage'],['lq','LQAS lots passed'],['mis','Children still missed after the campaign'],['ref','Children still refusing']]],
  ['Surveillance',[['afp:n','Zero-dose AFP cases (number)'],['afp:p','Zero-dose share of all AFP cases'],['surv','AFP surveillance sensitivity'],['es','Sewage samples positive'],['watch','Polio risk watch list']]],
@@ -5127,14 +5127,17 @@ function whyDist(ci){ if(_WHY[ci])return _WHY[ci]; const X=cqDist(ci), C=critSta
   const dbad=(dq!=null&&dq<70)||r.F.some(f=>f[1]==='r');
   const dis=M.icm&&M.lq?Math.max(...WC.map(([k])=>Math.abs(M.icm[k]-M.lq[k]))):null;
   return {d:r.d,dv:r.dv,M,B,top:B?B.top:null,sig,dq,dbad,dis,st:r.m?r.m.st:null,stp:r.stp,cls:r.cls,lqn:r.l?r.l.n:0,lqt:r.l?r.l.tt:0};});
- _WHY[ci]={X,R}; return _WHY[ci];}
+ const KB=whyTot(X.R).B; R.forEach(r=>{if(!r.B||!KB){r.so=r.top;r.ex=null;return;} r.ex={}; WC.forEach(([k])=>r.ex[k]=r.B[k]-KB[k]); const k2=WC.map(x=>x[0]).sort((a,b)=>r.ex[b]-r.ex[a])[0]; r.so=r.ex[k2]>=5?k2:r.top; r.soEx=r.ex[k2];});
+ _WHY[ci]={X,R,KB}; return _WHY[ci];}
 function whyTot(R){const T={}; WSRC.forEach(([k])=>T[k]={acc:0,team:0,dem:0,mob:0,n:0});
  R.forEach(r=>[['icm',r.i],['lq',r.l],['adm',r.m]].forEach(([k,x])=>{const o=whyRaw(k,x); if(o){WC.forEach(([c])=>T[k][c]+=o[c]); T[k].n+=o.n;}}));
  const N={}; WSRC.forEach(([k])=>N[k]=wNorm(T[k])); return {T,N,B:wBlend(N)};}
 function whyUC(ci){const X=cqDist(ci), L={}, A={}; LQR.filter(x=>x.ci===X.lqi).forEach(x=>L[x.c]=x); misHyd().filter(r=>r.d&&r.ci===X.mi).forEach(r=>A[r.c]=r);
- return gapAll().filter(g=>g.tier==='P1'||g.tier==='P2').map(g=>{const l=L[g.c], a=A[g.c];
+ const U=gapAll().filter(g=>g.tier==='P1'||g.tier==='P2').map(g=>{const l=L[g.c], a=A[g.c];
   const M={lq:l&&l.tt>=3?wNorm(whyRaw('lq',l)):null, adm:a&&misSt(a)>=10?wNorm(whyRaw('adm',{slo:a.slo,srf:a.srf,sna:a.sna,st:misSt(a)})):null};
-  const B=wBlend(M,[['lq','',0.6],['adm','',0.4]]); return Object.assign({},g,{lq:l||null,mix:B,top:B?B.top:null,lr:l?l.r:null,src:[M.lq?'LQAS':'',M.adm?'admin':''].filter(Boolean).join(' + ')});});}
+  const B=wBlend(M,[['lq','',0.6],['adm','',0.4]]); return Object.assign({},g,{lq:l||null,mix:B,top:B?B.top:null,lr:l?l.r:null,src:[M.lq?'LQAS':'',M.adm?'admin':''].filter(Boolean).join(' + ')});});
+ const mx=U.filter(u=>u.mix), N={}; WC.forEach(([k])=>N[k]=mx.length?mx.reduce((a,u)=>a+u.mix[k],0)/mx.length:0);
+ U.forEach(u=>{if(!u.mix){u.so=null;return;} const k2=WC.map(x=>x[0]).sort((a,b)=>(u.mix[b]-N[b])-(u.mix[a]-N[a]))[0]; u.so=u.mix[k2]-N[k2]>=10?k2:u.top;}); return U;}
 Object.assign(KX,{wy1:['search',null,null],wy2:['users',null,'cpost'],wy3:['ban',null,'mis'],wy4:['clock',null,'cicm'],wy5:['alert',null,'crit']});
 TABICO.why='bulb';
 function renderWhy(){ cqSel(); const W=whyDist(CQI), inD=crInD(), R=W.R.filter(r=>inD(r.d)), lab=W.X.C?W.X.C.l:'', K=whyTot(W.X.R.filter(r=>inD(r.d))), N=K.N, B=K.B;
@@ -5152,38 +5155,38 @@ function renderWhy(){ cqSel(); const W=whyDist(CQI), inD=crInD(), R=W.R.filter(r
  el('cwy2').style.height=Math.max(340,G.length*22+120)+'px';
  HC('cwy2',{chart:{type:'bar'},title:{text:'Root-cause mix by district (sources combined)'},subtitle:{text:'Districts with the most children still missed first'},xAxis:{categories:G.map(r=>r.d)},yAxis:{max:100,title:{text:'Share of missed children (%)'}},plotOptions:{bar:{stacking:'percent'}},tooltip:{shared:true,valueSuffix:'%',valueDecimals:0},
   series:WC.map(([k,l,c])=>({name:l,color:c,data:G.map(r=>+r.B[k].toFixed(1))}))});
- const cnt={}; R.forEach(r=>{if(r.top)cnt[r.top]=(cnt[r.top]||0)+1;});
- el('capwy2').textContent=Object.keys(cnt).length?'Main reason by district: '+WC.filter(([k])=>cnt[k]).map(([k,l])=>l.toLowerCase()+' '+cnt[k]).join(' · ')+'.':'';
- el('capWyM').innerHTML='The main reason is the largest share in the combined mix. "Contributing signals" in the table come from pre-campaign readiness and ICM (for example microplans not validated, teams not trained, few female members) and help choose the fix.';
- el('wyFix').innerHTML=[...WC.map(x=>x[0]),'data'].map(k=>{const L=k==='data'?R.filter(r=>r.dbad):R.filter(r=>r.top===k); return `<div class="pcbox" style="--pc:${WCK[k][2]}"><h4>${esc(WCK[k][1])}</h4><div class="pn">${L.length}</div><div class="pl">${L.length?(k==='data'?'districts flagged: ':'main reason in: ')+L.map(r=>esc(r.d)).join(', '):'No district'}</div><div class="fx"><b>Fix:</b> ${esc(WFIX[k])}</div></div>`;}).join('');
+ const cnt={}; R.forEach(r=>{if(r.so)cnt[r.so]=(cnt[r.so]||0)+1;});
+ el('capwy2').textContent=Object.keys(cnt).length?'Stand-out cause by district: '+WC.filter(([k])=>cnt[k]).map(([k,l])=>l.toLowerCase()+' '+cnt[k]).join(' · ')+'.':'';
+ el('capWyM').innerHTML='<b>Children away are the biggest group almost everywhere</b>, so each district also gets a <b>stand-out cause</b>: the root cause whose share is at least 5 points above the KP average. The stand-out cause drives the recommended fix; if nothing stands out, the main reason is used. The main reason is the largest share in the combined mix. "Contributing signals" in the table come from pre-campaign readiness and ICM (for example microplans not validated, teams not trained, few female members) and help choose the fix.';
+ el('wyFix').innerHTML=[...WC.map(x=>x[0]),'data'].map(k=>{const L=k==='data'?R.filter(r=>r.dbad):R.filter(r=>r.so===k); return `<div class="pcbox" style="--pc:${WCK[k][2]}"><h4>${esc(WCK[k][1])}</h4><div class="pn">${L.length}</div><div class="pl">${L.length?(k==='data'?'districts flagged: ':'stand-out cause in: ')+L.map(r=>esc(r.d)).join(', '):'No district'}</div><div class="fx"><b>Fix:</b> ${esc(WFIX[k])}</div></div>`;}).join('');
  drawTable('tWhyD',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'cls',l:'Campaign class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'st',l:'Still missed',n:1,sv:x=>x.st??-1,f:x=>x.st==null?'–':fmt(x.st)+` <small>${pc(x.stp)}</small>`},
-  {k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>wTag(x.top)+(x.dbad?' '+wTag('data'):'')},{k:'mix',l:'Mix (access · team · demand · mobility)',ns:1,f:x=>wBar(x.B)},
+  {k:'so',l:'Stand-out cause',sv:x=>x.so||'z',f:x=>wTag(x.so)+(x.dbad?' '+wTag('data'):'')+(x.so&&x.ex&&x.so!==x.top?` <small>+${Math.round(x.ex[x.so])} pts vs KP</small>`:'')},{k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>x.top?esc(WCK[x.top][1].split(' (')[0])+' '+Math.round(x.B[x.top])+'%':'–'},{k:'mix',l:'Mix (access · team · demand · mobility)',ns:1,f:x=>wBar(x.B)},
   {k:'src',l:'Sources',ns:1,f:x=>WSRC.filter(([k])=>x.M[k]).map(([k])=>({icm:'ICM',lq:'LQAS',adm:'admin'})[k]).join(' + ')||'–'},
   {k:'dis',l:'ICM vs LQAS',n:1,sv:x=>x.dis??-1,f:x=>x.dis==null?'–':x.dis>=30?`<b style="color:#b45309">disagree (${Math.round(x.dis)} pts)</b>`:'agree'},
   {k:'sig',l:'Contributing signals',ns:1,f:x=>x.sig.map(([k,t])=>`<span class="wsig ${k==='data'?'data':''}">${esc(t)}</span>`).join('')},
-  {k:'fx',l:'Recommended fix',ns:1,f:x=>x.top?esc(WFIXS[x.top])+(x.dbad?'; '+esc(WFIXS.data).toLowerCase():''):'–'}],R,'st',-1);
+  {k:'fx',l:'Recommended fix',ns:1,f:x=>x.so?esc(WFIXS[x.so])+(x.dbad?'; '+esc(WFIXS.data).toLowerCase():''):'–'}],R,'st',-1);
  el('cntWYD').textContent=R.length+' districts';
  el('capWYD').textContent=`Sources for ${lab}: EOC ICM (district), EOC post-campaign LQAS (UC lots), EOC coverage summary (still away, still refusing, left over after catch-up), pre-campaign indicators and the critical review. "Left over" children are counted under access. Districts with too few missed children in a source (under 20 in ICM or admin, under 5 in LQAS) use the other sources only.`;
- el('btnWYDcsv').onclick=()=>cqCSV('Why_missed_districts_'+lab,['District','Division','Campaign class','Still missed','Main reason','Access %','Team %','Demand %','Mobility %','Sources','ICM vs LQAS gap (pts)','Data problem','Contributing signals','Recommended fix'],
-  R.map(r=>[r.d,r.dv,CLS[r.cls][0],r.st,r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.B?rnd(r.B[k],0):''),WSRC.filter(([k])=>r.M[k]).map(([k])=>k).join('+'),rnd(r.dis,0),r.dbad?'Yes':'',r.sig.map(s=>s[1]).join('; '),r.top?WFIXS[r.top]+(r.dbad?'; '+WFIXS.data:''):'']));
+ el('btnWYDcsv').onclick=()=>cqCSV('Why_missed_districts_'+lab,['District','Division','Campaign class','Still missed','Stand-out cause','Main reason','Access %','Team %','Demand %','Mobility %','Sources','ICM vs LQAS gap (pts)','Data problem','Contributing signals','Recommended fix'],
+  R.map(r=>[r.d,r.dv,CLS[r.cls][0],r.st,r.so?WCK[r.so][1]:'',r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.B?rnd(r.B[k],0):''),WSRC.filter(([k])=>r.M[k]).map(([k])=>k).join('+'),rnd(r.dis,0),r.dbad?'Yes':'',r.sig.map(s=>s[1]).join('; '),r.so?WFIXS[r.so]+(r.dbad?'; '+WFIXS.data:''):'']));
  const U=whyUC(CQI).filter(matchG).sort((a,b)=>(a.tier==='P1'?0:1)-(b.tier==='P1'?0:1)||(b.st||0)-(a.st||0));
  drawTable('tWhyU',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'u',l:'UC',f:x=>esc(x.u)},{k:'tier',l:'Priority',sv:x=>['P1','P2'].indexOf(x.tier),f:x=>`<span class="gptag ${GP_T[x.tier][1]}">${GP_T[x.tier][0]}</span>`},
   {k:'st',l:'Still missed',n:1,sv:x=>x.st??-1,f:x=>x.st==null?'–':fmt(x.st)},{k:'lr',l:'LQAS lot',sv:x=>x.lr||'z',f:x=>x.lr?`<span class="rg ${x.lr==='P'?'g':x.lr==='I'?'a':'r'}">${lqR[x.lr]}</span>`:'not assessed'},
-  {k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>wTag(x.top)},{k:'mix',l:'Mix',ns:1,f:x=>wBar(x.mix)},{k:'src',l:'Based on',ns:1,f:x=>esc(x.src||'–')},{k:'why',l:'Gap (from Where)',ns:1,f:x=>esc(x.why.join(' · '))}],U,'tier',1);
+  {k:'so',l:'Stand-out cause',sv:x=>x.so||'z',f:x=>wTag(x.so)},{k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>x.top?esc(WCK[x.top][1].split(' (')[0]):'–'},{k:'mix',l:'Mix',ns:1,f:x=>wBar(x.mix)},{k:'src',l:'Based on',ns:1,f:x=>esc(x.src||'–')},{k:'why',l:'Gap (from Where)',ns:1,f:x=>esc(x.why.join(' · '))}],U,'tier',1);
  el('cntWYU').textContent=fmt(U.length)+' UCs';
- el('capWYU').textContent='UC-level reasons come from the UC\'s LQAS lot (60%) and admin data after catch-up (40%); ICM is only available by district. A UC without an LQAS lot shows the admin mix, which cannot show team misses, so treat those as indicative.';
- el('btnWYUcsv').onclick=()=>cqCSV('Why_missed_priority_UCs_'+lab,['District','Tehsil','UC','UC code','Priority','Still missed','LQAS lot','Main reason','Access %','Team %','Demand %','Mobility %','Based on','Gap'],
-  U.map(r=>[r.d,r.t,r.u,r.c,GP_T[r.tier][0],r.st,r.lr?lqR[r.lr]:'',r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.mix?rnd(r.mix[k],0):''),r.src,r.why.join('; ')]));
+el('capWYU').textContent='Stand-out cause = the reason at least 10 points above the average of all priority UCs. UC-level reasons come from the UC\'s LQAS lot (60%) and admin data after catch-up (40%); ICM is only available by district. A UC without an LQAS lot shows the admin mix, which cannot show team misses, so treat those as indicative.';
+ el('btnWYUcsv').onclick=()=>cqCSV('Why_missed_priority_UCs_'+lab,['District','Tehsil','UC','UC code','Priority','Still missed','LQAS lot','Stand-out cause','Main reason','Access %','Team %','Demand %','Mobility %','Based on','Gap'],
+  U.map(r=>[r.d,r.t,r.u,r.c,GP_T[r.tier][0],r.st,r.lr?lqR[r.lr]:'',r.so?WCK[r.so][1]:'',r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.mix?rnd(r.mix[k],0):''),r.src,r.why.join('; ')]));
 }
-function whyBadge(){const b=el('bWY'); if(!b)return; try{const W=whyDist(CQI), K=whyTot(W.X.R.filter(r=>crInD()(r.d))); b.textContent=K.B?WCK[K.B.top][1].split(' ')[0]+' '+Math.round(K.B[K.B.top])+'%':'–';}catch(e){}}
+function whyBadge(){const b=el('bWY'); if(!b)return; try{const W=whyDist(CQI), K=whyTot(W.X.R.filter(r=>crInD()(r.d))); const W2=W.R.filter(r=>crInD()(r.d)), nt=W2.filter(r=>r.so&&r.so!=='mob').length; b.textContent=nt+' with a stand-out';}catch(e){}}
 {const _rd=render; render=function(){_rd(); whyBadge();};}
-{const _q=renderHomeQ; renderHomeQ=function(){_q(); try{const W=whyDist(0), cnt={}; W.R.forEach(r=>{if(r.top)cnt[r.top]=(cnt[r.top]||0)+1;}); const K=whyTot(W.X.R), db=W.R.filter(r=>r.dbad).length;
- el('hQ2f').insertAdjacentHTML('beforeend',`<div><b>Main reason by district:</b> ${WC.filter(([k])=>cnt[k]).map(([k,l])=>`${esc(l.split(' (')[0].toLowerCase())} <b>${cnt[k]}</b>`).join(' · ')}${db?` · <b>${db}</b> with a data problem`:''}</div>`+(K.B?`<div>Sources combined: <b>${esc(WCK[K.B.top][1])}</b> is the largest cause (${Math.round(K.B[K.B.top])}%).</div>`:''));}catch(e){console.warn('why home',e);}};}
+{const _q=renderHomeQ; renderHomeQ=function(){_q(); try{const W=whyDist(0), cnt={}; W.R.forEach(r=>{if(r.so)cnt[r.so]=(cnt[r.so]||0)+1;}); const K=whyTot(W.X.R), db=W.R.filter(r=>r.dbad).length;
+ el('hQ2f').insertAdjacentHTML('beforeend',`<div><b>Stand-out cause by district:</b> ${WC.filter(([k])=>cnt[k]).map(([k,l])=>`${esc(l.split(' (')[0].toLowerCase())} <b>${cnt[k]}</b>`).join(' · ')}${db?` · <b>${db}</b> with a data problem`:''}</div>`+(K.B?`<div>Across KP the largest group is <b>${esc(WCK[K.B.top][1].split(' (')[0].toLowerCase())}</b> (${Math.round(K.B[K.B.top])}%, sources combined).</div>`:''));}catch(e){console.warn('why home',e);}};}
 Object.assign(HMNEW,{why(){const W=whyDist(CQI), G={}; W.R.forEach(r=>G[r.d]=r); const cols={acc:'#c2410c',team:'#f59e0b',dem:'#b91c1c',mob:'#94a3b8',n:'#e5e7eb'};
- hmGen({go:'why',cols,val:d=>G[d],band:x=>x&&x.top?x.top:'n',tip:(d,x)=>x&&x.B?`<span class="v" style="color:#fdba74">${esc(WCK[x.top][1])} · ${Math.round(x.B[x.top])}%</span><br>${WC.map(([k,l])=>esc(l.split(' (')[0])+' '+Math.round(x.B[k])+'%').join(' · ')}${x.dbad?'<br><b style="color:#c4b5fd">Data problem flagged</b>':''}`:'Not enough data',
-  title:`Main reason children are missed · ${esc(W.X.C?W.X.C.l:'')}<small>Largest root cause per district, ICM + LQAS + admin combined</small>`,
+ hmGen({go:'why',cols,val:d=>G[d],band:x=>x&&x.so?x.so:'n',tip:(d,x)=>x&&x.B?`<span class="v" style="color:#fdba74">Stands out: ${esc(WCK[x.so][1])}</span><br>${WC.map(([k,l])=>esc(l.split(' (')[0])+' '+Math.round(x.B[k])+'%').join(' · ')}${x.dbad?'<br><b style="color:#c4b5fd">Data problem flagged</b>':''}`:'Not enough data',
+  title:`Why children are missed: stand-out cause · ${esc(W.X.C?W.X.C.l:'')}<small>Root cause at least 5 points above the KP average (else the largest) · ICM + LQAS + admin combined</small>`,
   legend:[['acc','Access / microplan'],['team','Team performance'],['dem','Demand (refusals)'],['mob','Mobility (away, migrant, newborn)'],['n','Not enough data']],listTitle:'Most children still missed',
-  list:W.R.filter(r=>r.top).sort((a,b)=>(b.st||0)-(a.st||0)).map(r=>[r.d,WCK[r.top][1].split(' ')[0],r.top])});}});
+  list:W.R.filter(r=>r.so).sort((a,b)=>(b.st||0)-(a.st||0)).map(r=>[r.d,WCK[r.so][1].split(' ')[0],r.so])});}});
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
