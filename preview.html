@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:11</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:17</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -611,7 +611,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 14:11</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 14:17</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -5014,14 +5014,18 @@ function renderHomeQ(){ if(!el('hQ1b'))return; const P=el('p-home');
  const team=lt?((X.l_dn||0)+(X.l_tm||0))/lt*100:null, iteam=mi?((X.i_tdn||0)+(X.i_tm||0))/mi*100:null;
  el('hQ2b').innerHTML=team!=null?`<b>${Math.round(team)}%</b><span>of children missed in LQAS lots were missed by teams (not visited or missed in the house) · ${esc(X.C?X.C.l:'')}</span>`:'<b>–</b><span>no LQAS data</span>';
  const bar=(A,tot)=>`<div class="qbar">${A.map(([l,v,c])=>`<i style="width:${tot?v/tot*100:0}%;background:${c}" title="${esc(l)}: ${fmt(v)}"></i>`).join('')}</div><div class="qleg">${A.map(([l,v,c])=>`<span><i style="background:${c}"></i>${esc(l)} ${tot?Math.round(v/tot*100):0}%</span>`).join('')}</div>`;
- el('hQ2f').innerHTML=`<div><b>LQAS</b> (${fmt(lt)} children)</div>${bar(lq,lt)}<div><b>Monitors during the campaign (ICM)</b> (${fmt(mi)} children)</div>${bar(icm,mi)}`+
+ el('hQ2f').innerHTML=`<div><b>LQAS</b> (${fmt(lt)} children${lt<500?', small sample':''})</div>${bar(lq,lt)}<div><b>Monitors during the campaign (ICM)</b> (${fmt(mi)} children)</div>${bar(icm,mi)}`+
   (team!=null&&iteam!=null&&Math.abs(team-iteam)>=20?`<div style="color:#92400e"><b>The two sources disagree:</b> team-related ${Math.round(team)}% in LQAS vs ${Math.round(iteam)}% in ICM.</div>`:'');
  // closed?
  const MS=misStats(()=>true,'d'), cs=MS.camps.map(c=>({l:c.l,p:c.tg?c.st/c.tg*100:null})).filter(c=>c.p!=null).reverse();
  const LC=(LQM.camps||[]).map((l,i)=>{const L=LQR.filter(x=>x.ci===i); return {l,n:L.length,p:L.length?L.filter(x=>x.r==='P').length/L.length*100:null};}).filter(c=>c.n>=20).slice(0,3).reverse();
  const z=agg(ZD), zA=z.pA, zM=z.pM;
- const last=cs[cs.length-1], first=cs[0], dir=last&&first&&cs.length>1?(last.p<first.p-0.2?'down':last.p>first.p+0.2?'up':'flat'):null;
- el('hQ3b').innerHTML=dir?`<b style="color:${dir==='down'?'#15803d':dir==='up'?'#b91c1c':'#b45309'}">${dir==='down'?'Narrowing':dir==='up'?'Widening':'Not yet'}</b><span>children still missed: ${pc(first.p)} → ${pc(last.p)} of target over ${cs.length} campaigns</span>`:'<b>–</b><span>not enough campaigns yet</span>';
+ const last=cs[cs.length-1], first=cs[0], sg=[];
+ if(last&&first&&cs.length>1)sg.push(last.p<first.p-0.2?1:last.p>first.p+0.2?-1:0);
+ if(LC.length>1)sg.push(LC[LC.length-1].p>LC[0].p+1?1:LC[LC.length-1].p<LC[0].p-1?-1:0);
+ if(zA!=null&&zM!=null)sg.push(zM>zA+1?1:zM<zA-1?-1:0);
+ const up=sg.filter(x=>x>0).length, dn=sg.filter(x=>x<0).length, vd=!sg.length?null:dn===0&&up>0?['Narrowing','#15803d']:up===0&&dn>0?['Widening','#b91c1c']:['Mixed','#b45309'];
+ el('hQ3b').innerHTML=vd?`<b style="color:${vd[1]}">${vd[0]}</b><span>${up} of ${sg.length} signals improving, ${dn} getting worse · not yet a UC-level closure measure</span>`:'<b>–</b><span>not enough campaigns yet</span>';
  const arrow=(a,b,good)=>a==null||b==null?'–':`${pc(a)} → <b style="color:${(good?b>a:b<a)?'#15803d':'#b91c1c'}">${pc(b)}</b>`;
  el('hQ3f').innerHTML=`<div class="qtr"><span>Still missed after catch-up</span><span>${cs.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')}</span>`+
   `<span>LQAS lots passed</span><span>${LC.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')||'–'}</span>`+
