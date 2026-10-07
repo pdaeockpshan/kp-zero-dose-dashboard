@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 09:45</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 12:48</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -451,6 +451,60 @@ body.home .hdr, body.home .content .topbar{display:none}
 .actadd input,.actadd select{font:12.5px var(--font-sans);padding:5px 7px;border:1px solid var(--color-border);border-radius:6px}
 .actwarn{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:8px;padding:8px 11px;font-size:12.5px;margin-bottom:10px}
 </style>
+
+<style>
+/* ================= (11) programme hubs, campaign quality, map dropdown ================= */
+.ngrp.hc{--gc:#c2410c}.ngrp.hs{--gc:#b91c1c}.ngrp.hz{--gc:#0f766e}.ngrp.he{--gc:#1d4ed8}.ngrp.hx{--gc:#475569}
+.sidenav .nsub{font:700 10px var(--font-sans);color:var(--gc);opacity:.85;text-transform:uppercase;letter-spacing:.04em;padding:7px 8px 1px 10px}
+.sidenav .ngrp.cl > .nsub{display:none}
+.tab[data-tab="hcamp"],.tab[data-tab="cpre"],.tab[data-tab="cicm"],.tab[data-tab="cpost"],#p-hcamp,#p-cpre,#p-cicm,#p-cpost{--tc:#c2410c}
+.tab[data-tab="hsurv"],#p-hsurv{--tc:#b91c1c}.tab[data-tab="hzd"],#p-hzd{--tc:#0f766e}.tab[data-tab="hepi"],#p-hepi{--tc:#1d4ed8}.tab[data-tab="hx"],#p-hx{--tc:#475569}
+.hhubs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:6px}
+.hhub{--hc:#0f766e;all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:9px;padding:18px 18px 14px;border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--hc) 13%,#fff),#fff 68%);border:1px solid color-mix(in srgb,var(--hc) 25%,#e5e7eb);border-top:6px solid var(--hc);box-shadow:0 3px 12px rgba(0,0,0,.06);transition:transform .15s,box-shadow .15s;min-height:250px}
+.hhub:hover,.hhub:focus-visible{transform:translateY(-3px);box-shadow:0 12px 26px color-mix(in srgb,var(--hc) 28%,transparent)}
+.hhub .hht{display:flex;align-items:center;gap:10px;font:800 21px var(--font-sans);color:var(--hc)}
+.hhub .hht .hi{flex:none;width:40px;height:40px;border-radius:12px;background:var(--hc);color:#fff;display:flex;align-items:center;justify-content:center}
+.hhub .hht .hi svg{width:23px;height:23px}
+.hhub .hhs{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
+.hhub .hhv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.hhub .hhv span{font-size:11px;line-height:1.25;color:var(--color-text-secondary);background:#fff;border:1px solid var(--color-border-light);border-radius:10px;padding:6px 7px}
+.hhub .hhv b{display:block;font:800 17px var(--font-sans);color:var(--color-text);margin-bottom:1px}
+.hhub .halarm{margin:0}
+.hhub .hgo3{margin-top:auto;font-weight:700;font-size:12.5px;color:var(--hc)}
+.hxrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.hxt{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:12px;background:#fff;border:1px solid var(--color-border-light);box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.hxt:hover,.hxt:focus-visible{border-color:#94a3b8;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.hxt .hi{flex:none;width:32px;height:32px;border-radius:10px;background:#f1f5f9;color:#475569;display:flex;align-items:center;justify-content:center}.hxt .hi svg{width:18px;height:18px}
+.hxt b{font-size:13px;display:block;color:var(--color-text)}.hxt small{font-size:11.5px;color:var(--color-text-secondary)}
+@media(max-width:1180px){.hhubs,.hxrow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.hhubs,.hxrow{grid-template-columns:1fr}}
+.hubhd{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:16px;background:linear-gradient(120deg,color-mix(in srgb,var(--tc) 14%,#fff),#fff);border:1px solid color-mix(in srgb,var(--tc) 25%,#e5e7eb);margin-bottom:14px}
+.hubhd h2{margin:0;font-size:22px;color:var(--tc)}.hubhd p{margin:4px 0 0;font-size:13px;color:var(--color-text-secondary);line-height:1.45}
+.hubchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.hubchips button{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;background:#fff;border:1px solid color-mix(in srgb,var(--tc) 40%,#e5e7eb);color:var(--tc)}
+.hubchips button:hover,.hubchips button:focus-visible{background:color-mix(in srgb,var(--tc) 10%,#fff)}
+.hubpane .hgrid,.hubpane .hgrid2{margin-bottom:16px}
+.cqbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;font-size:13px}
+.cqbar select{font:13px var(--font-sans);padding:5px 8px;border-radius:8px;border:1px solid var(--color-border);background:#fff}
+.trf{display:inline-block;font-size:11px;line-height:1.35;padding:2px 7px;border-radius:10px;margin:1px 3px 2px 0;background:#fee2e2;color:#991b1b}
+.trf.a{background:#fef3c7;color:#92400e}
+.pcls{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;white-space:nowrap}
+.pcls.g{background:#dcfce7;color:#166534}.pcls.a{background:#fef3c7;color:#92400e}.pcls.r{background:#fee2e2;color:#991b1b}.pcls.f{background:#7f1d1d;color:#fff}.pcls.n{background:#f3f4f6;color:#6b7280}
+.rg{font-weight:600}.rg.g{color:#15803d}.rg.a{color:#b45309}.rg.r{color:#b91c1c}
+.pcgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.pcbox{border-radius:12px;padding:10px 12px;border:1px solid var(--color-border-light);border-top:4px solid var(--pc);background:#fff}
+.pcbox h4{margin:0 0 2px;font-size:13px;color:var(--pc)}.pcbox .pn{font:800 26px var(--font-sans);color:var(--color-text)}.pcbox .pl{font-size:12px;color:var(--color-text-secondary);line-height:1.45}
+@media(max-width:900px){.pcgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.hmtop .hmsel{display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%}
+.hmtop .hmsel>label:first-child{font-size:12.5px;font-weight:700;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px}
+#hMSel{font:13.5px var(--font-sans);padding:7px 10px;border-radius:10px;border:1px solid var(--color-border);min-width:300px;max-width:100%;background:#fff}
+.hmtop .hmbtn{all:unset;cursor:pointer;font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:10px;background:#0f172a;color:#fff;display:inline-flex;align-items:center;gap:6px}
+.hmtop .hmbtn:hover{background:#1e293b}.hmtop .hmbtn svg{width:15px;height:15px}
+.hmtop .hmchk{font-size:12.5px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+#hMT,#hMAw,#hMFw{display:none!important}
+#hMap .hlbl{pointer-events:none;font-family:'Segoe UI',Arial,sans-serif;font-weight:700;fill:#0f172a;paint-order:stroke;stroke:#ffffff;stroke-width:1.5px;stroke-linejoin:round;text-anchor:middle}
+#hMap.nolbl .hlbl{display:none}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -461,44 +515,46 @@ body.home .hdr, body.home .content .topbar{display:none}
    <button class="tab" data-tab="export"><span class="tl">Export data</span><span class="badge" id="bX">–</span></button>
    <button class="tab" data-tab="present"><span class="tl">Presentation</span><span class="badge" id="bP">17 slides</span></button>
   </div>
-  <div class="nsec">Detailed analysis</div>
-  <div class="ngrp gz"><div class="nhd">① ZD Reported &amp; Covered</div>
+  <div class="nsec">Programme areas</div>
+  <div class="ngrp hc"><div class="nhd">Campaigns</div>
+   <button class="tab" data-tab="hcamp"><span class="tl">Campaign overview</span><span class="badge" id="bHC">–</span></button>
+   <button class="tab" data-tab="cpre"><span class="tl">Pre-campaign</span><span class="badge" id="bCP">–</span></button>
+   <button class="tab" data-tab="cicm"><span class="tl">Intra-campaign (ICM)</span><span class="badge" id="bCI">–</span></button>
+   <button class="tab" data-tab="cpost"><span class="tl">Post-campaign (LQAS)</span><span class="badge" id="bCL">–</span></button>
+   <button class="tab" data-tab="mis"><span class="tl">Missed children &amp; refusals</span><span class="badge" id="bM1">–</span></button>
+  </div>
+  <div class="ngrp hs"><div class="nhd">Surveillance</div>
+   <button class="tab" data-tab="hsurv"><span class="tl">Surveillance overview</span><span class="badge" id="bHS">–</span></button>
+   <button class="tab" data-tab="afp"><span class="tl">ZD AFP &amp; polio cases</span><span class="badge" id="bA1">–</span></button>
+   <button class="tab" data-tab="surv"><span class="tl">Surveillance quality</span><span class="badge" id="bSV1">–</span></button>
+   <button class="tab" data-tab="watch"><span class="tl">Polio risk watch list</span><span class="badge" id="bW1">–</span></button>
+  </div>
+  <div class="ngrp hz"><div class="nhd">Zero Dose</div>
+   <button class="tab" data-tab="hzd"><span class="tl">Zero dose overview</span><span class="badge" id="bHZ">–</span></button>
+   <div class="nsub">Reported &amp; covered</div>
    <button class="tab" data-tab="zov"><span class="tl">Reported vs Covered</span><span class="badge" id="bZ1">–</span></button>
    <button class="tab" data-tab="zcmp"><span class="tl">Campaign Trends</span><span class="badge" id="bZ2">–</span></button>
    <button class="tab" data-tab="zperf"><span class="tl">Good &amp; Under Performers</span><span class="badge" id="bZ3">–</span></button>
    <button class="tab" data-tab="zins"><span class="tl">Insights &amp; Notes</span><span class="badge" id="bZ4">–</span></button>
-  </div>
-  <div class="ngrp gd"><div class="nhd">② ZD Digitization</div>
+   <div class="nsub">Digitized</div>
    <button class="tab" data-tab="overview"><span class="tl">Linelist vs IDIMS</span><span class="badge" id="bD1">–</span></button>
    <button class="tab" data-tab="compare"><span class="tl">May vs Sept</span><span class="badge" id="bD2">–</span></button>
    <button class="tab" data-tab="followup"><span class="tl">ZD Follow-up</span><span class="badge" id="bFU">–</span></button>
    <button class="tab" data-tab="notes"><span class="tl">District Cover Notes</span><span class="badge">9</span></button>
-  </div>
-  <div class="ngrp gv"><div class="nhd">③ ZD Validation</div>
+   <div class="nsub">Validated</div>
    <button class="tab" data-tab="vsum"><span class="tl">Validation Summary</span><span class="badge" id="bV1">–</span></button>
    <button class="tab" data-tab="vfu"><span class="tl">Validation Follow-up</span><span class="badge" id="bV2">–</span></button>
   </div>
-  <div class="ngrp ge"><div class="nhd">④ EPI Routine Coverage</div>
+  <div class="ngrp he"><div class="nhd">EPI</div>
+   <button class="tab" data-tab="hepi"><span class="tl">EPI overview</span><span class="badge" id="bHE">–</span></button>
    <button class="tab" data-tab="eov"><span class="tl">Antigen Coverage</span><span class="badge" id="bE1">–</span></button>
    <button class="tab" data-tab="efu"><span class="tl">EPI Priority UCs</span><span class="badge" id="bE2">–</span></button>
   </div>
-  <div class="ngrp gp"><div class="nhd">⑤ AFP &amp; Polio cases</div>
-   <button class="tab" data-tab="afp"><span class="tl">ZD AFP &amp; Polio cases</span><span class="badge" id="bA1">–</span></button>
-   <button class="tab" data-tab="surv"><span class="tl">Surveillance quality</span><span class="badge" id="bSV1">–</span></button>
-  </div>
-  <div class="ngrp gr"><div class="nhd">⑥ UC risk score</div>
+  <div class="nsec">Cross-cutting</div>
+  <div class="ngrp hx"><div class="nhd">Cross-cutting</div>
+   <button class="tab" data-tab="hx"><span class="tl">Cross-cutting overview</span><span class="badge" id="bHX">–</span></button>
    <button class="tab" data-tab="risk"><span class="tl">Combined UC risk</span><span class="badge" id="bR1">–</span></button>
-  </div>
-  <div class="ngrp gw"><div class="nhd">⑦ Polio risk watch list</div>
-   <button class="tab" data-tab="watch"><span class="tl">Watch list</span><span class="badge" id="bW1">–</span></button>
-  </div>
-  <div class="ngrp gc"><div class="nhd">⑧ Critical review</div>
    <button class="tab" data-tab="crit"><span class="tl">Critical review</span><span class="badge" id="bC1">–</span></button>
-  </div>
-  <div class="ngrp gm"><div class="nhd">⑨ Campaign missed children</div>
-   <button class="tab" data-tab="mis"><span class="tl">Missed children &amp; refusals</span><span class="badge" id="bM1">–</span></button>
-  </div>
-  <div class="ngrp ga"><div class="nhd">⑩ Action tracker</div>
    <button class="tab" data-tab="act"><span class="tl">Actions &amp; follow-up</span><span class="badge" id="bAT1">–</span></button>
   </div>
  </div>
@@ -528,7 +584,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 09:45</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 12:48</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -538,88 +594,24 @@ body.home .hdr, body.home .content .topbar{display:none}
   </div>
  </div>
 
- <div class="hsec"><h2>KP at a glance</h2><span>All of Khyber Pakhtunkhwa · red bubbles count under-performing districts and UCs (hover a bubble for the rule, click to see them)</span></div>
- <div class="hgrid">
-  <div class="hcard" style="--hc:#0f766e" data-go="zov" tabindex="0">
-   <div class="hhd"><span class="hn">1</span><span class="ht">Zero dose reported &amp; covered</span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hring" id="hR1"></div><div class="hfacts" id="hF1"></div></div>
-   <div class="halarm" id="hA1"></div>
-  </div>
-  <div class="hcard" style="--hc:#6d28d9" data-go="overview" tabindex="0">
-   <div class="hhd"><span class="hn">2</span><span class="ht">Linelist digitized in IDIMS</span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hring" id="hR2"></div><div class="hfacts" id="hF2"></div></div>
-   <div class="halarm" id="hA2"></div>
-  </div>
-  <div class="hcard" style="--hc:#15803d" data-go="vsum" tabindex="0">
-   <div class="hhd"><span class="hn">3</span><span class="ht">Validated as vaccinated</span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hring" id="hR3"></div><div class="hfacts" id="hF3"></div></div>
-   <div class="halarm" id="hA3"></div>
-  </div>
-  <div class="hcard wide" style="--hc:#1d4ed8" data-go="eov" tabindex="0">
-   <div class="hhd"><span class="hn">4</span><span class="ht">Routine immunization: antigen-wise coverage</span><span class="cnt" id="hE0" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hag" id="hAG"></div>
-   <div class="hleg"><span><i style="background:#16a34a"></i>90%+ target met</span><span><i style="background:#d97706"></i>80–90%</span><span><i style="background:#dc2626"></i>below 80%</span><span><i style="background:#7c3aed"></i>over 110%: check target</span><span><i style="background:#dc2626;border-radius:6px;width:16px"></i>bubble = districts below 80% for that antigen</span></div>
-   <div class="halarm" id="hA4"></div>
-  </div>
+ <div class="hsec"><h2>Explore by programme area</h2><span>Four areas, each with its own pages and a cross-check of the data sources · numbers are for all of KP · red bubbles count districts that need attention</span></div>
+ <div class="hhubs">
+  <div class="hhub" role="button" tabindex="0" data-go="hcamp" style="--hc:#c2410c"><span class="hht"><span class="hi" data-ic="flag"></span>Campaigns</span><span class="hhs">Pre-campaign readiness, intra-campaign monitoring, LQAS, missed children and refusals, district performance and the post-campaign review</span><span class="hhv" id="hhC"></span><div class="halarm" id="hhCa"></div><span class="hgo3">Open Campaigns →</span></div>
+  <div class="hhub" role="button" tabindex="0" data-go="hsurv" style="--hc:#b91c1c"><span class="hht"><span class="hi" data-ic="shield"></span>Surveillance</span><span class="hhs">Confirmed polio cases, zero-dose AFP cases, AFP reporting quality, sewage results and the polio risk watch list</span><span class="hhv" id="hhS"></span><div class="halarm" id="hhSa"></div><span class="hgo3">Open Surveillance →</span></div>
+  <div class="hhub" role="button" tabindex="0" data-go="hzd" style="--hc:#0f766e"><span class="hht"><span class="hi" data-ic="users"></span>Zero Dose</span><span class="hhs">Zero-dose children reported and covered by the next round, recorded in IDIMS, and validated as vaccinated</span><span class="hhv" id="hhZ"></span><div class="halarm" id="hhZa"></div><span class="hgo3">Open Zero Dose →</span></div>
+  <div class="hhub" role="button" tabindex="0" data-go="hepi" style="--hc:#1d4ed8"><span class="hht"><span class="hi" data-ic="syringe"></span>EPI</span><span class="hhs">Routine immunization coverage by antigen, monthly trend, dropouts and UCs weak in both EPI and polio</span><span class="hhv" id="hhE"></span><div class="halarm" id="hhEa"></div><span class="hgo3">Open EPI →</span></div>
+ </div>
+ <div class="hxrow">
+  <button class="hxt" data-hl="risk"><span class="hi" data-ic="flag"></span><span><b>UC risk score</b><small id="hxR">–</small></span></button>
+  <button class="hxt" data-hl="crit"><span class="hi" data-ic="list"></span><span><b>Critical review</b><small id="hxC">–</small></span></button>
+  <button class="hxt" data-hl="act"><span class="hi" data-ic="check"></span><span><b>Action tracker</b><small id="hxA">–</small></span></button>
+  <button class="hxt" data-hl="present"><span class="hi" data-ic="present"></span><span><b>Presentations</b><small>Post-campaign review, EOC / division / district briefs, custom deck</small></span></button>
  </div>
 
-
- <div class="hgrid2">
-  <div class="hcard" style="--hc:#b91c1c" data-go="afp" tabindex="0">
-   <div class="hhd"><span class="hn">5</span><span class="ht">Zero-dose children among AFP cases</span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig" id="hA5n"></div><div class="hfacts" id="hF5"></div></div>
-   <div class="halarm" id="hA5"></div>
-  </div>
-  <div class="hcard hpolio" data-go="afp" tabindex="0">
-   <div class="hhd"><span class="hn">6</span><span class="ht">Confirmed polio cases in KP, <span id="hYr"></span></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hsiren" id="hP6n"></div><div class="hfacts" id="hF6"></div></div>
-   <div class="halarm" id="hA6"></div>
-  </div>
- </div>
-
- <div class="hgrid" style="margin-top:16px">
-  <div class="hcard wide" style="--hc:#9f1239" data-go="risk" tabindex="0">
-   <div class="hhd"><span class="hn">7</span><span class="ht">Combined UC risk score</span><span class="cnt" id="hR7s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig hbr" id="hR7n"></div><div class="hfacts" id="hF7"></div><div class="hrtop" id="hR7t"></div></div>
-   <div class="halarm" id="hA7"></div>
-  </div>
- </div>
-
- <div class="hgrid" style="margin-top:16px">
-  <div class="hcard wide" style="--hc:#4338ca" data-go="watch" tabindex="0">
-   <div class="hhd"><span class="hn">8</span><span class="ht">Polio risk watch list</span><span class="cnt" id="hW8s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig hbw" id="hW8n"></div><div class="hfacts" id="hF8"></div><div class="hrtop" id="hW8t"></div></div>
-   <div class="halarm" id="hA8"></div>
-  </div>
- </div>
-
- <div class="hgrid" style="margin-top:16px">
-  <div class="hcard wide" style="--hc:#475569" data-go="crit" tabindex="0">
-   <div class="hhd"><span class="hn">9</span><span class="ht">Critical review: can we trust the numbers?</span><span class="cnt" id="hC9s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig hbc" id="hC9n"></div><div class="hfacts" id="hF9"></div><div class="hrtop" id="hC9t"></div></div>
-   <div class="halarm" id="hA9"></div>
-  </div>
- </div>
-
- <div class="hgrid" style="margin-top:16px">
-  <div class="hcard wide" style="--hc:#c2410c" data-go="mis" tabindex="0">
-   <div class="hhd"><span class="hn">10</span><span class="ht">Campaign missed children &amp; surveillance quality</span><span class="cnt" id="hM10s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig hbm" id="hM10n"></div><div class="hfacts" id="hF10"></div><div class="hrtop" id="hM10t"></div></div>
-   <div class="halarm" id="hA10"></div>
-  </div>
- </div>
-
- <div class="hgrid" style="margin-top:16px">
-  <div class="hcard wide" style="--hc:#0f766e" data-go="act" tabindex="0">
-   <div class="hhd"><span class="hn">11</span><span class="ht">Action tracker: who is doing what, by when</span><span class="cnt" id="hT11s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
-   <div class="hbody"><div class="hbig hba" id="hT11n"></div><div class="hfacts" id="hF11"></div><div class="hrtop" id="hT11t"></div></div>
-   <div class="halarm" id="hA11"></div>
-  </div>
- </div>
-
- <div class="hsec"><h2>District map</h2><span>Each district coloured against the indicator's target · hover for values · click a district to open its details</span></div>
+ <div class="hsec"><h2>District map</h2><span>Pick any indicator from the list · hover for values · click a district to open its details · download the map as an image for slides</span></div>
  <div class="hmap">
   <div class="hmtop">
+   <div class="hmsel"><label>Indicator <select id="hMSel" aria-label="Map indicator"></select></label><label class="hmchk"><input type="checkbox" id="hMLb" checked> District names</label><button class="hmbtn" id="hMDl" title="Save the map with its title and legend as a PNG image for slides"><span data-ic="download"></span>Download map (PNG)</button></div>
    <div class="hmtabs" id="hMT">
     <button data-m="cov" style="--mc:#0f766e"><b>1</b>ZD covered</button>
     <button data-m="dig" style="--mc:#6d28d9"><b>2</b>Digitized</button>
@@ -732,6 +724,10 @@ body.home .hdr, body.home .content .topbar{display:none}
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
 <section class="pane" id="p-present">
 <div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 14-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
+<div class="card" style="margin-bottom:14px;border-top:5px solid #c2410c"><h3 style="margin:0">Post-campaign review</h3>
+<div class="bgrid"><div class="bcard" style="--bc:#c2410c;grid-column:1/-1"><b>📋 Post-campaign review</b><small>One campaign from start to finish: pre-campaign readiness, intra-campaign monitoring (ICM), LQAS, missed children and refusals, zero dose and the surveillance picture, a district scorecard with <b>good / average / poor / needs-focus</b> districts, the performance map, where the data disagrees, and recommended actions. 13 slides.</small>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="pcrC" aria-label="Campaign"></select><select id="pcrS" aria-label="Area"></select><button class="btn pri" id="btnPCR">Prepare post-campaign review</button></div></div></div>
+<div class="cnt" id="pcrStatus" style="margin-top:8px"></div></div>
 <div class="card" style="margin-bottom:14px"><h3 style="margin:0">Quick briefs</h3>
 <div class="bgrid">
 <div class="bcard" style="--bc:#1e3a8a"><b>🏛 EOC brief</b><small>Whole province: division scorecard, districts needing attention, digitization, validation and routine EPI coverage by district, and decisions requested from EOC.</small><button class="btn" id="btnBEOC">Prepare EOC brief</button></div>
@@ -1275,6 +1271,119 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="scroll"><table id="tAct"></table></div>
 <div class="cap" id="capAT"></div>
 </div>
+</section>
+
+<!-- ================= HUB: Campaigns ================= -->
+<section class="pane hubpane" id="p-hcamp">
+<div class="hubhd"><div><h2>Campaigns</h2><p>Pre-campaign readiness, intra-campaign monitoring and post-campaign results for one campaign, with each district classed as <b>good, average, poor or needs focus</b> and a cross-check of where the sources disagree. Tables follow the division / district filter.</p><div class="hubchips"><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="cpost">Post-campaign (LQAS)</button><button data-hl="mis">Missed children & refusals</button><button data-hl="present">▶ Post-campaign review presentation</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">Pre-campaign readiness</div><div class="kv" id="hc1">–</div><div class="ks" id="hc1s"></div></div><div class="card"><div class="kl">ICM recall coverage</div><div class="kv" id="hc2">–</div><div class="ks" id="hc2s"></div></div><div class="card"><div class="kl">LQAS lots passed</div><div class="kv" id="hc3">–</div><div class="ks" id="hc3s"></div></div><div class="card"><div class="kl">Children still missed</div><div class="kv" id="hc4" style="color:#c2410c">–</div><div class="ks" id="hc4s"></div></div><div class="card"><div class="kl">Children still refusing</div><div class="kv" id="hc5" style="color:#b91c1c">–</div><div class="ks" id="hc5s"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">District performance in this campaign</h3><span style="flex:1"></span><button class="btn" id="btnPerfCSV">Download (CSV)</button><button class="btn pri" id="btnPCR2">▶ Post-campaign review (PPTX)</button></div>
+<div class="cap" id="capPerfM" style="margin-top:0"></div>
+<div class="pcgrid" id="pcBoxes"></div>
+<div id="cpc1" class="ch"></div><div class="cap" id="cappc1"></div>
+<div class="scroll"><table id="tPerf"></table></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: where the campaign sources disagree</h3><span class="cnt" id="cntCTri"></span></div><div class="cap" id="capCTri" style="margin-top:0"></div><div class="scroll"><table id="tCTri"></table></div></div>
+<div class="hgrid"><div class="hcard wide" style="--hc:#c2410c" data-go="mis" tabindex="0">
+   <div class="hhd"><span class="hn">10</span><span class="ht">Campaign missed children &amp; surveillance quality</span><span class="cnt" id="hM10s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbm" id="hM10n"></div><div class="hfacts" id="hF10"></div><div class="hrtop" id="hM10t"></div></div>
+   <div class="halarm" id="hA10"></div>
+  </div></div>
+</section>
+
+<!-- ================= HUB: Pre-campaign readiness ================= -->
+<section class="pane hubpane" id="p-cpre">
+<div class="hubhd"><div><h2>Pre-campaign readiness</h2><p>Preparatory indicators reported to the EOC before the campaign: DPEC meetings, training, microplan validation and team composition.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="cpost">Post-campaign (LQAS)</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">DPEC held on time</div><div class="kv" id="cp1">–</div><div class="ks" id="cp1s"></div></div><div class="card"><div class="kl">Teams trained</div><div class="kv" id="cp2">–</div><div class="ks" id="cp2s"></div></div><div class="card"><div class="kl">Microplans field-validated</div><div class="kv" id="cp3">–</div><div class="ks" id="cp3s"></div></div><div class="card"><div class="kl">Teams with a female member</div><div class="kv" id="cp4">–</div><div class="ks" id="cp4s"></div></div><div class="card"><div class="kl">Teams with a local member</div><div class="kv" id="cp5">–</div><div class="ks" id="cp5s"></div></div></div>
+<div class="card"><div id="ccp1" class="ch"></div><div class="cap" id="capcp1"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Pre-campaign preparatory indicators by district</h3><span class="cnt" id="cntCP"></span><span style="flex:1"></span><button class="btn" id="btnCPcsv">Download (CSV)</button></div><div class="scroll"><table id="tPre"></table></div><div class="cap" id="capCP"></div></div>
+
+</section>
+
+<!-- ================= HUB: Intra-campaign monitoring (ICM) ================= -->
+<section class="pane hubpane" id="p-cicm">
+<div class="hubhd"><div><h2>Intra-campaign monitoring (ICM)</h2><p>What independent monitors found in houses during the campaign: recall coverage, finger-marking and why children were missed.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cpost">Post-campaign (LQAS)</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">ICM recall coverage</div><div class="kv" id="ci1">–</div><div class="ks" id="ci1s"></div></div><div class="card"><div class="kl">Children missed (ICM)</div><div class="kv" id="ci2" style="color:#c2410c">–</div><div class="ks" id="ci2s"></div></div><div class="card"><div class="kl">Refusals (ICM)</div><div class="kv" id="ci3" style="color:#b91c1c">–</div><div class="ks" id="ci3s"></div></div><div class="card"><div class="kl">Child away (NA)</div><div class="kv" id="ci4">–</div><div class="ks" id="ci4s"></div></div><div class="card"><div class="kl">Finger-marked</div><div class="kv" id="ci5">–</div><div class="ks" id="ci5s"></div></div></div>
+<div class="grid2"><div class="card"><div id="cci1" class="ch"></div><div class="cap" id="capci1"></div></div><div class="card"><div id="cci2" class="ch"></div><div class="cap" id="capci2"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring by district</h3><span class="cnt" id="cntCI"></span><span style="flex:1"></span><button class="btn" id="btnCIcsv">Download (CSV)</button></div><div class="scroll"><table id="tIcm"></table></div><div class="cap" id="capCI"></div></div>
+
+</section>
+
+<!-- ================= HUB: Post-campaign results (LQAS) ================= -->
+<section class="pane hubpane" id="p-cpost">
+<div class="hubhd"><div><h2>Post-campaign results (LQAS)</h2><p>Lot quality assurance sampling after the campaign, with admin coverage and the children still missed after catch-up.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="mis">Missed children & refusals</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">LQAS lots assessed</div><div class="kv" id="cl1">–</div><div class="ks" id="cl1s"></div></div><div class="card"><div class="kl">Lots passed</div><div class="kv" id="cl2">–</div><div class="ks" id="cl2s"></div></div><div class="card"><div class="kl">Lots failed</div><div class="kv" id="cl3" style="color:#b91c1c">–</div><div class="ks" id="cl3s"></div></div><div class="card"><div class="kl">Vaccinated (admin, % of target)</div><div class="kv" id="cl4">–</div><div class="ks" id="cl4s"></div></div><div class="card"><div class="kl">Still missed after catch-up</div><div class="kv" id="cl5" style="color:#c2410c">–</div><div class="ks" id="cl5s"></div></div></div>
+<div class="grid2"><div class="card"><div id="ccl1" class="ch"></div><div class="cap" id="capcl1"></div></div><div class="card"><div id="ccl2" class="ch"></div><div class="cap" id="capcl2"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign results by district</h3><span class="cnt" id="cntCL"></span><span style="flex:1"></span><button class="btn" id="btnCLcsv">Download (CSV)</button></div><div class="scroll"><table id="tPost"></table></div><div class="cap" id="capCL"></div></div>
+
+</section>
+
+<!-- ================= HUB: Surveillance ================= -->
+<section class="pane hubpane" id="p-hsurv">
+<div class="hubhd"><div><h2>Surveillance</h2><p>Confirmed polio cases, zero-dose children among AFP cases, AFP reporting quality, sewage results and the polio risk watch list. The cards show all of KP; the cross-check table follows the division / district filter.</p><div class="hubchips"><button data-hl="afp">ZD AFP & polio cases</button><button data-hl="surv">Surveillance quality</button><button data-hl="watch">Polio risk watch list</button></div></div></div>
+<div class="hgrid2" style="margin-top:0"><div class="hcard" style="--hc:#b91c1c" data-go="afp" tabindex="0">
+   <div class="hhd"><span class="hn">5</span><span class="ht">Zero-dose children among AFP cases</span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig" id="hA5n"></div><div class="hfacts" id="hF5"></div></div>
+   <div class="halarm" id="hA5"></div>
+  </div><div class="hcard hpolio" data-go="afp" tabindex="0">
+   <div class="hhd"><span class="hn">6</span><span class="ht">Confirmed polio cases in KP, <span id="hYr"></span></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hsiren" id="hP6n"></div><div class="hfacts" id="hF6"></div></div>
+   <div class="halarm" id="hA6"></div>
+  </div></div><div class="hgrid" style="margin-top:16px"><div class="hcard wide" style="--hc:#4338ca" data-go="watch" tabindex="0">
+   <div class="hhd"><span class="hn">8</span><span class="ht">Polio risk watch list</span><span class="cnt" id="hW8s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbw" id="hW8n"></div><div class="hfacts" id="hF8"></div><div class="hrtop" id="hW8t"></div></div>
+   <div class="halarm" id="hA8"></div>
+  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: surveillance</h3><span class="cnt" id="cntSTri"></span><span style="flex:1"></span><button class="btn" id="btnSTricsv">Download (CSV)</button></div><div class="cap" id="capSTri" style="margin-top:0">AFP reporting, sewage results, polio cases and zero-dose AFP cases compared district by district. A flag shows where they point in different directions (for example virus in sewage where AFP reporting is weak).</div><div class="scroll"><table id="tSTri"></table></div></div>
+</section>
+
+<!-- ================= HUB: Zero Dose ================= -->
+<section class="pane hubpane" id="p-hzd">
+<div class="hubhd"><div><h2>Zero Dose</h2><p>Zero-dose children reported in campaigns, covered by the next round, recorded in IDIMS and validated as vaccinated. The cards show all of KP; the cross-check table follows the division / district filter.</p><div class="hubchips"><button data-hl="zov">Reported vs covered</button><button data-hl="zcmp">Campaign trends</button><button data-hl="zperf">Good & under performers</button><button data-hl="zins">Insights</button><button data-hl="overview">Linelist vs IDIMS</button><button data-hl="followup">ZD follow-up</button><button data-hl="notes">District notes</button><button data-hl="vsum">Validation summary</button><button data-hl="vfu">Validation follow-up</button></div></div></div>
+<div class="hgrid"><div class="hcard" style="--hc:#0f766e" data-go="zov" tabindex="0">
+   <div class="hhd"><span class="hn">1</span><span class="ht">Zero dose reported &amp; covered</span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hring" id="hR1"></div><div class="hfacts" id="hF1"></div></div>
+   <div class="halarm" id="hA1"></div>
+  </div><div class="hcard" style="--hc:#6d28d9" data-go="overview" tabindex="0">
+   <div class="hhd"><span class="hn">2</span><span class="ht">Linelist digitized in IDIMS</span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hring" id="hR2"></div><div class="hfacts" id="hF2"></div></div>
+   <div class="halarm" id="hA2"></div>
+  </div><div class="hcard" style="--hc:#15803d" data-go="vsum" tabindex="0">
+   <div class="hhd"><span class="hn">3</span><span class="ht">Validated as vaccinated</span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hring" id="hR3"></div><div class="hfacts" id="hF3"></div></div>
+   <div class="halarm" id="hA3"></div>
+  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: zero dose</h3><span class="cnt" id="cntZTri"></span><span style="flex:1"></span><button class="btn" id="btnZTricsv">Download (CSV)</button></div><div class="cap" id="capZTri" style="margin-top:0">Reported coverage, IDIMS entry and validation compared district by district. A flag shows where they do not match.</div><div class="scroll"><table id="tZTri"></table></div></div>
+</section>
+
+<!-- ================= HUB: EPI ================= -->
+<section class="pane hubpane" id="p-hepi">
+<div class="hubhd"><div><h2>EPI</h2><p>Routine immunization coverage by antigen from KP EPI-MIS, monthly trend, dropouts and the UCs weak in both routine EPI and polio zero dose.</p><div class="hubchips"><button data-hl="eov">Antigen coverage</button><button data-hl="efu">EPI priority UCs</button></div></div></div>
+<div class="hgrid"><div class="hcard wide" style="--hc:#1d4ed8" data-go="eov" tabindex="0">
+   <div class="hhd"><span class="hn">4</span><span class="ht">Routine immunization: antigen-wise coverage</span><span class="cnt" id="hE0" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hag" id="hAG"></div>
+   <div class="hleg"><span><i style="background:#16a34a"></i>90%+ target met</span><span><i style="background:#d97706"></i>80–90%</span><span><i style="background:#dc2626"></i>below 80%</span><span><i style="background:#7c3aed"></i>over 110%: check target</span><span><i style="background:#dc2626;border-radius:6px;width:16px"></i>bubble = districts below 80% for that antigen</span></div>
+   <div class="halarm" id="hA4"></div>
+  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: routine EPI</h3><span class="cnt" id="cntETri"></span><span style="flex:1"></span><button class="btn" id="btnETricsv">Download (CSV)</button></div><div class="cap" id="capETri" style="margin-top:0">Routine coverage compared with the zero-dose children found in polio campaigns, dropouts and target checks, district by district.</div><div class="scroll"><table id="tETri"></table></div></div>
+</section>
+
+<!-- ================= HUB: Cross-cutting ================= -->
+<section class="pane hubpane" id="p-hx">
+<div class="hubhd"><div><h2>Cross-cutting</h2><p>Pages that combine all programme areas: the combined UC risk score, the critical review of the data and the action tracker.</p><div class="hubchips"><button data-hl="risk">Combined UC risk</button><button data-hl="crit">Critical review</button><button data-hl="act">Action tracker</button></div></div></div>
+<div class="hgrid"><div class="hcard wide" style="--hc:#9f1239" data-go="risk" tabindex="0">
+   <div class="hhd"><span class="hn">7</span><span class="ht">Combined UC risk score</span><span class="cnt" id="hR7s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbr" id="hR7n"></div><div class="hfacts" id="hF7"></div><div class="hrtop" id="hR7t"></div></div>
+   <div class="halarm" id="hA7"></div>
+  </div></div><div class="hgrid" style="margin-top:16px"><div class="hcard wide" style="--hc:#475569" data-go="crit" tabindex="0">
+   <div class="hhd"><span class="hn">9</span><span class="ht">Critical review: can we trust the numbers?</span><span class="cnt" id="hC9s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hbc" id="hC9n"></div><div class="hfacts" id="hF9"></div><div class="hrtop" id="hC9t"></div></div>
+   <div class="halarm" id="hA9"></div>
+  </div></div><div class="hgrid" style="margin-top:16px"><div class="hcard wide" style="--hc:#0f766e" data-go="act" tabindex="0">
+   <div class="hhd"><span class="hn">11</span><span class="ht">Action tracker: who is doing what, by when</span><span class="cnt" id="hT11s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
+   <div class="hbody"><div class="hbig hba" id="hT11n"></div><div class="hfacts" id="hF11"></div><div class="hrtop" id="hT11t"></div></div>
+   <div class="halarm" id="hA11"></div>
+  </div></div>
 </section>
 
 </main>
@@ -3112,7 +3221,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -3130,7 +3239,7 @@ function setTab(t){
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
  renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); atBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -4302,6 +4411,470 @@ function actSlide(s,R,K,brief){
  table(s,hd,data,brief?{x:0.5,y:3.28,w:12.3,colW:cw,col:TL,fs:9,rh:0.3,empty:'No actions for this area.'}:{x:0.5,y:3.28,w:12.3,colW:cw,col:TL});
  note(s,(S.asg?'':'No owners or due dates recorded yet: fill them in on the Action tracker page, or use this slide to agree them in the meeting. ')+'Status as saved in the dashboard on this computer ('+atDt(atToday())+').',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
 }
+
+
+// ================= (11) PROGRAMME HUBS + CAMPAIGN QUALITY + POST-CAMPAIGN REVIEW =================
+const CQ = {"asof": "2026-10-07", "pre_update": "Last Update: Oct 07, 2026 06:25 am", "camps": [{"v": "SEP-26-1", "l": "SNID Sept 2026"}, {"v": "MAY-26-1", "l": "SNID May 2026"}, {"v": "APR-26-1", "l": "NID Apr 26"}], "pre": {"SEP-26-1": {"ABOTABAD": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 72.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 98.0, "gov": 58.1, "fem": 83.3, "inacc": 0.0}, "BAJOUR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 97.4, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 84.1, "gov": 41.2, "fem": 14.7, "inacc": 0.0}, "BANNU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 89.5, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 92.2, "gov": 35.4, "fem": 76.7, "inacc": 0.0}, "BAR SWAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.9, "gov": 75.4, "fem": 45.7, "inacc": 0.0}, "BATAGRAM": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 18.2, "inacc": 0.0}, "BUNER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 96.4, "fem": 31.9, "inacc": 0.0}, "CHARSADA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 98.0, "ucsec": 98.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 68.9, "fem": 99.9, "inacc": 0.0}, "CHITRALLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 66.9, "fem": 82.2, "inacc": 0.0}, "CHITRALUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 80.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 68.5, "fem": 93.2, "inacc": 0.0}, "DIKHAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 73.6, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 90.3, "gov": 44.7, "fem": 80.1, "inacc": 0.0}, "DIRLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 63.9, "fem": 49.2, "inacc": 0.0}, "DIRUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 88.6, "fem": 42.5, "inacc": 0.0}, "HANGU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 78.4, "gov": 55.8, "fem": 46.5, "inacc": 0.0}, "HARIPUR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 99.4, "fem": 96.9, "inacc": 0.0}, "KARAK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 95.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 98.0, "gov": 64.0, "fem": 80.6, "inacc": 0.0}, "KHYBER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 0.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 1.3, "inacc": 0.0}, "KOHAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 95.6, "gov": 35.6, "fem": 80.3, "inacc": 0.0}, "KOHISTANLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 0.0, "inacc": 0.0}, "KOHISTANUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 0.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 51.9, "fem": 5.0, "inacc": 0.0}, "KOLAIPALAS": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 12.8, "inacc": 0.0}, "KURRAM": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 43.1, "fem": 38.2, "inacc": 0.0}, "LAKKIMRWT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 97.5, "ucsec": 77.5, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 95.3, "gov": 49.6, "fem": 69.2, "inacc": 0.0}, "MALAKAND": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 100.0, "inacc": 0.0}, "MANSEHRA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 98.7, "fem": 90.2, "inacc": 0.0}, "MARDAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 57.6, "fem": 97.2, "inacc": 0.0}, "MOHMAND": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 72.4, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.0, "gov": 58.2, "fem": 36.6, "inacc": 0.0}, "NOWSHERA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 87.8, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 97.6, "gov": 51.8, "fem": 96.5, "inacc": 0.0}, "ORAKZAI": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 93.2, "fem": 54.3, "inacc": 0.0}, "PESHAWAR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 97.1, "ucsec": 73.8, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 79.7, "gov": 100.0, "fem": 92.9, "inacc": 0.0}, "SHANGLA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 85.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 81.6, "fem": 27.2, "inacc": 0.0}, "SWABI": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 97.5, "gov": 63.0, "fem": 84.3, "inacc": 0.0}, "SWAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 98.0, "gov": 69.4, "fem": 65.9, "inacc": 0.0}, "TANK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 72.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 81.7, "gov": 29.4, "fem": 58.1, "inacc": 0.0}, "TORGHAR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.2, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 96.4, "fem": 4.4, "inacc": 0.0}, "WAZIR-N": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 43.5, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 1.6, "fem": 0.3, "inacc": 0.0}, "WAZIR-S Lower": {"dpec": 0.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 27.8, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.9, "gov": 4.8, "fem": 6.2, "inacc": 0.0}, "WAZIR-S Upper": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 67.6, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 0.0, "inacc": 0.0}}, "MAY-26-1": {"ABOTABAD": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 98.1, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 99.2, "gov": 53.6, "fem": 91.3, "inacc": 0.0}, "BAJOUR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 84.0, "gov": 42.2, "fem": 14.5, "inacc": 0.0}, "BANNU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 66.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 89.2, "gov": 37.9, "fem": 75.9, "inacc": 0.0}, "DIKHAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 64.2, "aic": 100.0, "trn": 99.4, "mpv": 100.0, "adult": 100.0, "loc": 81.9, "gov": 43.1, "fem": 79.1, "inacc": 0.0}, "DIRLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 62.1, "fem": 46.8, "inacc": 0.0}, "HANGU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 73.8, "gov": 45.8, "fem": 46.6, "inacc": 0.0}, "KARAK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 99.7, "gov": 64.0, "fem": 82.9, "inacc": 0.0}, "KHYBER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 92.5, "ucsec": 0.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 1.2, "inacc": 0.0}, "KOHAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 95.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 99.1, "gov": 38.8, "fem": 81.3, "inacc": 0.0}, "KOHISTANLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 83.5, "fem": 0.0, "inacc": 0.0}, "KOHISTANUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 53.1, "fem": 6.3, "inacc": 0.0}, "KOLAIPALAS": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 1.8, "inacc": 0.0}, "KURRAM": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 85.5, "ucsec": 85.5, "aic": 100.0, "trn": 100.1, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 51.6, "fem": 43.5, "inacc": 0.0}, "LAKKIMRWT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 65.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.3, "gov": 49.2, "fem": 68.8, "inacc": 0.0}, "MARDAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 58.6, "fem": 98.2, "inacc": 0.0}, "MOHMAND": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 89.7, "aic": 100.0, "trn": 99.8, "mpv": 100.0, "adult": 100.0, "loc": 98.3, "gov": 61.3, "fem": 35.3, "inacc": 0.0}, "NOWSHERA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 84.6, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 94.8, "gov": 52.4, "fem": 96.5, "inacc": 0.0}, "PESHAWAR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 63.1, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 80.9, "gov": 100.0, "fem": 92.8, "inacc": 0.0}, "TANK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 72.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 89.7, "gov": 33.7, "fem": 55.2, "inacc": 0.0}, "TORGHAR": {"dpec": 100.0, "dc": 100.0, "dho": 0.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 98.5, "fem": 2.9, "inacc": 0.0}, "WAZIR-N": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 73.9, "ucsec": 30.4, "aic": 80.9, "trn": 74.5, "mpv": 94.2, "adult": 100.0, "loc": 100.0, "gov": 3.7, "fem": 0.5, "inacc": 0.0}, "WAZIR-S Lower": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 25.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.4, "gov": 4.5, "fem": 5.3, "inacc": 0.0}, "WAZIR-S Upper": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 35.3, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 0.0, "inacc": 0.0}}, "APR-26-1": {"ABOTABAD": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 72.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 99.9, "loc": 99.4, "gov": 56.3, "fem": 90.1, "inacc": 0.0}, "BAJOUR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 83.8, "gov": 43.3, "fem": 15.8, "inacc": 0.0}, "BANNU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 77.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 88.6, "gov": 39.3, "fem": 78.3, "inacc": 0.0}, "BATAGRAM": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 22.6, "inacc": 0.0}, "BUNER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 97.0, "fem": 33.1, "inacc": 0.0}, "CHARSADA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 58.9, "fem": 99.9, "inacc": 0.0}, "CHITRALLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 68.6, "fem": 80.5, "inacc": 0.0}, "CHITRALUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 80.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 99.6, "gov": 78.9, "fem": 95.0, "inacc": 0.0}, "DIKHAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 64.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 84.8, "gov": 44.2, "fem": 78.4, "inacc": 0.0}, "DIRLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 66.0, "fem": 45.8, "inacc": 0.0}, "DIRUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 75.7, "fem": 40.1, "inacc": 0.0}, "HANGU": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 84.2, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 73.0, "gov": 47.1, "fem": 45.1, "inacc": 0.0}, "HARIPUR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 98.8, "fem": 98.2, "inacc": 0.0}, "KARAK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 99.4, "gov": 64.3, "fem": 82.8, "inacc": 0.0}, "KHYBER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 0.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 1.6, "inacc": 0.0}, "KOHAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 95.7, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 96.6, "gov": 39.6, "fem": 78.7, "inacc": 0.0}, "KOHISTANLOWER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 0.0, "inacc": 0.0}, "KOHISTANUPPER": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 54.4, "fem": 4.4, "inacc": 0.0}, "KOLAIPALAS": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 3.7, "inacc": 0.0}, "KURRAM": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 78.9, "ucsec": 78.9, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 55.7, "fem": 46.1, "inacc": 0.0}, "LAKKIMRWT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 77.5, "aic": 100.0, "trn": 99.4, "mpv": 99.6, "adult": 100.0, "loc": 95.7, "gov": 50.8, "fem": 69.8, "inacc": 0.0}, "MALAKAND": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 100.0, "fem": 100.0, "inacc": 0.0}, "MANSEHRA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 97.8, "fem": 89.8, "inacc": 0.0}, "MARDAN": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 60.7, "fem": 98.9, "inacc": 0.0}, "MOHMAND": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 82.8, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 95.6, "gov": 59.7, "fem": 36.3, "inacc": 0.0}, "NOWSHERA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 86.5, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 93.5, "gov": 51.7, "fem": 96.4, "inacc": 0.0}, "ORAKZAI": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 65.3, "fem": 43.4, "inacc": 0.0}, "PESHAWAR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 66.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 81.2, "gov": 100.0, "fem": 92.8, "inacc": 0.0}, "SHANGLA": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 78.3, "fem": 27.7, "inacc": 0.0}, "SWABI": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 99.8, "mpv": 100.0, "adult": 99.7, "loc": 97.3, "gov": 65.5, "fem": 86.7, "inacc": 0.0}, "SWAT": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 97.0, "gov": 72.9, "fem": 53.4, "inacc": 0.0}, "TANK": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 63.6, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 84.8, "gov": 31.8, "fem": 55.4, "inacc": 0.0}, "TORGHAR": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 100.0, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 97.1, "fem": 2.2, "inacc": 0.0}, "WAZIR-N": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 60.9, "ucsec": 26.1, "aic": 64.2, "trn": 59.3, "mpv": 83.9, "adult": 72.3, "loc": 72.3, "gov": 3.2, "fem": 0.5, "inacc": 0.0}, "WAZIR-S Lower": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 8.3, "aic": 100.0, "trn": 100.3, "mpv": 100.0, "adult": 100.0, "loc": 96.9, "gov": 5.1, "fem": 5.4, "inacc": 0.0}, "WAZIR-S Upper": {"dpec": 100.0, "dc": 100.0, "dho": 100.0, "must": 100.0, "ucmo": 100.0, "ucsec": 29.4, "aic": 100.0, "trn": 100.0, "mpv": 100.0, "adult": 100.0, "loc": 100.0, "gov": 0.0, "fem": 0.0, "inacc": 0.0}}}, "icm": {"SEP-26-1": {"DIKHAN": {"tuc": 53.0, "ruc": 53.0, "cl": 953.0, "hh": 6671.0, "door": 6147.0, "nr": 682.0, "dw": 95.0, "rc": 15460.0, "rv": 13890.0, "mi": 1570.0, "tdn": 176.0, "tm": 98.0, "na": 1172.0, "rf": 124.0, "gr": 665.0, "gv": 612.0, "seen": 12092.0, "fm": 11715.0, "nvfm": 0.0, "unv": 4.0, "pca": 20.0, "ma": 30.0}, "TANK": {"tuc": 22.0, "ruc": 22.0, "cl": 396.0, "hh": 2772.0, "door": 2305.0, "nr": 84.0, "dw": 19.0, "rc": 6673.0, "rv": 5842.0, "mi": 831.0, "tdn": 46.0, "tm": 125.0, "na": 565.0, "rf": 95.0, "gr": 218.0, "gv": 205.0, "seen": 4978.0, "fm": 4669.0, "nvfm": 31.0, "unv": 6.0, "pca": 42.0, "ma": 6.0}, "WAZIR-S Lower": {"tuc": 36.0, "ruc": 36.0, "cl": 288.0, "hh": 2016.0, "door": 1468.0, "nr": 6.0, "dw": 3.0, "rc": 6180.0, "rv": 5226.0, "mi": 954.0, "tdn": 419.0, "tm": 180.0, "na": 302.0, "rf": 53.0, "gr": 183.0, "gv": 165.0, "seen": 4645.0, "fm": 4126.0, "nvfm": 20.0, "unv": 21.0, "pca": 43.0, "ma": 45.0}, "WAZIR-S Upper": {"tuc": 34.0, "ruc": 34.0, "cl": 461.0, "hh": 3227.0, "door": 2903.0, "nr": 314.0, "dw": 50.0, "rc": 6040.0, "rv": 5656.0, "mi": 384.0, "tdn": 13.0, "tm": 133.0, "na": 200.0, "rf": 38.0, "gr": 199.0, "gv": 168.0, "seen": 4699.0, "fm": 4507.0, "nvfm": 3.0, "unv": 0.0, "pca": 27.0, "ma": 9.0}, "CHARSADA": {"tuc": 49.0, "ruc": 49.0, "cl": 416.0, "hh": 2912.0, "door": 2808.0, "nr": 117.0, "dw": 32.0, "rc": 6157.0, "rv": 5558.0, "mi": 599.0, "tdn": 2.0, "tm": 44.0, "na": 524.0, "rf": 29.0, "gr": 310.0, "gv": 283.0, "seen": 4424.0, "fm": 4333.0, "nvfm": 0.0, "unv": 2.0, "pca": 14.0, "ma": 1.0}, "KHYBER": {"tuc": 53.0, "ruc": 48.0, "cl": 1571.0, "hh": 10997.0, "door": 10828.0, "nr": 147.0, "dw": 45.0, "rc": 29168.0, "rv": 27776.0, "mi": 1392.0, "tdn": 2.0, "tm": 9.0, "na": 1317.0, "rf": 64.0, "gr": 759.0, "gv": 719.0, "seen": 23106.0, "fm": 23046.0, "nvfm": 0.0, "unv": 2.0, "pca": 3.0, "ma": 1.0}, "MOHMAND": {"tuc": 29.0, "ruc": 29.0, "cl": 333.0, "hh": 2331.0, "door": 2178.0, "nr": 223.0, "dw": 78.0, "rc": 7325.0, "rv": 6581.0, "mi": 744.0, "tdn": 5.0, "tm": 58.0, "na": 674.0, "rf": 7.0, "gr": 308.0, "gv": 285.0, "seen": 5593.0, "fm": 5507.0, "nvfm": 0.0, "unv": 1.0, "pca": 23.0, "ma": 3.0}, "NOWSHERA": {"tuc": 49.0, "ruc": 48.0, "cl": 472.0, "hh": 3304.0, "door": 3244.0, "nr": 155.0, "dw": 17.0, "rc": 6558.0, "rv": 5903.0, "mi": 655.0, "tdn": 3.0, "tm": 40.0, "na": 574.0, "rf": 38.0, "gr": 361.0, "gv": 315.0, "seen": 5119.0, "fm": 4936.0, "nvfm": 0.0, "unv": 3.0, "pca": 12.0, "ma": 2.0}, "PESHAWAR": {"tuc": 103.0, "ruc": 103.0, "cl": 2447.0, "hh": 17129.0, "door": 16845.0, "nr": 577.0, "dw": 109.0, "rc": 38716.0, "rv": 35424.0, "mi": 3292.0, "tdn": 1.0, "tm": 58.0, "na": 2745.0, "rf": 488.0, "gr": 1559.0, "gv": 1382.0, "seen": 28846.0, "fm": 28299.0, "nvfm": 0.0, "unv": 2.0, "pca": 21.0, "ma": 1.0}, "BANNU": {"tuc": 57.0, "ruc": 57.0, "cl": 747.0, "hh": 5229.0, "door": 4972.0, "nr": 675.0, "dw": 165.0, "rc": 12336.0, "rv": 10619.0, "mi": 1717.0, "tdn": 183.0, "tm": 222.0, "na": 1035.0, "rf": 277.0, "gr": 437.0, "gv": 379.0, "seen": 9103.0, "fm": 8685.0, "nvfm": 6.0, "unv": 16.0, "pca": 63.0, "ma": 30.0}, "LAKKIMRWT": {"tuc": 40.0, "ruc": 40.0, "cl": 609.0, "hh": 4263.0, "door": 4120.0, "nr": 181.0, "dw": 188.0, "rc": 11274.0, "rv": 9770.0, "mi": 1504.0, "tdn": 6.0, "tm": 104.0, "na": 1022.0, "rf": 372.0, "gr": 300.0, "gv": 257.0, "seen": 8583.0, "fm": 8254.0, "nvfm": 13.0, "unv": 2.0, "pca": 52.0, "ma": 3.0}, "WAZIR-N": {"tuc": 23.0, "ruc": 19.0, "cl": 177.0, "hh": 1239.0, "door": 925.0, "nr": 65.0, "dw": 34.0, "rc": 3545.0, "rv": 3078.0, "mi": 467.0, "tdn": 100.0, "tm": 128.0, "na": 226.0, "rf": 13.0, "gr": 173.0, "gv": 139.0, "seen": 2903.0, "fm": 2649.0, "nvfm": 0.0, "unv": 1.0, "pca": 29.0, "ma": 17.0}, "ABOTABAD": {"tuc": 54.0, "ruc": 54.0, "cl": 550.0, "hh": 3850.0, "door": 3808.0, "nr": 86.0, "dw": 33.0, "rc": 5918.0, "rv": 5509.0, "mi": 409.0, "tdn": 1.0, "tm": 17.0, "na": 380.0, "rf": 11.0, "gr": 331.0, "gv": 322.0, "seen": 5340.0, "fm": 5294.0, "nvfm": 2.0, "unv": 0.0, "pca": 4.0, "ma": 1.0}, "BATAGRAM": {"tuc": 20.0, "ruc": 20.0, "cl": 182.0, "hh": 1274.0, "door": 1236.0, "nr": 2.0, "dw": 2.0, "rc": 3027.0, "rv": 2776.0, "mi": 251.0, "tdn": 0.0, "tm": 8.0, "na": 243.0, "rf": 0.0, "gr": 240.0, "gv": 229.0, "seen": 2408.0, "fm": 2396.0, "nvfm": 0.0, "unv": 0.0, "pca": 3.0, "ma": 0.0}, "HARIPUR": {"tuc": 45.0, "ruc": 45.0, "cl": 503.0, "hh": 3521.0, "door": 3501.0, "nr": 83.0, "dw": 51.0, "rc": 5595.0, "rv": 5175.0, "mi": 420.0, "tdn": 3.0, "tm": 9.0, "na": 400.0, "rf": 8.0, "gr": 267.0, "gv": 251.0, "seen": 4851.0, "fm": 4827.0, "nvfm": 1.0, "unv": 0.0, "pca": 2.0, "ma": 1.0}, "KOHISTANLOWER": {"tuc": 10.0, "ruc": 10.0, "cl": 96.0, "hh": 672.0, "door": 660.0, "nr": 0.0, "dw": 0.0, "rc": 2135.0, "rv": 2021.0, "mi": 114.0, "tdn": 0.0, "tm": 5.0, "na": 109.0, "rf": 0.0, "gr": 99.0, "gv": 98.0, "seen": 1971.0, "fm": 1962.0, "nvfm": 1.0, "unv": 0.0, "pca": 1.0, "ma": 0.0}, "KOHISTANUPPER": {"tuc": 15.0, "ruc": 15.0, "cl": 141.0, "hh": 987.0, "door": 958.0, "nr": 55.0, "dw": 0.0, "rc": 2846.0, "rv": 2797.0, "mi": 49.0, "tdn": 0.0, "tm": 8.0, "na": 41.0, "rf": 0.0, "gr": 221.0, "gv": 219.0, "seen": 2674.0, "fm": 2639.0, "nvfm": 0.0, "unv": 0.0, "pca": 1.0, "ma": 0.0}, "KOLAIPALAS": {"tuc": 13.0, "ruc": 12.0, "cl": 73.0, "hh": 511.0, "door": 501.0, "nr": 0.0, "dw": 0.0, "rc": 1294.0, "rv": 1267.0, "mi": 27.0, "tdn": 0.0, "tm": 2.0, "na": 25.0, "rf": 0.0, "gr": 67.0, "gv": 66.0, "seen": 1214.0, "fm": 1207.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "MANSEHRA": {"tuc": 59.0, "ruc": 59.0, "cl": 515.0, "hh": 3605.0, "door": 3572.0, "nr": 13.0, "dw": 1.0, "rc": 5875.0, "rv": 5542.0, "mi": 333.0, "tdn": 5.0, "tm": 13.0, "na": 312.0, "rf": 3.0, "gr": 464.0, "gv": 442.0, "seen": 5315.0, "fm": 5292.0, "nvfm": 0.0, "unv": 1.0, "pca": 3.0, "ma": 2.0}, "TORGHAR": {"tuc": 16.0, "ruc": 16.0, "cl": 170.0, "hh": 1190.0, "door": 1157.0, "nr": 19.0, "dw": 1.0, "rc": 2500.0, "rv": 2383.0, "mi": 117.0, "tdn": 3.0, "tm": 10.0, "na": 104.0, "rf": 0.0, "gr": 75.0, "gv": 71.0, "seen": 2120.0, "fm": 2091.0, "nvfm": 0.0, "unv": 0.0, "pca": 5.0, "ma": 3.0}, "MARDAN": {"tuc": 76.0, "ruc": 76.0, "cl": 586.0, "hh": 4102.0, "door": 4046.0, "nr": 426.0, "dw": 55.0, "rc": 7376.0, "rv": 6596.0, "mi": 780.0, "tdn": 0.0, "tm": 33.0, "na": 697.0, "rf": 50.0, "gr": 299.0, "gv": 295.0, "seen": 5866.0, "fm": 5791.0, "nvfm": 0.0, "unv": 4.0, "pca": 10.0, "ma": 0.0}, "SWABI": {"tuc": 56.0, "ruc": 56.0, "cl": 457.0, "hh": 3199.0, "door": 3114.0, "nr": 272.0, "dw": 188.0, "rc": 6307.0, "rv": 5836.0, "mi": 471.0, "tdn": 4.0, "tm": 41.0, "na": 395.0, "rf": 31.0, "gr": 231.0, "gv": 205.0, "seen": 5164.0, "fm": 5115.0, "nvfm": 1.0, "unv": 0.0, "pca": 11.0, "ma": 2.0}, "BAJOUR": {"tuc": 39.0, "ruc": 39.0, "cl": 546.0, "hh": 3822.0, "door": 3442.0, "nr": 104.0, "dw": 64.0, "rc": 10609.0, "rv": 9668.0, "mi": 941.0, "tdn": 10.0, "tm": 146.0, "na": 785.0, "rf": 0.0, "gr": 416.0, "gv": 388.0, "seen": 8964.0, "fm": 8809.0, "nvfm": 0.0, "unv": 6.0, "pca": 44.0, "ma": 3.0}, "BAR SWAT": {"tuc": 28.0, "ruc": 27.0, "cl": 245.0, "hh": 1715.0, "door": 1692.0, "nr": 109.0, "dw": 65.0, "rc": 3838.0, "rv": 3668.0, "mi": 170.0, "tdn": 1.0, "tm": 15.0, "na": 154.0, "rf": 0.0, "gr": 382.0, "gv": 373.0, "seen": 3247.0, "fm": 3205.0, "nvfm": 2.0, "unv": 0.0, "pca": 3.0, "ma": 1.0}, "BUNER": {"tuc": 29.0, "ruc": 29.0, "cl": 305.0, "hh": 2135.0, "door": 2125.0, "nr": 59.0, "dw": 18.0, "rc": 4968.0, "rv": 4748.0, "mi": 220.0, "tdn": 2.0, "tm": 15.0, "na": 202.0, "rf": 1.0, "gr": 324.0, "gv": 314.0, "seen": 4249.0, "fm": 4233.0, "nvfm": 0.0, "unv": 1.0, "pca": 2.0, "ma": 2.0}, "CHITRALLOWER": {"tuc": 14.0, "ruc": 14.0, "cl": 139.0, "hh": 973.0, "door": 966.0, "nr": 53.0, "dw": 0.0, "rc": 1634.0, "rv": 1502.0, "mi": 132.0, "tdn": 0.0, "tm": 2.0, "na": 130.0, "rf": 0.0, "gr": 117.0, "gv": 115.0, "seen": 1491.0, "fm": 1484.0, "nvfm": 0.0, "unv": 0.0, "pca": 2.0, "ma": 0.0}, "CHITRALUPPER": {"tuc": 10.0, "ruc": 10.0, "cl": 118.0, "hh": 826.0, "door": 825.0, "nr": 50.0, "dw": 0.0, "rc": 1307.0, "rv": 1250.0, "mi": 57.0, "tdn": 0.0, "tm": 0.0, "na": 57.0, "rf": 0.0, "gr": 159.0, "gv": 159.0, "seen": 1241.0, "fm": 1238.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "DIRLOWER": {"tuc": 41.0, "ruc": 41.0, "cl": 432.0, "hh": 3024.0, "door": 2883.0, "nr": 112.0, "dw": 43.0, "rc": 7138.0, "rv": 6548.0, "mi": 590.0, "tdn": 11.0, "tm": 94.0, "na": 478.0, "rf": 7.0, "gr": 655.0, "gv": 609.0, "seen": 6095.0, "fm": 5920.0, "nvfm": 2.0, "unv": 0.0, "pca": 29.0, "ma": 4.0}, "DIRUPPER": {"tuc": 32.0, "ruc": 32.0, "cl": 412.0, "hh": 2884.0, "door": 2777.0, "nr": 74.0, "dw": 0.0, "rc": 7039.0, "rv": 6587.0, "mi": 452.0, "tdn": 2.0, "tm": 28.0, "na": 422.0, "rf": 0.0, "gr": 459.0, "gv": 453.0, "seen": 6049.0, "fm": 6019.0, "nvfm": 0.0, "unv": 1.0, "pca": 6.0, "ma": 2.0}, "MALAKAND": {"tuc": 28.0, "ruc": 28.0, "cl": 246.0, "hh": 1722.0, "door": 1706.0, "nr": 71.0, "dw": 12.0, "rc": 3407.0, "rv": 3286.0, "mi": 121.0, "tdn": 0.0, "tm": 2.0, "na": 119.0, "rf": 0.0, "gr": 160.0, "gv": 160.0, "seen": 3116.0, "fm": 3113.0, "nvfm": 0.0, "unv": 0.0, "pca": 1.0, "ma": 0.0}, "SHANGLA": {"tuc": 28.0, "ruc": 28.0, "cl": 177.0, "hh": 1239.0, "door": 1226.0, "nr": 127.0, "dw": 28.0, "rc": 3039.0, "rv": 2902.0, "mi": 137.0, "tdn": 0.0, "tm": 10.0, "na": 127.0, "rf": 0.0, "gr": 195.0, "gv": 193.0, "seen": 2588.0, "fm": 2585.0, "nvfm": 0.0, "unv": 0.0, "pca": 3.0, "ma": 0.0}, "SWAT": {"tuc": 37.0, "ruc": 37.0, "cl": 318.0, "hh": 2226.0, "door": 2153.0, "nr": 119.0, "dw": 50.0, "rc": 4861.0, "rv": 4478.0, "mi": 383.0, "tdn": 28.0, "tm": 26.0, "na": 325.0, "rf": 4.0, "gr": 301.0, "gv": 287.0, "seen": 4149.0, "fm": 4099.0, "nvfm": 0.0, "unv": 14.0, "pca": 5.0, "ma": 9.0}, "HANGU": {"tuc": 19.0, "ruc": 19.0, "cl": 161.0, "hh": 1127.0, "door": 1091.0, "nr": 2.0, "dw": 0.0, "rc": 2786.0, "rv": 2548.0, "mi": 238.0, "tdn": 19.0, "tm": 40.0, "na": 178.0, "rf": 1.0, "gr": 89.0, "gv": 81.0, "seen": 2182.0, "fm": 2092.0, "nvfm": 0.0, "unv": 4.0, "pca": 8.0, "ma": 4.0}, "KARAK": {"tuc": 21.0, "ruc": 21.0, "cl": 193.0, "hh": 1351.0, "door": 1309.0, "nr": 53.0, "dw": 0.0, "rc": 2805.0, "rv": 2560.0, "mi": 245.0, "tdn": 10.0, "tm": 32.0, "na": 198.0, "rf": 5.0, "gr": 82.0, "gv": 79.0, "seen": 2294.0, "fm": 2219.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 1.0}, "KOHAT": {"tuc": 42.0, "ruc": 42.0, "cl": 434.0, "hh": 3038.0, "door": 2891.0, "nr": 87.0, "dw": 0.0, "rc": 6598.0, "rv": 5801.0, "mi": 797.0, "tdn": 7.0, "tm": 87.0, "na": 640.0, "rf": 63.0, "gr": 280.0, "gv": 245.0, "seen": 5112.0, "fm": 4939.0, "nvfm": 2.0, "unv": 18.0, "pca": 23.0, "ma": 4.0}, "KURRAM": {"tuc": 76.0, "ruc": 66.0, "cl": 404.0, "hh": 2828.0, "door": 2758.0, "nr": 255.0, "dw": 197.0, "rc": 7762.0, "rv": 7139.0, "mi": 627.0, "tdn": 0.0, "tm": 14.0, "na": 605.0, "rf": 8.0, "gr": 348.0, "gv": 306.0, "seen": 6270.0, "fm": 6235.0, "nvfm": 0.0, "unv": 0.0, "pca": 6.0, "ma": 0.0}, "ORAKZAI": {"tuc": 46.0, "ruc": 46.0, "cl": 413.0, "hh": 2891.0, "door": 2856.0, "nr": 51.0, "dw": 0.0, "rc": 6554.0, "rv": 6350.0, "mi": 206.0, "tdn": 7.0, "tm": 23.0, "na": 176.0, "rf": 0.0, "gr": 222.0, "gv": 212.0, "seen": 5837.0, "fm": 5762.0, "nvfm": 1.0, "unv": 0.0, "pca": 6.0, "ma": 3.0}}, "MAY-26-1": {"DIKHAN": {"tuc": 53.0, "ruc": 53.0, "cl": 779.0, "hh": 5453.0, "door": 5188.0, "nr": 490.0, "dw": 98.0, "rc": 12980.0, "rv": 11738.0, "mi": 1242.0, "tdn": 49.0, "tm": 80.0, "na": 999.0, "rf": 114.0, "gr": 486.0, "gv": 427.0, "seen": 9778.0, "fm": 9488.0, "nvfm": 0.0, "unv": 0.0, "pca": 21.0, "ma": 11.0}, "TANK": {"tuc": 22.0, "ruc": 22.0, "cl": 432.0, "hh": 3024.0, "door": 2534.0, "nr": 68.0, "dw": 24.0, "rc": 7271.0, "rv": 6327.0, "mi": 944.0, "tdn": 177.0, "tm": 142.0, "na": 533.0, "rf": 92.0, "gr": 140.0, "gv": 121.0, "seen": 5238.0, "fm": 4809.0, "nvfm": 1.0, "unv": 0.0, "pca": 42.0, "ma": 25.0}, "WAZIR-S Lower": {"tuc": 36.0, "ruc": 35.0, "cl": 316.0, "hh": 2212.0, "door": 1781.0, "nr": 55.0, "dw": 2.0, "rc": 6786.0, "rv": 5992.0, "mi": 794.0, "tdn": 293.0, "tm": 145.0, "na": 310.0, "rf": 46.0, "gr": 125.0, "gv": 122.0, "seen": 5007.0, "fm": 4605.0, "nvfm": 0.0, "unv": 0.0, "pca": 45.0, "ma": 38.0}, "WAZIR-S Upper": {"tuc": 34.0, "ruc": 16.0, "cl": 51.0, "hh": 357.0, "door": 291.0, "nr": 47.0, "dw": 7.0, "rc": 714.0, "rv": 632.0, "mi": 82.0, "tdn": 21.0, "tm": 30.0, "na": 24.0, "rf": 7.0, "gr": 8.0, "gv": 7.0, "seen": 531.0, "fm": 484.0, "nvfm": 2.0, "unv": 0.0, "pca": 3.0, "ma": 4.0}, "KHYBER": {"tuc": 53.0, "ruc": 47.0, "cl": 1298.0, "hh": 9086.0, "door": 8979.0, "nr": 18.0, "dw": 6.0, "rc": 23835.0, "rv": 22926.0, "mi": 909.0, "tdn": 0.0, "tm": 4.0, "na": 839.0, "rf": 66.0, "gr": 346.0, "gv": 316.0, "seen": 18122.0, "fm": 18077.0, "nvfm": 0.0, "unv": 0.0, "pca": 1.0, "ma": 0.0}, "MOHMAND": {"tuc": 29.0, "ruc": 29.0, "cl": 375.0, "hh": 2625.0, "door": 2539.0, "nr": 42.0, "dw": 10.0, "rc": 7870.0, "rv": 7332.0, "mi": 538.0, "tdn": 15.0, "tm": 27.0, "na": 471.0, "rf": 25.0, "gr": 181.0, "gv": 171.0, "seen": 6116.0, "fm": 6069.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 3.0}, "NOWSHERA": {"tuc": 52.0, "ruc": 52.0, "cl": 530.0, "hh": 3710.0, "door": 3657.0, "nr": 127.0, "dw": 18.0, "rc": 7771.0, "rv": 7161.0, "mi": 610.0, "tdn": 7.0, "tm": 26.0, "na": 549.0, "rf": 28.0, "gr": 341.0, "gv": 321.0, "seen": 5766.0, "fm": 5617.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 3.0}, "PESHAWAR": {"tuc": 103.0, "ruc": 101.0, "cl": 2548.0, "hh": 17836.0, "door": 17626.0, "nr": 554.0, "dw": 180.0, "rc": 40097.0, "rv": 36575.0, "mi": 3522.0, "tdn": 3.0, "tm": 44.0, "na": 2849.0, "rf": 626.0, "gr": 1275.0, "gv": 1107.0, "seen": 29016.0, "fm": 28251.0, "nvfm": 0.0, "unv": 0.0, "pca": 20.0, "ma": 2.0}, "BANNU": {"tuc": 57.0, "ruc": 57.0, "cl": 748.0, "hh": 5236.0, "door": 4869.0, "nr": 424.0, "dw": 168.0, "rc": 12131.0, "rv": 10614.0, "mi": 1517.0, "tdn": 120.0, "tm": 168.0, "na": 915.0, "rf": 314.0, "gr": 318.0, "gv": 301.0, "seen": 9193.0, "fm": 8768.0, "nvfm": 18.0, "unv": 0.0, "pca": 49.0, "ma": 21.0}, "LAKKIMRWT": {"tuc": 40.0, "ruc": 40.0, "cl": 606.0, "hh": 4242.0, "door": 4144.0, "nr": 127.0, "dw": 180.0, "rc": 11609.0, "rv": 10248.0, "mi": 1361.0, "tdn": 34.0, "tm": 73.0, "na": 929.0, "rf": 325.0, "gr": 232.0, "gv": 194.0, "seen": 8503.0, "fm": 8175.0, "nvfm": 0.0, "unv": 0.0, "pca": 43.0, "ma": 3.0}, "WAZIR-N": {"tuc": 23.0, "ruc": 19.0, "cl": 150.0, "hh": 1050.0, "door": 680.0, "nr": 23.0, "dw": 10.0, "rc": 3173.0, "rv": 2584.0, "mi": 589.0, "tdn": 182.0, "tm": 171.0, "na": 225.0, "rf": 11.0, "gr": 132.0, "gv": 69.0, "seen": 2496.0, "fm": 2113.0, "nvfm": 0.0, "unv": 0.0, "pca": 29.0, "ma": 17.0}, "ABOTABAD": {"tuc": 54.0, "ruc": 54.0, "cl": 709.0, "hh": 4963.0, "door": 4891.0, "nr": 61.0, "dw": 5.0, "rc": 7834.0, "rv": 7192.0, "mi": 642.0, "tdn": 11.0, "tm": 32.0, "na": 577.0, "rf": 22.0, "gr": 548.0, "gv": 436.0, "seen": 6672.0, "fm": 6599.0, "nvfm": 0.0, "unv": 0.0, "pca": 10.0, "ma": 3.0}, "KOHISTANLOWER": {"tuc": 10.0, "ruc": 10.0, "cl": 87.0, "hh": 609.0, "door": 600.0, "nr": 0.0, "dw": 0.0, "rc": 1997.0, "rv": 1891.0, "mi": 106.0, "tdn": 2.0, "tm": 7.0, "na": 97.0, "rf": 0.0, "gr": 90.0, "gv": 90.0, "seen": 1748.0, "fm": 1730.0, "nvfm": 3.0, "unv": 0.0, "pca": 4.0, "ma": 1.0}, "KOHISTANUPPER": {"tuc": 15.0, "ruc": 15.0, "cl": 138.0, "hh": 966.0, "door": 944.0, "nr": 0.0, "dw": 0.0, "rc": 2751.0, "rv": 2708.0, "mi": 43.0, "tdn": 0.0, "tm": 6.0, "na": 37.0, "rf": 0.0, "gr": 109.0, "gv": 97.0, "seen": 2357.0, "fm": 2316.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "KOLAIPALAS": {"tuc": 13.0, "ruc": 13.0, "cl": 116.0, "hh": 812.0, "door": 805.0, "nr": 0.0, "dw": 0.0, "rc": 2224.0, "rv": 2210.0, "mi": 14.0, "tdn": 0.0, "tm": 1.0, "na": 13.0, "rf": 0.0, "gr": 48.0, "gv": 48.0, "seen": 2063.0, "fm": 2063.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "TORGHAR": {"tuc": 16.0, "ruc": 16.0, "cl": 207.0, "hh": 1449.0, "door": 1413.0, "nr": 68.0, "dw": 1.0, "rc": 3056.0, "rv": 2895.0, "mi": 161.0, "tdn": 0.0, "tm": 17.0, "na": 144.0, "rf": 0.0, "gr": 72.0, "gv": 68.0, "seen": 2392.0, "fm": 2356.0, "nvfm": 0.0, "unv": 0.0, "pca": 6.0, "ma": 0.0}, "MARDAN": {"tuc": 76.0, "ruc": 76.0, "cl": 688.0, "hh": 4816.0, "door": 4726.0, "nr": 267.0, "dw": 62.0, "rc": 8928.0, "rv": 7943.0, "mi": 985.0, "tdn": 4.0, "tm": 51.0, "na": 840.0, "rf": 90.0, "gr": 277.0, "gv": 239.0, "seen": 6695.0, "fm": 6574.0, "nvfm": 0.0, "unv": 0.0, "pca": 20.0, "ma": 3.0}, "BAJOUR": {"tuc": 39.0, "ruc": 39.0, "cl": 566.0, "hh": 3962.0, "door": 3755.0, "nr": 29.0, "dw": 19.0, "rc": 10699.0, "rv": 10026.0, "mi": 673.0, "tdn": 0.0, "tm": 119.0, "na": 551.0, "rf": 3.0, "gr": 364.0, "gv": 318.0, "seen": 9040.0, "fm": 8927.0, "nvfm": 0.0, "unv": 0.0, "pca": 41.0, "ma": 0.0}, "DIRLOWER": {"tuc": 41.0, "ruc": 41.0, "cl": 465.0, "hh": 3255.0, "door": 3061.0, "nr": 132.0, "dw": 51.0, "rc": 8138.0, "rv": 7514.0, "mi": 624.0, "tdn": 16.0, "tm": 109.0, "na": 489.0, "rf": 10.0, "gr": 495.0, "gv": 446.0, "seen": 6083.0, "fm": 5934.0, "nvfm": 0.0, "unv": 0.0, "pca": 33.0, "ma": 9.0}, "HANGU": {"tuc": 19.0, "ruc": 18.0, "cl": 186.0, "hh": 1302.0, "door": 1258.0, "nr": 1.0, "dw": 0.0, "rc": 3247.0, "rv": 2949.0, "mi": 298.0, "tdn": 0.0, "tm": 30.0, "na": 264.0, "rf": 4.0, "gr": 61.0, "gv": 48.0, "seen": 2553.0, "fm": 2454.0, "nvfm": 1.0, "unv": 0.0, "pca": 8.0, "ma": 0.0}, "KARAK": {"tuc": 21.0, "ruc": 21.0, "cl": 240.0, "hh": 1680.0, "door": 1626.0, "nr": 108.0, "dw": 64.0, "rc": 3569.0, "rv": 3310.0, "mi": 259.0, "tdn": 5.0, "tm": 40.0, "na": 208.0, "rf": 6.0, "gr": 89.0, "gv": 72.0, "seen": 2949.0, "fm": 2851.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 2.0}, "KOHAT": {"tuc": 46.0, "ruc": 46.0, "cl": 545.0, "hh": 3815.0, "door": 3730.0, "nr": 38.0, "dw": 71.0, "rc": 8214.0, "rv": 7401.0, "mi": 813.0, "tdn": 13.0, "tm": 56.0, "na": 663.0, "rf": 81.0, "gr": 278.0, "gv": 242.0, "seen": 6381.0, "fm": 6191.0, "nvfm": 20.0, "unv": 0.0, "pca": 11.0, "ma": 5.0}, "KURRAM": {"tuc": 76.0, "ruc": 58.0, "cl": 551.0, "hh": 3857.0, "door": 3789.0, "nr": 258.0, "dw": 140.0, "rc": 10518.0, "rv": 9850.0, "mi": 668.0, "tdn": 0.0, "tm": 18.0, "na": 641.0, "rf": 9.0, "gr": 377.0, "gv": 376.0, "seen": 8491.0, "fm": 8383.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 0.0}}, "APR-26-1": {"DIKHAN": {"tuc": 53.0, "ruc": 52.0, "cl": 839.0, "hh": 5873.0, "door": 5540.0, "nr": 462.0, "dw": 134.0, "rc": 13493.0, "rv": 12159.0, "mi": 1334.0, "tdn": 69.0, "tm": 95.0, "na": 1072.0, "rf": 98.0, "gr": 548.0, "gv": 511.0, "seen": 10496.0, "fm": 10155.0, "nvfm": 2.0, "unv": 0.0, "pca": 29.0, "ma": 17.0}, "TANK": {"tuc": 22.0, "ruc": 22.0, "cl": 405.0, "hh": 2835.0, "door": 2374.0, "nr": 116.0, "dw": 16.0, "rc": 6942.0, "rv": 6040.0, "mi": 902.0, "tdn": 197.0, "tm": 100.0, "na": 523.0, "rf": 82.0, "gr": 201.0, "gv": 168.0, "seen": 5180.0, "fm": 4765.0, "nvfm": 9.0, "unv": 0.0, "pca": 28.0, "ma": 17.0}, "WAZIR-S Lower": {"tuc": 36.0, "ruc": 34.0, "cl": 280.0, "hh": 1960.0, "door": 1690.0, "nr": 54.0, "dw": 2.0, "rc": 6017.0, "rv": 5431.0, "mi": 586.0, "tdn": 155.0, "tm": 113.0, "na": 273.0, "rf": 45.0, "gr": 105.0, "gv": 95.0, "seen": 4700.0, "fm": 4462.0, "nvfm": 1.0, "unv": 0.0, "pca": 40.0, "ma": 13.0}, "WAZIR-S Upper": {"tuc": 34.0, "ruc": 34.0, "cl": 427.0, "hh": 2989.0, "door": 2599.0, "nr": 581.0, "dw": 94.0, "rc": 5302.0, "rv": 4937.0, "mi": 365.0, "tdn": 50.0, "tm": 142.0, "na": 136.0, "rf": 37.0, "gr": 136.0, "gv": 92.0, "seen": 4373.0, "fm": 4155.0, "nvfm": 0.0, "unv": 0.0, "pca": 26.0, "ma": 25.0}, "CHARSADA": {"tuc": 50.0, "ruc": 50.0, "cl": 567.0, "hh": 3969.0, "door": 3915.0, "nr": 108.0, "dw": 10.0, "rc": 8526.0, "rv": 7632.0, "mi": 894.0, "tdn": 0.0, "tm": 19.0, "na": 812.0, "rf": 63.0, "gr": 348.0, "gv": 340.0, "seen": 6105.0, "fm": 5979.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 0.0}, "KHYBER": {"tuc": 53.0, "ruc": 46.0, "cl": 1318.0, "hh": 9226.0, "door": 9163.0, "nr": 34.0, "dw": 16.0, "rc": 24185.0, "rv": 22997.0, "mi": 1188.0, "tdn": 0.0, "tm": 9.0, "na": 1145.0, "rf": 34.0, "gr": 494.0, "gv": 453.0, "seen": 18669.0, "fm": 18630.0, "nvfm": 0.0, "unv": 0.0, "pca": 2.0, "ma": 0.0}, "MOHMAND": {"tuc": 29.0, "ruc": 29.0, "cl": 381.0, "hh": 2667.0, "door": 2583.0, "nr": 92.0, "dw": 60.0, "rc": 8361.0, "rv": 7766.0, "mi": 595.0, "tdn": 26.0, "tm": 50.0, "na": 511.0, "rf": 8.0, "gr": 292.0, "gv": 273.0, "seen": 6514.0, "fm": 6437.0, "nvfm": 0.0, "unv": 0.0, "pca": 15.0, "ma": 4.0}, "NOWSHERA": {"tuc": 52.0, "ruc": 50.0, "cl": 538.0, "hh": 3766.0, "door": 3697.0, "nr": 86.0, "dw": 31.0, "rc": 7992.0, "rv": 7233.0, "mi": 759.0, "tdn": 16.0, "tm": 38.0, "na": 660.0, "rf": 45.0, "gr": 423.0, "gv": 329.0, "seen": 5883.0, "fm": 5666.0, "nvfm": 1.0, "unv": 0.0, "pca": 12.0, "ma": 4.0}, "PESHAWAR": {"tuc": 103.0, "ruc": 102.0, "cl": 2785.0, "hh": 19495.0, "door": 19217.0, "nr": 733.0, "dw": 196.0, "rc": 44013.0, "rv": 39753.0, "mi": 4260.0, "tdn": 14.0, "tm": 95.0, "na": 3529.0, "rf": 622.0, "gr": 1702.0, "gv": 1491.0, "seen": 32077.0, "fm": 31191.0, "nvfm": 1.0, "unv": 0.0, "pca": 32.0, "ma": 2.0}, "BANNU": {"tuc": 57.0, "ruc": 57.0, "cl": 757.0, "hh": 5299.0, "door": 5022.0, "nr": 491.0, "dw": 177.0, "rc": 12707.0, "rv": 10924.0, "mi": 1783.0, "tdn": 89.0, "tm": 203.0, "na": 1223.0, "rf": 268.0, "gr": 346.0, "gv": 299.0, "seen": 9487.0, "fm": 9090.0, "nvfm": 13.0, "unv": 0.0, "pca": 64.0, "ma": 20.0}, "LAKKIMRWT": {"tuc": 40.0, "ruc": 40.0, "cl": 591.0, "hh": 4137.0, "door": 4039.0, "nr": 166.0, "dw": 241.0, "rc": 10940.0, "rv": 9569.0, "mi": 1371.0, "tdn": 10.0, "tm": 67.0, "na": 1003.0, "rf": 291.0, "gr": 260.0, "gv": 221.0, "seen": 8069.0, "fm": 7816.0, "nvfm": 0.0, "unv": 0.0, "pca": 41.0, "ma": 2.0}, "WAZIR-N": {"tuc": 23.0, "ruc": 18.0, "cl": 227.0, "hh": 1589.0, "door": 1268.0, "nr": 44.0, "dw": 20.0, "rc": 5013.0, "rv": 4321.0, "mi": 692.0, "tdn": 92.0, "tm": 187.0, "na": 355.0, "rf": 58.0, "gr": 127.0, "gv": 104.0, "seen": 3934.0, "fm": 3637.0, "nvfm": 0.0, "unv": 0.0, "pca": 52.0, "ma": 13.0}, "ABOTABAD": {"tuc": 54.0, "ruc": 54.0, "cl": 725.0, "hh": 5075.0, "door": 5005.0, "nr": 42.0, "dw": 22.0, "rc": 7928.0, "rv": 7457.0, "mi": 471.0, "tdn": 1.0, "tm": 21.0, "na": 443.0, "rf": 6.0, "gr": 474.0, "gv": 430.0, "seen": 7002.0, "fm": 6937.0, "nvfm": 0.0, "unv": 0.0, "pca": 9.0, "ma": 1.0}, "BATAGRAM": {"tuc": 20.0, "ruc": 20.0, "cl": 195.0, "hh": 1365.0, "door": 1315.0, "nr": 34.0, "dw": 17.0, "rc": 3205.0, "rv": 2908.0, "mi": 297.0, "tdn": 0.0, "tm": 15.0, "na": 282.0, "rf": 0.0, "gr": 216.0, "gv": 194.0, "seen": 2442.0, "fm": 2423.0, "nvfm": 0.0, "unv": 0.0, "pca": 7.0, "ma": 0.0}, "HARIPUR": {"tuc": 46.0, "ruc": 44.0, "cl": 465.0, "hh": 3255.0, "door": 3228.0, "nr": 59.0, "dw": 4.0, "rc": 5242.0, "rv": 4729.0, "mi": 513.0, "tdn": 4.0, "tm": 19.0, "na": 476.0, "rf": 14.0, "gr": 281.0, "gv": 272.0, "seen": 4337.0, "fm": 4312.0, "nvfm": 1.0, "unv": 0.0, "pca": 7.0, "ma": 2.0}, "KOHISTANLOWER": {"tuc": 10.0, "ruc": 10.0, "cl": 89.0, "hh": 623.0, "door": 607.0, "nr": 0.0, "dw": 0.0, "rc": 2001.0, "rv": 1878.0, "mi": 123.0, "tdn": 0.0, "tm": 7.0, "na": 115.0, "rf": 1.0, "gr": 111.0, "gv": 110.0, "seen": 1762.0, "fm": 1738.0, "nvfm": 1.0, "unv": 0.0, "pca": 4.0, "ma": 0.0}, "KOHISTANUPPER": {"tuc": 15.0, "ruc": 15.0, "cl": 141.0, "hh": 987.0, "door": 971.0, "nr": 14.0, "dw": 0.0, "rc": 2890.0, "rv": 2849.0, "mi": 41.0, "tdn": 0.0, "tm": 6.0, "na": 35.0, "rf": 0.0, "gr": 145.0, "gv": 144.0, "seen": 2433.0, "fm": 2387.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "KOLAIPALAS": {"tuc": 13.0, "ruc": 13.0, "cl": 113.0, "hh": 791.0, "door": 782.0, "nr": 0.0, "dw": 1.0, "rc": 2133.0, "rv": 2104.0, "mi": 29.0, "tdn": 1.0, "tm": 1.0, "na": 27.0, "rf": 0.0, "gr": 58.0, "gv": 58.0, "seen": 1997.0, "fm": 1986.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 1.0}, "MANSEHRA": {"tuc": 62.0, "ruc": 61.0, "cl": 598.0, "hh": 4186.0, "door": 4141.0, "nr": 59.0, "dw": 2.0, "rc": 7069.0, "rv": 6615.0, "mi": 454.0, "tdn": 11.0, "tm": 27.0, "na": 408.0, "rf": 8.0, "gr": 367.0, "gv": 326.0, "seen": 6346.0, "fm": 6311.0, "nvfm": 0.0, "unv": 0.0, "pca": 9.0, "ma": 5.0}, "TORGHAR": {"tuc": 16.0, "ruc": 16.0, "cl": 235.0, "hh": 1645.0, "door": 1579.0, "nr": 122.0, "dw": 0.0, "rc": 3435.0, "rv": 3230.0, "mi": 205.0, "tdn": 0.0, "tm": 23.0, "na": 180.0, "rf": 2.0, "gr": 152.0, "gv": 150.0, "seen": 2817.0, "fm": 2794.0, "nvfm": 0.0, "unv": 0.0, "pca": 6.0, "ma": 0.0}, "MARDAN": {"tuc": 79.0, "ruc": 79.0, "cl": 744.0, "hh": 5208.0, "door": 5090.0, "nr": 244.0, "dw": 163.0, "rc": 9634.0, "rv": 8339.0, "mi": 1295.0, "tdn": 24.0, "tm": 81.0, "na": 1121.0, "rf": 69.0, "gr": 360.0, "gv": 330.0, "seen": 7222.0, "fm": 7059.0, "nvfm": 4.0, "unv": 0.0, "pca": 33.0, "ma": 6.0}, "SWABI": {"tuc": 56.0, "ruc": 56.0, "cl": 532.0, "hh": 3724.0, "door": 3640.0, "nr": 211.0, "dw": 83.0, "rc": 6822.0, "rv": 6275.0, "mi": 547.0, "tdn": 11.0, "tm": 50.0, "na": 446.0, "rf": 40.0, "gr": 263.0, "gv": 213.0, "seen": 5556.0, "fm": 5440.0, "nvfm": 1.0, "unv": 0.0, "pca": 11.0, "ma": 4.0}, "BAJOUR": {"tuc": 39.0, "ruc": 39.0, "cl": 560.0, "hh": 3920.0, "door": 3700.0, "nr": 113.0, "dw": 36.0, "rc": 10342.0, "rv": 9470.0, "mi": 872.0, "tdn": 0.0, "tm": 151.0, "na": 719.0, "rf": 2.0, "gr": 376.0, "gv": 341.0, "seen": 8850.0, "fm": 8681.0, "nvfm": 0.0, "unv": 0.0, "pca": 62.0, "ma": 0.0}, "BUNER": {"tuc": 29.0, "ruc": 29.0, "cl": 334.0, "hh": 2338.0, "door": 2310.0, "nr": 88.0, "dw": 28.0, "rc": 5720.0, "rv": 5409.0, "mi": 311.0, "tdn": 0.0, "tm": 28.0, "na": 283.0, "rf": 0.0, "gr": 348.0, "gv": 328.0, "seen": 4611.0, "fm": 4589.0, "nvfm": 0.0, "unv": 0.0, "pca": 10.0, "ma": 0.0}, "CHITRALLOWER": {"tuc": 14.0, "ruc": 14.0, "cl": 158.0, "hh": 1106.0, "door": 1101.0, "nr": 2.0, "dw": 0.0, "rc": 1923.0, "rv": 1842.0, "mi": 81.0, "tdn": 0.0, "tm": 1.0, "na": 79.0, "rf": 1.0, "gr": 126.0, "gv": 125.0, "seen": 1645.0, "fm": 1641.0, "nvfm": 1.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "CHITRALUPPER": {"tuc": 10.0, "ruc": 10.0, "cl": 114.0, "hh": 798.0, "door": 791.0, "nr": 61.0, "dw": 10.0, "rc": 1178.0, "rv": 1105.0, "mi": 73.0, "tdn": 0.0, "tm": 2.0, "na": 71.0, "rf": 0.0, "gr": 124.0, "gv": 105.0, "seen": 1078.0, "fm": 1073.0, "nvfm": 0.0, "unv": 0.0, "pca": 0.0, "ma": 0.0}, "DIRLOWER": {"tuc": 41.0, "ruc": 41.0, "cl": 374.0, "hh": 2618.0, "door": 2515.0, "nr": 85.0, "dw": 46.0, "rc": 6287.0, "rv": 5798.0, "mi": 489.0, "tdn": 27.0, "tm": 75.0, "na": 382.0, "rf": 5.0, "gr": 422.0, "gv": 381.0, "seen": 5025.0, "fm": 4892.0, "nvfm": 0.0, "unv": 0.0, "pca": 17.0, "ma": 3.0}, "DIRUPPER": {"tuc": 32.0, "ruc": 31.0, "cl": 264.0, "hh": 1848.0, "door": 1824.0, "nr": 50.0, "dw": 0.0, "rc": 4398.0, "rv": 4137.0, "mi": 261.0, "tdn": 1.0, "tm": 12.0, "na": 247.0, "rf": 1.0, "gr": 193.0, "gv": 183.0, "seen": 3618.0, "fm": 3600.0, "nvfm": 0.0, "unv": 0.0, "pca": 4.0, "ma": 1.0}, "MALAKAND": {"tuc": 28.0, "ruc": 28.0, "cl": 287.0, "hh": 2009.0, "door": 1993.0, "nr": 47.0, "dw": 29.0, "rc": 3854.0, "rv": 3695.0, "mi": 159.0, "tdn": 1.0, "tm": 5.0, "na": 153.0, "rf": 0.0, "gr": 166.0, "gv": 164.0, "seen": 3428.0, "fm": 3419.0, "nvfm": 0.0, "unv": 0.0, "pca": 1.0, "ma": 1.0}, "SHANGLA": {"tuc": 28.0, "ruc": 27.0, "cl": 165.0, "hh": 1155.0, "door": 1126.0, "nr": 131.0, "dw": 11.0, "rc": 2785.0, "rv": 2626.0, "mi": 159.0, "tdn": 7.0, "tm": 17.0, "na": 121.0, "rf": 14.0, "gr": 163.0, "gv": 160.0, "seen": 2474.0, "fm": 2444.0, "nvfm": 0.0, "unv": 0.0, "pca": 5.0, "ma": 1.0}, "SWAT": {"tuc": 65.0, "ruc": 65.0, "cl": 616.0, "hh": 4312.0, "door": 4269.0, "nr": 330.0, "dw": 122.0, "rc": 9708.0, "rv": 9121.0, "mi": 587.0, "tdn": 1.0, "tm": 22.0, "na": 559.0, "rf": 5.0, "gr": 573.0, "gv": 548.0, "seen": 7917.0, "fm": 7882.0, "nvfm": 0.0, "unv": 0.0, "pca": 4.0, "ma": 1.0}, "HANGU": {"tuc": 19.0, "ruc": 19.0, "cl": 181.0, "hh": 1267.0, "door": 1222.0, "nr": 17.0, "dw": 0.0, "rc": 3330.0, "rv": 3040.0, "mi": 290.0, "tdn": 0.0, "tm": 19.0, "na": 264.0, "rf": 7.0, "gr": 78.0, "gv": 70.0, "seen": 2592.0, "fm": 2509.0, "nvfm": 0.0, "unv": 0.0, "pca": 9.0, "ma": 0.0}, "KARAK": {"tuc": 21.0, "ruc": 21.0, "cl": 233.0, "hh": 1631.0, "door": 1566.0, "nr": 126.0, "dw": 16.0, "rc": 3573.0, "rv": 3229.0, "mi": 344.0, "tdn": 10.0, "tm": 54.0, "na": 270.0, "rf": 10.0, "gr": 126.0, "gv": 110.0, "seen": 2861.0, "fm": 2751.0, "nvfm": 0.0, "unv": 0.0, "pca": 13.0, "ma": 6.0}, "KOHAT": {"tuc": 46.0, "ruc": 46.0, "cl": 517.0, "hh": 3619.0, "door": 3526.0, "nr": 2.0, "dw": 192.0, "rc": 8026.0, "rv": 7155.0, "mi": 871.0, "tdn": 7.0, "tm": 79.0, "na": 711.0, "rf": 74.0, "gr": 472.0, "gv": 433.0, "seen": 6276.0, "fm": 6069.0, "nvfm": 13.0, "unv": 0.0, "pca": 27.0, "ma": 4.0}, "KURRAM": {"tuc": 76.0, "ruc": 56.0, "cl": 553.0, "hh": 3871.0, "door": 3672.0, "nr": 231.0, "dw": 33.0, "rc": 10091.0, "rv": 9348.0, "mi": 743.0, "tdn": 0.0, "tm": 65.0, "na": 661.0, "rf": 17.0, "gr": 301.0, "gv": 295.0, "seen": 7816.0, "fm": 7769.0, "nvfm": 0.0, "unv": 0.0, "pca": 15.0, "ma": 0.0}, "ORAKZAI": {"tuc": 46.0, "ruc": 46.0, "cl": 416.0, "hh": 2912.0, "door": 2898.0, "nr": 62.0, "dw": 28.0, "rc": 7380.0, "rv": 7164.0, "mi": 216.0, "tdn": 0.0, "tm": 12.0, "na": 200.0, "rf": 4.0, "gr": 80.0, "gv": 80.0, "seen": 6278.0, "fm": 6214.0, "nvfm": 0.0, "unv": 0.0, "pca": 3.0, "ma": 0.0}}}};
+const CQ_DIGC=(typeof CAMP!=='undefined'&&CAMP.S)||'';
+const LBLP = {"ABOTABAD":[337.2,280.1,6.4,["Abbottabad"]],"BAJOUR":[184.2,210.5,5.6,["Bajaur"]],"BANNU":[115.0,390.8,6.4,["Bannu"]],"BAR SWAT":[273.1,127.5,7.2,["Bar Swat"]],"BATAGRAM":[314.1,219.3,5.6,["Battagram"]],"BUNER":[274.8,241.3,6.4,["Buner"]],"CHARSADA":[203.0,265.7,5.6,["Charsadda"]],"CHITRALLOWER":[213.9,104.3,7.2,["Lower Chitral"]],"CHITRALUPPER":[253.0,52.3,7.2,["Upper Chitral"]],"DIKHAN":[109.1,516.4,7.2,["D.I. Khan"]],"DIRLOWER":[210.2,199.7,5.6,["Lower","Dir"]],"DIRUPPER":[233.7,164.5,7.2,["Upper Dir"]],"HANGU":[134.5,345.5,5.6,["Hangu"]],"HARIPUR":[305.0,292.7,5.6,["Haripur"]],"KARAK":[155.9,374.0,7.2,["Karak"]],"KHYBER":[163.9,293.4,6.4,["Khyber"]],"KOHAT":[190.9,342.6,7.2,["Kohat"]],"KOHISTANLOWER":[303.4,175.9,4.8,["Lower","Kohistan"]],"KOHISTANUPPER":[323.4,147.4,7.2,["Upper","Kohistan"]],"KOLAIPALAS":[321.5,186.7,4.8,["Kolai","Palas"]],"KURRAM":[98.3,331.7,7.2,["Kurram"]],"LAKKIMRWT":[134.8,431.0,7.2,["Lakki Marwat"]],"MALAKAND":[216.2,238.6,5.6,["Malakand"]],"MANSEHRA":[328.2,246.2,6.4,["Mansehra"]],"MARDAN":[233.9,259.8,6.4,["Mardan"]],"MOHMAND":[175.4,243.4,7.2,["Mohmand"]],"NOWSHERA":[227.4,298.2,6.4,["Nowshera"]],"ORAKZAI":[142.9,323.6,5.6,["Orakzai"]],"PESHAWAR":[191.5,287.3,5.6,["Peshawar"]],"SHANGLA":[289.7,205.7,5.6,["Shangla"]],"SWABI":[259.2,281.0,4.8,["Swabi"]],"SWAT":[255.6,214.1,5.6,["Swat"]],"TANK":[93.7,457.0,7.2,["Tank"]],"TORGHAR":[298.0,240.6,4.8,["Torghar"]],"WAZIR-N":[69.4,397.7,7.2,["North","Waziristan"]],"WAZIR-S Lower":[21.5,472.2,7.2,["SW Lower"]],"WAZIR-S Upper":[53.6,447.3,7.2,["SW Upper"]]};
+let CQI=0;
+const CQK=s=>{const m=String(s||'').match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[\s\-]*(?:20)?(\d{2})\b/i);return m?m[1].toUpperCase()+m[2]:'';};
+const isSIA=s=>/^\s*S?NID\b/i.test(String(s||''));
+Object.assign(RT,{rd:[95,85],icm:[95,90],lq:[90,80]});
+Object.assign(TABICO,{hcamp:'flag',cpre:'clip',cicm:'search',cpost:'check',hsurv:'shield',hzd:'users',hepi:'syringe',hx:'list'});
+Object.assign(KX,{hc1:['clip','rd','cpre'],hc2:['search','icm','cicm'],hc3:['check','lq','cpost'],hc4:['users',null,'mis'],hc5:['ban',null,'mis'],
+ cp1:['cal','rd'],cp2:['users','rd'],cp3:['clip','rd'],cp4:['users',null],cp5:['users',null],
+ ci1:['search','icm'],ci2:['users',null],ci3:['ban',null],ci4:['clock',null],ci5:['check','icm'],
+ cl1:['list',null],cl2:['check','lq'],cl3:['xc',null],cl4:['pct',null],cl5:['users',null,'mis']});
+const CQ_IND=[['rd','Readiness',95,85,1],['rec','ICM recall',95,90,1],['fmp','Finger-marked',95,90,1],['lqp','LQAS passed',90,80,1],['stp','Still missed',2,4,0],['srp','Still refusing',0.5,1,0],['zc','ZD covered',90,80,1]];
+const cqBand=(v,g,a,hi)=>v==null?null:hi?(v>=g?'g':v>=a?'a':'r'):(v<=g?'g':v<=a?'a':'r');
+const CLS={g:['Good','#16a34a'],a:['Average','#f59e0b'],r:['Poor','#dc2626'],f:['Needs focus','#7f1d1d'],n:['Not enough data','#9ca3af']};
+const avg=a=>{a=a.filter(v=>v!=null&&!isNaN(v));return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;};
+const sum_=(a,f)=>a.reduce((x,r)=>x+(f(r)||0),0);
+const rgS=(v,b,dg)=>v==null?'–':`<span class="rg ${b||''}">${dg===0?fmt(Math.round(v)):v.toFixed(dg==null?1:dg)+'%'}</span>`;
+const _cqCache={};
+function cqDist(ci){ ci=ci||0; if(_cqCache[ci])return _cqCache[ci];
+ const C=(CQ.camps||[])[ci]; if(!C)return {C:null,R:[],key:''};
+ const key=CQK(C.l), P=(CQ.pre||{})[C.v]||{}, I=(CQ.icm||{})[C.v]||{};
+ const lqi=(LQM.camps||[]).findIndex(l=>CQK(l)===key), mi=(MISM.camps||[]).findIndex(l=>CQK(l)===key);
+ const zk=Object.keys(CAMP).find(k=>CQK(CAMP[k])===key)||null;
+ const yr=(WMETA.es_years||[]).slice(-1)[0]||'2026', W=watchD(), WD={}; W.forEach(x=>WD[x.d]=x);
+ const LQ={}; LQR.filter(x=>x.ci===lqi).forEach(x=>{const g=LQ[x.d]=LQ[x.d]||{n:0,P:0,I:0,F:0,aw:0,nb:0,mg:0,rf:0,dn:0,tm:0,ot:0,tt:0}; g.n++; g[x.r]=(g[x.r]||0)+1; ['aw','nb','mg','rf','dn','tm','ot','tt'].forEach(k=>g[k]+=x[k]||0);});
+ const MI={}; misHyd().filter(r=>r.d&&r.ci===mi).forEach(r=>{const g=MI[r.d]=MI[r.d]||{tg:0,vc:0,st:0,sna:0,srf:0,slo:0,n:0}; g.n++; g.tg+=r.tg||0; g.vc+=r.vc||0; g.st+=misSt(r); g.sna+=r.sna||0; g.srf+=r.srf||0; g.slo+=r.slo||0;});
+ const ZZ={}; if(zk)ZD.forEach(r=>{const g=ZZ[r.d]=ZZ[r.d]||{r:0,c:0,hc:false}; g.r+=r['r'+zk]||0; if(r['c'+zk]!=null){g.c+=r['c'+zk];g.hc=true;}});
+ const ds=[...new Set(ZD.map(z=>z.d))].sort();
+ const R=ds.map(d=>{const p=P[d], i=I[d], l=LQ[d], m=MI[d], z=ZZ[d];
+  const o={d,dv:D2DV[d]||'',p:p||null,i:i||null,l:l||null,m:m||null};
+  o.rd=p?avg([p.dpec,p.must,p.aic,p.trn,p.mpv]):null;
+  o.rec=i&&i.rc?i.rv/i.rc*100:null; o.fmp=i&&i.seen?i.fm/i.seen*100:null;
+  o.lqp=l&&l.n?(l.P||0)/l.n*100:null;
+  o.vp=m&&m.tg?m.vc/m.tg*100:null; o.stp=m&&m.tg?m.st/m.tg*100:null; o.srp=m&&m.tg?m.srf/m.tg*100:null;
+  o.zr=z?z.r:null; o.zc=z&&z.hc&&z.r>0?z.c/z.r*100:null;
+  o.wpv=WPV.filter(w=>w.d===d).length; const e=(ESD[d]||{})[yr]; o.esS=e?e[0]:null; o.esP=e?e[1]:null; o.esPos=!!(e&&e[1]>0); o.watch=!!(WD[d]&&WD[d].w);
+  let pt=0,mx=0; o.B={}; CQ_IND.forEach(([k,,g,a,hi])=>{const b=cqBand(o[k],g,a,hi); o.B[k]=b; if(b){mx+=2; pt+=b==='g'?2:b==='a'?1:0;}});
+  o.ni=mx/2; o.sc=o.ni>=3?pt/mx*100:null;
+  o.cls=o.sc==null?'n':o.sc>=75?'g':o.sc>=50?'a':'r';
+  o.why=[o.wpv?o.wpv+' polio case'+(o.wpv>1?'s':'')+' in 2026':'',o.esPos?'positive sewage '+yr:'',o.watch?'polio watch district':''].filter(Boolean);
+  if((o.cls==='a'||o.cls==='r')&&o.why.length)o.cls='f';
+  o.has=!!(p||i||l||m);
+  // triangulation
+  const F=[];
+  if(o.rd!=null&&o.rd>=95&&o.lqp!=null&&o.lqp<80)F.push(['Ready on paper (readiness '+pc(o.rd)+') but only '+pc(o.lqp)+' of LQAS lots passed','r']);
+  if(o.rec!=null&&o.rec>=95&&o.lqp!=null&&o.lqp<80)F.push(['ICM recall '+pc(o.rec)+' but LQAS lots passed only '+pc(o.lqp),'r']);
+  if(o.vp!=null&&o.vp>=100&&o.lqp!=null&&o.lqp<80)F.push(['Admin coverage '+pc(o.vp)+' of target but LQAS lots failing','r']);
+  if(o.fmp!=null&&o.fmp>=95&&o.stp!=null&&o.stp>=4)F.push(['Finger-marking '+pc(o.fmp)+' yet '+pc(o.stp)+' of children still missed (admin)','a']);
+  if(i&&i.mi>0&&i.rf/i.mi>=0.15&&o.srp!=null&&o.srp<0.5)F.push(['Monitors found refusals ('+pc(i.rf/i.mi*100)+' of missed) but admin data shows few still refusing','a']);
+  if(i&&i.mi>0&&i.tdn/i.mi>=0.25)F.push(['Teams did not visit '+pc(i.tdn/i.mi*100)+' of the houses with missed children (ICM)','a']);
+  if(l&&l.tt>=10&&(l.dn+l.tm)/l.tt>=0.6)F.push(['LQAS: '+pc((l.dn+l.tm)/l.tt*100)+' of missed children were team misses or houses not visited','a']);
+  if(i&&i.cl&&(i.pca||0)>=10&&i.pca/i.cl>=0.1)F.push([fmt(i.pca)+' poorly covered areas found by ICM ('+pc(i.pca/i.cl*100)+' of clusters)','a']);
+  o.F=F; return o;}).filter(o=>o.has);
+ const X={C,ci,key,lqi,mi,zk,R,yr}; _cqCache[ci]=X; return X;}
+function cqSum(R){const S={n:R.length,cls:{g:[],a:[],r:[],f:[],n:[]}};
+ R.forEach(r=>S.cls[r.cls].push(r));
+ const Pp=R.filter(r=>r.p).map(r=>r.p); ['dpec','must','aic','trn','mpv','fem','loc','gov','adult','inacc'].forEach(k=>S['p_'+k]=avg(Pp.map(p=>p[k])));
+ S.rd=avg(R.map(r=>r.rd));
+ const Ii=R.filter(r=>r.i).map(r=>r.i); ['rc','rv','seen','fm','mi','tdn','tm','na','rf','pca','ma','hh','unv','nvfm'].forEach(k=>S['i_'+k]=sum_(Ii,x=>x[k]));
+ S.rec=S.i_rc?S.i_rv/S.i_rc*100:null; S.fmp=S.i_seen?S.i_fm/S.i_seen*100:null; S.icmN=Ii.length;
+ const Ll=R.filter(r=>r.l).map(r=>r.l); ['n','P','I','F','aw','nb','mg','rf','dn','tm','ot','tt'].forEach(k=>S['l_'+k]=sum_(Ll,x=>x[k]));
+ S.lqp=S.l_n?S.l_P/S.l_n*100:null;
+ const Mm=R.filter(r=>r.m).map(r=>r.m); ['tg','vc','st','sna','srf','slo'].forEach(k=>S['m_'+k]=sum_(Mm,x=>x[k]));
+ S.vp=S.m_tg?S.m_vc/S.m_tg*100:null; S.stp=S.m_tg?S.m_st/S.m_tg*100:null; S.srp=S.m_tg?S.m_srf/S.m_tg*100:null;
+ S.zr=sum_(R,r=>r.zr); const zz=R.filter(r=>r.zc!=null); S.zc=zz.length?sum_(zz,r=>r.zc*r.zr/100)/sum_(zz,r=>r.zr)*100:null;
+ S.tri=R.filter(r=>r.F.length).sort((a,b)=>b.F.filter(f=>f[1]==='r').length-a.F.filter(f=>f[1]==='r').length||b.F.length-a.F.length);
+ return S;}
+function cqSel(){document.querySelectorAll('.cqsel').forEach(s=>{if(!s.options.length){s.innerHTML=(CQ.camps||[]).map((c,i)=>`<option value="${i}">${esc(c.l)}</option>`).join(''); s.onchange=()=>{CQI=+s.value; render();};} s.value=String(CQI);});
+ document.querySelectorAll('.cqnote').forEach(n=>n.textContent=`EOC portal · pre-campaign updated ${CQ.pre_update?CQ.pre_update.replace('Last Update: ',''):'–'} · ICM, LQAS and missed children for the same campaign · follows the division/district filter`);}
+const cqScopeR=()=>{const X=cqDist(CQI), inD=crInD(); return {X,R:X.R.filter(r=>inD(r.d))};};
+const clsTag=c=>`<span class="pcls ${c}">${CLS[c][0]}</span>`;
+function cqCSV(name,H,rows){csvDownload(name.replace(/\s+/g,'_')+'_'+_slug()+'.csv',H,rows);}
+
+// ---------- Campaign overview (district performance + triangulation) ----------
+function renderHCamp(){ cqSel(); hubCards('p-hcamp'); const {X,R}=cqScopeR(), S=cqSum(R), lab=X.C?X.C.l:'';
+ el('hc1').textContent=pc(S.rd); el('hc1s').textContent='mean of DPEC on time, must-members, AICs trained, teams trained, microplans validated';
+ el('hc2').textContent=pc(S.rec); el('hc2s').textContent=`${fmt(S.i_rv||0)} of ${fmt(S.i_rc||0)} children checked by monitors · ${S.icmN} districts`;
+ el('hc3').textContent=pc(S.lqp); el('hc3s').textContent=`${fmt(S.l_P||0)} of ${fmt(S.l_n||0)} lots · ${fmt(S.l_F||0)} failed`;
+ el('hc4').textContent=fmt(S.m_st||0); el('hc4s').textContent=`${pc(S.stp)} of the target still missed after catch-up`;
+ el('hc5').textContent=fmt(S.m_srf||0); el('hc5s').textContent=`${pc(S.srp)} of the target still refusing`;
+ el('capPerfM').innerHTML=`Each district scores <b>2 points</b> per indicator at target, <b>1</b> close to target and <b>0</b> below: pre-campaign readiness (95%/85%), ICM recall coverage (95%/90%), finger-marking (95%/90%), LQAS lots passed (90%/80%), children still missed (≤2%/≤4% of target), still refusing (≤0.5%/≤1%) and zero-dose children covered by next round (90%/80%, where reported). Score = points ÷ points possible, so missing data does not count against a district (at least 3 indicators needed). <b>Good</b> 75%+, <b>Average</b> 50–74%, <b>Poor</b> under 50%. <b>Needs focus</b> = a poor or average district that also has a polio case, positive sewage or is a polio watch district.`;
+ el('pcBoxes').innerHTML=['f','r','a','g'].map(k=>`<div class="pcbox" style="--pc:${CLS[k][1]}"><h4>${CLS[k][0]}</h4><div class="pn">${S.cls[k].length}</div><div class="pl">${S.cls[k].length?S.cls[k].sort((a,b)=>(a.sc||0)-(b.sc||0)).map(r=>esc(r.d)).join(', '):'None'}</div></div>`).join('');
+ const G=R.filter(r=>r.sc!=null).sort((a,b)=>a.sc-b.sc);
+ el('cpc1').style.height=Math.max(320,G.length*21+110)+'px';
+ HC('cpc1',{chart:{type:'bar'},title:{text:'Campaign performance score by district · '+lab},subtitle:{text:'% of possible points · colour = class'},xAxis:{categories:G.map(r=>r.d)},yAxis:{min:0,max:100,title:{text:'Score (% of possible points)'},plotLines:[{value:75,color:'#16a34a',dashStyle:'Dash',width:1},{value:50,color:'#dc2626',dashStyle:'Dash',width:1}]},
+  legend:{enabled:false},tooltip:{formatter(){const r=G[this.point.index];return `<b>${esc(r.d)}</b>: ${pc(r.sc)} · ${CLS[r.cls][0]}<br>${r.ni} indicators${r.why.length?'<br>'+esc(r.why.join(', ')):''}`;}},
+  series:[{name:'Score',data:G.map(r=>({y:+r.sc.toFixed(1),color:CLS[r.cls][1]})),dataLabels:{enabled:true,format:'{y:.0f}%'}}]});
+ el('cappc1').textContent=G.length?`${S.cls.g.length} good, ${S.cls.a.length} average, ${S.cls.r.length} poor and ${S.cls.f.length} needing focus in ${lab}. Lowest: ${G.slice(0,3).map(r=>r.d+' ('+Math.round(r.sc)+'%)').join(', ')}.`:'No campaign data for this selection.';
+ const cell=(r,k,dg)=>rgS(r[k],r.B[k],dg);
+ drawTable('tPerf',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>cell(x,'rd')},{k:'rec',l:'ICM recall',n:1,f:x=>cell(x,'rec')},{k:'fmp',l:'Finger-marked',n:1,f:x=>cell(x,'fmp')},
+  {k:'lqp',l:'LQAS passed',n:1,f:x=>cell(x,'lqp')+(x.l?` <small>(${x.l.n})</small>`:'')},{k:'stp',l:'Still missed',n:1,f:x=>cell(x,'stp')},{k:'srp',l:'Still refusing',n:1,f:x=>cell(x,'srp',2)},{k:'zc',l:'ZD covered',n:1,f:x=>cell(x,'zc')},
+  {k:'sc',l:'Score',n:1,f:x=>x.sc==null?'–':'<b>'+Math.round(x.sc)+'%</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'why',l:'Why needs focus',ns:1,f:x=>x.cls==='f'?esc(x.why.join(', ')):''}],R,'sc',1);
+ el('btnPerfCSV').onclick=()=>cqCSV('Campaign_performance_'+lab,['District','Division','Readiness %','ICM recall %','Finger-marked %','LQAS lots','LQAS passed %','Still missed %','Still refusing %','ZD covered %','Indicators','Score %','Class','Polio case / sewage / watch'],R.map(r=>[r.d,r.dv,rnd(r.rd),rnd(r.rec),rnd(r.fmp),r.l?r.l.n:'',rnd(r.lqp),rnd(r.stp),rnd(r.srp,2),rnd(r.zc),r.ni,rnd(r.sc),CLS[r.cls][0],r.why.join('; ')]));
+ el('btnPCR2').onclick=()=>runPCR(CQI,fDiv.value&&!fDist.value?fDiv.value:'KP',el('btnPCR2'));
+ el('cntCTri').textContent=S.tri.length+' districts';
+ el('capCTri').textContent='Pre-campaign readiness, intra-campaign monitoring (ICM), LQAS and the admin missed-children data are compared district by district. A flag means the sources tell different stories, so check them in the field before relying on either. Red = serious disagreement.';
+ drawTable('tCTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'F',l:'What disagrees',ns:1,f:x=>x.F.map(f=>`<span class="trf ${f[1]==='a'?'a':''}">${esc(f[0])}</span>`).join('')}],S.tri,'cls',1);
+}
+const rnd=(v,dg)=>v==null?'':+v.toFixed(dg==null?1:dg);
+
+// ---------- Pre-campaign ----------
+const PRE_COL=[['dpec','DPEC on time'],['dc','DC attended'],['dho','DHO attended'],['must','Must members %'],['ucmo','UCMO present'],['ucsec','UC secretary'],['aic','AICs trained %'],['trn','Teams trained %'],['mpv','Microplans validated %'],['adult','Members 18+ %'],['loc','Local member %'],['gov','Govt accountable %'],['fem','Female member %'],['inacc','Inaccessible areas']];
+function renderCPre(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.p), lab=X.C?X.C.l:'';
+ el('cp1').textContent=pc(S.p_dpec); el('cp1s').textContent='district polio eradication committee meetings held on time';
+ el('cp2').textContent=pc(S.p_trn); el('cp2s').textContent=`area in-charges trained ${pc(S.p_aic)}`;
+ el('cp3').textContent=pc(S.p_mpv); el('cp3s').textContent='microplans field-validated by UC staff';
+ el('cp4').textContent=pc(S.p_fem); el('cp4s').textContent='mobile teams with a female member';
+ el('cp5').textContent=pc(S.p_loc); el('cp5s').textContent=`government-accountable member ${pc(S.p_gov)}`;
+ const G=RR.slice().sort((a,b)=>a.rd-b.rd);
+ el('ccp1').style.height=Math.max(320,G.length*21+110)+'px';
+ HC('ccp1',{chart:{type:'bar'},title:{text:'Pre-campaign readiness by district · '+lab},subtitle:{text:'Mean of DPEC on time, must-members attended, AICs trained, teams trained and microplans field-validated'},xAxis:{categories:G.map(r=>r.d)},yAxis:{min:Math.min(50,Math.floor((G[0]||{rd:80}).rd/10)*10),max:100,title:{text:'Readiness (%)'},plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1}]},legend:{enabled:false},
+  series:[{name:'Readiness',data:G.map(r=>({y:+r.rd.toFixed(1),color:r.rd>=95?'#16a34a':r.rd>=85?'#f59e0b':'#dc2626'})),dataLabels:{enabled:true,format:'{y:.1f}%'}}]});
+ const low=k=>RR.filter(r=>r.p[k]!=null).sort((a,b)=>a.p[k]-b.p[k]).slice(0,3).map(r=>r.d+' '+Math.round(r.p[k])+'%').join(', ');
+ el('capcp1').textContent=G.length?`Lowest readiness: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rd)+')').join(', ')}. Fewest female team members: ${low('fem')}.`:'No pre-campaign data for this campaign.';
+ const c=(v,g,a)=>v==null?'–':`<span class="rg ${v>=g?'g':v>=a?'a':'r'}">${Math.round(v*10)/10}</span>`;
+ drawTable('tPre',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>rgS(x.rd,x.B.rd)},...PRE_COL.map(([k,l])=>({k,l,n:1,sv:x=>x.p[k],f:x=>k==='inacc'?fmt(Math.round(x.p[k]||0)):['fem','loc','gov'].includes(k)?c(x.p[k],75,50):c(x.p[k],95,85)}))],RR,'rd',1);
+ el('cntCP').textContent=RR.length+' districts'; el('capCP').textContent='Source: EOC portal, Campaign › Pre Campaign › Pre-campaign Preparatory Indicators (district wise). Values are % unless stated; DC/DHO/UCMO/UC secretary = % of meetings attended.';
+ el('btnCPcsv').onclick=()=>cqCSV('Pre_campaign_'+lab,['District','Division','Readiness %',...PRE_COL.map(x=>x[1])],RR.map(r=>[r.d,r.dv,rnd(r.rd),...PRE_COL.map(([k])=>r.p[k])]));
+}
+// ---------- Intra-campaign (ICM) ----------
+function renderCICM(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.i), lab=X.C?X.C.l:'', mi=S.i_mi||0, sh=v=>mi?pc(v/mi*100):'–';
+ el('ci1').textContent=pc(S.rec); el('ci1s').textContent=`${fmt(S.i_rv||0)} of ${fmt(S.i_rc||0)} children 0–59 months recalled as vaccinated`;
+ el('ci2').textContent=fmt(mi); el('ci2s').textContent=`team did not visit ${sh(S.i_tdn)} · team missed child ${sh(S.i_tm)}`;
+ el('ci3').textContent=fmt(S.i_rf||0); el('ci3s').textContent=`${sh(S.i_rf)} of missed children`;
+ el('ci4').textContent=fmt(S.i_na||0); el('ci4s').textContent=`${sh(S.i_na)} of missed children were away`;
+ el('ci5').textContent=pc(S.fmp); el('ci5s').textContent=`${fmt(S.i_fm||0)} of ${fmt(S.i_seen||0)} children seen were finger-marked`;
+ const G=RR.slice().sort((a,b)=>a.rec-b.rec);
+ el('cci1').style.height=Math.max(320,G.length*21+110)+'px';
+ HC('cci1',{chart:{type:'bar'},title:{text:'ICM recall coverage by district · '+lab},subtitle:{text:'Children 0–59 months recalled as vaccinated, % of children checked'},xAxis:{categories:G.map(r=>r.d)},yAxis:{min:Math.min(80,Math.floor((G[0]||{rec:90}).rec/5)*5),max:100,title:{text:'Recall coverage (%)'},plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1}]},legend:{enabled:false},
+  series:[{name:'Recall coverage',data:G.map(r=>({y:+r.rec.toFixed(1),color:r.rec>=95?'#16a34a':r.rec>=90?'#f59e0b':'#dc2626'})),dataLabels:{enabled:true,format:'{y:.1f}%'}}]});
+ el('capci1').textContent=G.length?`Lowest recall coverage: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rec)+')').join(', ')}.`:'No ICM data for this campaign.';
+ const rs=[['Team did not visit house',S.i_tdn],['Team visited but missed child',S.i_tm],['Child away (NA)',S.i_na],['Child refusal',S.i_rf]];
+ HC('cci2',{chart:{type:'bar'},title:{text:'Why children were missed (ICM)'},subtitle:{text:fmt(mi)+' missed children found by monitors · '+lab},xAxis:{categories:rs.map(x=>x[0])},yAxis:{title:{text:'Missed children (count)'}},legend:{enabled:false},
+  series:[{name:'Children',data:rs.map(x=>x[1]||0),color:'#c2410c',dataLabels:{enabled:true,formatter(){return fmt(this.y)+(mi?' ('+(this.y/mi*100).toFixed(0)+'%)':'');}}}]});
+ el('capci2').textContent=mi?`${sh(S.i_na)} of missed children were away and ${sh(S.i_rf)} refused; team-related misses (not visited or missed in the house) were ${sh((S.i_tdn||0)+(S.i_tm||0))}.`:'';
+ drawTable('tIcm',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rec',l:'Recall coverage',n:1,f:x=>rgS(x.rec,x.B.rec)},{k:'fmp',l:'Finger-marked',n:1,f:x=>rgS(x.fmp,x.B.fmp)},
+  {k:'rc',l:'Children checked',n:1,sv:x=>x.i.rc,f:x=>fmt(x.i.rc||0)},{k:'mi',l:'Missed',n:1,sv:x=>x.i.mi,f:x=>fmt(x.i.mi||0)},{k:'tdn',l:'Team did not visit',n:1,sv:x=>x.i.tdn,f:x=>fmt(x.i.tdn||0)},{k:'tm',l:'Team missed child',n:1,sv:x=>x.i.tm,f:x=>fmt(x.i.tm||0)},
+  {k:'na',l:'Child away',n:1,sv:x=>x.i.na,f:x=>fmt(x.i.na||0)},{k:'rf',l:'Refusal',n:1,sv:x=>x.i.rf,f:x=>fmt(x.i.rf||0)},{k:'pca',l:'Poorly covered areas',n:1,sv:x=>x.i.pca,f:x=>fmt(x.i.pca||0)},{k:'unv',l:'Unvaccinated found',n:1,sv:x=>x.i.unv,f:x=>fmt(x.i.unv||0)}],RR,'rec',1);
+ el('cntCI').textContent=RR.length+' districts'; el('capCI').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise, all days of work.';
+ el('btnCIcsv').onclick=()=>cqCSV('ICM_'+lab,['District','Division','Recall coverage %','Finger-marked %','Children checked','Recall vaccinated','Missed','Team did not visit','Team missed child','Child away','Refusal','Poorly covered areas','Missed areas','Unvaccinated found'],RR.map(r=>[r.d,r.dv,rnd(r.rec),rnd(r.fmp),r.i.rc,r.i.rv,r.i.mi,r.i.tdn,r.i.tm,r.i.na,r.i.rf,r.i.pca,r.i.ma,r.i.unv]));
+}
+// ---------- Post-campaign (LQAS + admin) ----------
+function renderCPost(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.l||r.m), lab=X.C?X.C.l:'';
+ el('cl1').textContent=fmt(S.l_n||0); el('cl1s').textContent=`in ${R.filter(r=>r.l).length} districts · each lot = 1 UC`;
+ el('cl2').textContent=pc(S.lqp); el('cl2s').textContent=`${fmt(S.l_P||0)} passed (over 90%) · ${fmt(S.l_I||0)} intermediate`;
+ el('cl3').textContent=fmt(S.l_F||0); el('cl3s').textContent='lots failed (under 80%)';
+ el('cl4').textContent=pc(S.vp); el('cl4s').textContent=`${fmt(S.m_vc||0)} vaccinated of ${fmt(S.m_tg||0)} target (admin)`;
+ el('cl5').textContent=fmt(S.m_st||0); el('cl5s').textContent=`${pc(S.stp)} of target · ${fmt(S.m_srf||0)} still refusing`;
+ const G=R.filter(r=>r.l).sort((a,b)=>a.lqp-b.lqp||b.l.n-a.l.n);
+ el('ccl1').style.height=Math.max(320,G.length*21+110)+'px';
+ HC('ccl1',{chart:{type:'bar'},title:{text:'LQAS lots by result and district · '+lab},xAxis:{categories:G.map(r=>r.d)},yAxis:{title:{text:'Lots (count)'},allowDecimals:false},plotOptions:{bar:{stacking:'normal'}},tooltip:{shared:true},
+  series:[['F','Failed (<80%)','#dc2626'],['I','Intermediate (80–90%)','#f59e0b'],['P','Passed (>90%)','#16a34a']].map(([k,n,c])=>({name:n,color:c,data:G.map(r=>r.l[k]||0)}))});
+ el('capcl1').textContent=G.length?`${fmt(S.l_F||0)} lots failed and ${fmt(S.l_I||0)} were intermediate. Lowest pass rate: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.lqp)+')').join(', ')}.`:'No LQAS lots for this campaign.';
+ const rs=[['Child away',S.l_aw],['Newborn',S.l_nb],['Newly arrived / migrant',S.l_mg],['Refused',S.l_rf],['Team did not visit',S.l_dn],['Team missed child',S.l_tm],['Other',S.l_ot]], tt=S.l_tt||0;
+ HC('ccl2',{chart:{type:'bar'},title:{text:'Why children were missed (LQAS)'},subtitle:{text:fmt(tt)+' unvaccinated children found in LQAS lots'},xAxis:{categories:rs.map(x=>x[0])},yAxis:{title:{text:'Children (count)'}},legend:{enabled:false},
+  series:[{name:'Children',color:'#c2410c',data:rs.map(x=>x[1]||0),dataLabels:{enabled:true,formatter(){return fmt(this.y)+(tt?' ('+(this.y/tt*100).toFixed(0)+'%)':'');}}}]});
+ el('capcl2').textContent=tt?`Team-related reasons (did not visit or missed the child) were ${pc(((S.l_dn||0)+(S.l_tm||0))/tt*100)} of the children missed in LQAS lots.`:'';
+ drawTable('tPost',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'ln',l:'Lots',n:1,sv:x=>x.l?x.l.n:-1,f:x=>x.l?x.l.n:'–'},{k:'lP',l:'Passed',n:1,sv:x=>x.l?x.l.P||0:-1,f:x=>x.l?(x.l.P||0):'–'},{k:'lI',l:'Intermediate',n:1,sv:x=>x.l?x.l.I||0:-1,f:x=>x.l?(x.l.I||0):'–'},{k:'lF',l:'Failed',n:1,sv:x=>x.l?x.l.F||0:-1,f:x=>x.l?(x.l.F||0):'–'},
+  {k:'lqp',l:'Passed %',n:1,f:x=>rgS(x.lqp,x.B.lqp)},{k:'vp',l:'Admin vaccinated % of target',n:1,f:x=>x.vp==null?'–':pc(x.vp)},{k:'stp',l:'Still missed',n:1,f:x=>rgS(x.stp,x.B.stp)},{k:'srp',l:'Still refusing',n:1,f:x=>rgS(x.srp,x.B.srp,2)}],RR,'lqp',1);
+ el('cntCL').textContent=RR.length+' districts'; el('capCL').textContent='Sources: EOC portal post-campaign LQAS (UC wise) and the campaign coverage summary (still NA, still refusing and left over after catch-up, % of the household target).';
+ el('btnCLcsv').onclick=()=>cqCSV('Post_campaign_'+lab,['District','Division','LQAS lots','Passed','Intermediate','Failed','Passed %','Admin vaccinated % of target','Still missed %','Still refusing %'],RR.map(r=>[r.d,r.dv,r.l?r.l.n:'',r.l?r.l.P||0:'',r.l?r.l.I||0:'',r.l?r.l.F||0:'',rnd(r.lqp),rnd(r.vp),rnd(r.stp),rnd(r.srp,2)]));
+}
+// ---------- hub card wiring ----------
+function hubCards(pid){ const P=el(pid); if(!P)return; renderHome();
+ P.querySelectorAll('.hcard').forEach(c=>{c.onclick=()=>setTab(c.dataset.go);c.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(c.dataset.go);}};});
+ P.querySelectorAll('.ht2').forEach(t=>t.onclick=ev=>{ev.stopPropagation();EA=t.dataset.ag;setTab('eov');});
+ P.querySelectorAll('[data-hgo]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const t=b.closest('.ht2');if(t)EA=t.dataset.ag;setTab(b.dataset.hgo);});
+ P.querySelectorAll('[data-hl]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();setTab(b.dataset.hl);});
+ requestAnimationFrame(()=>requestAnimationFrame(()=>P.querySelectorAll('.rb').forEach(c=>c.style.strokeDashoffset=c.dataset.o)));}
+const triCell=F=>F.map(f=>`<span class="trf ${f[1]==='a'?'a':''}">${esc(f[0])}</span>`).join('');
+// ---------- Surveillance hub ----------
+function survTri(){const A=svAll(), yr=(WMETA.es_years||[]).slice(-1)[0]||'2026', W={}; watchD().forEach(x=>W[x.d]=x); const inD=crInD();
+ return A.R.filter(r=>inD(r.d)).map(r=>{const e=(ESD[r.d]||{})[yr], pos=e?e[1]:null, smp=e?e[0]:null, w=W[r.d], zs=r.a26?r.zd/r.a26*100:null, F=[];
+  if(pos>0&&r.band==='r')F.push(['Virus in sewage ('+pos+' positive) but AFP reporting under half the KP median','r']);
+  if(r.w>0&&r.band!=='g')F.push([r.w+' polio case'+(r.w>1?'s':'')+' but AFP reporting below 75% of the KP median','r']);
+  if(pos>0&&!r.w)F.push(['Positive sewage but no polio case: possible silent transmission','a']);
+  if(w&&w.w&&!r.es)F.push(['Polio watch district without a sewage site','a']);
+  if(zs!=null&&zs>=5)F.push(['Zero-dose children are '+pc(zs)+' of AFP cases','a']);
+  if(r.pdp!=null&&r.pdp>=15)F.push([pc(r.pdp)+' of AFP cases pending classification','a']);
+  return {d:r.d,dv:r.dv,r26:r.r26,rel:r.rel,band:r.band,pos,smp,w:r.w,zd:r.zd,zs,wr:w?w.rk:null,ww:!!(w&&w.w),F};}).filter(x=>x.F.length).sort((a,b)=>b.F.filter(f=>f[1]==='r').length-a.F.filter(f=>f[1]==='r').length||b.F.length-a.F.length);}
+function renderHSurv(){ hubCards('p-hsurv'); const R=survTri(), yr=(WMETA.es_years||[]).slice(-1)[0]||'2026';
+ el('cntSTri').textContent=R.length+' districts';
+ drawTable('tSTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'r26',l:'AFP rate /100k',n:1,f:x=>x.r26==null?'–':`<span class="rg ${x.band}">${x.r26.toFixed(1)}</span>`},{k:'rel',l:'% of KP median',n:1,f:x=>x.rel==null?'–':Math.round(x.rel)+'%'},
+  {k:'pos',l:'Sewage +ve '+yr,n:1,f:x=>x.smp==null?'No site':x.pos+' of '+x.smp},{k:'w',l:'Polio cases',n:1},{k:'zd',l:'ZD AFP cases',n:1,f:x=>x.zd+(x.zs!=null?' ('+pc(x.zs)+')':'')},{k:'wr',l:'Watch rank',n:1,sv:x=>x.wr||99,f:x=>x.wr?(x.ww?'<b>'+x.wr+'</b>':x.wr):'–'},{k:'F',l:'What disagrees',ns:1,f:x=>triCell(x.F)}],R,'d',1);
+ el('btnSTricsv').onclick=()=>cqCSV('Surveillance_triangulation',['District','Division','AFP rate per 100k','% of KP median','Sewage positive','Sewage samples','Polio cases','ZD AFP cases','Watch rank','Flags'],R.map(x=>[x.d,x.dv,rnd(x.r26),rnd(x.rel,0),x.pos,x.smp,x.w,x.zd,x.wr,x.F.map(f=>f[0]).join('; ')]));}
+// ---------- Zero dose hub ----------
+function zdTri(){const inD=crInD(), cK=ZD.some(r=>r.cM!=null)?'M':'A', Z=groupBy(ZD,'d'), DG={}, VV={}, AF={};
+ DATA.forEach(r=>{const g=DG[r.d]=DG[r.d]||{r:0,l:0};g.r+=r.rep||0;g.l+=r.ll||0;});
+ groupV(VAL,'d').forEach(x=>VV[x.k]=x); AFP.forEach(a=>AF[a.d]=(AF[a.d]||0)+1);
+ return Z.filter(x=>inD(x.k)).map(x=>{const zp=x['p'+cK], dg=DG[x.k], dp=dg&&dg.r?dg.l/dg.r*100:null, v=VV[x.k], vp=v&&v.n>=20?v.p:null, m2=v&&v.n>=20?v.m2/v.n*100:null, af=AF[x.k]||0, F=[];
+  if(zp!=null&&zp>=90&&vp!=null&&vp<95)F.push(['Reported coverage '+pc(zp)+' but validation finds only '+pc(vp)+' vaccinated','r']);
+  if(zp!=null&&zp>110)F.push(['More children covered than reported ('+pc(zp)+')','r']);
+  if(af&&zp!=null&&zp>=90)F.push([af+' zero-dose AFP case'+(af>1?'s':'')+' despite '+pc(zp)+' reported coverage','r']);
+  if(dp!=null&&dp>105)F.push(['More children entered in IDIMS than reported ('+pc(dp)+'): check duplicates','a']);
+  if(dp!=null&&dp<80)F.push(['Linelist backlog: only '+pc(dp)+' entered in IDIMS','a']);
+  if(m2!=null&&m2>=50)F.push([pc(m2)+' of validation by caregiver recall only (least reliable)','a']);
+  return {d:x.k,dv:x.dv||D2DV[x.k],zr:ZSAME?x.rM:x.rS,zp,dp,vp,vn:v?v.n:0,m2,af,F};}).filter(x=>x.F.length).sort((a,b)=>b.F.filter(f=>f[1]==='r').length-a.F.filter(f=>f[1]==='r').length||b.F.length-a.F.length);}
+function renderHZD(){ hubCards('p-hzd'); const R=zdTri(); el('cntZTri').textContent=R.length+' districts';
+ drawTable('tZTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'zr',l:'ZD reported (latest)',n:1,f:x=>fmt(x.zr||0)},{k:'zp',l:'Covered by next round',n:1,f:x=>pc(x.zp)},{k:'dp',l:'Digitized in IDIMS',n:1,f:x=>pc(x.dp)},{k:'vp',l:'Validated vaccinated',n:1,f:x=>x.vp==null?'–':pc(x.vp)+' <small>('+fmt(x.vn)+')</small>'},{k:'af',l:'ZD AFP cases',n:1},{k:'F',l:'What disagrees',ns:1,f:x=>triCell(x.F)}],R,'d',1);
+ el('btnZTricsv').onclick=()=>cqCSV('Zero_dose_triangulation',['District','Division','ZD reported','Covered %','Digitized %','Validated vaccinated %','Children validated','Recall-only validation %','ZD AFP cases','Flags'],R.map(x=>[x.d,x.dv,x.zr,rnd(x.zp),rnd(x.dp),rnd(x.vp),x.vn,rnd(x.m2),x.af,x.F.map(f=>f[0]).join('; ')]));}
+// ---------- EPI hub ----------
+function epiTri(){const inD=crInD(), G=groupE(EPI,'d'), ZR={}; ZD.forEach(r=>ZR[r.d]=(ZR[r.d]||0)+((ZSAME?r.rM:r.rS)||0));
+ const kz=sum_(Object.values(ZR),x=>x), ks=sum_(G,g=>g.s), kr=ks?kz/ks:null;
+ return G.filter(g=>inD(g.k)).map(g=>{const rel=kr&&g.s?(ZR[g.k]||0)/g.s/kr:null, bo=g.rows.filter(r=>/BO/.test(r.fl||'')).length, F=[];
+  if(g.p_p3!=null&&g.p_p3>=90&&rel!=null&&rel>=1.5)F.push(['Penta-3 '+pc(g.p_p3)+' yet zero-dose children found in campaigns at '+rel.toFixed(1)+'× the KP rate','r']);
+  if((g.p_p1!=null&&g.p_p1>110)||(g.p_p3!=null&&g.p_p3>110))F.push(['Coverage over 110% (Penta-1 '+pc(g.p_p1)+'): check the target population','a']);
+  if(g.d13!=null&&g.d13>15)F.push(['Penta-1 to Penta-3 dropout '+pc(g.d13),'a']);
+  if(g.dmr!=null&&g.dmr>20)F.push(['MR-1 to MR-2 dropout '+pc(g.dmr),'a']);
+  if(bo>=10)F.push([bo+' UCs weak in both routine EPI and polio zero dose','r']);
+  return {d:g.k,dv:g.dv,p1:g.p_p1,p3:g.p_p3,mr2:g.p_mr2,d13:g.d13,dmr:g.dmr,rel,bo,F};}).filter(x=>x.F.length).sort((a,b)=>b.F.filter(f=>f[1]==='r').length-a.F.filter(f=>f[1]==='r').length||b.F.length-a.F.length);}
+function renderHEPI(){ hubCards('p-hepi'); const R=epiTri(); el('cntETri').textContent=R.length+' districts';
+ drawTable('tETri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'p1',l:'Penta-1',n:1,f:x=>pE(x.p1)},{k:'p3',l:'Penta-3',n:1,f:x=>pE(x.p3)},{k:'mr2',l:'MR-2',n:1,f:x=>pE(x.mr2)},{k:'d13',l:'Penta dropout',n:1,f:x=>pc(x.d13)},{k:'dmr',l:'MR dropout',n:1,f:x=>pc(x.dmr)},
+  {k:'rel',l:'ZD found vs KP rate',n:1,f:x=>x.rel==null?'–':x.rel.toFixed(1)+'×'},{k:'bo',l:'UCs weak in both',n:1},{k:'F',l:'What disagrees',ns:1,f:x=>triCell(x.F)}],R,'d',1);
+ el('btnETricsv').onclick=()=>cqCSV('EPI_triangulation',['District','Division','Penta-1 %','Penta-3 %','MR-2 %','Penta dropout %','MR dropout %','ZD found vs KP rate','UCs weak in both','Flags'],R.map(x=>[x.d,x.dv,rnd(x.p1),rnd(x.p3),rnd(x.mr2),rnd(x.d13),rnd(x.dmr),rnd(x.rel,2),x.bo,x.F.map(f=>f[0]).join('; ')]));}
+function renderHX(){ hubCards('p-hx'); }
+
+// ---------- Home hub tiles ----------
+function renderHomeHubs(){ if(!el('hhC'))return; const P=el('p-home');
+ P.querySelectorAll('.hhub .hi[data-ic],.hxt .hi[data-ic]').forEach(i=>{if(!i.innerHTML)i.innerHTML=SVGI(ICO[i.dataset.ic]||ICO.chart);});
+ const v3=(id,a)=>el(id).innerHTML=a.map(([v,l])=>`<span><b>${v}</b>${l}</span>`).join('');
+ const X=cqDist(0), S=cqSum(X.R), lab=X.C?X.C.l:'';
+ v3('hhC',[[pc(S.lqp),'LQAS lots passed · '+esc(lab)],[pc(S.rec),'ICM recall coverage'],[pc(S.stp),'of target still missed']]);
+ hAlarm('hhCa','Alarm',[[S.cls.f.length,'needs focus','Poor or average campaign quality in a district with a polio case, positive sewage or on the watch list','hcamp'],[S.cls.r.length,'poor districts','Campaign performance score under 50%','hcamp']]);
+ const A=svAll(), yr=(WMETA.es_years||[]).slice(-1)[0]||'2026', es=Object.values(ESD).map(x=>x[yr]).filter(Boolean), esS=sum_(es,x=>x[0]), esP=sum_(es,x=>x[1]);
+ v3('hhS',[[fmt(WPV.length),'WPV1 cases in KP, 2026'],[fmt(AFP.length),'zero-dose AFP cases'],[esS?pc(esP/esS*100):'–','sewage samples positive '+yr]]);
+ hAlarm('hhSa','Alarm',[[new Set(WPV.map(w=>w.d)).size,'infected districts','Districts with a confirmed polio case in 2026','afp'],[A.R.filter(r=>r.band==='r').length,'low AFP reporting','Districts reporting under half the KP median AFP rate','surv']]);
+ const z=agg(ZD), cK=ZD.some(r=>r.cM!=null)?'M':'A', dr=sum_(DATA,r=>r.rep), dl=sum_(DATA,r=>r.ll), v=aggV(VAL);
+ v3('hhZ',[[pc(z['p'+cK]),'covered by next round'],[pc(dr?dl/dr*100:null),'linelist digitized'],[pc(v.p),'validated as vaccinated']]);
+ const zD=groupBy(ZD,'d').filter(x=>x['p'+cK]!=null&&x['p'+cK]<80).length;
+ hAlarm('hhZa','Alarm',[[zD,'districts <80% covered','Districts covering less than 80% of reported zero-dose children','zperf'],[zdTriAll().length,'districts where data disagrees','Reported, digitized and validated figures do not match','hzd']]);
+ const e=aggE(EPI), gE=groupE(EPI,'d');
+ v3('hhE',[[pc(e.p_p3),'Penta-3 · '+esc(EMETA.per||'')],[pc(e.p_mr2),'MR-2'],[pc(e.p_fi),'fully immunized']]);
+ hAlarm('hhEa','Alarm',[[gE.filter(x=>x.p_p3!=null&&x.p_p3<80).length,'districts <80% Penta-3','Districts below 80% Penta-3 coverage','efu'],[EPI.filter(r=>/BO/.test(r.fl||'')).length,'UCs weak in both','UCs weak in both routine EPI and polio zero dose','efu']]);
+ const R=riskAll(), RS=riskStats(R,'d'), C=critStats(()=>true,'d'), AT=atStats(atRows());
+ el('hxR').textContent=`${fmt(R.filter(r=>r.tier==='vh').length)} very high, ${fmt(R.filter(r=>r.tier==='hi').length)} high-risk UCs`;
+ el('hxC').textContent=`${fmt(C.mm.length)} UCs to verify · data quality ${C.sc==null?'–':Math.round(C.sc)}/100`;
+ el('hxA').textContent=`${fmt(AT.n-AT.done)} open actions · ${fmt(AT.od)} overdue`;
+ P.querySelectorAll('.hhub').forEach(h=>{h.onclick=()=>setTab(h.dataset.go); h.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(h.dataset.go);}};
+  h.querySelectorAll('[data-hgo]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();setTab(b.dataset.hgo);});});
+}
+function zdTriAll(){const a=fDiv.value,b=fDist.value; fDiv.value=''; fDist.value=''; try{return zdTri();}finally{fDiv.value=a; fDist.value=b;}}
+{const _rh=renderHome; renderHome=function(){_rh(); renderHomeHubs();};}
+
+// ---------- hub badges + menu headline numbers ----------
+function hubBadges(){ try{ const S=cqSum(cqDist(CQI).R), bs=(id,t)=>{const e=el(id); if(e)e.textContent=t;};
+ bs('bHC',S.cls.f.length+' focus · '+S.cls.r.length+' poor'); bs('bCP',pc(S.rd)); bs('bCI',pc(S.rec)); bs('bCL',pc(S.lqp));
+ bs('bHS',WPV.length+' WPV1'); const z=agg(ZD), cK=ZD.some(r=>r.cM!=null)?'M':'A'; bs('bHZ',pc(z['p'+cK]));
+ bs('bHE','Penta-3 '+pc(aggE(EPI).p_p3)); bs('bHX',(el('bR1')||{}).textContent||'');
+ const V={hc:S.cls.f.length+' focus',hs:WPV.length+' WPV1 · '+AFP.length+' ZD AFP',hz:pc(z['p'+cK]),he:'Penta-3 '+pc(aggE(EPI).p_p3),hx:(el('bR1')||{}).textContent||''};
+ Object.entries(V).forEach(([k,v])=>{const e=document.querySelector('.sidenav .ngrp.'+k+' .nhv');if(e){e.textContent=v;e.style.display=v?'':'none';}});}catch(e){console.warn('hub badges',e);} }
+{const _rd=render; render=function(){_rd(); hubBadges();};}
+
+// ---------- Map: indicator dropdown, district names, PNG download ----------
+const HMOPT=()=>[['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
+ ['Routine EPI',EAG.map(a=>['epi:'+a.k,a.l+' coverage'])],
+ ['Campaigns',[['perf','Campaign performance (good / average / poor / needs focus)'],['pre','Pre-campaign readiness'],['icm','ICM recall coverage'],['lq','LQAS lots passed'],['mis','Children still missed after the campaign'],['ref','Children still refusing']]],
+ ['Surveillance',[['afp:n','Zero-dose AFP cases (number)'],['afp:p','Zero-dose share of all AFP cases'],['surv','AFP surveillance sensitivity'],['es','Sewage samples positive'],['watch','Polio risk watch list']]],
+ ['Cross-cutting',[['risk','Combined UC risk score'],['dq','Data quality score']]]];
+function hmSelInit(){const s=el('hMSel'); if(!s||s.options.length)return;
+ s.innerHTML=HMOPT().map(([g,o])=>`<optgroup label="${esc(g)}">${o.map(([v,l])=>`<option value="${v}">${esc(l)}</option>`).join('')}</optgroup>`).join('');
+ s.onchange=()=>{const v=s.value; if(v.startsWith('epi:')){HMM='epi';HMA=v.slice(4);} else if(v.startsWith('afp:')){HMM='afp'; if(el('hMF'))el('hMF').value=v.slice(4);} else HMM=v; renderHomeMap();};
+ el('hMLb').onchange=()=>el('hMap').classList.toggle('nolbl',!el('hMLb').checked);
+ const b=el('hMDl'); const i=b.querySelector('[data-ic]'); if(i)i.innerHTML=SVGI(ICO.download); b.onclick=hmDownload;}
+function hmSelSync(){const s=el('hMSel'); if(!s)return; s.value=HMM==='epi'?'epi:'+HMA:HMM==='afp'?'afp:'+((el('hMF')||{}).value||'n'):HMM;}
+function hmLabels(){const svg=el('hMap'); if(!svg)return; let g=svg.querySelector('#hLbl'); const NS='http://www.w3.org/2000/svg';
+ if(!g){g=document.createElementNS(NS,'g'); g.id='hLbl'; Object.entries(LBLP).forEach(([d,[x,y,fs,L]])=>{const t=document.createElementNS(NS,'text'); t.setAttribute('class','hlbl'); t.setAttribute('font-size',fs); const n=L.length;
+  L.forEach((s,i)=>{const sp=document.createElementNS(NS,'tspan'); sp.setAttribute('x',x); sp.setAttribute('y',(y+(i-(n-1)/2)*fs*1.05+fs*0.35).toFixed(1)); sp.textContent=s; t.appendChild(sp);}); g.appendChild(t);});}
+ svg.appendChild(g); svg.classList.toggle('nolbl',!(el('hMLb')||{checked:true}).checked);}
+const HMG={g:'#16a34a',a:'#d97706',r:'#dc2626',n:'#d1d5db'};
+const HMNEW={
+ perf(){const X=cqDist(CQI), B={}; X.R.forEach(r=>B[r.d]=r); const cols={g:'#16a34a',a:'#f59e0b',r:'#dc2626',f:'#7f1d1d',n:'#d1d5db'};
+  hmGen({go:'hcamp',cols,val:d=>B[d],band:x=>x?x.cls:'n',tip:(d,x)=>x?`<span class="v" style="color:${x.cls==='g'?'#86efac':x.cls==='a'?'#fcd34d':'#fca5a5'}">${CLS[x.cls][0]}${x.sc!=null?' · '+Math.round(x.sc)+'%':''}</span><br>Readiness ${pc(x.rd)} · ICM ${pc(x.rec)} · LQAS ${pc(x.lqp)}<br>Still missed ${pc(x.stp)}${x.why.length?'<br>'+esc(x.why.join(', ')):''}`:'No campaign data',
+   title:`Campaign performance · ${esc(X.C?X.C.l:'')}<small>Score across readiness, ICM, finger-marking, LQAS, still missed, refusals and ZD coverage</small>`,
+   legend:[['g','Good (75%+ of points)'],['a','Average (50–74%)'],['r','Poor (under 50%)'],['f','Needs focus (with polio case, positive sewage or watch district)'],['n','Not enough data']],listTitle:'Lowest scores',
+   list:X.R.filter(r=>r.sc!=null).sort((a,b)=>a.sc-b.sc).map(r=>[r.d,Math.round(r.sc)+'%',r.cls])});},
+ pre(){const X=cqDist(CQI), B={}; X.R.forEach(r=>B[r.d]=r);
+  hmGen({go:'cpre',cols:HMG,val:d=>B[d],band:x=>x&&x.rd!=null?cqBand(x.rd,95,85,1):'n',tip:(d,x)=>x&&x.p?`<span class="v">${pc(x.rd)} readiness</span><br>Teams trained ${pc(x.p.trn)} · microplans validated ${pc(x.p.mpv)}<br>Female member ${pc(x.p.fem)} · local member ${pc(x.p.loc)}`:'No pre-campaign data',
+   title:`Pre-campaign readiness · ${esc(X.C?X.C.l:'')}<small>Mean of DPEC on time, must-members attended, AICs trained, teams trained, microplans validated</small>`,legend:[['g','95%+'],['a','85–95%'],['r','Under 85%'],['n','No data']],listTitle:'Least ready',
+   list:X.R.filter(r=>r.rd!=null).sort((a,b)=>a.rd-b.rd).map(r=>[r.d,pc(r.rd),cqBand(r.rd,95,85,1)])});},
+ icm(){const X=cqDist(CQI), B={}; X.R.forEach(r=>B[r.d]=r);
+  hmGen({go:'cicm',cols:HMG,val:d=>B[d],band:x=>x&&x.rec!=null?cqBand(x.rec,95,90,1):'n',tip:(d,x)=>x&&x.i?`<span class="v">${pc(x.rec)} recall coverage</span><br>${fmt(x.i.mi||0)} missed · ${fmt(x.i.rf||0)} refusals · finger-marked ${pc(x.fmp)}`:'No ICM data',
+   title:`ICM recall coverage · ${esc(X.C?X.C.l:'')}<small>Children 0–59 months recalled as vaccinated, % of children checked by monitors</small>`,legend:[['g','95%+'],['a','90–95%'],['r','Under 90%'],['n','No data']],listTitle:'Lowest recall coverage',
+   list:X.R.filter(r=>r.rec!=null).sort((a,b)=>a.rec-b.rec).map(r=>[r.d,pc(r.rec),cqBand(r.rec,95,90,1)])});},
+ lq(){const X=cqDist(CQI), B={}; X.R.forEach(r=>B[r.d]=r);
+  hmGen({go:'cpost',cols:HMG,val:d=>B[d],band:x=>x&&x.lqp!=null?cqBand(x.lqp,90,80,1):'n',tip:(d,x)=>x&&x.l?`<span class="v">${pc(x.lqp)} of lots passed</span><br>${x.l.n} lots · ${x.l.F||0} failed · ${x.l.I||0} intermediate`:'No LQAS lots',
+   title:`LQAS lots passed · ${esc(X.C?X.C.l:'')}<small>Each lot = 1 UC · pass = over 90%</small>`,legend:[['g','90%+ passed'],['a','80–90%'],['r','Under 80%'],['n','No lots']],listTitle:'Lowest pass rate',
+   list:X.R.filter(r=>r.lqp!=null).sort((a,b)=>a.lqp-b.lqp).map(r=>[r.d,pc(r.lqp),cqBand(r.lqp,90,80,1)])});},
+ ref(){const X=cqDist(CQI), B={}; X.R.forEach(r=>B[r.d]=r);
+  hmGen({go:'mis',cols:HMG,val:d=>B[d],band:x=>x&&x.srp!=null?cqBand(x.srp,0.5,1,0):'n',tip:(d,x)=>x&&x.m?`<span class="v">${fmt(x.m.srf)} still refusing</span><br>${x.srp.toFixed(2)}% of the target`:'No data',
+   title:`Children still refusing · ${esc(X.C?X.C.l:'')}<small>After catch-up, % of the household target (under 5)</small>`,legend:[['g','Under 0.5%'],['a','0.5–1%'],['r','1% or more'],['n','No data']],listTitle:'Most refusals',
+   list:X.R.filter(r=>r.srp!=null).sort((a,b)=>b.srp-a.srp).map(r=>[r.d,r.srp.toFixed(2)+'%',cqBand(r.srp,0.5,1,0)])});},
+ es(){const yr=(WMETA.es_years||[]).slice(-1)[0]||'2026', E=d=>(ESD[d]||{})[yr]||null;
+  hmGen({go:'surv',cols:HMG,val:d=>E(d==='BAR SWAT'?'SWAT':d),band:x=>!x||!x[0]?'n':x[1]===0?'g':x[1]/x[0]<0.2?'a':'r',tip:(d,x)=>x&&x[0]?`<span class="v" style="color:#fca5a5">${x[1]} of ${x[0]} samples positive</span><br>${pc(x[1]/x[0]*100)} · ${yr}`:'No sewage site',
+   title:`Sewage samples positive for poliovirus · ${yr}<small>Environmental surveillance, district sites · as of ${esc(WMETA.es_asof||'')}</small>`,legend:[['g','No positive sample'],['a','Under 20% positive'],['r','20% or more positive'],['n','No sewage site']],listTitle:'Most positive samples',
+   list:Object.keys(ESD).filter(d=>E(d)&&E(d)[0]).sort((a,b)=>E(b)[1]/E(b)[0]-E(a)[1]/E(a)[0]).map(d=>{const x=E(d);return [d,x[1]+'/'+x[0],x[1]===0?'g':x[1]/x[0]<0.2?'a':'r'];})});}
+};
+{const _rhm=renderHomeMap; renderHomeMap=function(){ if(!el('hMap'))return; hmSelInit();
+ if(HMNEW[HMM]){const g0=el('hMap').querySelector('#hMk'); if(g0)g0.remove(); try{el('hMAw').classList.remove('on');el('hMFw').classList.remove('on');}catch(e){} HMNEW[HMM]();} else _rhm();
+ hmSelSync(); hmLabels();};}
+function cvWrap(x,t,X,Y,w,lh){const ws=String(t).split(/\s+/); let ln='', y=Y; ws.forEach(wd=>{const tt=ln?ln+' '+wd:wd; if(x.measureText(tt).width>w&&ln){x.fillText(ln,X,y);ln=wd;y+=lh;} else ln=tt;}); if(ln)x.fillText(ln,X,y); return y+lh;}
+async function mapPng(o){ const svg=el('hMap'), VB=svg.getAttribute('viewBox').split(/[\s,]+/).map(Number);
+ let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB.join(' ')}" width="${VB[2]*3}" height="${VB[3]*3}">`;
+ svg.querySelectorAll('path[data-d]').forEach(p=>{s+=`<path d="${p.getAttribute('d')}" fill="${o.fills[p.dataset.d]||'#e5e7eb'}" stroke="#ffffff" stroke-width="0.8" stroke-linejoin="round"/>`;});
+ (o.marks||[]).forEach(m=>s+=`<circle cx="${m[0]}" cy="${m[1]}" r="${m[2]}" fill="${m[3]}" stroke="#ffffff" stroke-width="0.6"/>`);
+ if(o.labels!==false)Object.entries(LBLP).forEach(([d,[x,y,fs,L]])=>{const n=L.length; s+=`<text font-family="Segoe UI,Arial,sans-serif" font-weight="700" font-size="${fs}" fill="#0f172a" stroke="#ffffff" stroke-width="1.5" paint-order="stroke" stroke-linejoin="round" text-anchor="middle">`+L.map((t,i)=>`<tspan x="${x}" y="${(y+(i-(n-1)/2)*fs*1.05+fs*0.35).toFixed(1)}">${esc(t)}</tspan>`).join('')+'</text>';});
+ s+='</svg>';
+ const img=new Image(); await new Promise((res,rej)=>{img.onload=res; img.onerror=()=>rej(new Error('map image')); img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);});
+ const top=o.title?175:30, bot=o.noLegend?30:90, H=1350, mh=H-top-bot, mw=Math.round(mh*VB[2]/VB[3]), W=o.noLegend?mw+60:1800;
+ const cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d'); x.fillStyle='#ffffff'; x.fillRect(0,0,W,H);
+ if(o.title){x.fillStyle='#0f172a'; x.font='bold 44px "Segoe UI", Arial, sans-serif'; cvWrap(x,o.title,60,78,W-120,52); x.fillStyle='#475569'; x.font='25px "Segoe UI", Arial, sans-serif'; cvWrap(x,o.sub||'',60,130,W-120,32);}
+ x.drawImage(img,30,top,mw,mh);
+ if(!o.noLegend){let lx=mw+90, ly=top+40; x.fillStyle='#0f172a'; x.font='bold 30px "Segoe UI", Arial, sans-serif'; x.fillText('Legend',lx,ly); ly+=52;
+  (o.legend||[]).forEach(([c,l,n])=>{x.fillStyle=c||'#ccc'; x.fillRect(lx,ly-28,38,38); x.strokeStyle='#cbd5e1'; x.lineWidth=1; x.strokeRect(lx,ly-28,38,38); x.fillStyle='#1f2937'; x.font='26px "Segoe UI", Arial, sans-serif';
+   const ny=cvWrap(x,l+(n!==''&&n!=null?'  ('+n+')':''),lx+56,ly,W-lx-96,32); ly=Math.max(ly+56,ny+22);});
+  x.fillStyle='#64748b'; x.font='22px "Segoe UI", Arial, sans-serif'; x.fillText('KP Zero Dose & Polio Dashboard · '+new Date().toISOString().slice(0,10),60,H-40);
+  x.fillText('Sources: EOC portal, SMC Tracker / IDIMS, KP EPI-MIS',W-60-x.measureText('Sources: EOC portal, SMC Tracker / IDIMS, KP EPI-MIS').width,H-40);}
+ return cv.toDataURL('image/png');}
+async function hmDownload(){ try{ const svg=el('hMap'), fills={}; svg.querySelectorAll('path[data-d]').forEach(p=>fills[p.dataset.d]=p.style.fill||getComputedStyle(p).fill);
+ const T0=el('hMTtl'), sm=T0.querySelector('small'), title=[...T0.childNodes].filter(n=>n!==sm).map(n=>n.textContent).join('').trim(), sub=sm?sm.textContent.trim():'';
+ const leg=[...el('hMLeg').children].map(dv=>{const i=dv.querySelector('i'), b=dv.querySelector('b'); return [i?(i.style.background||i.style.backgroundColor||getComputedStyle(i).backgroundColor):'#ccc',[...dv.childNodes].filter(n=>n!==i&&n!==b).map(n=>n.textContent).join('').trim(),b?b.textContent:''];});
+ const marks=[...svg.querySelectorAll('#hMk circle')].filter(c=>!c.classList.contains('pring')).map(c=>[+c.getAttribute('cx'),+c.getAttribute('cy'),+c.getAttribute('r'),c.classList.contains('pcore')?'#dc2626':(c.getAttribute('fill')||getComputedStyle(c).fill)]);
+ const url=await mapPng({fills,title,sub,legend:leg,marks,labels:el('hMLb').checked});
+ const a=document.createElement('a'); a.href=url; a.download='KP_map_'+title.replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,60)+'_'+new Date().toISOString().slice(0,10)+'.png'; document.body.appendChild(a); a.click(); setTimeout(()=>a.remove(),800); toast('Map downloaded');}
+ catch(e){console.error(e); toast('Could not create the map image');}}
+
+// ---------- Post-campaign review presentation ----------
+function pcrCollect(ci,scope){ const D=cqDist(ci), inS=scope==='KP'?()=>true:(d=>D2DV[d]===scope), R=D.R.filter(r=>inS(r.d)), S=cqSum(R);
+ const lab=D.C?D.C.l:'', key=D.key;
+ const UM=misHyd().filter(r=>r.d&&r.ci===D.mi&&inS(r.d)).map(r=>({u:r.u,d:r.d,tg:r.tg,st:misSt(r),srf:r.srf||0,sna:r.sna||0,slo:r.slo||0})).sort((a,b)=>b.st-a.st);
+ const LU=LQR.filter(x=>x.ci===D.lqi&&inS(x.d)&&x.r==='F');
+ const VV=aggV(VAL.filter(r=>isSIA(r.cp)&&CQK(r.cp)===key&&inS(r.d)));
+ const digOn=CQK(CQ_DIGC)===key, DG=DATA.filter(r=>inS(r.d)), dr=sum_(DG,r=>r.rep), dl=sum_(DG,r=>r.ll);
+ const A=svAll(), SV=A.R.filter(r=>inS(r.d)), yr=D.yr, ES=Object.entries(ESD).filter(([d])=>inS(d)).map(([d,x])=>[d,x[yr]]).filter(x=>x[1]);
+ const WD=watchD().filter(x=>x.w&&inS(x.d));
+ return {D,R,S,scope,scopeL:scope==='KP'?'Khyber Pakhtunkhwa':scope+' division',lab,UM,LU,VV,digOn,dig:dr?dl/dr*100:null,dnot:Math.max(0,dr-dl),
+  wpv:WPV.filter(w=>inS(w.d)),afp:AFP.filter(a=>inS(a.d)),lowAFP:SV.filter(r=>r.band==='r'),esPos:ES.filter(x=>x[1][1]>0),esS:sum_(ES,x=>x[1][0]),esP:sum_(ES,x=>x[1][1]),WD,
+  date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})};}
+function pcrActions(X){const S=X.S, A=[], nm=a=>a.slice(0,4).map(r=>r.d).join(', ')+(a.length>4?' and '+(a.length-4)+' more':'');
+ if(S.cls.f.length)A.push(`Hold a district review with the DC and DHO in ${nm(S.cls.f)}: campaign quality is not good enough where poliovirus is present or risk is highest.`);
+ if(S.cls.r.length)A.push(`Ask ${nm(S.cls.r)} for a UC-wise improvement plan before the next round (poor campaign performance score).`);
+ const lowT=X.R.filter(r=>r.p&&r.p.trn!=null&&r.p.trn<95).sort((a,b)=>a.p.trn-b.p.trn), lowM=X.R.filter(r=>r.p&&r.p.mpv!=null&&r.p.mpv<95).sort((a,b)=>a.p.mpv-b.p.mpv);
+ if(lowT.length||lowM.length)A.push(`Complete team training${lowT.length?' ('+nm(lowT)+')':''} and microplan field validation${lowM.length?' ('+nm(lowM)+')':''} before the next campaign.`);
+ const lowF=X.R.filter(r=>r.p&&r.p.fem!=null&&r.p.fem<50).sort((a,b)=>a.p.fem-b.p.fem); if(lowF.length)A.push(`Increase female team members in ${nm(lowF)} (under half of mobile teams have one).`);
+ const tdn=X.R.filter(r=>r.i&&r.i.mi>=50&&r.i.tdn/r.i.mi>=0.15).sort((a,b)=>b.i.tdn/b.i.mi-a.i.tdn/a.i.mi); if(tdn.length)A.push(`Re-check house coverage in microplans in ${nm(tdn)}: monitors found many houses with missed children that teams never visited.`);
+ if(X.LU.length)A.push(`Mop up the ${X.LU.length} UCs whose LQAS lot failed${X.LU.length?' ('+X.LU.slice(0,3).map(x=>x.u+', '+x.d).join('; ')+(X.LU.length>3?'…':'')+')':''} and re-check them in the next LQAS.`);
+ const ref=X.R.filter(r=>r.srp!=null&&r.srp>=1).sort((a,b)=>b.srp-a.srp); if(ref.length)A.push(`Plan community engagement for persistent refusals in ${nm(ref)} (1% or more of the target still refusing).`);
+ if(S.tri.length)A.push(`Field-verify ${nm(S.tri)}, where pre-campaign, ICM, LQAS and admin data disagree.`);
+ if(S.zc==null&&S.zr)A.push(`Report zero-dose coverage for the ${fmt(S.zr)} zero-dose children reported in ${X.lab} once the next round is complete.`);
+ return A.slice(0,8);}
+function pcrMsgs(X){const S=X.S, M=[];
+ M.push(`${S.cls.g.length} districts performed well, ${S.cls.a.length} were average, ${S.cls.r.length} poor and ${S.cls.f.length} need focus.`);
+ if(S.rd!=null)M.push(`Pre-campaign readiness averaged ${pc(S.rd)}; ${pc(S.p_fem)} of mobile teams had a female member.`);
+ if(S.rec!=null)M.push(`Monitors recalled ${pc(S.rec)} of children 0–59 months as vaccinated; ${S.i_mi?pc(((S.i_tdn||0)+(S.i_tm||0))/S.i_mi*100):'–'} of missed children were missed by teams.`);
+ if(S.lqp!=null)M.push(`${pc(S.lqp)} of ${fmt(S.l_n)} LQAS lots passed; ${fmt(S.l_F)} failed.`);
+ if(S.stp!=null)M.push(`${fmt(S.m_st)} children (${pc(S.stp)} of the target) were still missed after catch-up, including ${fmt(S.m_srf)} refusing.`);
+ if(X.wpv.length)M.push(`${X.wpv.length} confirmed polio case${X.wpv.length>1?'s':''} in 2026 (${[...new Set(X.wpv.map(w=>w.d))].join(', ')}); ${X.esPos.length} districts with positive sewage.`);
+ return M;}
+async function renderPCR(P,X){ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Post-campaign review: '+X.lab+' · '+X.scopeL; pptx.company='Zero Dose Dashboard';
+ const OR='C2410C',RED='DC2626',AMB='B45309',GRN='15803D',GRY='6B7280',TXT='1F2937',F='Segoe UI', S=X.S; let pg=0;
+ const base=(t,sub)=>{const s=pptx.addSlide(); pg++; s.background={color:'FFFFFF'}; s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.12,fill:{color:OR},line:{color:OR}});
+  s.addText(t,{x:0.5,y:0.28,w:12.3,h:0.6,fontFace:F,fontSize:24,bold:true,color:OR}); if(sub)s.addText(sub,{x:0.5,y:0.86,w:12.3,h:0.36,fontFace:F,fontSize:12,color:GRY});
+  s.addShape(pptx.ShapeType.line,{x:0.5,y:6.98,w:12.33,h:0,line:{color:'E5E7EB',width:0.75}}); s.addText('Post-campaign review · '+X.lab+' · '+X.scopeL+' · '+X.date,{x:0.5,y:7.02,w:10.5,h:0.3,fontFace:F,fontSize:9,color:GRY});
+  s.addText(String(pg),{x:12.23,y:7.02,w:0.6,h:0.3,fontFace:F,fontSize:9,color:GRY,align:'right'}); return s;};
+ const kpis=(s,it,y)=>{const n=it.length,gp=0.2,w=(12.33-gp*(n-1))/n; it.forEach((k,i)=>{const x=0.5+i*(w+gp); s.addShape(pptx.ShapeType.rect,{x,y,w,h:1.3,fill:{color:'F9FAFB'},line:{color:'E5E7EB',width:0.75}}); s.addShape(pptx.ShapeType.rect,{x,y,w,h:0.07,fill:{color:k.c||OR},line:{color:k.c||OR}});
+  s.addText(k.l.toUpperCase(),{x:x+0.15,y:y+0.14,w:w-0.3,h:0.3,fontFace:F,fontSize:9,bold:true,color:GRY}); s.addText(k.v,{x:x+0.15,y:y+0.42,w:w-0.3,h:0.5,fontFace:F,fontSize:22,bold:true,color:k.vc||TXT}); if(k.s)s.addText(k.s,{x:x+0.15,y:y+0.92,w:w-0.3,h:0.32,fontFace:F,fontSize:9,color:GRY});});};
+ const note=(s,t,o)=>s.addText(t,{x:o.x,y:o.y,w:o.w,h:o.h||0.5,fontFace:F,fontSize:o.fs||11,color:o.c||GRY,italic:!!o.i,valign:'top'});
+ const bullets=(s,a,o)=>s.addText(a.map(t=>({text:t,options:{bullet:{indent:16},breakLine:true}})),{x:o.x,y:o.y,w:o.w,h:o.h,fontFace:F,fontSize:o.fs||13,color:TXT,valign:'top',paraSpaceAfter:8});
+ const bars=(s,labels,values,o)=>{if(!labels.length){note(s,'No data for this campaign.',{x:o.x,y:o.y+1.2,w:o.w,fs:13});return;} const fs=labels.length>16?8:10;
+  const op={x:o.x,y:o.y,w:o.w,h:o.h,barDir:'bar',chartColors:o.cols||[OR],showTitle:true,title:o.title,titleFontSize:12,titleColor:TXT,titleFontFace:F,showValue:true,dataLabelFontSize:fs,dataLabelColor:TXT,dataLabelFormatCode:o.fmt||'0.0',dataLabelPosition:'outEnd',
+   catAxisLabelFontSize:fs,catAxisLabelFontFace:F,catAxisLabelColor:TXT,catAxisOrientation:'maxMin',valAxisLabelFontSize:9,valAxisLabelColor:GRY,valAxisMinVal:o.min!=null?o.min:0,valGridLine:{color:'E5E7EB',size:0.5},showLegend:false,barGapWidthPct:45};
+  if(o.max!=null)op.valAxisMaxVal=o.max; if(o.vt){op.showValAxisTitle=true;op.valAxisTitle=o.vt;op.valAxisTitleFontSize=9;op.valAxisTitleColor=GRY;}
+  s.addChart(pptx.ChartType.bar,[{name:o.name||'Value',labels,values}],op);};
+ const RAG={g:['DCFCE7','166534'],a:['FEF3C7','92400E'],r:['FEE2E2','991B1B'],f:['7F1D1D','FFFFFF'],n:['F3F4F6','6B7280']};
+ const table=(s,head,rows,o)=>{if(!rows.length){note(s,o.empty||'No data.',{x:o.x,y:o.y,w:o.w});return;} const fs=o.fs||9;
+  const hdr=head.map((h,j)=>({text:h,options:{bold:true,color:'FFFFFF',fill:{color:o.col||OR},fontSize:fs,align:j?'center':'left',valign:'middle'}}));
+  const body=rows.map((r,i)=>r.map((c,j)=>{const cc=(c&&typeof c==='object')?c:{t:c}; return {text:String(cc.t==null?'–':cc.t),options:{fontSize:fs,bold:!!cc.b,color:cc.c?cc.c[1]:TXT,fill:{color:cc.c?cc.c[0]:(i%2?'FFFFFF':'F9FAFB')},align:j&&!o.left?'center':'left',valign:'middle'}};}));
+  s.addTable([hdr,...body],{x:o.x,y:o.y,w:o.w,colW:o.colW,fontFace:F,rowH:[0.4,...rows.map(()=>o.rh||0.28)],border:{type:'solid',pt:0.5,color:'E5E7EB'},autoPage:false,margin:0.04});};
+ const p1=v=>v==null?'–':(Math.round(v*10)/10).toFixed(1)+'%', n0=v=>v==null?'–':fmt(Math.round(v)), cut=(t,n)=>{t=String(t==null?'':t);return t.length>n?t.slice(0,n-1)+'…':t;};
+ const cl=(r,k,dg)=>({t:r[k]==null?'–':dg===2?r[k].toFixed(2)+'%':p1(r[k]),c:r.B[k]?RAG[r.B[k]]:null});
+ // 1 title
+ {const s=pptx.addSlide(); pg++; s.background={color:'7C2D12'};
+  s.addText('POST-CAMPAIGN REVIEW',{x:0.8,y:1.35,w:11.7,h:0.5,fontFace:F,fontSize:16,bold:true,color:'FDBA74',charSpacing:4});
+  s.addText(X.lab,{x:0.8,y:1.9,w:11.7,h:1.0,fontFace:F,fontSize:44,bold:true,color:'FFFFFF'});
+  s.addText(X.scopeL,{x:0.8,y:2.95,w:11.7,h:0.6,fontFace:F,fontSize:24,color:'FFEDD5'});
+  s.addText('From preparation to results: pre-campaign readiness · intra-campaign monitoring · LQAS · missed children and refusals · zero dose · surveillance · district performance',{x:0.8,y:3.75,w:11.7,h:0.8,fontFace:F,fontSize:14,color:'FED7AA'});
+  [['Good',S.cls.g.length,'16A34A'],['Average',S.cls.a.length,'F59E0B'],['Poor',S.cls.r.length,'DC2626'],['Needs focus',S.cls.f.length,'450A0A']].forEach(([l,n,c],i)=>{const x=0.8+i*2.95;
+   s.addShape(pptx.ShapeType.rect,{x,y:4.85,w:2.75,h:1.05,fill:{color:c},line:{color:'FFFFFF',width:1}}); s.addText([{text:String(n),options:{fontSize:28,bold:true,breakLine:true}},{text:l+' districts',options:{fontSize:12}}],{x,y:4.85,w:2.75,h:1.05,fontFace:F,color:'FFFFFF',align:'center',valign:'middle'});});
+  s.addText('Prepared '+X.date+' · Sources: EOC portal (pre-campaign, ICM, LQAS, coverage, surveillance), SMC Tracker / IDIMS, KP EPI-MIS',{x:0.8,y:6.55,w:11.7,h:0.4,fontFace:F,fontSize:10,color:'FED7AA'});}
+ // 2 at a glance
+ {const s=base('Campaign at a glance','Headline results for '+X.lab);
+  kpis(s,[{l:'Readiness',v:p1(S.rd),s:'pre-campaign indicators',vc:S.rd>=95?GRN:S.rd>=85?AMB:RED},{l:'ICM recall',v:p1(S.rec),s:'children 0–59 m vaccinated',vc:S.rec>=95?GRN:S.rec>=90?AMB:RED},{l:'LQAS passed',v:p1(S.lqp),s:fmt(S.l_P||0)+' of '+fmt(S.l_n||0)+' lots',vc:S.lqp>=90?GRN:S.lqp>=80?AMB:RED},
+   {l:'Still missed',v:n0(S.m_st),s:p1(S.stp)+' of target',vc:OR},{l:'Still refusing',v:n0(S.m_srf),s:S.srp==null?'':S.srp.toFixed(2)+'% of target',vc:RED}],1.35);
+  s.addText('Key messages',{x:0.5,y:2.9,w:12.3,h:0.35,fontFace:F,fontSize:14,bold:true,color:TXT}); bullets(s,pcrMsgs(X),{x:0.5,y:3.3,w:12.3,h:3.5,fs:14});}
+ // 3 pre-campaign
+ {const s=base('① Pre-campaign readiness','Preparatory indicators reported before the campaign');
+  kpis(s,[{l:'DPEC on time',v:p1(S.p_dpec)},{l:'Teams trained',v:p1(S.p_trn)},{l:'Microplans validated',v:p1(S.p_mpv)},{l:'Female member',v:p1(S.p_fem),s:'mobile teams'},{l:'Local member',v:p1(S.p_loc),s:'mobile teams'}],1.35);
+  const G=X.R.filter(r=>r.rd!=null).sort((a,b)=>a.rd-b.rd).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>+r.rd.toFixed(1)),{x:0.5,y:2.85,w:7.2,h:4.05,title:'Least ready districts (readiness %)',min:Math.min(60,Math.floor(((G[0]||{}).rd||80)/10)*10),max:100,vt:'Readiness (%)'});
+  const lw=k=>X.R.filter(r=>r.p&&r.p[k]!=null).sort((a,b)=>a.p[k]-b.p[k]).slice(0,3).map(r=>r.d+' ('+Math.round(r.p[k])+'%)').join(', ')||'–';
+  bullets(s,['Lowest teams trained: '+lw('trn'),'Lowest microplan validation: '+lw('mpv'),'Fewest female members: '+lw('fem'),'Fewest local members: '+lw('loc'),'Fewest government-accountable members: '+lw('gov')],{x:8.0,y:2.95,w:4.8,h:3.9,fs:12});}
+ // 4 ICM
+ {const s=base('② Intra-campaign monitoring (ICM)','What monitors found in houses during the campaign'), mi=S.i_mi||0, sh=v=>mi?Math.round(v/mi*100)+'% of missed':'';
+  kpis(s,[{l:'Recall coverage',v:p1(S.rec),s:fmt(S.i_rc||0)+' children checked'},{l:'Finger-marked',v:p1(S.fmp),s:'of children seen'},{l:'Children missed',v:n0(mi),vc:OR},{l:'Child away',v:n0(S.i_na),s:sh(S.i_na)},{l:'Refusals',v:n0(S.i_rf),s:sh(S.i_rf),vc:RED}],1.35);
+  const G=X.R.filter(r=>r.rec!=null).sort((a,b)=>a.rec-b.rec).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>+r.rec.toFixed(1)),{x:0.5,y:2.85,w:6.6,h:4.05,title:'Lowest ICM recall coverage (%)',min:Math.min(80,Math.floor(((G[0]||{}).rec||90)/5)*5),max:100,vt:'Recall coverage (%)'});
+  bars(s,['Team did not visit','Team missed child','Child away','Refusal'],[S.i_tdn||0,S.i_tm||0,S.i_na||0,S.i_rf||0],{x:7.3,y:2.85,w:5.5,h:4.05,title:'Why children were missed (count)',fmt:'#,##0',vt:'Children'});}
+ // 5 LQAS
+ {const s=base('③ Post-campaign LQAS','Independent lot quality assurance sampling after the campaign');
+  kpis(s,[{l:'Lots assessed',v:n0(S.l_n)},{l:'Passed',v:p1(S.lqp),s:fmt(S.l_P||0)+' lots over 90%',vc:S.lqp>=90?GRN:S.lqp>=80?AMB:RED},{l:'Intermediate',v:n0(S.l_I),s:'80–90%'},{l:'Failed',v:n0(S.l_F),s:'under 80%',vc:RED},{l:'Admin coverage',v:p1(S.vp),s:'vaccinated, % of target'}],1.35);
+  const G=X.R.filter(r=>r.lqp!=null).sort((a,b)=>a.lqp-b.lqp||b.l.n-a.l.n).slice(0,15); bars(s,G.map(r=>r.d+' ('+r.l.n+')'),G.map(r=>+r.lqp.toFixed(1)),{x:0.5,y:2.85,w:6.6,h:4.05,title:'Lowest LQAS pass rate (% of lots; lots in brackets)',max:100,vt:'Lots passed (%)'});
+  bars(s,['Child away','Newborn','Migrant','Refused','Team did not visit','Team missed child','Other'],[S.l_aw,S.l_nb,S.l_mg,S.l_rf,S.l_dn,S.l_tm,S.l_ot].map(v=>v||0),{x:7.3,y:2.85,w:5.5,h:4.05,title:'Why children were unvaccinated in LQAS lots',fmt:'#,##0',vt:'Children'});}
+ // 6 missed & refusals
+ {const s=base('④ Missed children and refusals (admin data)','Children still missed after catch-up, from the campaign coverage summary');
+  kpis(s,[{l:'Vaccinated',v:p1(S.vp),s:fmt(S.m_vc||0)+' of '+fmt(S.m_tg||0)+' target'},{l:'Still missed',v:n0(S.m_st),s:p1(S.stp)+' of target',vc:OR},{l:'Still away (NA)',v:n0(S.m_sna)},{l:'Still refusing',v:n0(S.m_srf),vc:RED},{l:'Left over',v:n0(S.m_slo)}],1.35);
+  table(s,['UC','District','Target','Still missed','% of target','Still refusing','Still away'],X.UM.slice(0,10).map(r=>[cut(r.u,26),r.d,fmt(r.tg),{t:fmt(r.st),b:true},r.tg?(r.st/r.tg*100).toFixed(1)+'%':'–',fmt(r.srf),fmt(r.sna)]),{x:0.5,y:2.95,w:12.3,colW:[3.0,2.0,1.4,1.5,1.4,1.5,1.5],rh:0.32,fs:10,empty:'No UC-level missed children data for this campaign.'});
+  note(s,'The 10 UCs with the most children still missed after catch-up.',{x:0.5,y:6.6,w:12.3,h:0.3,fs:9,i:true});}
+ // 7 zero dose
+ {const s=base('⑤ Zero-dose children in this campaign','Reported, covered by the next round, recorded in IDIMS and validated');
+  kpis(s,[{l:'ZD reported',v:n0(S.zr),s:'zero routine-dose children found'},{l:'Covered next round',v:S.zc==null?'Not yet':p1(S.zc),s:S.zc==null?'reported after the next round':'of reported children'},{l:'Digitized in IDIMS',v:X.digOn?p1(X.dig):'–',s:X.digOn?fmt(X.dnot)+' not entered':'only for the current IDIMS campaign'},
+   {l:'Validated',v:n0(X.VV.n),s:'children checked'},{l:'Vaccinated',v:X.VV.n?p1(X.VV.p):'–',s:X.VV.n?fmt(X.VV.vn)+' not vaccinated':'no validation yet'}],1.35);
+  const G=X.R.filter(r=>r.zr).sort((a,b)=>b.zr-a.zr).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>r.zr),{x:0.5,y:2.85,w:12.3,h:4.05,title:'Zero-dose children reported by district (top 15)',fmt:'#,##0',vt:'Children',cols:['0F766E']});}
+ // 8 surveillance
+ {const s=base('⑥ Surveillance context','Where poliovirus is and how well we would detect it');
+  kpis(s,[{l:'Polio cases 2026',v:n0(X.wpv.length),vc:X.wpv.length?RED:GRN},{l:'ZD AFP cases',v:n0(X.afp.length),s:'zero-dose children with AFP'},{l:'Sewage positive',v:X.esS?p1(X.esP/X.esS*100):'–',s:fmt(X.esP)+' of '+fmt(X.esS)+' samples '+X.D.yr},{l:'Low AFP reporting',v:n0(X.lowAFP.length),s:'districts under half KP median',vc:X.lowAFP.length?AMB:GRN},{l:'Watch districts',v:n0(X.WD.length)}],1.35);
+  const rows=X.R.filter(r=>r.wpv||r.esPos||r.watch||X.lowAFP.some(a=>a.d===r.d)).sort((a,b)=>b.wpv-a.wpv||(b.esPos-a.esPos)).slice(0,10).map(r=>[r.d,r.wpv||'–',r.esS?r.esP+' of '+r.esS:'No site',X.lowAFP.some(a=>a.d===r.d)?{t:'Low',c:RAG.a}:'OK',r.watch?{t:'Yes',c:RAG.r}:'–',{t:CLS[r.cls][0],c:RAG[r.cls]}]);
+  table(s,['District','Polio cases','Sewage positive','AFP reporting','Watch district','Campaign class'],rows,{x:0.5,y:2.95,w:12.3,colW:[2.6,1.6,2.2,1.9,1.8,2.2],rh:0.32,fs:10,empty:'No polio case, positive sewage, low AFP reporting or watch district in this area.'});}
+ // 9-10 scorecard
+ {const R=X.R.slice().sort((a,b)=>(a.sc==null?999:a.sc)-(b.sc==null?999:b.sc)), half=Math.ceil(R.length/2), parts=R.length>20?[R.slice(0,half),R.slice(half)]:[R];
+  parts.forEach((P_,k)=>{const s=base('⑦ District scorecard'+(parts.length>1?' ('+(k+1)+' of 2)':''),'Lowest score first · green = at target, amber = close, red = below');
+   table(s,['District','Readiness','ICM recall','Finger-marked','LQAS passed','Still missed','Still refusing','ZD covered','Score','Class'],P_.map(r=>[{t:r.d,b:true},cl(r,'rd'),cl(r,'rec'),cl(r,'fmp'),cl(r,'lqp'),cl(r,'stp'),cl(r,'srp',2),cl(r,'zc'),{t:r.sc==null?'–':Math.round(r.sc)+'%',b:true},{t:CLS[r.cls][0],c:RAG[r.cls],b:true}]),
+    {x:0.5,y:1.3,w:12.3,colW:[1.9,1.1,1.1,1.2,1.15,1.1,1.15,1.1,0.9,1.5],rh:Math.min(0.28,5.25/Math.max(1,P_.length)),fs:P_.length>16?8:9});});}
+ // 11 map
+ {const s=base('⑧ District performance map','Good / average / poor / needs focus · '+X.lab); const cols={g:'#16a34a',a:'#f59e0b',r:'#dc2626',f:'#7f1d1d',n:'#d1d5db'}, fills={}; Object.keys(LBLP).forEach(d=>fills[d]='#eef2f7'); X.D.R.forEach(r=>{fills[r.d]=X.R.includes(r)?cols[r.cls]:'#eef2f7';});
+  try{const url=await mapPng({fills,noLegend:true,labels:true}); s.addImage({data:url.replace(/^data:/,''),x:0.5,y:1.25,h:5.65,w:5.65*((Math.round(1290*418/588)+60)/1350)});}catch(e){note(s,'Map could not be drawn in this browser.',{x:0.5,y:3,w:6});}
+  let y=1.35; ['f','r','a','g'].forEach(k=>{const L=S.cls[k]; s.addShape(pptx.ShapeType.rect,{x:6.4,y,w:0.28,h:0.28,fill:{color:cols[k].slice(1)},line:{color:cols[k].slice(1)}});
+   s.addText(CLS[k][0]+' ('+L.length+')',{x:6.8,y:y-0.05,w:6,h:0.36,fontFace:F,fontSize:13,bold:true,color:TXT}); s.addText(L.length?L.sort((a,b)=>(a.sc||0)-(b.sc||0)).map(r=>r.d+(r.sc!=null?' '+Math.round(r.sc)+'%':'')).join(', '):'None',{x:6.8,y:y+0.3,w:6,h:0.95,fontFace:F,fontSize:10.5,color:GRY,valign:'top'}); y+=1.32;});
+  note(s,'Needs focus = poor or average district with a 2026 polio case, positive sewage or on the polio watch list.',{x:6.4,y:6.62,w:6.4,h:0.3,fs:9,i:true});}
+ // 12 triangulation
+ {const s=base('⑨ Where the data disagrees','Pre-campaign, ICM, LQAS and admin data compared district by district');
+  const rows=S.tri.slice(0,9).map(r=>[{t:r.d,b:true},{t:CLS[r.cls][0],c:RAG[r.cls]},cut(r.F.map(f=>f[0]).join(' · '),170)]);
+  table(s,['District','Class','What disagrees'],rows,{x:0.5,y:1.3,w:12.3,colW:[1.9,1.4,9.0],rh:0.55,fs:9,left:true,empty:'The sources agree in every district: no disagreement flagged.'});
+  note(s,'Check these districts in the field before relying on either source.'+(S.tri.length>9?' '+(S.tri.length-9)+' more districts on the Campaign overview page.':''),{x:0.5,y:6.62,w:12.3,h:0.3,fs:9,i:true});}
+ // 13 actions
+ {const s=base('Recommended actions','Based on the indicators in this review'); const A=pcrActions(X); bullets(s,A.length?A:['No major issues flagged: keep the current campaign quality.'],{x:0.5,y:1.4,w:12.3,h:5.4,fs:A.length>6?13:15});}
+ // 14 method
+ {const s=base('How districts are classified','Method and sources');
+  table(s,['Indicator','Green (2 points)','Amber (1 point)','Red (0 points)','Source'],[['Pre-campaign readiness (mean of 5 indicators)','95% or more','85–95%','Under 85%','EOC: Pre Campaign'],['ICM recall coverage','95% or more','90–95%','Under 90%','EOC: ICM'],['Finger-marked (ICM)','95% or more','90–95%','Under 90%','EOC: ICM'],['LQAS lots passed','90% or more','80–90%','Under 80%','EOC: Post Campaign LQAS'],['Children still missed after catch-up','2% of target or less','2–4%','Over 4%','EOC: coverage summary'],['Children still refusing','0.5% or less','0.5–1%','Over 1%','EOC: coverage summary'],['ZD children covered by next round','90% or more','80–90%','Under 80%','EOC: coverage summary']],
+   {x:0.5,y:1.3,w:12.3,colW:[3.6,1.9,1.7,1.7,3.4],rh:0.36,fs:10,left:true});
+  bullets(s,['Score = points earned ÷ points possible. Missing data does not count against a district; at least 3 indicators are needed.','Good: 75% or more · Average: 50–74% · Poor: under 50%.','Needs focus: a poor or average district that also has a 2026 polio case, positive sewage samples or is a polio watch district.'],{x:0.5,y:4.6,w:12.3,h:2.2,fs:12});}
+ return pptx;}
+async function runPCR(ci,scope,btn){ const st=el('pcrStatus'); btn=btn||el('btnPCR'); btn.disabled=true; if(st)st.textContent='Preparing the post-campaign review…';
+ try{await loadPptx(); const X=pcrCollect(ci,scope); const pptx=await renderPCR(window.PptxGenJS,X);
+  const fn=('Post_Campaign_Review_'+X.lab+'_'+(scope==='KP'?'KP':scope)).replace(/[^A-Za-z0-9]+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.pptx';
+  await saveDeck(pptx,fn); if(st)st.textContent='Downloaded '+fn; toast('Post-campaign review ready');}
+ catch(e){console.error(e); if(st)st.textContent=(e&&e.message==='load')?'Could not load the presentation tool. Check your internet connection and try again.':'Could not create the review: '+((e&&e.message)||e); toast('Review failed');}
+ finally{btn.disabled=false;}}
+{const _rp=renderPresent; renderPresent=function(){_rp(); const c=el('pcrC'), s=el('pcrS'); if(c&&!c.options.length){c.innerHTML=(CQ.camps||[]).map((x,i)=>`<option value="${i}">${esc(x.l)}</option>`).join('');
+  s.innerHTML='<option value="KP">All KP</option>'+[...new Set(Object.values(D2DV))].sort().map(v=>`<option value="${esc(v)}">${esc(v)} division</option>`).join('');
+  el('btnPCR').onclick=()=>runPCR(+c.value,s.value,el('btnPCR'));}
+ if(c&&document.activeElement!==c)c.value=String(CQI); if(s&&document.activeElement!==s&&fDiv.value&&!fDist.value)s.value=fDiv.value;};}
+
+{const _rd2=render; render=function(){_rd2(); document.querySelectorAll('.pane.on .hubchips [data-hl]').forEach(b=>b.onclick=()=>setTab(b.dataset.hl));};}
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
