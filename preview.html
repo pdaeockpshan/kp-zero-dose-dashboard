@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:36</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:50</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -542,6 +542,19 @@ body.home .hdr, body.home .content .topbar{display:none}
 .wfx .pcbox .fx{font-size:12px;line-height:1.45;color:var(--color-text);margin-top:6px}
 @media(max-width:1200px){.wfx{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+
+<style>
+/* ================= (14) Immunity gap: CLOSED? + leadership brief ================= */
+.tab[data-tab="closed"],#p-closed{--tc:#15803d}
+.igs{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;color:#fff;white-space:nowrap}
+.igdots{display:inline-flex;gap:4px;align-items:center}.igdots i{display:inline-block;width:12px;height:12px;border-radius:3px;background:#e5e7eb}
+.igdots i.ok{background:#16a34a}.igdots i.no{background:#dc2626}.igdots i.na{background:#e5e7eb;border:1px dashed #9ca3af}
+.igchain{display:flex;flex-direction:column;gap:9px}
+.igrow{display:grid;grid-template-columns:260px 1fr 70px;gap:10px;align-items:center;font-size:12.5px}
+.igrow .bar{height:16px;border-radius:8px;background:#f1f5f9;overflow:hidden}.igrow .bar i{display:block;height:100%;border-radius:8px}
+.igrow b{font-size:14px}.igrow small{display:block;color:var(--color-text-muted);font-size:11px}
+@media(max-width:800px){.igrow{grid-template-columns:1fr 70px}.igrow .bar{grid-column:1/-1}}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -556,6 +569,7 @@ body.home .hdr, body.home .content .topbar{display:none}
   <div class="ngrp hg"><div class="nhd">Immunity gap</div>
    <button class="tab" data-tab="gap"><span class="tl">Where are the susceptible children?</span><span class="badge" id="bGP">–</span></button>
    <button class="tab" data-tab="why"><span class="tl">Why are they being missed?</span><span class="badge" id="bWY">–</span></button>
+   <button class="tab" data-tab="closed"><span class="tl">Has the gap closed?</span><span class="badge" id="bIGC">–</span></button>
   </div>
   <div class="ngrp hc"><div class="nhd">Campaigns</div>
    <button class="tab" data-tab="hcamp"><span class="tl">Campaign overview</span><span class="badge" id="bHC">–</span></button>
@@ -625,7 +639,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 14:36</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 14:50</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -639,7 +653,7 @@ body.home .hdr, body.home .content .topbar{display:none}
  <div class="hq3">
   <div class="hq" style="--qc:#7c2d12" data-go="gap" role="button" tabindex="0"><span class="qn">Question 1 · Where</span><h3>Where are the susceptible children?</h3><div class="qb" id="hQ1b"></div><div class="qf" id="hQ1f"></div><div class="halarm" id="hQ1a"></div><span class="qgo">See the UCs →</span></div>
   <div class="hq" style="--qc:#b45309" data-go="why" role="button" tabindex="0"><span class="qn">Question 2 · Why</span><h3>Why are they being missed?</h3><div class="qb" id="hQ2b"></div><div class="qf" id="hQ2f"></div><span class="qgo">See root causes and fixes →</span></div>
-  <div class="hq" style="--qc:#15803d" data-go="hcamp" role="button" tabindex="0"><span class="qn">Question 3 · Closed?</span><h3>Has the programme closed the gap?</h3><div class="qb" id="hQ3b"></div><div class="qf" id="hQ3f"></div><span class="qsoon">UC-by-UC closure status (open / closing / closed / reopened): next phase</span><span class="qgo">See campaign results →</span></div>
+  <div class="hq" style="--qc:#15803d" data-go="closed" role="button" tabindex="0"><span class="qn">Question 3 · Closed?</span><h3>Has the programme closed the gap?</h3><div class="qb" id="hQ3b"></div><div class="qf" id="hQ3f"></div><span class="qgo">See UC closure status →</span></div>
  </div>
 
  <div class="hsec"><h2>Explore by programme area</h2><span>Four areas, each with its own pages and a cross-check of the data sources · numbers are for all of KP · red bubbles count districts that need attention</span></div>
@@ -772,6 +786,10 @@ body.home .hdr, body.home .content .topbar{display:none}
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
 <section class="pane" id="p-present">
 <div class="hint">Build a PowerPoint (.pptx) in one click. <b>Quick briefs</b> are ready-made 14-slide briefs for a meeting: pick the division or district on the card. The <b>custom presentation</b> below follows the filters at the top. Charts are real PowerPoint charts you can edit. Slides never include children's names. <span id="pScope"></span></div>
+<div class="card" style="margin-bottom:14px;border-top:5px solid #7c2d12"><h3 style="margin:0">Immunity gap brief for leadership</h3>
+<div class="bgrid"><div class="bcard" style="--bc:#7c2d12;grid-column:1/-1"><b>🧭 Immunity gap brief</b><small>Three questions for leadership: <b>where</b> the susceptible children are, <b>why</b> they are missed, and whether the programme has <b>closed</b> the gap. Answers on one slide, then the evidence, the priority-UC map, outcomes and decisions requested. About 11 slides.</small>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="igbS" aria-label="Area"></select><button class="btn pri" id="btnIGB">Prepare immunity gap brief</button></div></div></div>
+<div class="cnt" id="igbStatus" style="margin-top:8px"></div></div>
 <div class="card" style="margin-bottom:14px;border-top:5px solid #c2410c"><h3 style="margin:0">Post-campaign review</h3>
 <div class="bgrid"><div class="bcard" style="--bc:#c2410c;grid-column:1/-1"><b>📋 Post-campaign review</b><small>One campaign from start to finish: pre-campaign readiness, intra-campaign monitoring (ICM), LQAS, missed children and refusals, zero dose and the surveillance picture, a district scorecard with <b>good / average / poor / needs-focus</b> districts, the performance map, where the data disagrees, and recommended actions. 13 slides.</small>
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="pcrC" aria-label="Campaign"></select><select id="pcrS" aria-label="Area"></select><button class="btn pri" id="btnPCR">Prepare post-campaign review</button></div></div></div>
@@ -1456,6 +1474,18 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Root causes and what to do about them</h3></div><div class="cap" id="capWyM" style="margin-top:0"></div><div class="wfx" id="wyFix"></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Districts: main reason and recommended fix</h3><span class="cnt" id="cntWYD"></span><span style="flex:1"></span><button class="btn" id="btnWYDcsv">Download (CSV)</button></div><div class="scroll"><table id="tWhyD"></table></div><div class="cap" id="capWYD"></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Priority UCs (from "Where"): why their children are missed</h3><span class="cnt" id="cntWYU"></span><span style="flex:1"></span><button class="btn" id="btnWYUcsv">Download (CSV)</button></div><div class="scroll"><table id="tWhyU"></table></div><div class="cap" id="capWYU"></div></div>
+</section>
+
+<!-- ================= (14) IMMUNITY GAP: CLOSED? ================= -->
+<section class="pane" id="p-closed">
+<div class="hubhd"><div><h2>Has the programme closed the immunity gap?</h2><p id="igHint"></p><div class="hubchips"><button data-hl="gap">← Where</button><button data-hl="why">← Why</button><button data-hl="act">Action tracker</button><button data-hl="present">▶ Immunity gap brief</button></div></div></div>
+<div class="kpis"><div class="card"><div class="kl">UCs closed</div><div class="kv" id="ig1" style="color:#15803d">–</div><div class="ks" id="ig1s"></div></div><div class="card"><div class="kl">Closing</div><div class="kv" id="ig2" style="color:#65a30d">–</div><div class="ks" id="ig2s"></div></div><div class="card"><div class="kl">Open</div><div class="kv" id="ig3" style="color:#dc2626">–</div><div class="ks" id="ig3s"></div></div><div class="card"><div class="kl">Reopened</div><div class="kv" id="ig4" style="color:#7f1d1d">–</div><div class="ks" id="ig4s"></div></div><div class="card"><div class="kl">Main thing keeping UCs open</div><div class="kv" id="ig5" style="color:#b45309">–</div><div class="ks" id="ig5s"></div></div></div>
+<div class="grid2"><div class="card"><div id="cig1" class="ch"></div><div class="cap" id="capig1"></div></div><div class="card"><div id="cig2" class="ch"></div><div class="cap" id="capig2"></div></div></div>
+<div class="grid2"><div class="card"><h3 style="margin:0 0 4px">Follow-through of zero-dose children</h3><div class="cap" style="margin-top:0">Each step has its own campaign and denominator, so this is a chain of checks, not one group of children followed over time.</div><div class="igchain" id="igChain"></div></div>
+<div class="card"><div id="cig3" class="ch"></div><div class="cap" id="capig3"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">UCs: closure status</h3><span class="cnt" id="cntIG"></span><span style="flex:1"></span><button class="btn" id="btnIGcsv">Download (CSV)</button></div>
+<div class="cap" id="capIGm" style="margin-top:0"></div><div class="rkpills" id="igPills"></div>
+<div class="scroll"><table id="tIGC"></table></div><div class="cap" id="capIG"></div></div>
 </section>
 
 </main>
@@ -3293,7 +3323,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why','closed'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -3311,7 +3341,7 @@ function setTab(t){
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
  renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); atBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,closed:renderClosed,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -4740,7 +4770,7 @@ function hubBadges(){ try{ const S=cqSum(cqDist(CQI).R), bs=(id,t)=>{const e=el(
 {const _rd=render; render=function(){_rd(); hubBadges();};}
 
 // ---------- Map: indicator dropdown, district names, PNG download ----------
-const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)'],['why','Why children are missed: stand-out cause']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
+const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)'],['why','Why children are missed: stand-out cause'],['closed','Has the gap closed? Share of UCs closed']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
  ['Routine EPI',EAG.map(a=>['epi:'+a.k,a.l+' coverage'])],
  ['Campaigns',[['perf','Campaign performance (good / average / poor / needs focus)'],['pre','Pre-campaign readiness'],['icm','ICM recall coverage'],['lq','LQAS lots passed'],['mis','Children still missed after the campaign'],['ref','Children still refusing']]],
  ['Surveillance',[['afp:n','Zero-dose AFP cases (number)'],['afp:p','Zero-dose share of all AFP cases'],['surv','AFP surveillance sensitivity'],['es','Sewage samples positive'],['watch','Polio risk watch list']]],
@@ -5187,6 +5217,236 @@ Object.assign(HMNEW,{why(){const W=whyDist(CQI), G={}; W.R.forEach(r=>G[r.d]=r);
   title:`Why children are missed: stand-out cause · ${esc(W.X.C?W.X.C.l:'')}<small>Root cause at least 5 points above the KP average (else the largest) · ICM + LQAS + admin combined</small>`,
   legend:[['acc','Access / microplan'],['team','Team performance'],['dem','Demand (refusals)'],['mob','Mobility (away, migrant, newborn)'],['n','Not enough data']],listTitle:'Most children still missed',
   list:W.R.filter(r=>r.so).sort((a,b)=>(b.st||0)-(a.st||0)).map(r=>[r.d,WCK[r.so][1].split(' ')[0],r.so])});}});
+
+
+// ================= (14) IMMUNITY GAP: CLOSED? =================
+const CL_ST={cl:['Closed','#15803d'],cg:['Closing','#84cc16'],op:['Open','#dc2626'],ro:['Reopened','#7f1d1d'],nd:['No data','#9ca3af']};
+const CL_F={st:'still missed 2%+ of target',lq:'LQAS lot not passed',zc:'ZD covered under 90%',p3:'Penta-3 under 90%'};
+const CL_FS={st:'Still missed',lq:'LQAS',zc:'ZD covered',p3:'Penta-3'};
+const lqRank=r=>r==='P'?2:r==='I'?1:r==='F'?0:null;
+let _CL=null, IGF='ro';
+function closeAll(){ if(_CL)return _CL;
+ const camps=(MISM.camps||[]).map((l,k)=>({k,l,key:CQK(l)}));
+ camps.forEach(c=>{c.li=(LQM.camps||[]).findIndex(l=>CQK(l)===c.key); c.zk=Object.keys(CAMP).find(k=>CQK(CAMP[k])===c.key)||null;});
+ const LQ={}; LQR.forEach(x=>{(LQ[x.c]=LQ[x.c]||{})[x.ci]=x.r;});
+ const ee={}; EPI.forEach(r=>{if(!r.c)return; const g=ee[r.c]=ee[r.c]||{s:0,p3:0}; g.s+=r.s||0; g.p3+=r.p3||0;});
+ const MU=misUC(), GP={}; gapAll().forEach(g=>GP[g.c]=g);
+ _CL=ZD.map(z=>{const c=z.c, m=MU[c], e=ee[c], p3=e&&e.s>=20?e.p3/e.s*100:null;
+  const R=camps.map(cp=>{const h=m&&m.hist?m.hist[cp.k]:null, o={l:cp.l};
+   o.stp=h&&h.tg?h.st/h.tg*100:null; o.lq=cp.li>=0&&LQ[c]&&LQ[c][cp.li]?LQ[c][cp.li]:null;
+   const r=cp.zk?z['r'+cp.zk]:null, cc=cp.zk?z['c'+cp.zk]:null; o.zc=r>=5&&cc!=null?cc/r*100:null;
+   o.fail=[]; if(o.stp!=null&&o.stp>=2)o.fail.push('st'); if(o.lq&&o.lq!=='P')o.fail.push('lq'); if(o.zc!=null&&o.zc<90)o.fail.push('zc'); if(p3!=null&&p3<90)o.fail.push('p3');
+   o.ok=o.stp==null?null:o.fail.length===0; return o;}).reverse();
+  const S=R.filter(x=>x.ok!=null), n=S.length, last=S[n-1], prev=S[n-2]; let st='nd', imp=0, why=[];
+  if(n){ const wasClosed=S.slice(0,-1).some((x,i,a)=>i>0&&x.ok&&a[i-1].ok);
+   if(last.ok&&prev&&prev.ok)st='cl';
+   else if(!last.ok&&wasClosed)st='ro';
+   else{ if(prev&&last.stp!=null&&prev.stp!=null&&prev.stp-last.stp>=0.5)imp++;
+    const lqs=R.filter(x=>x.lq); if(lqs.length>=2&&lqRank(lqs[lqs.length-1].lq)>lqRank(lqs[lqs.length-2].lq))imp++;
+    const zs=R.filter(x=>x.zc!=null); if(zs.length>=2&&zs[zs.length-1].zc-zs[zs.length-2].zc>=5)imp++;
+    st=(last.ok||imp>=2)?'cg':'op';}
+   why=last.fail.slice();}
+  const g=GP[c]||{};
+  return {dv:z.dv,d:z.d,t:z.t,u:z.u,c,R,n,st,imp,why,p3,p3ov:p3!=null&&p3>110,last:last||null,tier:g.tier||'ND',gi:g.gi};});
+ return _CL;}
+function closeStats(inS){const U=closeAll().filter(inS), C={cl:0,cg:0,op:0,ro:0,nd:0}, F={st:0,lq:0,zc:0,p3:0}, G={};
+ U.forEach(r=>{C[r.st]++; if(r.st==='op'||r.st==='ro')r.why.forEach(k=>F[k]++); const g=G[r.d]=G[r.d]||{k:r.d,cl:0,cg:0,op:0,ro:0,nd:0,n:0}; g[r.st]++; g.n++;});
+ const wd=U.filter(r=>r.st!=='nd').length, camps=(MISM.camps||[]).slice().reverse();
+ const per=camps.map((l,i)=>{let a=0,b=0; U.forEach(r=>{const x=r.R[i]; if(x&&x.ok!=null){b++; if(x.ok)a++;}}); return {l,ok:a,n:b,p:b?a/b*100:null};});
+ const top=Object.entries(F).sort((a,b)=>b[1]-a[1])[0];
+ return {U,C,F,G:Object.values(G),wd,per,top,pc:wd?C.cl/wd*100:null};}
+Object.assign(KX,{ig1:['check',null,null],ig2:['trend',null,null],ig3:['alert',null,null],ig4:['tdown',null,null],ig5:['flag',null,null]});
+TABICO.closed='check';
+function igChain(inS,inE){const z=agg(ZD.filter(inS)), cK=ZD.some(r=>r.cM!=null)?'M':'A', D=DATA.filter(inS), dr=sum_(D,r=>r.rep), dl=sum_(D,r=>r.ll), v=aggV(VAL.filter(inS)), e=aggE(EPI.filter(inE));
+ return [['Found zero-dose children covered by the next round',z['p'+cK],`${fmt(z['c'+cK]||0)} of ${fmt(z['rc'+cK]||0)} reported in ${CAMP[cK]}`,'#0f766e'],
+  ['Recorded in IDIMS (linelist)',dr?dl/dr*100:null,`${fmt(dl)} of ${fmt(dr)} · ${CAMP.S} · ${new Set(D.map(r=>r.d)).size} districts`,'#6d28d9'],
+  ['Validated as vaccinated',v.p,`${fmt(v.vy)} of ${fmt(v.n)} children checked`,'#15803d'],
+  ['Reported covered by the EPI technician',v.pe,'of validated children','#1d4ed8'],
+  ['Found in the EPI permanent register',v.pr,'of validated children','#1d4ed8'],
+  ['Routine Penta-3 coverage in the same area',e.p_p3,`${EMETA.per||''} · EPI-MIS`,'#60a5fa']];}
+function igOutcomes(){const Y={}; WPVH.forEach(x=>{const y=String(x.on).slice(0,4); Y[y]=(Y[y]||0)+1;}); const ys=Object.keys(Y).sort().filter(y=>+y>=2019);
+ const E={}; Object.values(ESD).forEach(d=>Object.entries(d).forEach(([y,v])=>{const g=E[y]=E[y]||[0,0]; g[0]+=v[0]; g[1]+=v[1];}));
+ return {ys,Y,E,es:Object.keys(E).sort()};}
+function renderClosed(){ const S=closeStats(matchG), C=S.C, wd=S.wd||1, inE=gpInE(), mc=(MISM.camps||[]).slice().reverse();
+ el('igHint').innerHTML=`A UC's gap is <b>closed</b> when it meets every condition in <b>two campaigns in a row</b> (the campaigns it took part in): children still missed under 2% of target, its LQAS lot passed (where assessed), at least 90% of its zero-dose children covered by the next round (where reported) and routine Penta-3 at least 90%. <b>Closing</b> = met the rule in the latest campaign only, or improving on at least 2 indicators. <b>Reopened</b> = was closed and now fails. <b>Open</b> = everything else. Campaigns: ${mc.map(esc).join(' → ')}. Follows the filters.`;
+ el('ig1').textContent=fmt(C.cl); el('ig1s').textContent=`${pc(C.cl/wd*100)} of ${fmt(S.wd)} UCs with data`;
+ el('ig2').textContent=fmt(C.cg); el('ig2s').textContent=`${pc(C.cg/wd*100)} · met the rule once, or improving`;
+ el('ig3').textContent=fmt(C.op); el('ig3s').textContent=`${pc(C.op/wd*100)} of UCs with data`;
+ el('ig4').textContent=fmt(C.ro); el('ig4s').textContent='were closed, now failing again';
+ el('ig5').textContent=S.top&&S.top[1]?CL_FS[S.top[0]]:'–'; el('ig5s').textContent=S.top&&S.top[1]?`${fmt(S.top[1])} open or reopened UCs fail on ${CL_F[S.top[0]]}`:'';
+ const G=S.G.slice().sort((a,b)=>(b.op+b.ro)-(a.op+a.ro)).slice(0,25);
+ el('cig1').style.height=Math.max(340,G.length*22+120)+'px';
+ HC('cig1',{chart:{type:'bar'},title:{text:'Closure status of UCs by district'},subtitle:{text:'Districts with the most open UCs first'},xAxis:{categories:G.map(g=>g.k)},yAxis:{title:{text:'UCs (count)'},allowDecimals:false},plotOptions:{bar:{stacking:'normal'}},tooltip:{shared:true},
+  series:['ro','op','cg','cl'].map(k=>({name:CL_ST[k][0],color:CL_ST[k][1],data:G.map(g=>g[k]||0)}))});
+ el('capig1').textContent=G.length?`${G[0].k} has the most open or reopened UCs (${G[0].op+G[0].ro}).`:'';
+ const LC=(LQM.camps||[]).map((l,i)=>{const L=LQR.filter(x=>x.ci===i&&matchG(x)); return {l,key:CQK(l),p:L.length>=10?L.filter(x=>x.r==='P').length/L.length*100:null};});
+ const MS=misStats(matchG,'d'), stc=MS.camps.slice().reverse().map(c=>c.tg?c.st/c.tg*100:null);
+ const zz=agg(ZD.filter(matchG)), zc={[CQK(CAMP.A)]:zz.pA,[CQK(CAMP.M)]:zz.pM,[CQK(CAMP.S)]:zz.pS};
+ const cats=mc;
+ HC('cig2',{title:{text:'Is the gap closing? KP signals by campaign'},subtitle:{text:'Higher is better except "still missed"'},xAxis:{categories:cats},yAxis:[{title:{text:'% (UCs meeting rule, LQAS passed, ZD covered)'},max:100},{title:{text:'Still missed (% of target)'},opposite:true,min:0}],tooltip:{shared:true,valueDecimals:1,valueSuffix:'%'},
+  series:[{name:'UCs meeting the closure rule',type:'column',color:'#15803d',data:S.per.map(x=>x.p==null?null:+x.p.toFixed(1))},
+   {name:'LQAS lots passed',type:'line',color:'#c2410c',data:cats.map(l=>{const x=LC.find(c=>c.key===CQK(l));return x&&x.p!=null?+x.p.toFixed(1):null;})},
+   {name:'ZD covered by next round',type:'line',color:'#0f766e',data:cats.map(l=>{const v=zc[CQK(l)];return v==null?null:+v.toFixed(1);})},
+   {name:'Still missed after catch-up',type:'line',dashStyle:'ShortDash',color:'#7c2d12',yAxis:1,data:stc.map(v=>v==null?null:+v.toFixed(2))}]});
+ el('capig2').textContent=`UCs meeting the rule: ${S.per.map(x=>x.l+' '+(x.p==null?'–':pc(x.p))).join(' → ')}. Each campaign covers different UCs (SNIDs are partial), so compare with care.`;
+ el('igChain').innerHTML=igChain(matchG,inE).map(([l,p,s,c])=>`<div class="igrow"><span>${esc(l)}<small>${esc(s)}</small></span><div class="bar"><i style="width:${p==null?0:Math.min(100,p)}%;background:${c}"></i></div><b>${p==null?'–':pc(p)}</b></div>`).join('');
+ const O=igOutcomes();
+ HC('cig3',{title:{text:'Outcome checks: polio cases and sewage'},subtitle:{text:'KP · confirmed WPV1 cases by year of onset and % of sewage samples positive'},xAxis:{categories:O.ys},yAxis:[{title:{text:'Polio cases (count)'},allowDecimals:false},{title:{text:'Sewage samples positive (%)'},opposite:true,min:0,max:100}],tooltip:{shared:true},
+  series:[{name:'Confirmed polio cases',type:'column',color:'#b91c1c',data:O.ys.map(y=>O.Y[y]||0)},{name:'Sewage positive',type:'line',color:'#7c3aed',yAxis:1,data:O.ys.map(y=>O.E[y]&&O.E[y][0]?+(O.E[y][1]/O.E[y][0]*100).toFixed(1):null),tooltip:{valueSuffix:'%'}}]});
+ const y1=O.ys[O.ys.length-1], y0=O.ys[O.ys.length-2], e1=O.E[y1], e0=O.E[y0];
+ el('capig3').textContent=`${O.Y[y1]||0} cases in ${y1} (to date) vs ${O.Y[y0]||0} in ${y0}; sewage positive ${e1&&e1[0]?pc(e1[1]/e1[0]*100):'–'} in ${y1} vs ${e0&&e0[0]?pc(e0[1]/e0[0]*100):'–'} in ${y0} (as of ${WMETA.es_asof||''}). Zero-dose children are ${afpTot()?pc(AFP.length/afpTot()*100):'–'} of AFP cases in ${AFPY()}. Fewer cases and less virus in sewage are the real test that the gap is closing.`;
+ const fl={ro:r=>r.st==='ro',op:r=>r.st==='op',opp:r=>(r.st==='op'||r.st==='ro')&&(r.tier==='P1'||r.tier==='P2'),cg:r=>r.st==='cg',cl:r=>r.st==='cl',nd:r=>r.st==='nd',all:()=>true};
+ const PL=[['ro','Reopened'],['opp','Open priority UCs'],['op','Open'],['cg','Closing'],['cl','Closed'],['nd','No data'],['all','All']];
+ el('igPills').innerHTML=PL.map(([k,l])=>`<button data-f="${k}" class="${IGF===k?'on':''}">${l} (${fmt(S.U.filter(fl[k]).length)})</button>`).join('');
+ el('igPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{IGF=b.dataset.f;renderClosed();});
+ el('capIGm').innerHTML=`Squares = the UC met (green) or missed (red) the rule in each campaign; dashed = not in that campaign. ${S.top&&S.top[1]?`<b>${fmt(S.top[1])}</b> open or reopened UCs fail on ${CL_F[S.top[0]]}; then `+Object.entries(S.F).sort((a,b)=>b[1]-a[1]).slice(1).map(([k,v])=>`${CL_F[k]} ${fmt(v)}`).join(' · ')+'.':''}`;
+ const rows=S.U.filter(fl[IGF]), dots=r=>`<span class="igdots" title="${esc(r.R.map(x=>x.l+': '+(x.ok==null?'not in campaign':x.ok?'met':'missed ('+x.fail.map(k=>CL_FS[k]).join(', ')+')')).join(' · '))}">${r.R.map(x=>`<i class="${x.ok==null?'na':x.ok?'ok':'no'}"></i>`).join('')}</span>`;
+ drawTable('tIGC',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC',f:x=>esc(x.u)},
+  {k:'st',l:'Status',sv:x=>['ro','op','cg','cl','nd'].indexOf(x.st),f:x=>`<span class="igs" style="background:${CL_ST[x.st][1]}">${CL_ST[x.st][0]}</span>`},
+  {k:'R',l:mc.map(l=>esc(l.split(' ')[0])).join(' · '),ns:1,f:dots},
+  {k:'sm',l:'Still missed',ns:1,f:x=>x.R.map(r=>r.stp==null?'–':pc(r.stp)).join(' → ')},
+  {k:'lq',l:'LQAS',ns:1,f:x=>x.R.map(r=>r.lq?lqR[r.lq][0]:'–').join(' → ')},
+  {k:'zc',l:'ZD covered',ns:1,f:x=>x.R.filter(r=>r.zc!=null).map(r=>pc(r.zc)).join(' → ')||'–'},
+  {k:'p3',l:'Penta-3',n:1,sv:x=>x.p3??-1,f:x=>x.p3==null?'–':`<span class="rg ${x.p3>=90?'g':'r'}">${pc(x.p3)}</span>${x.p3ov?' <small>check target</small>':''}`},
+  {k:'why',l:'Keeping it open',ns:1,f:x=>x.st==='cl'?'–':esc(x.why.map(k=>CL_F[k]).join(' · '))},
+  {k:'tier',l:'Gap priority',sv:x=>['P1','P2','P3','LO','ND'].indexOf(x.tier),f:x=>`<span class="gptag ${GP_T[x.tier][1]}">${GP_T[x.tier][0]}</span>`}],rows,'tier',1);
+ el('cntIG').textContent=fmt(rows.length)+' UCs';
+ el('capIG').textContent=`Penta-3 is the year-to-date EPI-MIS figure (${EMETA.per||''}), so it is the same in every campaign and a UC below 90% cannot close until routine coverage improves. UCs over 110% Penta-3 pass but their target should be checked. SNID Sept zero-dose coverage is not reported yet, so the latest campaign is judged without it. "Closed" is a programme measure, not measured immunity.`;
+ el('btnIGcsv').onclick=()=>csvDownload('Immunity_gap_closure_'+_slug()+'.csv',['District','Division','Tehsil','UC','UC code','Status',...mc.flatMap(l=>[l+' met rule',l+' still missed %',l+' LQAS',l+' ZD covered %']),'Penta-3 %','Keeping it open','Gap priority'],
+  S.U.map(r=>[r.d,r.dv,r.t,r.u,r.c,CL_ST[r.st][0],...r.R.flatMap(x=>[x.ok==null?'':x.ok?'Yes':'No',rnd(x.stp,2),x.lq?lqR[x.lq]:'',rnd(x.zc)]),rnd(r.p3),r.why.map(k=>CL_F[k]).join('; '),GP_T[r.tier][0]]));
+}
+function closeBadge(){const b=el('bIGC'); if(!b)return; try{const S=closeStats(matchG); b.textContent=pc(S.pc)+' closed';}catch(e){}}
+{const _rd=render; render=function(){_rd(); closeBadge();};}
+{const _q=renderHomeQ; renderHomeQ=function(){_q(); try{const S=closeStats(()=>true), wd=S.wd||1, C=S.C;
+ const bar=`<div class="qbar">${['cl','cg','op','ro'].map(k=>`<i style="width:${C[k]/wd*100}%;background:${CL_ST[k][1]}" title="${CL_ST[k][0]}: ${fmt(C[k])}"></i>`).join('')}</div><div class="qleg">${['cl','cg','op','ro'].map(k=>`<span><i style="background:${CL_ST[k][1]}"></i>${CL_ST[k][0]} ${fmt(C[k])}</span>`).join('')}</div>`;
+ const old=el('hQ3b').innerHTML; el('hQ3b').innerHTML=`<b>${pc(C.cl/wd*100)}</b><span>of UCs have closed the gap (${fmt(C.cl)} of ${fmt(S.wd)}) · ${fmt(C.ro)} reopened</span>`;
+ el('hQ3f').insertAdjacentHTML('afterbegin',bar+`<div>KP signals: ${old.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}</div>`+(S.top&&S.top[1]?`<div>Main thing keeping UCs open: <b>${esc(CL_F[S.top[0]])}</b> (${fmt(S.top[1])} UCs)</div>`:''));}catch(e){console.warn('closed home',e);}};}
+Object.assign(HMNEW,{closed(){const S=closeStats(()=>true), G={}; S.G.forEach(g=>{g.wd=g.n-g.nd; g.p=g.wd?g.cl/g.wd*100:null; G[g.k]=g;});
+ const bd=x=>!x||x.p==null?'n':x.p>=50?'g':x.p>=20?'a':'r';
+ hmGen({go:'closed',cols:HMG,val:d=>G[d],band:bd,tip:(d,x)=>x?`<span class="v" style="color:#86efac">${pc(x.p)} of UCs closed</span><br>${x.cl} closed · ${x.cg} closing · ${x.op} open · ${x.ro} reopened`:'No data',
+  title:`Has the immunity gap closed?<small>Share of UCs meeting the closure rule in two campaigns in a row · dots = reopened UCs</small>`,legend:[['g','50%+ of UCs closed'],['a','20–50%'],['r','Under 20%'],['n','No data']],listTitle:'Fewest UCs closed',
+  list:S.G.filter(g=>g.p!=null).sort((a,b)=>a.p-b.p).map(g=>[g.k,pc(g.p),bd(g)])});
+ const svg=el('hMap'), NS='http://www.w3.org/2000/svg', gg=document.createElementNS(NS,'g'); gg.id='hMk'; svg.appendChild(gg);
+ S.U.filter(r=>r.st==='ro'&&UCPT[r.c]).forEach(r=>{const pt=UCPT[r.c], c=document.createElementNS(NS,'circle'); c.setAttribute('cx',pt[0]); c.setAttribute('cy',pt[1]); c.setAttribute('r',2.6); c.setAttribute('fill','#450a0a'); c.setAttribute('class','rdot'); gg.appendChild(c);});}});
+
+// ---------- Immunity gap brief (leadership PPTX) ----------
+function pptKit(pptx,col,foot){const GRY='6B7280',TXT='1F2937',F='Segoe UI'; let pg=0;
+ const K={GRY,TXT,F,
+  base(t,sub){const s=pptx.addSlide(); pg++; s.background={color:'FFFFFF'}; s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.12,fill:{color:col},line:{color:col}});
+   s.addText(t,{x:0.5,y:0.28,w:12.3,h:0.6,fontFace:F,fontSize:24,bold:true,color:col}); if(sub)s.addText(sub,{x:0.5,y:0.86,w:12.3,h:0.36,fontFace:F,fontSize:12,color:GRY});
+   s.addShape(pptx.ShapeType.line,{x:0.5,y:6.98,w:12.33,h:0,line:{color:'E5E7EB',width:0.75}}); s.addText(foot,{x:0.5,y:7.02,w:10.5,h:0.3,fontFace:F,fontSize:9,color:GRY});
+   s.addText(String(pg),{x:12.23,y:7.02,w:0.6,h:0.3,fontFace:F,fontSize:9,color:GRY,align:'right'}); return s;},
+  title(){pg++; return pptx.addSlide();},
+  kpis(s,it,y){const n=it.length,gp=0.2,w=(12.33-gp*(n-1))/n; it.forEach((k,i)=>{const x=0.5+i*(w+gp), c=k.c||col; s.addShape(pptx.ShapeType.rect,{x,y,w,h:1.3,fill:{color:'F9FAFB'},line:{color:'E5E7EB',width:0.75}}); s.addShape(pptx.ShapeType.rect,{x,y,w,h:0.07,fill:{color:c},line:{color:c}});
+   s.addText(k.l.toUpperCase(),{x:x+0.15,y:y+0.14,w:w-0.3,h:0.3,fontFace:F,fontSize:9,bold:true,color:GRY}); s.addText(k.v,{x:x+0.15,y:y+0.42,w:w-0.3,h:0.5,fontFace:F,fontSize:22,bold:true,color:k.vc||TXT}); if(k.s)s.addText(k.s,{x:x+0.15,y:y+0.92,w:w-0.3,h:0.32,fontFace:F,fontSize:9,color:GRY});});},
+  note(s,t,o){s.addText(t,{x:o.x,y:o.y,w:o.w,h:o.h||0.4,fontFace:F,fontSize:o.fs||10,color:o.c||GRY,italic:o.i!==false,valign:'top'});},
+  bullets(s,a,o){s.addText(a.map(t=>({text:t,options:{bullet:{indent:16},breakLine:true}})),{x:o.x,y:o.y,w:o.w,h:o.h,fontFace:F,fontSize:o.fs||13,color:TXT,valign:'top',paraSpaceAfter:7});},
+  bars(s,labels,series,o){if(!labels.length){K.note(s,'No data.',{x:o.x,y:o.y+1,w:o.w,fs:13});return;} const fs=labels.length>16?8:10;
+   const op={x:o.x,y:o.y,w:o.w,h:o.h,barDir:o.dir||'bar',barGrouping:o.stack?'stacked':'clustered',chartColors:o.cols||[col],showTitle:true,title:o.title,titleFontSize:12,titleColor:TXT,titleFontFace:F,showValue:!o.stack,dataLabelFontSize:fs,dataLabelColor:TXT,dataLabelFormatCode:o.fmt||'0',dataLabelPosition:'outEnd',
+    catAxisLabelFontSize:fs,catAxisLabelFontFace:F,catAxisLabelColor:TXT,catAxisOrientation:o.dir==='col'?'minMax':'maxMin',valAxisLabelFontSize:9,valAxisLabelColor:GRY,valAxisMinVal:0,valGridLine:{color:'E5E7EB',size:0.5},showLegend:series.length>1,legendPos:'b',legendFontSize:9,barGapWidthPct:45};
+   if(o.max!=null)op.valAxisMaxVal=o.max; if(o.vt){op.showValAxisTitle=true;op.valAxisTitle=o.vt;op.valAxisTitleFontSize=9;op.valAxisTitleColor=GRY;}
+   s.addChart(pptx.ChartType.bar,series.map(x=>({name:x[0],labels,values:x[1]})),op);},
+  table(s,head,rows,o){if(!rows.length){K.note(s,o.empty||'No data.',{x:o.x,y:o.y,w:o.w,fs:12});return;} const fs=o.fs||9;
+   const hdr=head.map((h,j)=>({text:h,options:{bold:true,color:'FFFFFF',fill:{color:o.col||col},fontSize:fs,align:j?'center':'left',valign:'middle'}}));
+   const body=rows.map((r,i)=>r.map((c,j)=>{const cc=(c&&typeof c==='object')?c:{t:c}; return {text:String(cc.t==null?'–':cc.t),options:{fontSize:fs,bold:!!cc.b,color:cc.c?cc.c[1]:TXT,fill:{color:cc.c?cc.c[0]:(i%2?'FFFFFF':'F9FAFB')},align:j&&!o.left?'center':'left',valign:'middle'}};}));
+   s.addTable([hdr,...body],{x:o.x,y:o.y,w:o.w,colW:o.colW,fontFace:F,rowH:[0.4,...rows.map(()=>o.rh||0.28)],border:{type:'solid',pt:0.5,color:'E5E7EB'},autoPage:false,margin:0.04});}};
+ return K;}
+function igbCollect(scope){const inS=scope==='KP'?()=>true:(r=>r.dv===scope), inD=scope==='KP'?()=>true:(d=>D2DV[d]===scope);
+ const G=gapStats(inS,inS), W=whyDist(0), WR=W.R.filter(r=>inD(r.d)), WK=whyTot(W.X.R.filter(r=>inD(r.d))), CS=closeStats(inS), X=cqSum(cqDist(0).R.filter(r=>inD(r.d)));
+ return {scope,scopeL:scope==='KP'?'Khyber Pakhtunkhwa':scope+' division',inS,inD,G,W,WR,WK,CS,X,chain:igChain(inS,inS),O:igOutcomes(),wpv:WPV.filter(w=>inD(w.d)),mc:(MISM.camps||[])[0]||'',
+  date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})};}
+function igbActions(B){const A=[], G=B.G, nm=a=>a.slice(0,4).join(', ')+(a.length>4?' and '+(a.length-4)+' more':'');
+ const p1=G.G.filter(g=>g.P1).sort((a,b)=>b.P1-a.P1);
+ if(p1.length)A.push(`Approve a focused catch-up plan for the ${fmt(G.T.P1.length)} Priority 1 UCs (${nm(p1.map(g=>g.k+' '+g.P1))}): big immunity gap where polio risk is highest.`);
+ const so=k=>B.WR.filter(r=>r.so===k).map(r=>r.d);
+ if(so('acc').length)A.push(`Microplan revision and house listing in ${nm(so('acc'))}: houses not visited are the stand-out reason children are missed.`);
+ if(so('dem').length)A.push(`Community engagement and refusal follow-up in ${nm(so('dem'))}: refusals stand out there.`);
+ if(so('team').length)A.push(`Retrain and supervise teams in ${nm(so('team'))}: team misses stand out there.`);
+ const mob=B.WK.B?B.WK.B.mob:null; if(mob!=null&&mob>=40)A.push(`Revisit plan for absent children across ${B.scope==='KP'?'KP':B.scopeL}: ${Math.round(mob)}% of missed children were away (evening/weekend revisits, transit and migrant tracking).`);
+ const db=B.WR.filter(r=>r.dbad).map(r=>r.d); if(db.length)A.push(`Verify the data in ${nm(db)} before acting: data-quality problems or sources that disagree.`);
+ if(B.CS.top&&B.CS.top[1])A.push(`Main thing keeping UCs open: ${CL_F[B.CS.top[0]]} (${fmt(B.CS.top[1])} UCs). ${B.CS.top[0]==='p3'?'Ask EPI for a routine catch-up and defaulter tracing plan in these UCs.':B.CS.top[0]==='st'?'Strengthen mop-up so children still missed fall under 2% of target.':''}`);
+ if(B.CS.C.ro)A.push(`Investigate the ${fmt(B.CS.C.ro)} reopened UCs: they had closed the gap and slipped back.`);
+ return A.slice(0,8);}
+async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Immunity gap brief: '+B.scopeL; pptx.company='Zero Dose Dashboard';
+ const BR='7C2D12', K=pptKit(pptx,BR,'Immunity gap brief · '+B.scopeL+' · '+B.date), {GRY,TXT,F}=K, G=B.G, CS=B.CS, C=CS.C, wd=CS.wd||1, RED='DC2626', GRN='15803D', AMB='B45309';
+ const p1=v=>v==null?'–':(Math.round(v*10)/10).toFixed(1)+'%', n0=v=>v==null?'–':fmt(Math.round(v)), cut=(t,n)=>{t=String(t==null?'':t);return t.length>n?t.slice(0,n-1)+'…':t;};
+ // 1 title
+ {const s=K.title(); s.background={color:'431407'};
+  s.addText('IMMUNITY GAP BRIEF',{x:0.8,y:1.2,w:11.7,h:0.5,fontFace:F,fontSize:16,bold:true,color:'FDBA74',charSpacing:4});
+  s.addText(B.scopeL,{x:0.8,y:1.75,w:11.7,h:0.9,fontFace:F,fontSize:40,bold:true,color:'FFFFFF'});
+  s.addText('Three questions for leadership',{x:0.8,y:2.7,w:11.7,h:0.5,fontFace:F,fontSize:20,color:'FFEDD5'});
+  [['1  Where are the susceptible children?','B45309'],['2  Why are they being missed?','C2410C'],['3  Has the programme closed the gap?','15803D']].forEach(([t,c],i)=>{
+   s.addShape(pptx.ShapeType.rect,{x:0.8,y:3.5+i*0.85,w:8.2,h:0.65,fill:{color:c},line:{color:c}}); s.addText(t,{x:1.0,y:3.5+i*0.85,w:8,h:0.65,fontFace:F,fontSize:18,bold:true,color:'FFFFFF',valign:'middle'});});
+  s.addText('Prepared '+B.date+' · Sources: EOC portal (campaigns, ICM, LQAS, surveillance), SMC Tracker / IDIMS, KP EPI-MIS',{x:0.8,y:6.55,w:11.7,h:0.4,fontFace:F,fontSize:10,color:'FED7AA'});}
+ // 2 three answers
+ {const s=K.base('The three answers',B.mc+' and earlier campaigns'), WK=B.WK, so={}; B.WR.forEach(r=>{if(r.so&&r.so!=='mob')so[r.so]=(so[r.so]||0)+1;});
+  const cols=[['WHERE','B45309',p1(G.stp).replace('–','–')+' still missed',[`${n0(G.st)} children still missed after ${B.mc}`,`${fmt(G.T.P1.length)} Priority 1 UCs (big gap + polio risk), ${fmt(G.T.P2.length)} Priority 2`,`${n0(G.zu)} zero-dose children not yet covered`,`${n0(G.nr)} never got Penta-1 · ${n0(G.dd)} did not complete Penta-3`]],
+   ['WHY','C2410C',WK.B?Math.round(WK.B[WK.B.top])+'% '+WCK[WK.B.top][1].split(' (')[0].toLowerCase():'–',[WK.B?`Away / migrant / newborn ${Math.round(WK.B.mob)}% · team ${Math.round(WK.B.team)}% · refusals ${Math.round(WK.B.dem)}% · access ${Math.round(WK.B.acc)}%`:'No data',
+     `Stand-out causes: ${Object.entries(so).map(([k,v])=>WCK[k][1].split(' (')[0].toLowerCase()+' in '+v).join(', ')||'none'} districts`,
+     WK.N.lq&&WK.N.icm?`LQAS finds ${Math.round(WK.N.lq.acc+WK.N.lq.team)}% team-related misses vs ${Math.round(WK.N.icm.acc+WK.N.icm.team)}% by ICM monitors`:'',`${B.WR.filter(r=>r.dbad).length} districts with a data problem to verify first`].filter(Boolean)],
+   ['CLOSED?','15803D',p1(C.cl/wd*100)+' of UCs closed',[`${fmt(C.cl)} closed · ${fmt(C.cg)} closing · ${fmt(C.op)} open · ${fmt(C.ro)} reopened`,CS.top&&CS.top[1]?`Main blocker: ${CL_F[CS.top[0]]} (${fmt(CS.top[1])} UCs)`:'',`UCs meeting the rule: ${CS.per.map(x=>x.l.split(' ')[0]+' '+(x.p==null?'–':Math.round(x.p)+'%')).join(' → ')}`,`${B.wpv.length} confirmed polio case${B.wpv.length===1?'':'s'} in 2026`].filter(Boolean)]];
+  cols.forEach(([h,c,big,L],i)=>{const x=0.5+i*4.18; s.addShape(pptx.ShapeType.rect,{x,y:1.35,w:3.98,h:5.45,fill:{color:'FFFFFF'},line:{color:'E5E7EB',width:0.75}}); s.addShape(pptx.ShapeType.rect,{x,y:1.35,w:3.98,h:0.1,fill:{color:c},line:{color:c}});
+   s.addText(h,{x:x+0.2,y:1.55,w:3.6,h:0.35,fontFace:F,fontSize:12,bold:true,color:c,charSpacing:2}); s.addText(big,{x:x+0.2,y:1.95,w:3.6,h:0.75,fontFace:F,fontSize:22,bold:true,color:TXT,valign:'top'});
+   K.bullets(s,L,{x:x+0.15,y:2.85,w:3.7,h:3.8,fs:12});});}
+ // 3 where
+ {const s=K.base('① Where are the susceptible children?','Five layers, each from a different source · a child can be in more than one layer');
+  K.kpis(s,[{l:'Still missed',v:n0(G.st),s:p1(G.stp)+' of target · '+B.mc,c:BR},{l:'ZD not covered',v:n0(G.zu),s:'reported, not covered next round',c:'0F766E'},{l:'Never Penta-1',v:n0(G.nr),s:'routine, '+(EMETA.per||''),c:'1D4ED8'},{l:'No Penta-3',v:n0(G.dd),s:'started, not completed',c:'1D4ED8'},{l:'Still refusing',v:n0(G.rf),s:'after catch-up',c:RED}],1.35);
+  const D=G.G.slice().sort((a,b)=>(b.st+b.zu)-(a.st+a.zu)).slice(0,10);
+  K.table(s,['District','Still missed','ZD not covered','Never Penta-1','No Penta-3','Refusing','Priority 1 UCs','Priority 2 UCs'],D.map(g=>[{t:g.k,b:true},fmt(g.st),fmt(g.zu),fmt(g.nr||0),fmt(g.dd||0),fmt(g.rf),{t:g.P1,b:true,c:g.P1?['FEE2E2','991B1B']:null},g.P2]),{x:0.5,y:2.9,w:12.3,colW:[2.4,1.4,1.5,1.5,1.4,1.3,1.4,1.4],rh:0.33,fs:10});
+  K.note(s,'Districts with the most children still missed after the campaign plus zero-dose children not yet covered. Routine layers are EPI-MIS year to date; UCs over 110% of target are not counted.',{x:0.5,y:6.55,w:12.3,h:0.35,fs:9});}
+ // 4 priority UCs
+ {const s=K.base('① Priority 1 UCs: biggest gap where polio risk is highest','Gap index 50%+ and on the polio watch list or in a watch district');
+  const U=G.T.P1.slice().sort((a,b)=>b.gi-a.gi||b.cg-a.cg).slice(0,13);
+  K.table(s,['UC','District','Still missed','ZD not covered','Never Penta-1','Penta dropout','Refusing','Gap index','Why'],U.map(r=>[{t:cut(r.u,22),b:true},r.d,r.st==null?'–':fmt(r.st),r.zu==null?'–':fmt(r.zu),r.nr==null?'–':(r.ov?'over 110%':fmt(r.nr)),r.ddp==null?'–':p1(r.ddp),r.rf==null?'–':fmt(r.rf),{t:Math.round(r.gi)+'%',b:true},cut(r.why.filter(w=>!/watch/.test(w)).join(' · '),58)]),
+   {x:0.5,y:1.3,w:12.3,colW:[1.9,1.4,1.05,1.1,1.1,1.05,0.95,0.9,2.85],rh:0.36,fs:9,empty:'No Priority 1 UC in this area.'});
+  K.note(s,`${fmt(G.T.P1.length)} Priority 1 UCs in total; the full list with CSV download is on the dashboard page "Where are the susceptible children?".`,{x:0.5,y:6.6,w:12.3,h:0.3,fs:9});}
+ // 5 map
+ {const s=K.base('① Where: priority UCs by district','Districts shaded by number of Priority 1 UCs'); const fills={}, GG={}; G.G.forEach(g=>GG[g.k]=g);
+  Object.keys(LBLP).forEach(d=>{const g=GG[d]; fills[d]=!g?'#eef2f7':g.P1>=10?'#7f1d1d':g.P1>=3?'#dc2626':g.P1>=1?'#f87171':g.P2?'#fecaca':'#eef2f7';});
+  const marks=G.U.filter(r=>(r.tier==='P1')&&UCPT[r.c]).map(r=>[UCPT[r.c][0],UCPT[r.c][1],2.2,'#1f2937']);
+  try{const url=await mapPng({fills,marks,noLegend:true,labels:true}); s.addImage({data:url.replace(/^data:/,''),x:0.5,y:1.25,h:5.65,w:5.65*((Math.round(1290*418/588)+60)/1350)});}catch(e){K.note(s,'Map could not be drawn in this browser.',{x:0.5,y:3,w:6});}
+  let y=1.4; [['#7f1d1d','10 or more Priority 1 UCs'],['#dc2626','3–9 Priority 1 UCs'],['#f87171','1–2 Priority 1 UCs'],['#fecaca','Priority 2 UCs only'],['#eef2f7','No priority UC'],['#1f2937','Dot = Priority 1 UC']].forEach(([c,l])=>{s.addShape(pptx.ShapeType.rect,{x:6.5,y,w:0.3,h:0.3,fill:{color:c.slice(1)},line:{color:'CBD5E1',width:0.5}}); s.addText(l,{x:6.95,y:y-0.03,w:5.5,h:0.36,fontFace:F,fontSize:12,color:TXT}); y+=0.48;});
+  const top=G.G.filter(g=>g.P1).sort((a,b)=>b.P1-a.P1).slice(0,8); K.bullets(s,top.map(g=>`${g.k}: ${g.P1} Priority 1, ${g.P2} Priority 2 UCs`),{x:6.5,y:4.4,w:6.3,h:2.4,fs:12});}
+ // 6 why
+ {const s=K.base('② Why are they being missed?','Reasons grouped into four root causes from three sources · '+(B.W.X.C?B.W.X.C.l:'')), N=B.WK.N;
+  K.bars(s,WC.map(x=>x[1].split(' (')[0]),WSRC.map(([k,l])=>[l.replace(' after the campaign','').replace('Monitors during the campaign (ICM)','ICM monitors'),WC.map(([c])=>N[k]?Math.round(N[k][c]):0)]),{x:0.5,y:1.3,w:6.3,h:5.5,dir:'col',title:'% of missed children by root cause',cols:['0F766E','C2410C','94A3B8'],max:100,vt:'%'});
+  const R=B.WR.filter(r=>r.so&&r.so!=='mob').sort((a,b)=>(b.st||0)-(a.st||0)).slice(0,10);
+  K.table(s,['District','Stand-out cause','Fix'],R.map(r=>[{t:r.d,b:true},{t:WCK[r.so][1].split(' (')[0],c:[WCK[r.so][2].slice(1),'FFFFFF'],b:true},cut(WFIXS[r.so]+(r.dbad?'; verify data':''),62)]),{x:7.0,y:1.3,w:5.8,colW:[1.5,1.5,2.8],rh:0.42,fs:9,left:true,empty:'No district stands out from the KP mix: mostly children away.'});
+  K.note(s,'Stand-out cause = at least 5 points above the KP mix. Elsewhere children away dominate: plan revisits and migrant tracking.',{x:7.0,y:6.55,w:5.8,h:0.35,fs:9});}
+ // 7 closed status
+ {const s=K.base('③ Has the programme closed the gap?','Closed = meets every condition in two campaigns in a row');
+  K.kpis(s,[{l:'Closed',v:n0(C.cl),s:p1(C.cl/wd*100)+' of UCs with data',c:GRN,vc:GRN},{l:'Closing',v:n0(C.cg),s:'met once, or improving',c:'84CC16'},{l:'Open',v:n0(C.op),c:RED,vc:RED},{l:'Reopened',v:n0(C.ro),s:'were closed, now failing',c:'7F1D1D'},{l:'Main blocker',v:CS.top&&CS.top[1]?CL_FS[CS.top[0]]:'–',s:CS.top&&CS.top[1]?fmt(CS.top[1])+' UCs':'',c:AMB}],1.35);
+  const D=CS.G.slice().sort((a,b)=>(b.op+b.ro)-(a.op+a.ro)).slice(0,14);
+  K.bars(s,D.map(g=>g.k),['ro','op','cg','cl'].map(k=>[CL_ST[k][0],D.map(g=>g[k]||0)]),{x:0.5,y:2.85,w:7.4,h:4.05,stack:true,title:'UC status by district (most open first)',cols:['7F1D1D','DC2626','84CC16','15803D'],vt:'UCs'});
+  const F=Object.entries(CS.F).sort((a,b)=>b[1]-a[1]); K.bullets(s,['What keeps open and reopened UCs from closing:',...F.map(([k,v])=>`${CL_F[k]}: ${fmt(v)} UCs`)],{x:8.2,y:2.95,w:4.6,h:3.9,fs:12});}
+ // 8 trend + chain
+ {const s=K.base('③ Is it closing over time?','Signals by campaign and the follow-through of zero-dose children');
+  K.table(s,['Campaign','UCs meeting the rule','UCs assessed'],CS.per.map(x=>[{t:x.l,b:true},{t:p1(x.p),b:true},fmt(x.n)]),{x:0.5,y:1.35,w:5.6,colW:[2.2,1.9,1.5],rh:0.36,fs:10});
+  K.note(s,'Each campaign covers different UCs (SNIDs are partial), so compare with care.',{x:0.5,y:2.95,w:5.6,h:0.3,fs:9});
+  K.bars(s,B.chain.map(c=>cut(c[0],38)),[['%',B.chain.map(c=>c[1]==null?0:Math.round(c[1]*10)/10)]],{x:6.4,y:1.3,w:6.4,h:5.5,title:'Follow-through of zero-dose children (%)',cols:['0F766E'],max:100,fmt:'0.0',vt:'%'});
+  const X=B.X; K.bullets(s,[`Still missed after catch-up (latest): ${p1(X.stp)} of target`,`LQAS lots passed: ${p1(X.lqp)}`,`ICM recall coverage: ${p1(X.rec)}`],{x:0.5,y:3.4,w:5.6,h:2,fs:12});
+  K.note(s,'Each follow-through step has its own campaign and denominator; it is a chain of checks, not one group of children.',{x:6.4,y:6.62,w:6.4,h:0.3,fs:8});}
+ // 9 outcomes
+ {const s=K.base('③ Outcome checks','Fewer polio cases and less virus in sewage are the real test'); const O=B.O;
+  K.bars(s,O.ys,[['Confirmed polio cases (KP)',O.ys.map(y=>O.Y[y]||0)]],{x:0.5,y:1.3,w:6.2,h:5.5,dir:'col',title:'Confirmed WPV1 cases by year (KP)',cols:['B91C1C'],vt:'Cases'});
+  K.table(s,['Year','Sewage samples','Positive','% positive'],O.es.map(y=>[{t:y,b:true},fmt(O.E[y][0]),fmt(O.E[y][1]),p1(O.E[y][0]?O.E[y][1]/O.E[y][0]*100:null)]),{x:7.0,y:1.35,w:5.8,colW:[1.2,1.6,1.4,1.6],rh:0.36,fs:11});
+  K.bullets(s,[`${B.wpv.length} confirmed polio case${B.wpv.length===1?'':'s'} in 2026 in this area${B.wpv.length?' ('+[...new Set(B.wpv.map(w=>w.d))].join(', ')+')':''}`,`Zero-dose children are ${afpTot()?p1(AFP.length/afpTot()*100):'–'} of AFP cases in ${AFPY()} (KP)`,`Sewage results as of ${WMETA.es_asof||'–'} (KP districts with sites)`],{x:7.0,y:3.3,w:5.8,h:3,fs:12});}
+ // 10 decisions
+ {const s=K.base('Decisions requested','Based on the three questions'); const A=igbActions(B); K.bullets(s,A.length?A:['No major gap flagged.'],{x:0.5,y:1.4,w:12.3,h:5.4,fs:A.length>6?13:15});}
+ // 11 method
+ {const s=K.base('Method and limits','How the answers are calculated');
+  K.bullets(s,['Where: per UC, five layers (still missed after the campaign, zero-dose not covered, never Penta-1, Penta-1→3 dropout, still refusing) scored red/amber/green; gap index = points ÷ points possible. Priority 1 = gap index 50%+ with polio risk (watch list UC or watch district).',
+   'Why: reasons from ICM monitors (40%), LQAS (40%) and admin data after catch-up (20%) grouped into access, team, demand and mobility; the stand-out cause (5+ points above KP) sets the fix. Data problems are flagged separately.',
+   'Closed: every condition met in two campaigns in a row: still missed under 2% of target, LQAS passed (where assessed), 90%+ zero-dose covered (where reported), Penta-3 90%+. Closing = met once or improving on 2+ indicators. Reopened = was closed, now fails.',
+   'Limits: UC-level estimates, not named children (no shared child ID across IDIMS, EOC and EPI-MIS). Routine targets are unreliable in some UCs (over 110%). Only 3 campaigns of 2026 history; SNIDs cover part of KP. "Closed" is a programme measure, not measured population immunity.'],{x:0.5,y:1.35,w:12.3,h:5.5,fs:13});}
+ return pptx;}
+async function runIGB(scope,btn){const st=el('igbStatus'); btn.disabled=true; st.textContent='Preparing the immunity gap brief…';
+ try{await loadPptx(); const B=igbCollect(scope), pptx=await renderIGB(window.PptxGenJS,B);
+  const fn=('Immunity_Gap_Brief_'+(scope==='KP'?'KP':scope)).replace(/[^A-Za-z0-9]+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.pptx';
+  await saveDeck(pptx,fn); st.textContent='Downloaded '+fn; toast('Immunity gap brief ready');}
+ catch(e){console.error(e); st.textContent=(e&&e.message==='load')?'Could not load the presentation tool. Check your internet connection and try again.':'Could not create the brief: '+((e&&e.message)||e); toast('Brief failed');}
+ finally{btn.disabled=false;}}
+{const _rp=renderPresent; renderPresent=function(){_rp(); const s=el('igbS'); if(s&&!s.options.length){s.innerHTML='<option value="KP">All KP</option>'+[...new Set(Object.values(D2DV))].sort().map(v=>`<option value="${esc(v)}">${esc(v)} division</option>`).join(''); el('btnIGB').onclick=()=>runIGB(s.value,el('btnIGB'));}};}
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
