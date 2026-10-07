@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:17</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:31</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -529,6 +529,19 @@ body.home .hdr, body.home .content .topbar{display:none}
 #tGap td small{color:var(--color-text-muted)}
 @media(max-width:900px){.gpbox{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+
+<style>
+/* ================= (13) Immunity gap: WHY ================= */
+.tab[data-tab="why"],#p-why{--tc:#b45309}
+.wbar{display:flex;height:11px;width:160px;border-radius:5px;overflow:hidden;background:#f1f5f9}.wbar i{display:block;height:100%}
+.wtag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;color:#fff;white-space:nowrap}
+.wsig{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;margin:1px 3px 2px 0;background:#f1f5f9;color:#334155}
+.wsig.data{background:#ede9fe;color:#5b21b6}
+.wfx{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:6px}
+.wfx .pcbox .pl{margin-top:4px}
+.wfx .pcbox .fx{font-size:12px;line-height:1.45;color:var(--color-text);margin-top:6px}
+@media(max-width:1200px){.wfx{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -542,6 +555,7 @@ body.home .hdr, body.home .content .topbar{display:none}
   <div class="nsec">Programme areas</div>
   <div class="ngrp hg"><div class="nhd">Immunity gap</div>
    <button class="tab" data-tab="gap"><span class="tl">Where are the susceptible children?</span><span class="badge" id="bGP">–</span></button>
+   <button class="tab" data-tab="why"><span class="tl">Why are they being missed?</span><span class="badge" id="bWY">–</span></button>
   </div>
   <div class="ngrp hc"><div class="nhd">Campaigns</div>
    <button class="tab" data-tab="hcamp"><span class="tl">Campaign overview</span><span class="badge" id="bHC">–</span></button>
@@ -611,7 +625,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 14:17</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 14:31</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -624,7 +638,7 @@ body.home .hdr, body.home .content .topbar{display:none}
  <div class="hsec"><h2>Immunity gap: three questions for leadership</h2><span>All of KP · click a question for the evidence</span></div>
  <div class="hq3">
   <div class="hq" style="--qc:#7c2d12" data-go="gap" role="button" tabindex="0"><span class="qn">Question 1 · Where</span><h3>Where are the susceptible children?</h3><div class="qb" id="hQ1b"></div><div class="qf" id="hQ1f"></div><div class="halarm" id="hQ1a"></div><span class="qgo">See the UCs →</span></div>
-  <div class="hq" style="--qc:#b45309" data-go="cicm" role="button" tabindex="0"><span class="qn">Question 2 · Why</span><h3>Why are they being missed?</h3><div class="qb" id="hQ2b"></div><div class="qf" id="hQ2f"></div><span class="qsoon">Full root-cause analysis with recommended fixes: next phase</span><span class="qgo">See the campaign evidence →</span></div>
+  <div class="hq" style="--qc:#b45309" data-go="why" role="button" tabindex="0"><span class="qn">Question 2 · Why</span><h3>Why are they being missed?</h3><div class="qb" id="hQ2b"></div><div class="qf" id="hQ2f"></div><span class="qgo">See root causes and fixes →</span></div>
   <div class="hq" style="--qc:#15803d" data-go="hcamp" role="button" tabindex="0"><span class="qn">Question 3 · Closed?</span><h3>Has the programme closed the gap?</h3><div class="qb" id="hQ3b"></div><div class="qf" id="hQ3f"></div><span class="qsoon">UC-by-UC closure status (open / closing / closed / reopened): next phase</span><span class="qgo">See campaign results →</span></div>
  </div>
 
@@ -1431,6 +1445,17 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="card"><div class="tblhdr"><h3 style="margin:0">UCs and their immunity gap</h3><span class="cnt" id="cntGP"></span><span style="flex:1"></span><button class="btn" id="btnGPcsv">Download (CSV)</button></div>
 <div class="rkpills" id="gpPills"></div>
 <div class="scroll"><table id="tGap"></table></div><div class="cap" id="capGP"></div></div>
+</section>
+
+<!-- ================= (13) IMMUNITY GAP: WHY ================= -->
+<section class="pane" id="p-why">
+<div class="hubhd"><div><h2>Why are the children being missed?</h2><p id="wyHint"></p><div class="hubchips"><button data-hl="gap">← Where are they?</button><button data-hl="cicm">ICM evidence</button><button data-hl="cpost">LQAS evidence</button><button data-hl="cpre">Pre-campaign readiness</button><button data-hl="crit">Data quality</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">Main reason across the selection</div><div class="kv" id="wy1" style="color:#b45309">–</div><div class="ks" id="wy1s"></div></div><div class="card"><div class="kl">Missed by teams (LQAS)</div><div class="kv" id="wy2" style="color:#c2410c">–</div><div class="ks" id="wy2s"></div></div><div class="card"><div class="kl">Refusals (demand)</div><div class="kv" id="wy3" style="color:#b91c1c">–</div><div class="ks" id="wy3s"></div></div><div class="card"><div class="kl">Away / migrant / newborn</div><div class="kv" id="wy4" style="color:#475569">–</div><div class="ks" id="wy4s"></div></div><div class="card"><div class="kl">Districts with a data problem</div><div class="kv" id="wy5" style="color:#6d28d9">–</div><div class="ks" id="wy5s"></div></div></div>
+<div class="grid2"><div class="card"><div id="cwy1" class="ch"></div><div class="cap" id="capwy1"></div></div><div class="card"><div id="cwy2" class="ch"></div><div class="cap" id="capwy2"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Root causes and what to do about them</h3></div><div class="cap" id="capWyM" style="margin-top:0"></div><div class="wfx" id="wyFix"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Districts: main reason and recommended fix</h3><span class="cnt" id="cntWYD"></span><span style="flex:1"></span><button class="btn" id="btnWYDcsv">Download (CSV)</button></div><div class="scroll"><table id="tWhyD"></table></div><div class="cap" id="capWYD"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Priority UCs (from "Where"): why their children are missed</h3><span class="cnt" id="cntWYU"></span><span style="flex:1"></span><button class="btn" id="btnWYUcsv">Download (CSV)</button></div><div class="scroll"><table id="tWhyU"></table></div><div class="cap" id="capWYU"></div></div>
 </section>
 
 </main>
@@ -3268,7 +3293,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -3286,7 +3311,7 @@ function setTab(t){
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
  renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); atBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -4715,7 +4740,7 @@ function hubBadges(){ try{ const S=cqSum(cqDist(CQI).R), bs=(id,t)=>{const e=el(
 {const _rd=render; render=function(){_rd(); hubBadges();};}
 
 // ---------- Map: indicator dropdown, district names, PNG download ----------
-const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
+const HMOPT=()=>[['Immunity gap',[['gap','Immunity gap: priority UCs (gap + polio risk)'],['gapn','Susceptible children: still missed + zero-dose not covered'],['gapr','Children who never received Penta-1 (routine)'],['why','Why children are missed: main root cause']]],['Zero dose',[['cov','ZD covered by next round'],['dig','Linelist digitized in IDIMS'],['vac','Validated as vaccinated']]],
  ['Routine EPI',EAG.map(a=>['epi:'+a.k,a.l+' coverage'])],
  ['Campaigns',[['perf','Campaign performance (good / average / poor / needs focus)'],['pre','Pre-campaign readiness'],['icm','ICM recall coverage'],['lq','LQAS lots passed'],['mis','Children still missed after the campaign'],['ref','Children still refusing']]],
  ['Surveillance',[['afp:n','Zero-dose AFP cases (number)'],['afp:p','Zero-dose share of all AFP cases'],['surv','AFP surveillance sensitivity'],['es','Sewage samples positive'],['watch','Polio risk watch list']]],
@@ -5061,6 +5086,104 @@ Object.assign(HMNEW,{
    legend:[['g','Under 7%'],['a','7–15%'],['r','15% or more'],['n','No data']],listTitle:'Largest routine gap',
    list:Object.entries(G).filter(([,x])=>x.p!=null).sort((a,b)=>b[1].p-a[1].p).map(([d,x])=>[d,pc(x.p),bd(x)])});}
 });
+
+
+// ================= (13) IMMUNITY GAP: WHY =================
+const WC=[['acc','Access / microplan','#c2410c'],['team','Team performance','#f59e0b'],['dem','Demand (refusals)','#b91c1c'],['mob','Mobility (away, migrant, newborn)','#64748b']];
+const WCK=Object.fromEntries(WC.map(x=>[x[0],x])); WCK.data=['data','Data problem','#6d28d9'];
+const WFIX={acc:'Revise the microplan with house listing and maps; add teams or days where the workload is too high; area in-charges check houses not visited and missed areas every evening; field-validate microplans before the round.',
+ team:'Retrain and supervise teams; check tally sheets and finger-marking every day; replace teams that are repeatedly weak; more area in-charge and UCMO supervision in the worst UCs.',
+ dem:'Community engagement for refusals: religious and community leaders, refusal resolution teams, female workers, and follow-up of every refusing household with its reason recorded.',
+ mob:'Revisit plan for absent children (evening and weekend revisits, catch-up days), transit points and migrant tracking, and newborn registration with the routine EPI team.',
+ data:'Verify before acting: independent re-check of reported coverage, IDIMS entry audit and field validation of the flagged UCs.'};
+const WFIXS={acc:'Microplan revision, house listing, check houses not visited',team:'Retrain and supervise teams, daily tally and finger-mark checks',dem:'Community engagement and refusal follow-up',mob:'Revisits for absent children, transit and migrant tracking',data:'Verify the data before acting'};
+const WSRC=[['icm','Monitors during the campaign (ICM)',0.4],['lq','LQAS after the campaign',0.4],['adm','Admin data after catch-up',0.2]];
+function whyRaw(src,x){if(!x)return null;
+ if(src==='icm')return {acc:x.tdn||0,team:x.tm||0,dem:x.rf||0,mob:x.na||0,n:x.mi||0};
+ if(src==='lq')return {acc:x.dn||0,team:x.tm||0,dem:x.rf||0,mob:(x.aw||0)+(x.nb||0)+(x.mg||0),n:x.tt||0};
+ if(src==='adm')return {acc:x.slo||0,team:0,dem:x.srf||0,mob:x.sna||0,n:x.st||0};}
+function wNorm(o){if(!o)return null; const t=o.acc+o.team+o.dem+o.mob; if(!t)return null; const r={n:t}; WC.forEach(([k])=>r[k]=o[k]/t*100); return r;}
+const WMIN={icm:20,lq:5,adm:20};
+function whyMix(src,x){const o=whyRaw(src,x); return o&&o.n>=WMIN[src]?wNorm(o):null;}
+function wBlend(M,S){S=S||WSRC; let w=0; const o={acc:0,team:0,dem:0,mob:0}; S.forEach(([k,,wt])=>{const m=M[k]; if(!m)return; w+=wt; WC.forEach(([c])=>o[c]+=m[c]*wt);});
+ if(!w)return null; WC.forEach(([c])=>o[c]/=w); o.top=WC.map(x=>x[0]).sort((a,b)=>o[b]-o[a])[0]; o.ns=S.filter(([k])=>M[k]).length; return o;}
+const wTag=k=>k?`<span class="wtag" style="background:${WCK[k][2]}">${esc(WCK[k][1])}</span>`:'–';
+const wBar=m=>m?`<div class="wbar" title="${WC.map(([k,l])=>l+' '+Math.round(m[k])+'%').join(' · ')}">${WC.map(([k,,c])=>`<i style="width:${m[k]}%;background:${c}"></i>`).join('')}</div>`:'–';
+let _WHY={};
+function whyDist(ci){ if(_WHY[ci])return _WHY[ci]; const X=cqDist(ci), C=critStats(()=>true,'d'), DQ={}; C.groups.forEach(g=>DQ[g.k]=g.sc);
+ const R=X.R.map(r=>{const M={icm:whyMix('icm',r.i),lq:whyMix('lq',r.l),adm:whyMix('adm',r.m)}, B=wBlend(M), p=r.p||{}, sig=[];
+  if(p.mpv!=null&&p.mpv<95)sig.push(['acc','microplans validated '+pc(p.mpv)]);
+  if(p.inacc>0)sig.push(['acc',fmt(Math.round(p.inacc))+' inaccessible areas']);
+  if(r.i&&r.i.ma>0)sig.push(['acc',fmt(r.i.ma)+' missed areas (ICM)']);
+  if(r.i&&r.i.cl&&r.i.pca/r.i.cl>=0.1)sig.push(['acc',fmt(r.i.pca)+' poorly covered areas']);
+  if(p.trn!=null&&p.trn<95)sig.push(['team','teams trained '+pc(p.trn)]);
+  if(r.fmp!=null&&r.fmp<95)sig.push(['team','finger-marked '+pc(r.fmp)]);
+  if(r.i&&r.i.nvfm>=5)sig.push(['team',fmt(r.i.nvfm)+' finger-marked but not vaccinated']);
+  if(p.fem!=null&&p.fem<50)sig.push(['dem','female member in '+pc(p.fem)+' of teams']);
+  if(p.loc!=null&&p.loc<75)sig.push(['dem','local member in '+pc(p.loc)+' of teams']);
+  if(r.srp!=null&&r.srp>=1)sig.push(['dem',r.srp.toFixed(2)+'% of target still refusing']);
+  const dq=DQ[r.d]; if(dq!=null&&dq<70)sig.push(['data','data-quality score '+Math.round(dq)]);
+  r.F.filter(f=>f[1]==='r').forEach(f=>sig.push(['data',f[0]]));
+  const dbad=(dq!=null&&dq<70)||r.F.some(f=>f[1]==='r');
+  const dis=M.icm&&M.lq?Math.max(...WC.map(([k])=>Math.abs(M.icm[k]-M.lq[k]))):null;
+  return {d:r.d,dv:r.dv,M,B,top:B?B.top:null,sig,dq,dbad,dis,st:r.m?r.m.st:null,stp:r.stp,cls:r.cls,lqn:r.l?r.l.n:0,lqt:r.l?r.l.tt:0};});
+ _WHY[ci]={X,R}; return _WHY[ci];}
+function whyTot(R){const T={}; WSRC.forEach(([k])=>T[k]={acc:0,team:0,dem:0,mob:0,n:0});
+ R.forEach(r=>[['icm',r.i],['lq',r.l],['adm',r.m]].forEach(([k,x])=>{const o=whyRaw(k,x); if(o){WC.forEach(([c])=>T[k][c]+=o[c]); T[k].n+=o.n;}}));
+ const N={}; WSRC.forEach(([k])=>N[k]=wNorm(T[k])); return {T,N,B:wBlend(N)};}
+function whyUC(ci){const X=cqDist(ci), L={}, A={}; LQR.filter(x=>x.ci===X.lqi).forEach(x=>L[x.c]=x); misHyd().filter(r=>r.d&&r.ci===X.mi).forEach(r=>A[r.c]=r);
+ return gapAll().filter(g=>g.tier==='P1'||g.tier==='P2').map(g=>{const l=L[g.c], a=A[g.c];
+  const M={lq:l&&l.tt>=3?wNorm(whyRaw('lq',l)):null, adm:a&&misSt(a)>=10?wNorm(whyRaw('adm',{slo:a.slo,srf:a.srf,sna:a.sna,st:misSt(a)})):null};
+  const B=wBlend(M,[['lq','',0.6],['adm','',0.4]]); return Object.assign({},g,{lq:l||null,mix:B,top:B?B.top:null,lr:l?l.r:null,src:[M.lq?'LQAS':'',M.adm?'admin':''].filter(Boolean).join(' + ')});});}
+Object.assign(KX,{wy1:['search',null,null],wy2:['users',null,'cpost'],wy3:['ban',null,'mis'],wy4:['clock',null,'cicm'],wy5:['alert',null,'crit']});
+TABICO.why='bulb';
+function renderWhy(){ cqSel(); const W=whyDist(CQI), inD=crInD(), R=W.R.filter(r=>inD(r.d)), lab=W.X.C?W.X.C.l:'', K=whyTot(W.X.R.filter(r=>inD(r.d))), N=K.N, B=K.B;
+ el('wyHint').innerHTML=`Every reason recorded for a missed child is grouped into four root causes, from three sources: <b>monitors during the campaign (ICM)</b>, <b>LQAS after the campaign</b> and <b>admin data after catch-up</b>. The sources are combined with weights 40% ICM, 40% LQAS, 20% admin (admin data cannot show team misses). A fifth cause, <b>data problems</b>, is flagged separately from the data-quality score and from places where the sources disagree. Follows the division / district filter.`;
+ el('wy1').textContent=B?WCK[B.top][1]:'–'; el('wy1s').textContent=B?`${Math.round(B[B.top])}% of missed children, sources combined · ${esc(lab)}`:'no data';
+ const tl=N.lq?N.lq.acc+N.lq.team:null, ti=N.icm?N.icm.acc+N.icm.team:null;
+ el('wy2').textContent=tl==null?'–':Math.round(tl)+'%'; el('wy2s').textContent=`not visited or missed in the house · ${fmt(K.T.lq.n)} children in LQAS lots${ti!=null?' · ICM: '+Math.round(ti)+'%':''}`;
+ el('wy3').textContent=B?Math.round(B.dem)+'%':'–'; el('wy3s').textContent=`${fmt(K.T.adm.dem)} children still refusing after catch-up`;
+ el('wy4').textContent=B?Math.round(B.mob)+'%':'–'; el('wy4s').textContent=N.icm?`${Math.round(N.icm.mob)}% of ICM missed children were away`:'';
+ const dbn=R.filter(r=>r.dbad).length; el('wy5').textContent=fmt(dbn); el('wy5s').textContent='data-quality score under 70, or sources seriously disagree';
+ HC('cwy1',{chart:{type:'column'},title:{text:'Why children are missed: the three sources compared'},subtitle:{text:esc(lab)+' · % of missed children each source recorded'},xAxis:{categories:WC.map(x=>x[1])},yAxis:{max:100,title:{text:'Share of missed children (%)'}},tooltip:{shared:true,valueSuffix:'%',valueDecimals:0},
+  series:WSRC.map(([k,l],i)=>({name:l+' ('+fmt(K.T[k].n)+')',color:['#0f766e','#c2410c','#94a3b8'][i],data:WC.map(([c])=>N[k]?+N[k][c].toFixed(1):null),dataLabels:{enabled:true,format:'{y:.0f}%'}}))});
+ el('capwy1').textContent=(tl!=null&&ti!=null&&Math.abs(tl-ti)>=20)?`The sources disagree: LQAS finds ${Math.round(tl)}% of missed children were missed by teams, monitors during the campaign found ${Math.round(ti)}%. LQAS is independent and checked after the campaign, but its sample is ${K.T.lq.n<500?'small':'moderate'} (${fmt(K.T.lq.n)} children).`:'The sources broadly agree on the reasons.';
+ const G=R.filter(r=>r.B).sort((a,b)=>(b.st||0)-(a.st||0)).slice(0,25);
+ el('cwy2').style.height=Math.max(340,G.length*22+120)+'px';
+ HC('cwy2',{chart:{type:'bar'},title:{text:'Root-cause mix by district (sources combined)'},subtitle:{text:'Districts with the most children still missed first'},xAxis:{categories:G.map(r=>r.d)},yAxis:{max:100,title:{text:'Share of missed children (%)'}},plotOptions:{bar:{stacking:'percent'}},tooltip:{shared:true,valueSuffix:'%',valueDecimals:0},
+  series:WC.map(([k,l,c])=>({name:l,color:c,data:G.map(r=>+r.B[k].toFixed(1))}))});
+ const cnt={}; R.forEach(r=>{if(r.top)cnt[r.top]=(cnt[r.top]||0)+1;});
+ el('capwy2').textContent=Object.keys(cnt).length?'Main reason by district: '+WC.filter(([k])=>cnt[k]).map(([k,l])=>l.toLowerCase()+' '+cnt[k]).join(' · ')+'.':'';
+ el('capWyM').innerHTML='The main reason is the largest share in the combined mix. "Contributing signals" in the table come from pre-campaign readiness and ICM (for example microplans not validated, teams not trained, few female members) and help choose the fix.';
+ el('wyFix').innerHTML=[...WC.map(x=>x[0]),'data'].map(k=>{const L=k==='data'?R.filter(r=>r.dbad):R.filter(r=>r.top===k); return `<div class="pcbox" style="--pc:${WCK[k][2]}"><h4>${esc(WCK[k][1])}</h4><div class="pn">${L.length}</div><div class="pl">${L.length?(k==='data'?'districts flagged: ':'main reason in: ')+L.map(r=>esc(r.d)).join(', '):'No district'}</div><div class="fx"><b>Fix:</b> ${esc(WFIX[k])}</div></div>`;}).join('');
+ drawTable('tWhyD',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'cls',l:'Campaign class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'st',l:'Still missed',n:1,sv:x=>x.st??-1,f:x=>x.st==null?'–':fmt(x.st)+` <small>${pc(x.stp)}</small>`},
+  {k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>wTag(x.top)+(x.dbad?' '+wTag('data'):'')},{k:'mix',l:'Mix (access · team · demand · mobility)',ns:1,f:x=>wBar(x.B)},
+  {k:'src',l:'Sources',ns:1,f:x=>WSRC.filter(([k])=>x.M[k]).map(([k])=>({icm:'ICM',lq:'LQAS',adm:'admin'})[k]).join(' + ')||'–'},
+  {k:'dis',l:'ICM vs LQAS',n:1,sv:x=>x.dis??-1,f:x=>x.dis==null?'–':x.dis>=30?`<b style="color:#b45309">disagree (${Math.round(x.dis)} pts)</b>`:'agree'},
+  {k:'sig',l:'Contributing signals',ns:1,f:x=>x.sig.map(([k,t])=>`<span class="wsig ${k==='data'?'data':''}">${esc(t)}</span>`).join('')},
+  {k:'fx',l:'Recommended fix',ns:1,f:x=>x.top?esc(WFIXS[x.top])+(x.dbad?'; '+esc(WFIXS.data).toLowerCase():''):'–'}],R,'st',-1);
+ el('cntWYD').textContent=R.length+' districts';
+ el('capWYD').textContent=`Sources for ${lab}: EOC ICM (district), EOC post-campaign LQAS (UC lots), EOC coverage summary (still away, still refusing, left over after catch-up), pre-campaign indicators and the critical review. "Left over" children are counted under access. Districts with too few missed children in a source (under 20 in ICM or admin, under 5 in LQAS) use the other sources only.`;
+ el('btnWYDcsv').onclick=()=>cqCSV('Why_missed_districts_'+lab,['District','Division','Campaign class','Still missed','Main reason','Access %','Team %','Demand %','Mobility %','Sources','ICM vs LQAS gap (pts)','Data problem','Contributing signals','Recommended fix'],
+  R.map(r=>[r.d,r.dv,CLS[r.cls][0],r.st,r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.B?rnd(r.B[k],0):''),WSRC.filter(([k])=>r.M[k]).map(([k])=>k).join('+'),rnd(r.dis,0),r.dbad?'Yes':'',r.sig.map(s=>s[1]).join('; '),r.top?WFIXS[r.top]+(r.dbad?'; '+WFIXS.data:''):'']));
+ const U=whyUC(CQI).filter(matchG).sort((a,b)=>(a.tier==='P1'?0:1)-(b.tier==='P1'?0:1)||(b.st||0)-(a.st||0));
+ drawTable('tWhyU',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'u',l:'UC',f:x=>esc(x.u)},{k:'tier',l:'Priority',sv:x=>['P1','P2'].indexOf(x.tier),f:x=>`<span class="gptag ${GP_T[x.tier][1]}">${GP_T[x.tier][0]}</span>`},
+  {k:'st',l:'Still missed',n:1,sv:x=>x.st??-1,f:x=>x.st==null?'–':fmt(x.st)},{k:'lr',l:'LQAS lot',sv:x=>x.lr||'z',f:x=>x.lr?`<span class="rg ${x.lr==='P'?'g':x.lr==='I'?'a':'r'}">${lqR[x.lr]}</span>`:'not assessed'},
+  {k:'top',l:'Main reason',sv:x=>x.top||'z',f:x=>wTag(x.top)},{k:'mix',l:'Mix',ns:1,f:x=>wBar(x.mix)},{k:'src',l:'Based on',ns:1,f:x=>esc(x.src||'–')},{k:'why',l:'Gap (from Where)',ns:1,f:x=>esc(x.why.join(' · '))}],U,'tier',1);
+ el('cntWYU').textContent=fmt(U.length)+' UCs';
+ el('capWYU').textContent='UC-level reasons come from the UC\'s LQAS lot (60%) and admin data after catch-up (40%); ICM is only available by district. A UC without an LQAS lot shows the admin mix, which cannot show team misses, so treat those as indicative.';
+ el('btnWYUcsv').onclick=()=>cqCSV('Why_missed_priority_UCs_'+lab,['District','Tehsil','UC','UC code','Priority','Still missed','LQAS lot','Main reason','Access %','Team %','Demand %','Mobility %','Based on','Gap'],
+  U.map(r=>[r.d,r.t,r.u,r.c,GP_T[r.tier][0],r.st,r.lr?lqR[r.lr]:'',r.top?WCK[r.top][1]:'',...WC.map(([k])=>r.mix?rnd(r.mix[k],0):''),r.src,r.why.join('; ')]));
+}
+function whyBadge(){const b=el('bWY'); if(!b)return; try{const W=whyDist(CQI), K=whyTot(W.X.R.filter(r=>crInD()(r.d))); b.textContent=K.B?WCK[K.B.top][1].split(' ')[0]+' '+Math.round(K.B[K.B.top])+'%':'–';}catch(e){}}
+{const _rd=render; render=function(){_rd(); whyBadge();};}
+{const _q=renderHomeQ; renderHomeQ=function(){_q(); try{const W=whyDist(0), cnt={}; W.R.forEach(r=>{if(r.top)cnt[r.top]=(cnt[r.top]||0)+1;}); const K=whyTot(W.X.R), db=W.R.filter(r=>r.dbad).length;
+ el('hQ2f').insertAdjacentHTML('beforeend',`<div><b>Main reason by district:</b> ${WC.filter(([k])=>cnt[k]).map(([k,l])=>`${esc(l.split(' (')[0].toLowerCase())} <b>${cnt[k]}</b>`).join(' · ')}${db?` · <b>${db}</b> with a data problem`:''}</div>`+(K.B?`<div>Sources combined: <b>${esc(WCK[K.B.top][1])}</b> is the largest cause (${Math.round(K.B[K.B.top])}%).</div>`:''));}catch(e){console.warn('why home',e);}};}
+Object.assign(HMNEW,{why(){const W=whyDist(CQI), G={}; W.R.forEach(r=>G[r.d]=r); const cols={acc:'#c2410c',team:'#f59e0b',dem:'#b91c1c',mob:'#94a3b8',n:'#e5e7eb'};
+ hmGen({go:'why',cols,val:d=>G[d],band:x=>x&&x.top?x.top:'n',tip:(d,x)=>x&&x.B?`<span class="v" style="color:#fdba74">${esc(WCK[x.top][1])} · ${Math.round(x.B[x.top])}%</span><br>${WC.map(([k,l])=>esc(l.split(' (')[0])+' '+Math.round(x.B[k])+'%').join(' · ')}${x.dbad?'<br><b style="color:#c4b5fd">Data problem flagged</b>':''}`:'Not enough data',
+  title:`Main reason children are missed · ${esc(W.X.C?W.X.C.l:'')}<small>Largest root cause per district, ICM + LQAS + admin combined</small>`,
+  legend:[['acc','Access / microplan'],['team','Team performance'],['dem','Demand (refusals)'],['mob','Mobility (away, migrant, newborn)'],['n','Not enough data']],listTitle:'Most children still missed',
+  list:W.R.filter(r=>r.top).sort((a,b)=>(b.st||0)-(a.st||0)).map(r=>[r.d,WCK[r.top][1].split(' ')[0],r.top])});}});
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
