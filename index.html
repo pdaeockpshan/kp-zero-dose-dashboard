@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:19</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 16:24</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -572,6 +572,17 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hqall{all:unset;cursor:pointer;margin-left:10px;font-size:12px;font-weight:700;padding:3px 11px;border-radius:14px;border:1px solid var(--color-border);background:#fff;color:var(--color-text)}
 .hqall:hover,.hqall:focus-visible{background:#f1f5f9}
 </style>
+
+<style>
+/* ================= (16) UC dropdown + filter-aware hub strips ================= */
+#fUC{max-width:260px}
+.hubk{margin-bottom:14px}
+.hubk .kpis{margin-bottom:6px}
+.hubk .hks{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--color-text-secondary);margin:0 0 8px}
+.hubk .hks b{color:var(--tc)}
+.hubk .hkn{font-size:12px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:6px 10px;margin-top:4px}
+.dlvn{color:#b45309;font-weight:600}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -642,7 +653,7 @@ body.home .hdr, body.home .content .topbar{display:none}
   <label class="f-old">Follow-up priority<select id="fPri"></select></label>
   <label class="f-new" style="display:none">ZD trend Apr→May<select id="fZT"></select></label>
   <label class="f-val" style="display:none">Validation campaign<select id="fVC"></select></label>
-  <label>Search UC<input id="q" placeholder="UC name, tehsil or code…"></label>
+  <label>UC<select id="fUC" aria-label="UC"></select></label> <label>Search<input id="q" placeholder="UC name, tehsil or code…"></label>
   <button class="btn" id="btnReset">Reset all</button>
  </div>
  <div class="status"><span id="shown"></span><span id="chips" style="display:flex;gap:6px;flex-wrap:wrap"></span></div>
@@ -656,7 +667,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 15:19</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 16:24</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -1564,7 +1575,7 @@ Highcharts.setOptions({chart:{backgroundColor:'transparent',style:{fontFamily:g(
  tooltip:{backgroundColor:C.surf,borderColor:C.bord,style:{color:C.text}}});
 
 const el=id=>document.getElementById(id);
-const fDiv=el('fDiv'),fDist=el('fDist'),fTeh=el('fTeh'),fBand=el('fBand'),fTr=el('fTr'),fPri=el('fPri'),q=el('q');
+const fDiv=el('fDiv'),fDist=el('fDist'),fTeh=el('fTeh'),fBand=el('fBand'),fTr=el('fTr'),fPri=el('fPri'),q=el('q'),fUC=el('fUC');
 const uniq=a=>[...new Set(a)].sort();
 function fill(sel,opts,allLabel){const cur=sel.value;sel.innerHTML=`<option value="">${allLabel}</option>`+opts.map(o=>Array.isArray(o)?`<option value="${esc(o[0])}">${esc(o[1])}</option>`:`<option value="${esc(o)}">${esc(o)}</option>`).join('');const vals=opts.map(o=>Array.isArray(o)?o[0]:o);sel.value=vals.includes(cur)?cur:'';}
 function cascade(){
@@ -1581,6 +1592,7 @@ function match(r,skip){
  if(fDiv.value&&r.dv!==fDiv.value)return false;
  if(fDist.value&&r.d!==fDist.value)return false;
  if(fTeh.value&&r.t!==fTeh.value)return false;
+ if(fUC.value&&(r.c||r.ec)!==fUC.value)return false;
  if(skip!=='b'&&fBand.value&&r.b!==fBand.value)return false;
  if(skip!=='tr'&&fTr.value&&r.tr!==fTr.value)return false;
  if(skip!=='pr'&&fPri.value){const v=fPri.value;if(v==='any'?!r.pr:v==='none'?!!r.pr:r.pr!==v)return false;}
@@ -1805,6 +1817,7 @@ function matchZ(r,skip){
  if(fDiv.value&&r.dv!==fDiv.value)return false;
  if(fDist.value&&r.d!==fDist.value)return false;
  if(fTeh.value&&r.t!==fTeh.value)return false;
+ if(fUC.value&&(r.c||r.ec)!==fUC.value)return false;
  if(skip!=='zt'&&fZT.value&&r.tr!==fZT.value)return false;
  const qq=q.value.trim().toLowerCase();
  if(qq&&!(r.u+' '+r.t+' '+r.c+' '+r.d).toLowerCase().includes(qq))return false;
@@ -2163,6 +2176,7 @@ function matchG(r){
  if(fDiv.value&&r.dv!==fDiv.value)return false;
  if(fDist.value&&r.d!==fDist.value)return false;
  if(fTeh.value&&r.t!==fTeh.value)return false;
+ if(fUC.value&&(r.c||r.ec)!==fUC.value)return false;
  const qq=q.value.trim().toLowerCase();
  if(qq&&!(r.u+' '+r.t+' '+r.c+' '+r.d).toLowerCase().includes(qq))return false;
  return true;
@@ -3172,6 +3186,7 @@ function matchE(r){
  if(fDiv.value&&r.dv!==fDiv.value)return false;
  if(fDist.value&&r.d!==fDist.value)return false;
  if(fTeh.value&&r.t!==fTeh.value)return false;
+ if(fUC.value&&(r.c||r.ec)!==fUC.value)return false;
  const qq=q.value.trim().toLowerCase();
  if(qq&&!(r.u+' '+r.t+' '+r.c+' '+r.d+' '+(r.en||'')+' '+(r.ec||'')).toLowerCase().includes(qq))return false;
  return true;
@@ -5027,7 +5042,7 @@ function gapStats(inS,inE){const U=gapAll().filter(inS), S={U,n:U.length,st:0,rf
  const G={}; U.forEach(r=>{const g=G[r.d]=G[r.d]||{k:r.d,st:0,zu:0,rf:0,P1:0,P2:0,P3:0,n:0}; g.n++; g.st+=r.st||0; g.zu+=r.zu||0; g.rf+=r.rf||0; if(r.tier in g)g[r.tier]++;});
  const GE={}; EPI.forEach(r=>{if(!(inE||(()=>true))(r)||!r.s)return; const g=GE[r.d]=GE[r.d]||{nr:0,dd:0}; g.nr+=Math.max(0,r.s-(r.p1||0)); g.dd+=Math.max(0,(r.p1||0)-(r.p3||0));});
  S.G=Object.values(G).map(g=>Object.assign(g,GE[g.k]||{nr:0,dd:0})); return S;}
-const gpInE=()=>r=>(!fDiv.value||r.dv===fDiv.value)&&(!fDist.value||r.d===fDist.value)&&(!fTeh.value||r.t===fTeh.value);
+const gpInE=()=>r=>(!fDiv.value||r.dv===fDiv.value)&&(!fDist.value||r.d===fDist.value)&&(!fTeh.value||r.t===fTeh.value)&&(!fUC.value||(r.c||r.ec)===fUC.value);
 Object.assign(KX,{gp1:['users',null,'mis'],gp2:['users',null,'zov'],gp3:['syringe',null,'eov'],gp4:['syringe',null,'efu'],gp5:['ban',null,'mis']});
 TABICO.gap='search';
 function renderGap(){ const S=gapStats(matchG,gpInE()), mc=(MISM.camps||[])[0]||'', cK=ZD.some(r=>r.cM!=null)?'M':'A';
@@ -5481,6 +5496,56 @@ function hqWire(){const P=el('p-home'); if(!P)return;
  const a=el('hQall'); if(a)a.onclick=ev=>{ev.stopPropagation(); const L=[...P.querySelectorAll('.hq')], open=!L.every(h=>h.classList.contains('open')); L.forEach(h=>hqSet(h,open)); hqAllSync();};
  hqAllSync();}
 {const _q=renderHomeQ; renderHomeQ=function(){_q(); try{hqWire();}catch(e){console.warn('hq wire',e);}};}
+
+
+// ================= (16) UC dropdown + filter-aware hub strips =================
+const gm=r=>(!fDiv.value||(r.dv||D2DV[r.d])===fDiv.value)&&(!fDist.value||r.d===fDist.value)&&(!fTeh.value||r.t===fTeh.value)&&(!fUC.value||(r.c||r.ec)===fUC.value);
+function ucFill(){const SRC=(MODE==='s'||MODE==='z')?ZD:MODE==='v'?VAL:MODE==='e'?EPI:DATA, seen={}, o=[];
+ SRC.forEach(r=>{if(fDiv.value&&r.dv!==fDiv.value)return; if(fDist.value&&r.d!==fDist.value)return; if(fTeh.value&&r.t!==fTeh.value)return;
+  const c=r.c||r.ec; if(!c||seen[c])return; seen[c]=1; o.push([c,r.u+(fTeh.value?'':fDist.value?' · '+r.t:' · '+r.d)]);});
+ o.sort((a,b)=>a[1].localeCompare(b[1])); fill(fUC,o,'All UCs ('+fmt(o.length)+')');}
+{const _c=cascade; cascade=function(){_c(); ucFill();};}
+ucFill();
+fUC.addEventListener('change',()=>render());
+{const b=el('btnReset'), _r=b.onclick; b.onclick=ev=>{fUC.value=''; _r&&_r(ev);};}
+const scopeTxt=()=>{if(fUC.value){const r=[...ZD,...DATA,...VAL,...EPI].find(x=>(x.c||x.ec)===fUC.value); return r?r.u+' UC ('+r.d+')':'selected UC';}
+ return fTeh.value?fTeh.value+' tehsil ('+fDist.value+')':fDist.value?fDist.value+' district':fDiv.value?fDiv.value+' division':'all of KP';};
+const geoOn=()=>!!(fDiv.value||fDist.value||fTeh.value||fUC.value);
+// district-level pages: say so when a tehsil or UC is picked
+const DLV=['hcamp','cpre','cicm','cpost','why','surv'];
+{const _rb=renderBar; renderBar=function(){_rb(); try{if((fTeh.value||fUC.value)&&DLV.includes(TAB)&&fDist.value)el('shown').insertAdjacentHTML('beforeend',` · <span class="dlvn">this page works at district level: showing all of ${esc(fDist.value)}</span>`);}catch(e){}};}
+// hub strips
+function hubStrip(pid,items,note){const P=el('p-'+pid); if(!P)return; let box=P.querySelector('.hubk');
+ if(!box){box=document.createElement('div'); box.className='hubk'; const hd=P.querySelector('.hubhd'); hd.insertAdjacentElement('afterend',box);}
+ const on=geoOn();
+ box.innerHTML=`<div class="hks">Showing <b>${esc(scopeTxt())}</b>${on?' · numbers follow the filters':''}</div><div class="kpis">`+items.map(([l,v,s,c])=>`<div class="card"><div class="kl">${esc(l)}</div><div class="kv"${c?` style="color:${c}"`:''}>${v}</div><div class="ks">${s||''}</div></div>`).join('')+'</div>'+
+  (on&&P.querySelector(':scope > .hgrid, :scope > .hgrid2')?`<div class="hkn">The overview cards for all of KP are hidden while a filter is on. Click <b>Reset all</b> to see them again.</div>`:'')+(note?`<div class="cap">${note}</div>`:'');
+ P.querySelectorAll(':scope > .hgrid, :scope > .hgrid2').forEach(g=>g.style.display=on?'none':'');}
+function hzdStrip(){const z=agg(ZD.filter(matchG)), cK=ZD.some(r=>r.cM!=null)?'M':'A', zRep=ZSAME?z.rM:z.rS, D=DATA.filter(matchG), dr=S_(D,r=>r.rep), dl=S_(D,r=>r.ll), v=aggV(VAL.filter(matchG)), rc=z['rc'+cK]||0, cc=z['c'+cK]||0;
+ hubStrip('hzd',[['Zero dose reported',fmt(zRep||0),esc(CAMP[ZSAME?'M':'S'])+' · '+fmt(ZD.filter(matchG).length)+' UCs'],['Covered by next round',pc(z['p'+cK]),`${fmt(cc)} of ${fmt(rc)} · ${esc(CAMP[cK])}`,'#0f766e'],['Not covered',fmt(Math.max(0,rc-cc)),'zero-dose children still to reach','#b91c1c'],
+  ['Digitized in IDIMS',D.length?pc(dr?dl/dr*100:null):'–',D.length?`${fmt(dl)} of ${fmt(dr)} entered · ${fmt(Math.max(0,dr-dl))} not entered`:'no IDIMS data for this area (9 districts only)','#6d28d9'],
+  ['Validated vaccinated',v.n?pc(v.p):'–',v.n?`${fmt(v.vy)} of ${fmt(v.n)} children checked · ${fmt(v.vn)} not vaccinated`:'no validation records','#15803d']]);}
+function hepiStrip(){const R=EPI.filter(matchE), e=aggE(R), lo=R.filter(r=>r.s>0&&(r.p3||0)/r.s*100<80).length, bo=R.filter(r=>/BO/.test(r.fl||'')).length;
+ hubStrip('hepi',[['Penta-3',pE(e.p_p3),esc(EMETA.per||'')+' · '+fmt(R.length)+' UCs'],['MR-2',pE(e.p_mr2),'second measles-rubella dose'],['Fully immunized',pE(e.p_fi),''],['Penta-1→3 dropout',pc(e.d13),'MR-1→2 dropout '+pc(e.dmr)],['UCs below 80% Penta-3',fmt(lo),fmt(bo)+' UCs weak in both EPI and polio','#b91c1c']]);}
+function hsurvStrip(){const inD=crInD(), W=WPV.filter(gm), A=AFP.filter(gm), yr=(WMETA.es_years||[]).slice(-1)[0]||'2026', es=Object.entries(ESD).filter(([d])=>inD(d)).map(([,x])=>x[yr]).filter(Boolean), sS=S_(es,x=>x[0]), sP=S_(es,x=>x[1]);
+ const SV=svAll().R.filter(r=>inD(r.d)), wl=watchAll().filter(gm).filter(r=>r.w).length;
+ hubStrip('hsurv',[['Confirmed polio cases 2026',fmt(W.length),W.length?[...new Set(W.map(w=>w.u+' ('+w.d+')'))].slice(0,3).map(esc).join(', '):'none in this area',W.length?'#b91c1c':'#15803d'],['Zero-dose AFP cases',fmt(A.length),fmt(A.filter(a=>a.res==='Pending').length)+' pending'],
+  ['Sewage samples positive',sS?pc(sP/sS*100):'–',sS?`${fmt(sP)} of ${fmt(sS)} samples · ${yr}`:'no sewage site in this area'],['Low AFP reporting',fmt(SV.filter(r=>r.band==='r').length),'districts under half the KP median'],['Watch-list UCs',fmt(wl),'top 10% polio risk','#4338ca']],
+  (fTeh.value||fUC.value)?'Sewage and AFP reporting are district figures.':'');}
+function hxStrip(){const R=riskAll().filter(gm), C=critStats(gm,'d',crInD()), AT=atStats(atRows().filter(atScope()));
+ hubStrip('hx',[['Very high-risk UCs',fmt(R.filter(r=>r.tier==='vh').length),fmt(R.filter(r=>r.tier==='hi').length)+' high-risk','#9f1239'],['UCs to verify',fmt(C.mm.length),'reported coverage contradicted by another check'],['Data-quality score',C.sc==null?'–':Math.round(C.sc)+'/100','share of UCs without a data problem'],['Open actions',fmt(AT.n-AT.done),fmt(AT.od)+' overdue']]);}
+{const _f=renderHZD; renderHZD=function(){_f(); try{hzdStrip();}catch(e){console.warn('hzd strip',e);}};}
+{const _f=renderHEPI; renderHEPI=function(){_f(); try{hepiStrip();}catch(e){console.warn('hepi strip',e);}};}
+{const _f=renderHSurv; renderHSurv=function(){_f(); try{hsurvStrip();}catch(e){console.warn('hsurv strip',e);}};}
+{const _f=renderHX; renderHX=function(){_f(); try{hxStrip();}catch(e){console.warn('hx strip',e);}};}
+{const _f=renderHCamp; renderHCamp=function(){_f(); try{const P=el('p-hcamp'), on=geoOn(); P.querySelectorAll(':scope > .hgrid').forEach(g=>g.style.display=on?'none':'');}catch(e){}};}
+// menu headline numbers follow the filters
+hubBadges=function(){ try{ const inD=crInD(), S=cqSum(cqDist(CQI).R.filter(r=>inD(r.d))), bs=(id,t)=>{const e=el(id); if(e)e.textContent=t;};
+ const z=agg(ZD.filter(matchG)), cK=ZD.some(r=>r.cM!=null)?'M':'A', e=aggE(EPI.filter(matchE)), w=WPV.filter(gm).length, a=AFP.filter(gm).length;
+ bs('bHC',S.cls.f.length+' focus · '+S.cls.r.length+' poor'); bs('bCP',pc(S.rd)); bs('bCI',pc(S.rec)); bs('bCL',pc(S.lqp));
+ bs('bHS',w+' WPV1'); bs('bHZ',pc(z['p'+cK])); bs('bHE','Penta-3 '+pc(e.p_p3)); bs('bHX',(el('bR1')||{}).textContent||'');
+ const V={hc:S.cls.f.length+' focus',hs:w+' WPV1 · '+a+' ZD AFP',hz:pc(z['p'+cK]),he:'Penta-3 '+pc(e.p_p3),hx:(el('bR1')||{}).textContent||''};
+ Object.entries(V).forEach(([k,v])=>{const x=document.querySelector('.sidenav .ngrp.'+k+' .nhv');if(x){x.textContent=v;x.style.display=v?'':'none';}});}catch(e){console.warn('hub badges',e);} };
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
