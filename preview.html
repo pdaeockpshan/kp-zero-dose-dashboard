@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 14:56</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:01</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -639,7 +639,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 14:56</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 15:01</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -5303,7 +5303,7 @@ function renderClosed(){ const S=closeStats(matchG), C=S.C, wd=S.wd||1, inE=gpIn
  const rows=S.U.filter(fl[IGF]), dots=r=>`<span class="igdots" title="${esc(r.R.map(x=>x.l+': '+(x.ok==null?'not in campaign':x.ok?'met':'missed ('+x.fail.map(k=>CL_FS[k]).join(', ')+')')).join(' · '))}">${r.R.map(x=>`<i class="${x.ok==null?'na':x.ok?'ok':'no'}"></i>`).join('')}</span>`;
  drawTable('tIGC',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC',f:x=>esc(x.u)},
   {k:'st',l:'Status',sv:x=>['ro','op','cg','cl','nd'].indexOf(x.st),f:x=>`<span class="igs" style="background:${CL_ST[x.st][1]}">${CL_ST[x.st][0]}</span>`},
-  {k:'R',l:mc.map(l=>esc(l.split(' ')[0])).join(' · '),ns:1,f:dots},
+  {k:'R',l:mc.map(l=>esc(l.replace(/^S?NID\s+/,''))).join(' · '),ns:1,f:dots},
   {k:'sm',l:'Still missed',ns:1,f:x=>x.R.map(r=>r.stp==null?'–':pc(r.stp)).join(' → ')},
   {k:'lq',l:'LQAS',ns:1,f:x=>x.R.map(r=>r.lq?lqR[r.lq][0]:'–').join(' → ')},
   {k:'zc',l:'ZD covered',ns:1,f:x=>x.R.filter(r=>r.zc!=null).map(r=>pc(r.zc)).join(' → ')||'–'},
@@ -5384,7 +5384,7 @@ async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; ppt
    ['WHY','C2410C',WK.B?Math.round(WK.B[WK.B.top])+'% '+WCK[WK.B.top][1].split(' (')[0].toLowerCase():'–',[WK.B?`Away / migrant / newborn ${Math.round(WK.B.mob)}% · team ${Math.round(WK.B.team)}% · refusals ${Math.round(WK.B.dem)}% · access ${Math.round(WK.B.acc)}%`:'No data',
      `Stand-out causes: ${Object.entries(so).map(([k,v])=>WCK[k][1].split(' (')[0].toLowerCase()+' in '+v).join(', ')||'none'} districts`,
      WK.N.lq&&WK.N.icm?`LQAS finds ${Math.round(WK.N.lq.acc+WK.N.lq.team)}% team-related misses vs ${Math.round(WK.N.icm.acc+WK.N.icm.team)}% by ICM monitors`:'',`${B.WR.filter(r=>r.dbad).length} districts with a data problem to verify first`].filter(Boolean)],
-   ['CLOSED?','15803D',p1(C.cl/wd*100)+' of UCs closed',[`${fmt(C.cl)} closed · ${fmt(C.cg)} closing · ${fmt(C.op)} open · ${fmt(C.ro)} reopened`,CS.top&&CS.top[1]?`Main blocker: ${CL_F[CS.top[0]]} (${fmt(CS.top[1])} UCs)`:'',`UCs meeting the rule: ${CS.per.map(x=>x.l.split(' ')[0]+' '+(x.p==null?'–':Math.round(x.p)+'%')).join(' → ')}`,`${B.wpv.length} confirmed polio case${B.wpv.length===1?'':'s'} in 2026`].filter(Boolean)]];
+   ['CLOSED?','15803D',p1(C.cl/wd*100)+' of UCs closed',[`${fmt(C.cl)} closed · ${fmt(C.cg)} closing · ${fmt(C.op)} open · ${fmt(C.ro)} reopened`,CS.top&&CS.top[1]?`Main blocker: ${CL_F[CS.top[0]]} (${fmt(CS.top[1])} UCs)`:'',`UCs meeting the rule: ${CS.per.map(x=>x.l.replace(/^S?NID\s+/,'')+' '+(x.p==null?'–':Math.round(x.p)+'%')).join(' → ')}`,`${B.wpv.length} confirmed polio case${B.wpv.length===1?'':'s'} in 2026`].filter(Boolean)]];
   cols.forEach(([h,c,big,L],i)=>{const x=0.5+i*4.18; s.addShape(pptx.ShapeType.rect,{x,y:1.35,w:3.98,h:5.45,fill:{color:'FFFFFF'},line:{color:'E5E7EB',width:0.75}}); s.addShape(pptx.ShapeType.rect,{x,y:1.35,w:3.98,h:0.1,fill:{color:c},line:{color:c}});
    s.addText(h,{x:x+0.2,y:1.55,w:3.6,h:0.35,fontFace:F,fontSize:12,bold:true,color:c,charSpacing:2}); s.addText(big,{x:x+0.2,y:1.95,w:3.6,h:0.75,fontFace:F,fontSize:22,bold:true,color:TXT,valign:'top'});
    K.bullets(s,L,{x:x+0.15,y:2.85,w:3.7,h:3.8,fs:12});});}
