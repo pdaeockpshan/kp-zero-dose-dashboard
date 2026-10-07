@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:09</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 07-Oct-2026 15:19</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -555,6 +555,23 @@ body.home .hdr, body.home .content .topbar{display:none}
 .igrow b{font-size:14px}.igrow small{display:block;color:var(--color-text-muted);font-size:11px}
 @media(max-width:800px){.igrow{grid-template-columns:1fr 70px}.igrow .bar{grid-column:1/-1}}
 </style>
+
+<style>
+/* ================= (15) collapsible leadership questions ================= */
+.hq3{align-items:start}
+.hq:not(.open){gap:6px;padding:14px 16px 12px}
+.hq:not(.open) .qf,.hq:not(.open) .halarm,.hq:not(.open) .qgo{display:none}
+.hq .qtg{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--qc);margin-top:2px;user-select:none}
+.hq .qtg svg{width:16px;height:16px;transition:transform .2s}
+.hq.open .qtg svg{transform:rotate(180deg)}
+.hq.open{cursor:default}
+.hq.open .qn,.hq.open h3,.hq.open .qb,.hq.open .qtg{cursor:pointer}
+.hq .qgo{cursor:pointer;align-self:flex-start;padding:5px 12px;border-radius:16px;border:1px solid color-mix(in srgb,var(--qc) 45%,#e5e7eb);background:#fff}
+.hq .qgo:hover,.hq .qgo:focus-visible{background:color-mix(in srgb,var(--qc) 10%,#fff)}
+.hq.open .qf{animation:navin .18s ease}
+.hqall{all:unset;cursor:pointer;margin-left:10px;font-size:12px;font-weight:700;padding:3px 11px;border-radius:14px;border:1px solid var(--color-border);background:#fff;color:var(--color-text)}
+.hqall:hover,.hqall:focus-visible{background:#f1f5f9}
+</style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
  <div class="tabs" role="tablist">
@@ -639,7 +656,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 07-Oct-2026 15:09</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 07-Oct-2026 15:19</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -649,11 +666,11 @@ body.home .hdr, body.home .content .topbar{display:none}
   </div>
  </div>
 
- <div class="hsec"><h2>Immunity gap: three questions for leadership</h2><span>All of KP · click a question for the evidence</span></div>
+ <div class="hsec"><h2>Immunity gap: three questions for leadership</h2><span>All of KP · click a question to show or hide its details<button class="hqall" id="hQall" type="button">Show all details</button></span></div>
  <div class="hq3">
-  <div class="hq" style="--qc:#7c2d12" data-go="gap" role="button" tabindex="0"><span class="qn">Question 1 · Where</span><h3>Where are the susceptible children?</h3><div class="qb" id="hQ1b"></div><div class="qf" id="hQ1f"></div><div class="halarm" id="hQ1a"></div><span class="qgo">See the UCs →</span></div>
-  <div class="hq" style="--qc:#b45309" data-go="why" role="button" tabindex="0"><span class="qn">Question 2 · Why</span><h3>Why are they being missed?</h3><div class="qb" id="hQ2b"></div><div class="qf" id="hQ2f"></div><span class="qgo">See root causes and fixes →</span></div>
-  <div class="hq" style="--qc:#15803d" data-go="closed" role="button" tabindex="0"><span class="qn">Question 3 · Closed?</span><h3>Has the programme closed the gap?</h3><div class="qb" id="hQ3b"></div><div class="qf" id="hQ3f"></div><span class="qgo">See UC closure status →</span></div>
+  <div class="hq" style="--qc:#7c2d12" data-go="gap" role="button" tabindex="0" aria-expanded="false"><span class="qn">Question 1 · Where</span><h3>Where are the susceptible children?</h3><div class="qb" id="hQ1b"></div><div class="qf" id="hQ1f"></div><div class="halarm" id="hQ1a"></div><span class="qgo">Open the full page: where →</span></div>
+  <div class="hq" style="--qc:#b45309" data-go="why" role="button" tabindex="0" aria-expanded="false"><span class="qn">Question 2 · Why</span><h3>Why are they being missed?</h3><div class="qb" id="hQ2b"></div><div class="qf" id="hQ2f"></div><span class="qgo">Open the full page: root causes and fixes →</span></div>
+  <div class="hq" style="--qc:#15803d" data-go="closed" role="button" tabindex="0" aria-expanded="false"><span class="qn">Question 3 · Closed?</span><h3>Has the programme closed the gap?</h3><div class="qb" id="hQ3b"></div><div class="qf" id="hQ3f"></div><span class="qgo">Open the full page: UC closure status →</span></div>
  </div>
 
  <div class="hsec"><h2>Explore by programme area</h2><span>Four areas, each with its own pages and a cross-check of the data sources · numbers are for all of KP · red bubbles count districts that need attention</span></div>
@@ -5447,6 +5464,23 @@ async function runIGB(scope,btn){const st=el('igbStatus'); btn.disabled=true; st
  catch(e){console.error(e); st.textContent=(e&&e.message==='load')?'Could not load the presentation tool. Check your internet connection and try again.':'Could not create the brief: '+((e&&e.message)||e); toast('Brief failed');}
  finally{btn.disabled=false;}}
 {const _rp=renderPresent; renderPresent=function(){_rp(); const s=el('igbS'); if(s&&!s.options.length){s.innerHTML='<option value="KP">All KP</option>'+[...new Set(Object.values(D2DV))].sort().map(v=>`<option value="${esc(v)}">${esc(v)} division</option>`).join(''); el('btnIGB').onclick=()=>runIGB(s.value,el('btnIGB'));}};}
+
+
+// ================= (15) collapsible leadership questions =================
+const HQ_CHEV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+function hqSet(h,open){h.classList.toggle('open',open); h.setAttribute('aria-expanded',open?'true':'false'); const t=h.querySelector('.qtl'); if(t)t.textContent=open?'Hide details':'Show details';}
+function hqAllSync(){const a=el('hQall'), L=[...document.querySelectorAll('#p-home .hq')]; if(a&&L.length)a.textContent=L.every(h=>h.classList.contains('open'))?'Hide all details':'Show all details';}
+function hqWire(){const P=el('p-home'); if(!P)return;
+ P.querySelectorAll('.hq').forEach(h=>{
+  if(!h.querySelector('.qtg'))h.querySelector('.qb').insertAdjacentHTML('afterend','<span class="qtg"><span class="qtl">Show details</span>'+HQ_CHEV+'</span>');
+  hqSet(h,h.classList.contains('open'));
+  const tg=ev=>{if(ev&&ev.target&&ev.target.closest('.qf,.halarm,.qgo'))return; hqSet(h,!h.classList.contains('open')); hqAllSync();};
+  h.onclick=tg; h.onkeydown=ev=>{if(ev.target!==h)return; if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();hqSet(h,!h.classList.contains('open'));hqAllSync();}};
+  const g=h.querySelector('.qgo'); if(g){g.setAttribute('role','button'); g.tabIndex=0; g.onclick=ev=>{ev.stopPropagation();setTab(h.dataset.go);}; g.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();ev.stopPropagation();setTab(h.dataset.go);}};}
+  h.querySelectorAll('[data-hgo]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();setTab(b.dataset.hgo);});});
+ const a=el('hQall'); if(a)a.onclick=ev=>{ev.stopPropagation(); const L=[...P.querySelectorAll('.hq')], open=!L.every(h=>h.classList.contains('open')); L.forEach(h=>hqSet(h,open)); hqAllSync();};
+ hqAllSync();}
+{const _q=renderHomeQ; renderHomeQ=function(){_q(); try{hqWire();}catch(e){console.warn('hq wire',e);}};}
 
 kxInit();
 setTab((location.hash||'').replace('#','')||'home');
