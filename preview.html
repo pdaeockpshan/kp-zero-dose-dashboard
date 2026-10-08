@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 08-Oct-2026 10:22</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 07-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 08-Oct-2026 10:28</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -677,7 +677,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 08-Oct-2026 10:22</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 08-Oct-2026 10:28</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -4589,7 +4589,7 @@ function actSlide(s,R,K,brief){
  const hd=['District','UC','Action','Responsible'].concat(VSHOWN?['Name']:[]).concat(['Due','Status']);
  const cw=VSHOWN?[1.15,1.75,3.75,1.6,1.35,1.1,1.6]:[1.2,1.95,4.6,1.85,1.2,1.5];
  const tc=VSHOWN?[13,brief?52:46,20,16]:[13,brief?62:56,22];
- const data=rows.map(r=>{const st=r.od?'Overdue':r.status; const a=[cut(r.area,tc[0]),cut(atUCtxt(r,2),26),cut(r.text,tc[1]),cut(r.role,tc[2])]; if(VSHOWN)a.push(cut(r.owner||'–',tc[3])); a.push(r.due?atDt(r.due):'–', brief?{t:st,c:r.od||r.status==='Blocked'?['FEE2E2','991B1B']:r.status==='Done'?['DCFCE7','166534']:r.status==='In progress'?['E0F2FE','075985']:null,b:r.od}:st); return a;});
+ const data=rows.map(r=>{const st=r.od?'Overdue':r.status; const a=[cut(r.area,tc[0]),cut(atUCtxt(r,1),28),cut(r.text,tc[1]),cut(r.role,tc[2])]; if(VSHOWN)a.push(cut(r.owner||'–',tc[3])); a.push(r.due?atDt(r.due):'–', brief?{t:st,c:r.od||r.status==='Blocked'?['FEE2E2','991B1B']:r.status==='Done'?['DCFCE7','166534']:r.status==='In progress'?['E0F2FE','075985']:null,b:r.od}:st); return a;});
  s.addText('Actions to follow up (overdue and open first)',{x:0.5,y:2.9,w:12.3,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
  table(s,hd,data,brief?{x:0.5,y:3.28,w:12.3,colW:cw,col:TL,fs:9,rh:0.3,empty:'No actions for this area.'}:{x:0.5,y:3.28,w:12.3,colW:cw,col:TL});
  note(s,(S.asg?'':'No owners or due dates recorded yet: fill them in on the Action tracker page, or use this slide to agree them in the meeting. ')+'Status as saved in the dashboard on this computer ('+atDt(atToday())+').',{x:0.5,y:6.55,w:12.3,h:0.35,fs:8});
