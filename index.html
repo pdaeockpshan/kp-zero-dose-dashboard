@@ -301,6 +301,10 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hmtabs button.on b{background:#fff;color:var(--mc)}
 .hmant{display:none;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--color-text-secondary)}
 .hmant.on{display:inline-flex}
+.hmcamp{display:none;align-items:center;gap:10px;width:100%;flex-wrap:wrap}
+.hmcamp.on{display:flex}
+.hmcamp .hmclab{font-size:12.5px;font-weight:700;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px}
+#hMC{font:13.5px var(--font-sans);padding:7px 10px;border-radius:10px;border:1px solid var(--color-border);background:#fff;min-width:220px;max-width:100%}
 .hmant select{font:13px var(--font-sans);padding:5px 8px;border:1px solid var(--color-border);border-radius:6px;background:#fff}
 .hmbody{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,1fr);gap:18px;align-items:start}
 .hmsvg{position:relative}
@@ -712,7 +716,7 @@ body.home .hdr, body.home .content .topbar{display:none}
  <div class="hmap">
   <div class="hmtop">
    <div class="hmsel"><label>Indicator <select id="hMSel" aria-label="Map indicator"></select></label><label class="hmchk"><input type="checkbox" id="hMLb" checked> District names</label><button class="hmbtn" id="hMDl" title="Save the map with its title and legend as a PNG image for slides"><span data-ic="download"></span>Download map (PNG)</button></div>
-   <div class="hmtabs" id="hMT">
+   <div class="hmcamp" id="hMCw"><label class="hmclab">Campaign <select id="hMC" aria-label="Map campaign"></select></label></div><div class="hmtabs" id="hMT">
     <button data-m="cov" style="--mc:#0f766e"><b>1</b>ZD covered</button>
     <button data-m="dig" style="--mc:#6d28d9"><b>2</b>Digitized</button>
     <button data-m="vac" style="--mc:#15803d"><b>3</b>Validated</button>
@@ -3394,20 +3398,24 @@ el('btnReset').onclick=()=>{[fDiv,fDist,fTeh,fBand,fTr,fPri,fZT,fVC,q].forEach(x
 
 
 // ---------- Home: district map with indicator switch ----------
-let HMM='cov', HMA=null;
+let HMM='cov', HMA=null, HMCamp={cov:null,dig:null,vac:null};
 const HMC={g:'#16a34a',a:'#d97706',r:'#dc2626',o:'#7c3aed',n:'#d1d5db'};
 const HMDEF={cov:{l:'ZD covered by next round',ty:'cov',go:'zov'},dig:{l:'Linelist digitized in IDIMS',ty:'dig',go:'overview'},vac:{l:'Validated as vaccinated',ty:'vac',go:'vsum'},afp:{l:'Zero-dose AFP cases',ty:null,go:'afp'},risk:{l:'Combined UC risk score',ty:null,go:'risk'},watch:{l:'Polio risk watch list',ty:null,go:'watch'},epi:{l:'Routine coverage',ty:'ri',go:'eov'}};
 const hmBand=(ty,p)=>{if(p==null)return 'n';const t=RT[ty];if(p>110)return 'o';return p>=t[0]?'g':p>=t[1]?'a':'r';};
 function hmData(m){
  const o={};
- if(m==='cov'){const cK=ZD.some(r=>r.cM!=null)?'M':'A';
+ if(m==='cov'){const cK=HMCamp.cov||(ZD.some(r=>r.cM!=null)?'M':'A');
   groupBy(ZD,'d').forEach(x=>{o[x.k]={p:x['p'+cK],s:x['p'+cK]==null?'No coverage reported':`${fmt(x['c'+cK])} covered of ${fmt(x['rc'+cK])} reported · ${CAMP[cK]}`};});}
- else if(m==='dig'){const G={};DATA.forEach(r=>{const g=G[r.d]=G[r.d]||{r:0,l:0,u:0};g.r+=r.rep;g.l+=r.ll;g.u++;});
+ else if(m==='dig'){const useS=(HMCamp.dig||'S')!=='M';const G={};DATA.forEach(r=>{const g=G[r.d]=G[r.d]||{r:0,l:0,u:0};g.r+=useS?r.rep:(r.rp||0);g.l+=useS?r.ll:(r.lp||0);g.u++;});
   Object.entries(G).forEach(([k,g])=>{o[k]={p:g.r?g.l/g.r*100:null,s:`${fmt(g.l)} entered of ${fmt(g.r)} reported · ${g.u} UCs`};});}
- else if(m==='vac'){groupV(VAL,'d').forEach(x=>{o[x.k]={p:x.p,s:`${fmt(x.vy)} of ${fmt(x.n)} validated children vaccinated · ${fmt(x.vn)} not`};});}
+ else if(m==='vac'){groupV(HMCamp.vac?VAL.filter(r=>r.cp===HMCamp.vac):VAL,'d').forEach(x=>{o[x.k]={p:x.p,s:`${fmt(x.vy)} of ${fmt(x.n)} validated children vaccinated · ${fmt(x.vn)} not`};});}
  else {const a=EAGK[HMA]||EAG[0]; if(a)groupE(EPI,'d').forEach(x=>{o[x.k]={p:x['p_'+a.k],s:`${fmt(x[a.k])} doses of ${fmt(eTg(x,a))} ${a.t==='n'?'newborns':'surviving infants'} · ${EMETA.per||''}`};});}
  return o;
 }
+function hmCampOpts(){if(HMM==='cov'){const o=[];if(ZD.some(r=>r.cA!=null))o.push(['A',CAMP.A]);if(ZD.some(r=>r.cM!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='dig'){const o=[['S',CAMP.S]];if(DATA.some(r=>r.rp!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='vac'){return [['','All campaigns']].concat(VCAMP.map(c=>[c.l,c.l]));}return null;}
+function hmCampDefault(m){const o=hmCampOpts();if(!o||!o.length)return null;const cur=HMCamp[m];if(cur!=null&&o.some(x=>x[0]===cur))return cur;if(m==='cov')return ZD.some(r=>r.cM!=null)?'M':o[0][0];if(m==='dig')return 'S';if(m==='vac')return '';return o[0][0];}
+function hmCampLabel(){const m=HMM,k=HMCamp[m];if(m==='cov'||m==='dig')return CAMP[k]||'';if(m==='vac')return k?k:'All campaigns';return '';}
+function renderHMC(){const w=el('hMCw'),c=el('hMC');if(!w||!c)return;const o=hmCampOpts();if(!o||!o.length){w.classList.remove('on');return;}const cur=hmCampDefault(HMM);HMCamp[HMM]=cur;if(!c.onchange)c.onchange=()=>{HMCamp[HMM]=c.value;renderHomeMap();};c.innerHTML=o.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('');c.value=cur;w.classList.add('on');}
 function hmGo(d){
  const m=HMDEF[HMM]; if(HMM==='epi'&&HMA)EA=HMA;
  setTab(m.go); fDiv.value=''; fDist.value=d; fTeh.value=''; q.value=''; cascade(); if(fDist.value!==d){fDist.value='';} render();
@@ -3426,7 +3434,7 @@ function renderHomeMap(){
  if(HMM==='mis'){hmMis();return;}
  if(HMM==='surv'){hmSurv();return;}
  const def=HMDEF[HMM], ty=def.ty, t=RT[ty], V=hmData(HMM), cnt={g:0,a:0,r:0,o:0,n:0};
- const lab=HMM==='epi'?((EAGK[HMA]||{}).l||'Routine')+' coverage':def.l;
+ const lab=(HMM==='epi'?((EAGK[HMA]||{}).l||'Routine')+' coverage':def.l)+(hmCampLabel()?' · '+hmCampLabel():'');
  const svg=el('hMap'), tip=el('hMTip');
  svg.querySelectorAll('path').forEach(pa=>{const d=pa.dataset.d, x=V[d], p=x?x.p:null, b=hmBand(ty,p); cnt[b]++;
   pa.style.fill=HMC[b]; pa.classList.toggle('nd',p==null);
@@ -4894,7 +4902,7 @@ const HMNEW={
    title:`Sewage samples positive for poliovirus · ${yr}<small>Environmental surveillance, district sites · as of ${esc(WMETA.es_asof||'')}</small>`,legend:[['g','No positive sample'],['a','Under 20% positive'],['r','20% or more positive'],['n','No sewage site']],listTitle:'Most positive samples',
    list:Object.keys(ESD).filter(d=>E(d)&&E(d)[0]).sort((a,b)=>E(b)[1]/E(b)[0]-E(a)[1]/E(a)[0]).map(d=>{const x=E(d);return [d,x[1]+'/'+x[0],x[1]===0?'g':x[1]/x[0]<0.2?'a':'r'];})});}
 };
-{const _rhm=renderHomeMap; renderHomeMap=function(){ if(!el('hMap'))return; hmSelInit();
+{const _rhm=renderHomeMap; renderHomeMap=function(){ if(!el('hMap'))return; hmSelInit(); renderHMC();
  if(HMNEW[HMM]){const g0=el('hMap').querySelector('#hMk'); if(g0)g0.remove(); try{el('hMAw').classList.remove('on');el('hMFw').classList.remove('on');}catch(e){} HMNEW[HMM]();} else _rhm();
  hmSelSync(); hmLabels();};}
 function cvWrap(x,t,X,Y,w,lh){const ws=String(t).split(/\s+/); let ln='', y=Y; ws.forEach(wd=>{const tt=ln?ln+' '+wd:wd; if(x.measureText(tt).width>w&&ln){x.fillText(ln,X,y);ln=wd;y+=lh;} else ln=tt;}); if(ln)x.fillText(ln,X,y); return y+lh;}
