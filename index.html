@@ -305,6 +305,25 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hmcamp.on{display:flex}
 .hmcamp .hmclab{font-size:12.5px;font-weight:700;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px}
 #hMC{font:13.5px var(--font-sans);padding:7px 10px;border-radius:10px;border:1px solid var(--color-border);background:#fff;min-width:220px;max-width:100%}
+.hmcwrap{position:relative;display:inline-block}
+.hmcbtn{display:inline-flex;align-items:center;gap:8px;justify-content:space-between;font:600 13.5px var(--font-sans);padding:7px 12px;border-radius:10px;border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;min-width:220px;max-width:100%}
+.hmcbtn:hover{border-color:var(--color-primary);background:#f8fafc}
+.hmcbtn svg{flex:none;opacity:.6}
+.hmcpop{position:absolute;z-index:60;top:calc(100% + 6px);left:0;min-width:264px;max-width:330px;background:#fff;border:1px solid var(--color-border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.16);padding:8px;max-height:340px;overflow:auto}
+.hmcpop[hidden]{display:none}
+.hmcacts{display:flex;gap:6px;padding:2px 4px 8px;border-bottom:1px solid var(--color-border-light);margin-bottom:6px}
+.hmcacts button{flex:1;font:600 12px var(--font-sans);padding:6px 8px;border-radius:8px;border:1px solid var(--color-border);background:#f8fafc;color:var(--color-text-secondary);cursor:pointer}
+.hmcacts button:hover{background:#eef2f7;color:var(--color-text)}
+.hmcopt{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:8px;font-size:13px;color:var(--color-text);cursor:pointer}
+.hmcopt:hover{background:#f1f5f9}
+.hmcopt input{width:16px;height:16px;accent-color:var(--color-primary);cursor:pointer;flex:none}
+.hmcopt span{flex:1}
+.nsyears{display:flex;gap:6px;flex-wrap:wrap}
+.nsy{display:inline-flex;align-items:center;gap:6px;font:600 12.5px var(--font-sans);padding:5px 11px;border-radius:16px;border:1px solid var(--color-border);background:#fff;color:var(--color-text-secondary);cursor:pointer}
+.nsy b{font-size:11px;background:#fee2e2;color:#b91c1c;border-radius:8px;padding:0 6px}
+.nsy:hover{border-color:#b91c1c;color:#b91c1c}
+.nsy.on{background:#b91c1c;border-color:#b91c1c;color:#fff}
+.nsy.on b{background:rgba(255,255,255,.25);color:#fff}
 .hmant select{font:13px var(--font-sans);padding:5px 8px;border:1px solid var(--color-border);border-radius:6px;background:#fff}
 .hmbody{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,1fr);gap:18px;align-items:start}
 .hmsvg{position:relative}
@@ -716,7 +735,7 @@ body.home .hdr, body.home .content .topbar{display:none}
  <div class="hmap">
   <div class="hmtop">
    <div class="hmsel"><label>Indicator <select id="hMSel" aria-label="Map indicator"></select></label><label class="hmchk"><input type="checkbox" id="hMLb" checked> District names</label><button class="hmbtn" id="hMDl" title="Save the map with its title and legend as a PNG image for slides"><span data-ic="download"></span>Download map (PNG)</button></div>
-   <div class="hmcamp" id="hMCw"><label class="hmclab">Campaign <select id="hMC" aria-label="Map campaign"></select></label></div><div class="hmtabs" id="hMT">
+   <div class="hmcamp" id="hMCw"><div class="hmclab">Campaign <div class="hmcwrap"><button type="button" class="hmcbtn" id="hMC" aria-haspopup="true" aria-expanded="false" aria-label="Map campaign"><span id="hMCt">–</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="hMCp" hidden></div></div></div></div><div class="hmtabs" id="hMT">
     <button data-m="cov" style="--mc:#0f766e"><b>1</b>ZD covered</button>
     <button data-m="dig" style="--mc:#6d28d9"><b>2</b>Digitized</button>
     <button data-m="vac" style="--mc:#15803d"><b>3</b>Validated</button>
@@ -1445,7 +1464,16 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hhd"><span class="hn">8</span><span class="ht">Polio risk watch list</span><span class="cnt" id="hW8s" style="font-size:12px;color:var(--color-text-secondary)"></span><span class="hmore">Details →</span></div>
    <div class="hbody"><div class="hbig hbw" id="hW8n"></div><div class="hfacts" id="hF8"></div><div class="hrtop" id="hW8t"></div></div>
    <div class="halarm" id="hA8"></div>
-  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: surveillance</h3><span class="cnt" id="cntSTri"></span><span style="flex:1"></span><button class="btn" id="btnSTricsv">Download (CSV)</button></div><div class="cap" id="capSTri" style="margin-top:0">AFP reporting, sewage results, polio cases and zero-dose AFP cases compared district by district. A flag shows where they point in different directions (for example virus in sewage where AFP reporting is weak).</div><div class="scroll"><table id="tSTri"></table></div></div>
+  </div></div><div class="card" id="nsurvCard">
+   <div class="tblhdr"><h3 style="margin:0">Polio cases: trend, district spread &amp; case profile</h3><span class="cnt" id="nsurvCnt"></span><span style="flex:1"></span><div class="nsyears" id="nsYears"></div><button class="btn" id="btnNScsv">Download (CSV)</button></div>
+   <div class="cap" id="nsCap" style="margin-top:0">Confirmed WPV1 cases in KP by year of onset, and how each year's cases spread across districts. Pick a year to focus the district chart, the case-profile table and the trend highlight. Cases and districts are drawn live from the EOC line list of WPVs; the case-profile columns are the EOC "Key Social Characteristics" summary.</div>
+   <div class="grid2">
+    <div><div id="cNsTrend" class="ch"></div><div class="cap" id="capNsTrend"></div></div>
+    <div><div id="cNsDist" class="ch"></div><div class="cap" id="capNsDist"></div></div>
+   </div>
+   <div class="scroll" style="margin-top:10px"><table id="tKSC"></table></div>
+   <div class="cap" id="capKSC"></div>
+  </div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: surveillance</h3><span class="cnt" id="cntSTri"></span><span style="flex:1"></span><button class="btn" id="btnSTricsv">Download (CSV)</button></div><div class="cap" id="capSTri" style="margin-top:0">AFP reporting, sewage results, polio cases and zero-dose AFP cases compared district by district. A flag shows where they point in different directions (for example virus in sewage where AFP reporting is weak).</div><div class="scroll"><table id="tSTri"></table></div></div>
 </section>
 
 <!-- ================= HUB: Zero Dose ================= -->
@@ -3403,19 +3431,46 @@ const HMC={g:'#16a34a',a:'#d97706',r:'#dc2626',o:'#7c3aed',n:'#d1d5db'};
 const HMDEF={cov:{l:'ZD covered by next round',ty:'cov',go:'zov'},dig:{l:'Linelist digitized in IDIMS',ty:'dig',go:'overview'},vac:{l:'Validated as vaccinated',ty:'vac',go:'vsum'},afp:{l:'Zero-dose AFP cases',ty:null,go:'afp'},risk:{l:'Combined UC risk score',ty:null,go:'risk'},watch:{l:'Polio risk watch list',ty:null,go:'watch'},epi:{l:'Routine coverage',ty:'ri',go:'eov'}};
 const hmBand=(ty,p)=>{if(p==null)return 'n';const t=RT[ty];if(p>110)return 'o';return p>=t[0]?'g':p>=t[1]?'a':'r';};
 function hmData(m){
- const o={};
- if(m==='cov'){const cK=HMCamp.cov||(ZD.some(r=>r.cM!=null)?'M':'A');
-  groupBy(ZD,'d').forEach(x=>{o[x.k]={p:x['p'+cK],s:x['p'+cK]==null?'No coverage reported':`${fmt(x['c'+cK])} covered of ${fmt(x['rc'+cK])} reported · ${CAMP[cK]}`};});}
- else if(m==='dig'){const useS=(HMCamp.dig||'S')!=='M';const G={};DATA.forEach(r=>{const g=G[r.d]=G[r.d]||{r:0,l:0,u:0};g.r+=useS?r.rep:(r.rp||0);g.l+=useS?r.ll:(r.lp||0);g.u++;});
-  Object.entries(G).forEach(([k,g])=>{o[k]={p:g.r?g.l/g.r*100:null,s:`${fmt(g.l)} entered of ${fmt(g.r)} reported · ${g.u} UCs`};});}
- else if(m==='vac'){groupV(HMCamp.vac?VAL.filter(r=>r.cp===HMCamp.vac):VAL,'d').forEach(x=>{o[x.k]={p:x.p,s:`${fmt(x.vy)} of ${fmt(x.n)} validated children vaccinated · ${fmt(x.vn)} not`};});}
+ const o={}, sel=Array.isArray(HMCamp[m])?HMCamp[m]:[];
+ if(m==='cov'){const ks=sel.filter(k=>k==='A'||k==='M');
+  groupBy(ZD,'d').forEach(x=>{let cov=0,rep=0,any=false;ks.forEach(k=>{if(x['p'+k]!=null){any=true;cov+=x['c'+k]||0;rep+=x['rc'+k]||0;}});
+   const p=any&&rep?cov/rep*100:null, k0=ks[0];
+   o[x.k]={p,s:!any?'No coverage reported':(ks.length>1?`${fmt(cov)} covered of ${fmt(rep)} reported · ${ks.length} campaigns combined`:`${fmt(x['c'+k0])} covered of ${fmt(x['rc'+k0])} reported · ${CAMP[k0]}`)};});}
+ else if(m==='dig'){const ks=sel.filter(k=>k==='S'||k==='M');const G={};
+  DATA.forEach(r=>{const g=G[r.d]=G[r.d]||{r:0,l:0,u:0};ks.forEach(k=>{if(k==='S'){g.r+=r.rep||0;g.l+=r.ll||0;}else{g.r+=r.rp||0;g.l+=r.lp||0;}});g.u++;});
+  Object.entries(G).forEach(([k,g])=>{o[k]={p:g.r?g.l/g.r*100:null,s:`${fmt(g.l)} entered of ${fmt(g.r)} reported · ${g.u} UCs${ks.length>1?' · combined':''}`};});}
+ else if(m==='vac'){const set=new Set(sel);const rows=set.size?VAL.filter(r=>set.has(r.cp)):VAL;
+  groupV(rows,'d').forEach(x=>{o[x.k]={p:x.p,s:`${fmt(x.vy)} of ${fmt(x.n)} validated children vaccinated · ${fmt(x.vn)} not`};});}
  else {const a=EAGK[HMA]||EAG[0]; if(a)groupE(EPI,'d').forEach(x=>{o[x.k]={p:x['p_'+a.k],s:`${fmt(x[a.k])} doses of ${fmt(eTg(x,a))} ${a.t==='n'?'newborns':'surviving infants'} · ${EMETA.per||''}`};});}
  return o;
 }
-function hmCampOpts(){if(HMM==='cov'){const o=[];if(ZD.some(r=>r.cA!=null))o.push(['A',CAMP.A]);if(ZD.some(r=>r.cM!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='dig'){const o=[['S',CAMP.S]];if(DATA.some(r=>r.rp!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='vac'){return [['','All campaigns']].concat(VCAMP.map(c=>[c.l,c.l]));}return null;}
-function hmCampDefault(m){const o=hmCampOpts();if(!o||!o.length)return null;const cur=HMCamp[m];if(cur!=null&&o.some(x=>x[0]===cur))return cur;if(m==='cov')return ZD.some(r=>r.cM!=null)?'M':o[0][0];if(m==='dig')return 'S';if(m==='vac')return '';return o[0][0];}
-function hmCampLabel(){const m=HMM,k=HMCamp[m];if(m==='cov'||m==='dig')return CAMP[k]||'';if(m==='vac')return k?k:'All campaigns';return '';}
-function renderHMC(){const w=el('hMCw'),c=el('hMC');if(!w||!c)return;const o=hmCampOpts();if(!o||!o.length){w.classList.remove('on');return;}const cur=hmCampDefault(HMM);HMCamp[HMM]=cur;if(!c.onchange)c.onchange=()=>{HMCamp[HMM]=c.value;renderHomeMap();};c.innerHTML=o.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('');c.value=cur;w.classList.add('on');}
+function hmCampOpts(){if(HMM==='cov'){const o=[];if(ZD.some(r=>r.cA!=null))o.push(['A',CAMP.A]);if(ZD.some(r=>r.cM!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='dig'){const o=[['S',CAMP.S]];if(DATA.some(r=>r.rp!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='vac'){return VCAMP.map(c=>[c.l,c.l]);}return null;}
+function hmCampDefault(m){const o=hmCampOpts();if(!o||!o.length)return null;const cur=HMCamp[m];
+ if(Array.isArray(cur)&&cur.length&&cur.every(k=>o.some(x=>x[0]===k)))return cur.slice();
+ if(m==='cov')return [ZD.some(r=>r.cM!=null)?'M':'A'];if(m==='dig')return ['S'];if(m==='vac')return o.map(x=>x[0]);return [o[0][0]];}
+function hmCampLabelText(k,o){if(!Array.isArray(k)||!k.length)return '–';const m=HMM;
+ if(o&&o.length>1&&k.length===o.length)return 'Combined (all '+o.length+')';
+ const names=k.map(x=>(m==='cov'||m==='dig')?(CAMP[x]||x):x);
+ if(names.length>2)return names.length+' campaigns combined';return names.join(' + ');}
+function hmCampLabel(){const k=HMCamp[HMM];if(!Array.isArray(k)||!k.length)return '';const o=hmCampOpts()||[];
+ if(o.length>1&&k.length===o.length)return 'Combined (all campaigns)';
+ const names=k.map(x=>(HMM==='cov'||HMM==='dig')?(CAMP[x]||x):x);return names.join(' + ');}
+function renderHMC(){const w=el('hMCw'),b=el('hMC'),p=el('hMCp'),t=el('hMCt');if(!w||!b||!p||!t)return;
+ const o=hmCampOpts();if(!o||!o.length){w.classList.remove('on');return;}
+ const cur=hmCampDefault(HMM);HMCamp[HMM]=cur;const set=new Set(cur),multi=o.length>1;
+ t.textContent=hmCampLabelText(cur,o);
+ p.innerHTML=(multi?'<div class="hmcacts"><button type="button" data-a="all">All (combined)</button><button type="button" data-a="none">Clear</button></div>':'')+
+  o.map(x=>'<label class="hmcopt"><input type="checkbox" value="'+esc(x[0])+'"'+(set.has(x[0])?' checked':'')+'><span>'+esc(x[1])+'</span></label>').join('');
+ const sync=()=>{let ks=[...p.querySelectorAll('input:checked')].map(i=>i.value);
+  if(!ks.length){ks=o.map(x=>x[0]);p.querySelectorAll('input').forEach(i=>i.checked=true);}
+  HMCamp[HMM]=ks;t.textContent=hmCampLabelText(ks,o);renderHomeMap();};
+ p.querySelectorAll('input').forEach(i=>i.onchange=sync);
+ p.querySelectorAll('.hmcacts button').forEach(btn=>btn.onclick=()=>{const all=btn.dataset.a==='all';p.querySelectorAll('input').forEach(i=>i.checked=all);sync();});
+ if(!b._wired){b._wired=true;
+  b.onclick=e=>{e.stopPropagation();const open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',String(!open));};
+  p.addEventListener('click',e=>e.stopPropagation());
+  document.addEventListener('click',e=>{if(!w.contains(e.target)){p.hidden=true;b.setAttribute('aria-expanded','false');}});}
+ w.classList.add('on');}
 function hmGo(d){
  const m=HMDEF[HMM]; if(HMM==='epi'&&HMA)EA=HMA;
  setTab(m.go); fDiv.value=''; fDist.value=d; fTeh.value=''; q.value=''; cascade(); if(fDist.value!==d){fDist.value='';} render();
@@ -4790,7 +4845,54 @@ function renderHSurv(){ hubCards('p-hsurv'); const R=survTri(), yr=(WMETA.es_yea
  el('cntSTri').textContent=R.length+' districts';
  drawTable('tSTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'r26',l:'AFP rate /100k',n:1,f:x=>x.r26==null?'–':`<span class="rg ${x.band}">${x.r26.toFixed(1)}</span>`},{k:'rel',l:'% of KP median',n:1,f:x=>x.rel==null?'–':Math.round(x.rel)+'%'},
   {k:'pos',l:'Sewage +ve '+yr,n:1,f:x=>x.smp==null?'No site':x.pos+' of '+x.smp},{k:'w',l:'Polio cases',n:1},{k:'zd',l:'ZD AFP cases',n:1,f:x=>x.zd+(x.zs!=null?' ('+pc(x.zs)+')':'')},{k:'wr',l:'Watch rank',n:1,sv:x=>x.wr||99,f:x=>x.wr?(x.ww?'<b>'+x.wr+'</b>':x.wr):'–'},{k:'F',l:'What disagrees',ns:1,f:x=>triCell(x.F)}],R,'d',1);
- el('btnSTricsv').onclick=()=>cqCSV('Surveillance_triangulation',['District','Division','AFP rate per 100k','% of KP median','Sewage positive','Sewage samples','Polio cases','ZD AFP cases','Watch rank','Flags'],R.map(x=>[x.d,x.dv,rnd(x.r26),rnd(x.rel,0),x.pos,x.smp,x.w,x.zd,x.wr,x.F.map(f=>f[0]).join('; ')]));}
+ el('btnSTricsv').onclick=()=>cqCSV('Surveillance_triangulation',['District','Division','AFP rate per 100k','% of KP median','Sewage positive','Sewage samples','Polio cases','ZD AFP cases','Watch rank','Flags'],R.map(x=>[x.d,x.dv,rnd(x.r26),rnd(x.rel,0),x.pos,x.smp,x.w,x.zd,x.wr,x.F.map(f=>f[0]).join('; ')]));
+ try{renderNSurv();}catch(e){console.warn('neoc surv',e);}}
+// ---------- NEOC surveillance: polio case trend, district spread, key social characteristics ----------
+// Case-profile source: EOC portal Statistics page (KP,KPTD), "Key Social Characteristics, Polio Cases" table, read 2026-10-09.
+// Gender / age / zero-routine-dose / refusal / language are hand-curated (not in the injected line list); case & district counts cross-check wpvByYear() below.
+const KSOC=[
+ {y:2023,dist:2,cases:4,m:3,f:1,lt2:2,zrd:3,ref:1,pas:4},
+ {y:2024,dist:6,cases:22,m:8,f:14,lt2:9,zrd:0,ref:1,pas:22},
+ {y:2025,dist:7,cases:20,m:9,f:11,lt2:13,zrd:0,ref:4,pas:19},
+ {y:2026,dist:3,cases:5,m:2,f:3,lt2:3,zrd:0,ref:0,pas:5}
+];
+let NSY=null; const NSPAL=['#b91c1c','#dc2626','#ef4444','#f87171','#fca5a5','#fecaca'];
+function wpvByYear(){const Y={};WPVH.forEach(x=>{const y=+String(x.on).slice(0,4);const e=Y[y]=Y[y]||{n:0,d:{}};e.n++;e.d[x.d]=(e.d[x.d]||0)+1;});return Y;}
+function renderNSurv(){
+ if(!el('cNsTrend'))return;
+ const Y=wpvByYear(), years=Object.keys(Y).map(Number).filter(y=>y>=2019).sort();
+ if(!years.length)return;
+ if(NSY==null||years.indexOf(NSY)<0)NSY=years[years.length-1];
+ const cases=years.map(y=>Y[y].n), dists=years.map(y=>Object.keys(Y[y].d).length), tot=cases.reduce((a,b)=>a+b,0);
+ el('nsYears').innerHTML=years.map(y=>`<button type="button" class="nsy${y===NSY?' on':''}" data-y="${y}">${y}<b>${Y[y].n}</b></button>`).join('');
+ el('nsYears').querySelectorAll('button').forEach(b=>b.onclick=()=>{NSY=+b.dataset.y;renderNSurv();});
+ el('nsurvCnt').textContent=`${NSY} focused · ${tot} cases since ${years[0]}`;
+ HC('cNsTrend',{chart:{height:280},title:{text:'WPV1 cases by year of onset (KP)'},subtitle:{text:'Bars = cases · line = infected districts · click a bar to focus that year'},
+  xAxis:{categories:years.map(String)},
+  yAxis:[{title:{text:'Cases'},allowDecimals:false},{title:{text:'Districts'},opposite:true,allowDecimals:false,min:0,gridLineWidth:0}],
+  tooltip:{shared:true},
+  plotOptions:{column:{borderRadius:3,cursor:'pointer',point:{events:{click:function(){NSY=years[this.index];renderNSurv();}}}}},
+  series:[{type:'column',name:'WPV1 cases',data:years.map((y,i)=>({y:cases[i],color:y===NSY?'#7f1d1d':'#f0a3a3'})),dataLabels:{...dl,format:'{y}'}},
+   {type:'line',name:'Infected districts',yAxis:1,color:'#4338ca',marker:{radius:4},data:dists}]});
+ el('capNsTrend').textContent=`${NSY}: ${Y[NSY].n} confirmed WPV1 case${Y[NSY].n===1?'':'s'} across ${Object.keys(Y[NSY].d).length} district${Object.keys(Y[NSY].d).length===1?'':'s'}.`;
+ const dd=Object.entries(Y[NSY].d).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+ HC('cNsDist',{chart:{type:'bar',height:Math.max(200,dd.length*34+90)},title:{text:NSY+' cases by district'},subtitle:{text:dd.length?'Click a bar to open that district\'s AFP & polio page':'No confirmed case in '+NSY},
+  xAxis:{categories:dd.map(x=>x[0]),labels:{style:{fontSize:'11px'}}},
+  yAxis:{title:{text:'Cases'},allowDecimals:false,min:0},
+  legend:{enabled:false},
+  tooltip:{headerFormat:'<b>{point.key}</b><br>',pointFormat:'{point.y} case{point.y:s}'},
+  plotOptions:{bar:{borderRadius:3,cursor:'pointer',point:{events:{click:function(){const d=dd[this.index][0];setTab('afp');fDiv.value='';fDist.value=d;fTeh.value='';q.value='';cascade();if(fDist.value!==d)fDist.value='';render();}}}},
+   series:{dataLabels:{enabled:true,format:'{y}',style:{textOutline:'none',fontWeight:'600',color:'#334155'}}}},
+  series:[{name:'Cases',data:dd.map((x,i)=>({name:x[0],y:x[1],color:NSPAL[i%NSPAL.length]}))}]});
+ el('capNsDist').textContent=dd.length?`Districts with a confirmed WPV1 case in ${NSY}.`:`No confirmed WPV1 case was recorded in KP in ${NSY}.`;
+ drawTable('tKSC',[
+  {k:'y',l:'Year',f:x=>`<b${x.y===NSY?' style="color:#b91c1c"':''}>${x.y}</b>`},
+  {k:'dist',l:'Infected districts',n:1},{k:'cases',l:'WPV cases',n:1,f:x=>`<b>${x.cases}</b>`},
+  {k:'m',l:'Male',n:1},{k:'f',l:'Female',n:1},{k:'lt2',l:'Age &lt;2 yr',n:1},
+  {k:'zrd',l:'Zero routine dose',n:1},{k:'ref',l:'Refusal',n:1},{k:'pas',l:'Pashto speaking',n:1}
+ ],KSOC.slice().sort((a,b)=>b.y-a.y),'y',-1);
+ el('capKSC').textContent='Key social characteristics of confirmed cases (EOC portal, KP & KPTD). "Zero routine dose" = the child had received no routine vaccine; "Refusal" = the household had refused polio vaccine before the case.';
+ el('btnNScsv').onclick=()=>cqCSV('Polio_cases_key_social_characteristics',['Year','Infected districts','WPV cases','Male','Female','Age <2 yr','Zero routine dose','Refusal','Pashto speaking'],KSOC.map(x=>[x.y,x.dist,x.cases,x.m,x.f,x.lt2,x.zrd,x.ref,x.pas]));}
 // ---------- Zero dose hub ----------
 function zdTri(){const inD=crInD(), cK=ZD.some(r=>r.cM!=null)?'M':'A', Z=groupBy(ZD,'d'), DG={}, VV={}, AF={};
  DATA.forEach(r=>{const g=DG[r.d]=DG[r.d]||{r:0,l:0};g.r+=r.rep||0;g.l+=r.ll||0;});
