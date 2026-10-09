@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 09-Oct-2026 17:32</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Aug 2026 · Last updated 09-Oct-2026 17:42</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -633,7 +633,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hq .qn svg{flex:none;width:17px;height:17px}
 .hq .qn .qst{margin-left:auto;font-weight:700;font-size:10.5px;letter-spacing:.06em;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.18)}
 .hq h3{color:color-mix(in srgb,var(--qc) 55%,#111827)}
-.hq .qwm{position:absolute;right:-8px;bottom:-12px;width:104px;height:104px;color:var(--qc);opacity:.08;pointer-events:none}
+.hq .qwm{position:absolute;right:-8px;bottom:-12px;width:104px;height:104px;color:var(--qc);opacity:.06;pointer-events:none}
 .hq .qwm svg{width:100%;height:100%}
 .hq .qgo{background:color-mix(in srgb,var(--qc) 8%,#fff)}
 .hqleg{display:flex;flex-wrap:wrap;gap:6px 14px;margin:2px 0 8px;font-size:12px;color:var(--color-text-secondary)}
@@ -726,7 +726,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 09-Oct-2026 17:32</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
+   <div class="hchips"><span>Updated 09-Oct-2026 17:42</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>EPI Jan 2026 – Aug 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -5746,9 +5746,10 @@ function nsSlide(pptx,s,inS,kp,K){
  kpis(s,[{l:'Cases '+cy,v:String(n(cy)),vc:n(cy)?RED:'15803D',s:n(cy)?nd(cy)+' infected district'+(nd(cy)===1?'':'s'):'no case this year'},
   {l:'Cases '+py,v:String(n(py)),s:nd(py)+' district'+(nd(py)===1?'':'s')},{l:'Since '+yrs[0],v:String(tot),s:'confirmed WPV1 cases'},
   {l:'Peak year',v:n(pk)?String(pk):'–',s:n(pk)?n(pk)+' cases':''},{l:'Last onset',v:last?_moL(last.slice(0,7)):'–',vc:last&&String(last).slice(0,4)==String(cy)?RED:null,s:'month of paralysis onset'}],RED,1.4);
- s.addText('WPV1 cases and infected districts by year',{x:0.5,y:2.9,w:6.3,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
- s.addChart(pptx.ChartType.bar,[{name:'WPV1 cases',labels:yrs.map(String),values:yrs.map(n)},{name:'Infected districts',labels:yrs.map(String),values:yrs.map(nd)}],
-  {x:0.5,y:3.25,w:6.3,h:3.25,barDir:'col',barGrouping:'clustered',barGapWidthPct:60,chartColors:['B91C1C','A5B4FC'],showLegend:true,legendPos:'b',legendFontSize:9,legendFontFace:F,
+ s.addText(new Set(WPVH.filter(inS).map(x=>x.d)).size<=1?'WPV1 cases by year of onset':'WPV1 cases and infected districts by year',{x:0.5,y:2.9,w:6.3,h:0.35,fontFace:F,fontSize:12,bold:true,color:TXT});
+ const one=new Set(WPVH.filter(inS).map(x=>x.d)).size<=1, ser=[{name:'WPV1 cases',labels:yrs.map(String),values:yrs.map(n)}].concat(one?[]:[{name:'Infected districts',labels:yrs.map(String),values:yrs.map(nd)}]);
+ s.addChart(pptx.ChartType.bar,ser,
+  {x:0.5,y:3.25,w:6.3,h:3.25,barDir:'col',barGrouping:'clustered',barGapWidthPct:60,chartColors:['B91C1C','A5B4FC'],showLegend:!one,legendPos:'b',legendFontSize:9,legendFontFace:F,
    showValue:true,dataLabelFontSize:9,dataLabelColor:'334155',dataLabelPosition:'outEnd',catAxisLabelFontSize:10,catAxisLabelFontFace:F,valAxisLabelFontSize:9,valAxisLabelFontFace:F,valAxisLabelColor:GRY,catAxisLabelColor:'374151',
    valGridLine:{color:'E5E7EB',size:0.5},showValAxisTitle:true,valAxisTitle:'Count',valAxisTitleFontSize:9,valAxisTitleColor:GRY});
  const th=(t,j)=>({text:t,options:{bold:true,color:'FFFFFF',fill:{color:RED},fontSize:9,align:j?'right':'left'}});
