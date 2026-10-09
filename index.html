@@ -2411,7 +2411,7 @@ function renderPresent(){
  el('pScope').innerHTML='Presentation scope: <b>'+esc(pptScope())+(q.value.trim()?' · search "'+esc(q.value.trim())+'"':'')+'</b>.';
  el('bP').textContent=pptCount()+' slides';
  syncBriefSelects();
- if(IN_FRAME&&!el('frameWarn'))el('p-present').insertAdjacentHTML('afterbegin','<div class="note" id="frameWarn"><b>Downloads may not work in this preview window.</b> Open the dashboard in Chrome or Edge to download presentations: <a class="lnk" href="https://kp-zero-dose-dashboard.netlify.app/#present" target="_blank" rel="noopener">kp-zero-dose-dashboard.netlify.app</a></div>');
+ if(IN_FRAME&&!el('frameWarn'))el('p-present').insertAdjacentHTML('afterbegin','<div class="note" id="frameWarn"><b>Downloads may not work in this preview window.</b> Open the dashboard in Chrome or Edge to download presentations: <a class="lnk" href="https://pdaeockpshan.github.io/kp-zero-dose-dashboard/#present" target="_blank" rel="noopener">pdaeockpshan.github.io/kp-zero-dose-dashboard</a></div>');
 }
 function collectDeckData(){
  const zR=ZD.filter(matchG), dR=DATA.filter(matchG), vR=VAL.filter(matchG), cR=VCHR.filter(matchG), L=lvlOf();
