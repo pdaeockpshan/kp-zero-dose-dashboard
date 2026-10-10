@@ -1,3 +1,4 @@
 KP Zero Dose dashboard
 Published build: 2026-10-10 (EPI routine-coverage updated to Jan-Sep 2026 year-to-date; Summary tab period label now Jan 2026 - Sep 2026; removed last hardcoded "Jan-Aug" so the Penta-3 criterion label follows the EPI period dynamically; public build is the sanitized variant, VSHOWN=false)
 Redeploy nudge: 2026-10-10 PKT (Summary EPI label fix)
+Timestamp refresh: 2026-10-10 20:26 PKT ("Updated" chip and "Last updated" header stamp set to 10-Oct-2026 20:26)
