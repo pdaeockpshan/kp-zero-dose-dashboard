@@ -4130,7 +4130,7 @@ function critConc(inS,m){
  it.sort((a,b)=>b.v-a.v); const tot=it.reduce((a,x)=>a+x.v,0); let cum=0,k50=null,k80=null;
  it.forEach((x,i)=>{cum+=x.v; x.cum=tot?cum/tot*100:0; if(k50==null&&tot&&cum>=tot*0.5)k50=i+1; if(k80==null&&tot&&cum>=tot*0.8)k80=i+1;});
  return {it,tot,n:it.length,k50,k80,nz:it.filter(x=>x.v>0).length};}
-const CRCM={zd:['ZD children not covered',`zero-dose children reported but not covered (${CAMP[CR_ZK]})`],dig:['ZD children not entered in IDIMS','zero-dose children reported but not entered in IDIMS'],p3:['Infants without Penta-3','infants on the EPI target without Penta-3 (Jan–Aug)']};
+const CRCM={zd:['ZD children not covered',`zero-dose children reported but not covered (${CAMP[CR_ZK]})`],dig:['ZD children not entered in IDIMS','zero-dose children reported but not entered in IDIMS'],p3:['Infants without Penta-3',`infants on the EPI target without Penta-3 (${EMETA.per||'Jan–Sep'})`]};
 function critDH(inD){
  const dates=(DHIST.dates||[]), ds=Object.keys((DHIST.d||{})[dates[dates.length-1]]||{}).filter(inD).sort();
  const ser=ds.map(d=>({d,v:dates.map(t=>{const x=(DHIST.d[t]||{})[d]; return x&&x[0]?{r:x[0],l:x[1],p:x[1]/x[0]*100}:null;})}));
@@ -4188,7 +4188,7 @@ function renderCrit(){
   I.push(`<b>${S.mm.length} UCs need a field check:</b> `+t.map(([k,l])=>`${S.mmT[k]} where ${esc(crLow(l))}`).join('; ')+'. Highest: '+S.mm.slice(0,3).map(r=>`${esc(r.u)} (${esc(r.d)})`).join(', ')+'.');}
  {const lo=S.groups.filter(g=>g.sc!=null&&g.n>=3).sort((a,b)=>a.sc-b.sc).slice(0,3), top=CR_DQ.filter(([k,,w])=>S.dqT[k]&&w>0).sort((a,b)=>S.dqT[b[0]]-S.dqT[a[0]]).slice(0,3);
   if(top.length)I.push(`<b>Data quality ${S.sc==null?'':Math.round(S.sc)+'/100'}.</b> Most common problems: `+top.map(([k,l])=>`${esc(crLow(l))} (${S.dqT[k]} UCs)`).join(', ')+'.'+(lo.length?` Lowest scores: ${lo.map(g=>`${esc(g.k)} ${Math.round(g.sc)}`).join(', ')}.`:''));}
- I.push(`<b>Workload:</b> ${fmt(S.g90)} more zero-dose children to cover for 90% ZD coverage, ${fmt(S.d95)} more to enter in IDIMS for 95% digitized, and ${fmt(S.p3g)} infants to vaccinate for 90% Penta-3 (${esc(EMETA.per||'Jan–Aug')}).`);
+ I.push(`<b>Workload:</b> ${fmt(S.g90)} more zero-dose children to cover for 90% ZD coverage, ${fmt(S.d95)} more to enter in IDIMS for 95% digitized, and ${fmt(S.p3g)} infants to vaccinate for 90% Penta-3 (${esc(EMETA.per||'Jan–Sep')}).`);
  if(S.C.k50)I.push(`<b>Concentration:</b> just ${fmt(S.C.k50)} of ${fmt(S.C.n)} UCs (${pc(S.C.k50/S.C.n*100)}) hold half of the ${fmt(S.C.tot)} uncovered zero-dose children; ${fmt(S.C.k80)} UCs hold 80%. Focusing on these gives the fastest gain.`);
  if(S.last&&S.prev)I.push(`<b>Change:</b> digitization ${pc(S.prev.p)} → ${pc(S.last.p)} between ${crDt(S.pdate)} and ${crDt(S.ldate)} (${crSgn(S.last.l-S.prev.l)} children entered).`+((()=>{const st=S.H.ser.map(s=>{const a=s.v[s.v.length-2],b=s.v[s.v.length-1];return a&&b?{d:s.d,ch:b.l-a.l,p:b.p}:null;}).filter(x=>x&&x.p<95&&x.ch<=0);return st.length?` No progress in ${st.map(x=>esc(x.d)).join(', ')} while still under 95%.`:'';})()));
  el('xIns').innerHTML=I.map(x=>'<li>'+x+'</li>').join('');
@@ -4242,7 +4242,7 @@ function crGap(S,L){
  el('capx5').textContent=g.length?`${g[0].k} has the largest workload (${fmt(g[0].g90)} to cover, ${fmt(g[0].d95)} to enter).`:'All targets met in this selection.';
  const e=S.groups.slice().sort((a,b)=>(b.p3g+b.mr2g)-(a.p3g+a.mr2g)).filter(x=>x.p3g+x.mr2g>0).slice(0,15);
  el('cx6').style.height=Math.max(320,e.length*28+110)+'px';
- HC('cx6',{chart:{type:'bar'},title:{text:'Infants still to vaccinate (routine)'},subtitle:{text:`To 90% Penta-3 and MR-2 · ${EMETA.per||'Jan–Aug'}`},xAxis:{categories:e.map(x=>x.k)},yAxis:{title:{text:'Infants (count)'}},tooltip:{shared:true},
+ HC('cx6',{chart:{type:'bar'},title:{text:'Infants still to vaccinate (routine)'},subtitle:{text:`To 90% Penta-3 and MR-2 · ${EMETA.per||'Jan–Sep'}`},xAxis:{categories:e.map(x=>x.k)},yAxis:{title:{text:'Infants (count)'}},tooltip:{shared:true},
   plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:,.0f}'}}},series:[{name:'To 90% Penta-3',color:'#1d4ed8',data:e.map(x=>x.p3g)},{name:'To 90% MR-2',color:'#93c5fd',data:e.map(x=>x.mr2g)}]});
  el('capx6').textContent=e.length?`${e[0].k} needs the most routine catch-up (${fmt(e[0].p3g)} Penta-3, ${fmt(e[0].mr2g)} MR-2).`:'';
  const R=S.groups.filter(x=>x.n||x.dnot||x.p3g);
