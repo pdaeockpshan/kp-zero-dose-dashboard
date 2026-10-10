@@ -1,0 +1,259 @@
+{
+ "key": {
+  "current": "Comparison_Report_2026-10-09.xlsx",
+  "current_mtime": 1791549122.8218002,
+  "previous": "Comparison_Report_2026-06-22.xlsx",
+  "previous_mtime": 1782107902.7592423,
+  "zd_mtime": 1791347850.7513754,
+  "val_mtime": 1791347605.453863,
+  "epi_mtime": 1791348191.2052703,
+  "afp_mtime": 1791544542.234892
+ },
+ "alerted": [],
+ "last_result": {
+  "current_campaign": "SNID Sept 2026",
+  "current_report": "Comparison_Report_2026-10-09.xlsx",
+  "previous_campaign": "SNID May 2026",
+  "previous_report": "Comparison_Report_2026-06-22.xlsx",
+  "ucs": 421,
+  "ucs_matched": 421,
+  "districts": 9,
+  "completion_pct": 94.9,
+  "previous_completion_pct": 68.7,
+  "reported": 31762,
+  "entered": 30132,
+  "previous_reported": 20143,
+  "children_not_entered": 3152,
+  "zero_entry_ucs": 30,
+  "previous_zero_entry_ucs": 22,
+  "followup_ucs": 124,
+  "p1": 30,
+  "p2": 4,
+  "p3": 54,
+  "p4": 36,
+  "persistent_low": 20,
+  "newly_declined": 44,
+  "recovered": 109,
+  "lowest_districts": [
+   {
+    "district": "BANNU",
+    "completion_pct": 89.1,
+    "previous_pct": 74.1
+   },
+   {
+    "district": "TANK",
+    "completion_pct": 90.1,
+    "previous_pct": 97.8
+   },
+   {
+    "district": "WAZIR-S Lower",
+    "completion_pct": 90.4,
+    "previous_pct": 99.4
+   }
+  ],
+  "districts_detail": [
+   {
+    "district": "BANNU",
+    "completion_pct": 89.1,
+    "previous_pct": 74.1
+   },
+   {
+    "district": "TANK",
+    "completion_pct": 90.1,
+    "previous_pct": 97.8
+   },
+   {
+    "district": "WAZIR-S Lower",
+    "completion_pct": 90.4,
+    "previous_pct": 99.4
+   },
+   {
+    "district": "PESHAWAR",
+    "completion_pct": 93.6,
+    "previous_pct": 47.4
+   },
+   {
+    "district": "DIKHAN",
+    "completion_pct": 94.8,
+    "previous_pct": 89.8
+   },
+   {
+    "district": "LAKKIMRWT",
+    "completion_pct": 100.1,
+    "previous_pct": 100.0
+   },
+   {
+    "district": "KHYBER",
+    "completion_pct": 100.7,
+    "previous_pct": 92.1
+   },
+   {
+    "district": "WAZIR-N",
+    "completion_pct": 109.1,
+    "previous_pct": 100.0
+   },
+   {
+    "district": "WAZIR-S Upper",
+    "completion_pct": 119.3,
+    "previous_pct": 14.3
+   }
+  ],
+  "output_folder": "C:\\Users\\HD\\Downloads\\ZD_Dashboard",
+  "outputs": [
+   "ZD_Followup_List.xlsx",
+   "ZD_District_Cover_Notes.md",
+   "Zero_Dose_Digitization_Dashboard.html",
+   "zd_data.json"
+  ],
+  "warnings": [
+   "3 past polio cases could not be matched to a UC (kept at district level).",
+   "NID Apr-26: 28 UCs in the coverage export not matched to dashboard UCs (missed children)."
+  ],
+  "updated": "09-Oct-2026 17:43",
+  "zd_source": "ZERO DOSE REPORTED AND COVERED.xlsx",
+  "zd_campaigns": [
+   "NID Apr-26",
+   "SNID May-26",
+   "SNID Sept-26"
+  ],
+  "zd_ucs": 1417,
+  "zd_districts": 37,
+  "zd_cov_prev_pct": 76.5,
+  "zd_cov_last_pct": 81.4,
+  "zd_like_for_like_ucs": 921,
+  "zd_not_covered_last": 6813,
+  "zd_persistent_low": 206,
+  "zd_newest_reported": 62128,
+  "zd_newest_coverage_reported": false,
+  "zd_source_mtime": 1790583264.7697155,
+  "zd_portal": [
+   {
+    "file": "cov_NID Apr 26.xls",
+    "campaign": "NID APRIL-26",
+    "rows_before": 1417,
+    "rows_now": 1417,
+    "reported": 59522,
+    "covered": 34631
+   },
+   {
+    "file": "cov_SNID May 2026.xls",
+    "campaign": "SNID MAY-26",
+    "rows_before": 928,
+    "rows_now": 928,
+    "reported": 32750,
+    "covered": 26620
+   },
+   {
+    "file": "cov_SNID Sept 2026.xls",
+    "campaign": "SNID SEPT-26",
+    "rows_before": 1402,
+    "rows_now": 1402,
+    "reported": 62128,
+    "covered": 0
+   }
+  ],
+  "val_source": "ZERO DOSE VALIDATION DATA.xlsx",
+  "val_children": 18103,
+  "val_forms": 2580,
+  "val_ucs": 774,
+  "val_districts": 37,
+  "val_campaigns": [
+   "NID FEB 2026",
+   "NID APR 2026",
+   "SNID May 2026",
+   "KP-Special-1-Jul 2026",
+   "KP Special Aug 2026",
+   "KP Special Aug-Sep 2026-3",
+   "SNID Sep 2026"
+  ],
+  "val_vaccinated_pct": 97.3,
+  "val_not_vaccinated": 351,
+  "val_status_missing": 136,
+  "val_epi_reported_pct": 97.3,
+  "val_in_register_pct": 92.6,
+  "val_possible_duplicates": 356,
+  "val_age5_or_missing": 2124,
+  "val_flagged_children": 3842,
+  "val_unmapped_ucs": 0,
+  "lowest_val_districts": [
+   {
+    "district": "WAZIR-S Upper",
+    "vaccinated_pct": 74.1,
+    "children": 158
+   },
+   {
+    "district": "KURRAM",
+    "vaccinated_pct": 76.2,
+    "children": 631
+   },
+   {
+    "district": "ABOTABAD",
+    "vaccinated_pct": 80.7,
+    "children": 83
+   }
+  ],
+  "val_portal": [
+   {
+    "file": "val_KP_Special_Aug-Sep_2026-3.csv",
+    "campaigns": [
+     "KP Special Aug-Sep 2026-3"
+    ],
+    "rows_before": 0,
+    "rows_now": 14
+   },
+   {
+    "file": "val_SNID_Sep_2026.csv",
+    "campaigns": [
+     "SNID Sep 2026"
+    ],
+    "rows_before": 371,
+    "rows_now": 478
+   }
+  ],
+  "epi_source": "epi_ytd_2026-01_2026-08.xls",
+  "epi_period": "Jan 2026 \u2013 Aug 2026",
+  "epi_ucs": 1459,
+  "epi_matched_ucs": 1167,
+  "epi_unmatched_ucs": 292,
+  "epi_penta1_pct": 100.8,
+  "epi_penta3_pct": 93.4,
+  "epi_mr1_pct": 94.8,
+  "epi_mr2_pct": 79.7,
+  "epi_fi_pct": 78.1,
+  "epi_partial_month": "Sep 2026",
+  "epi_months": [
+   "Jan 2026",
+   "Feb 2026",
+   "Mar 2026",
+   "Apr 2026",
+   "May 2026",
+   "Jun 2026",
+   "Jul 2026",
+   "Aug 2026",
+   "Sep 2026 (partial)"
+  ],
+  "afp_zd_cases": 30,
+  "afp_zd_pending": 8,
+  "afp_zd_confirmed": 1,
+  "polio_cases_kp": 5,
+  "polio_districts_kp": 3,
+  "lqas_lots": 840,
+  "lqas_ucs": 566,
+  "lqas_latest_fail": 2,
+  "watch_cases_hist": 175,
+  "watch_cases_unmatched": 3,
+  "watch_es_districts": 23,
+  "mis_rows": 3719,
+  "mis_camps": [
+   "SNID Sept-26",
+   "SNID May-26",
+   "NID Apr-26"
+  ],
+  "surv_districts": 36,
+  "dprof_camps": [
+   "SNID Sept-26",
+   "SNID May-26",
+   "NID Apr-26"
+  ]
+ }
+}
