@@ -52,10 +52,12 @@ python _refresh/refresh.py inject --const ZD --from C:\path\to\zd.json --publish
 
 | id | const | portal | what to do |
 | --- | --- | --- | --- |
-| `zd` | `ZD`, `DATA` | IDIMS / SMC Tracker | Drop the newest `Comparison_Report_YYYY-MM-DD.xlsx` into `D:\AMAZON DATA`. Rebuild the payload with the legacy pipeline (below) and `inject` it. |
+| `zd` | `DATA`, `DORDER`, `NOTES`, `DHIST`, `RLOG`, `WMETA` | IDIMS / SMC Tracker | Drop the newest `Comparison_Report_YYYY-MM-DD.xlsx` into `D:\AMAZON DATA` **and** `C:\Users\HD\Downloads`, then harvest from the legacy pipeline (below). |
+| `zdcov` | `ZD` | IDIMS zero dose reported/covered | Update `D:\AMAZON DATA\ZERO DOSE REPORTED AND COVERED.xlsx` and/or the `_portal\cov_<campaign>.xls` overlays in the legacy folder, then harvest. Not produced by the Comparison Report. |
+| `val` | `VAL`, `VCH`, `VUC`, `VCAMP` | SMC Tracker form 200 combined export | Save the combined CSV as `_portal\val_<campaign>.csv` in the legacy folder (one file per campaign - each file *replaces* every master row of the campaigns it contains), then harvest. **Never mirror these CSVs into this repo's `_portal/`** - it is published on Pages and they carry child-level PII. |
 | `epi` | `EPI`, `EPIM`, `EMETA` | IDIMS facility-wise report | Export `Consolidated_Facility_Wise_Vaccination*.xls`, rebuild with `_epi_jansep_patch.py`, then `inject`. UC-level `EPI` is YTD-only; `EPIM` is district x month by design. |
 | `cq` | `CQ` | NEOC | Export to `_portal/camp_quality.json`, or use the NEOC import block on the Intra-campaign tab (writes `localStorage['kpNEOC.icm.v1']`, never the repo). |
-| `mism` | `MISM` | EOC dashboard | Export the missed/refusal UC list to `_portal/`, rebuild, `inject`. |
+| `mism` | `MIS`, `MISM` | EOC dashboard coverage export | One `_portal/cov_<campaign>.xls` per campaign (the `.xls` is really an HTML table), then harvest. Not derived from the `val_*.csv` validation exports. |
 | `surv` | `SURVM`, `AFP` | EOC surveillance / AFP line-list | Refresh `_portal/surv_district.json`, `afp_last.json`, `polio_cases.json`. |
 | `dprof` | `DPROF` | EOC dashboard | Refresh `_portal/dprofile.json`. |
 | `neoc` | (none - localStorage) | NEOC | In-dashboard import only: paste the table, import a CSV/TSV/HTML export, or run the copied snippet in your own NEOC console. |
@@ -63,13 +65,43 @@ python _refresh/refresh.py inject --const ZD --from C:\path\to\zd.json --publish
 `status` lists the newest file it can see for each manual dataset too, so a waiting export
 is obvious even when the refresh itself has to be done by hand.
 
-### The legacy pipeline is a trap
+### Harvesting from the legacy pipeline
 
 `C:\Users\HD\Downloads\ZD_Dashboard\_pipeline\zd_refresh.py` is the pre-October build
 system. It **rebuilds the whole page from `dashboard_template.html`** (937 KB), which does
 not contain the Campaign history, SNID scope, Evening review, ICM/NEOC, countdown popup or
-mobile layout work. Never run it against this repo, and never copy its `index.html` over
-this one - use it only to produce a `ZD`/`DATA`/`EPI` payload, then `inject`.
+mobile layout work, and it also predates the Jan-Sep EPI patch. Never run it against this
+repo and never copy its HTML over ours.
+
+It is still the only producer of `DATA`/`NOTES`/`VAL`/`VCH`, so the safe pattern is: let it
+rebuild **in its own folder**, then harvest only the JSON payloads out of the result.
+
+1. Snapshot its current output (`Zero_Dose_Digitization_Dashboard.html`) - it is the
+   baseline for the diff in step 4.
+2. Put the new exports where it looks for them: `Comparison_Report_*.xlsx` in
+   `C:\Users\HD\Downloads`, validation overlays in `ZD_Dashboard\_portal\val_<campaign>.csv`.
+3. Run it with the no-change check disabled:
+   `python -c "g={'FORCE':True,'__name__':'__main__'}; exec(compile(open('zd_refresh.py',encoding='utf-8').read(),'zd_refresh.py','exec'), g)"`
+   from `_pipeline`. It prints one `ZD_RESULT {…}` line with every headline number.
+   It writes only into `ZD_Dashboard\` - the repo is untouched.
+4. Diff baseline vs rebuilt with all payload literals masked, and split the changes into
+   *data* (apply) and *reverts* (drop). In October 2026 the reverts were `EPI`, `EMETA`,
+   the `Jan 2026 - Sep 2026` labels and a CSS block; the data was `DATA`, `DORDER`,
+   `NOTES`, `VAL`, `VCH`, `VUC`, `VCAMP`, `DHIST`, `RLOG`, `WMETA` plus six prose strings
+   (`report of DD-Mon-YYYY`, `N children validated`, `on N forms in N UCs`,
+   `entries … to DD-Mon-YYYY`, the digitization report-date note, the PPT slide line).
+5. Before applying, prove the harvest is faithful: every payload that should not have
+   changed must still be byte-identical to what the repo carries, `DHIST`/`RLOG` must be
+   append-only, and each prose anchor must occur the expected number of times in each
+   variant. `VCH` needs one extra step - see below.
+
+`VCH` is the only payload that differs per variant. The pipeline emits it twice, from
+`cfg['val_show_names']`: the internal build keeps `nm`/`fn` and the real `cd`/`mo`, the
+public build drops `nm` and `fn` and blanks `cd` and `mo`. Since it only writes the
+internal file, derive the public one - drop those two keys, blank those two fields, and
+re-serialise with the pipeline's own `json.dumps(o, ensure_ascii=False).replace('</','<\/')`.
+Verify the rule by re-deriving today's public payload from today's internal one and
+requiring a byte-exact match, and assert the result contains no names before writing.
 
 ## What `run` guarantees
 

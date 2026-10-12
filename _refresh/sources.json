@@ -56,12 +56,28 @@
 
   "manual": {
     "zd": {
-      "label": "Zero-dose reported vs digitized (IDIMS comparison report)",
-      "const": ["ZD", "DATA"],
+      "label": "ZD Digitization (IDIMS comparison report)",
+      "const": ["DATA", "DORDER", "NOTES", "DHIST", "RLOG", "WMETA"],
       "roots": ["D:\\AMAZON DATA", "C:\\Users\\HD\\Downloads"],
       "patterns": ["Comparison_Report_*.xlsx"],
       "portal": "IDIMS / SMC Tracker > Comparison Report export",
-      "howto": "Drop the newest Comparison_Report_YYYY-MM-DD.xlsx into D:\\AMAZON DATA, then rebuild with the legacy pipeline in C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_pipeline\\zd_refresh.py and port the ZD/DATA payloads across with: python _refresh/refresh.py inject --const ZD --from <json> (see SOURCES.md). Never run zd_refresh.py against this repo - it rebuilds from dashboard_template.html and would drop every tab added after 10-Oct-2026."
+      "howto": "Drop the newest Comparison_Report_YYYY-MM-DD.xlsx into BOTH D:\\AMAZON DATA and C:\\Users\\HD\\Downloads (the legacy pipeline scans Downloads), then rebuild and harvest - see SOURCES.md, 'Harvesting from the legacy pipeline'. DATA needs two reports: the newest one plus the latest one from a DIFFERENT campaign, which supplies the rp/lp comparison columns. Never run zd_refresh.py against this repo - it rebuilds from dashboard_template.html and would drop every tab added after 10-Oct-2026."
+    },
+    "zdcov": {
+      "label": "ZD Reported & Covered (multi-campaign coverage workbook)",
+      "const": ["ZD"],
+      "roots": ["D:\\AMAZON DATA"],
+      "patterns": ["*ZERO DOSE*COVERED*.xlsx"],
+      "portal": "IDIMS > zero dose reported/covered export, one per campaign, saved as _portal\\cov_<campaign>.xls in the legacy folder",
+      "howto": "Update D:\\AMAZON DATA\\ZERO DOSE REPORTED AND COVERED.xlsx and/or drop new cov_<campaign>.xls overlays into C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal, then rebuild and harvest (see SOURCES.md). ZD is NOT produced by the Comparison Report - do not confuse it with the zd entry above."
+    },
+    "val": {
+      "label": "ZD Validation (child-level app export)",
+      "const": ["VAL", "VCH", "VUC", "VCAMP"],
+      "roots": ["D:\\AMAZON DATA"],
+      "patterns": ["*ZERO DOSE*VALIDATION*.xlsx", "Zero_Dose_Coverage_Validation-*_combined_*.csv"],
+      "portal": "SMC Tracker form 200 > combined export (login required)",
+      "howto": "Save the combined CSV export as C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal\\val_<campaign>.csv (move the previous copy into _portal\\_prev). Each val_*.csv REPLACES every master row of the campaigns it contains, so keep one file per campaign. Then rebuild and harvest (see SOURCES.md). VCH is the only payload that differs per variant: the internal build carries nm/fn plus real cd/mo, the public build drops nm and fn and blanks cd and mo. Derive the public one from the internal one - never copy either way blindly. Do NOT mirror these CSVs into the repo's own _portal folder: it is published on GitHub Pages and they carry child names, father names, EPI card numbers, monitor names and surveyor emails."
     },
     "epi": {
       "label": "Routine EPI coverage (UC YTD + district monthly)",
@@ -81,11 +97,11 @@
     },
     "mism": {
       "label": "Missed children & refusals",
-      "const": ["MISM"],
+      "const": ["MIS", "MISM"],
       "roots": ["C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"],
-      "patterns": ["val_*.csv"],
-      "portal": "EOC dashboard (login required)",
-      "howto": "Export the missed/refusal UC list into _portal/, then rebuild MISM."
+      "patterns": ["cov_*.xls"],
+      "portal": "EOC dashboard > per-campaign coverage export (login required)",
+      "howto": "Save one coverage export per campaign as _portal\\cov_<campaign>.xls (the .xls is really an HTML table), then rebuild and harvest. Not derived from the val_*.csv validation exports - those feed the val entry."
     },
     "surv": {
       "label": "Surveillance (AFP + district surveillance)",
