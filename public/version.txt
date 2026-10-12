@@ -1,3 +1,4 @@
 KP Zero Dose dashboard
 Published build: 2026-10-06 (section 10 action tracker)
 Redeploy nudge: 2026-10-07 09:25 PKT
+SNID Oct-26 scope + Evening review pages added: 27 KP districts / 996 UCs / 4,808,167 children from "Final Scope Nov SNID .xlsx" (D:\AMAZON DATA\SNID OCT-26); new "SNID Oct-26 scope" tab (category, UC counts, targets, daily target = target / 5 days for Peshawar & Khyber and / 3 days elsewhere, district + UC tables, CSV) and "Evening review" tab (printable A4 one-pager with major indicators, division/district tables and auto bottleneck list; per-day tally entry saved in browser localStorage, CSV export, bulk paste). GitHub Pages build fixed by removing the broken _pipeline gitlink. Timestamp refresh 12-Oct-2026 10:43 PKT.
