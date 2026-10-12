@@ -65,6 +65,12 @@ python _refresh/refresh.py inject --const ZD --from C:\path\to\zd.json --publish
 `status` lists the newest file it can see for each manual dataset too, so a waiting export
 is obvious even when the refresh itself has to be done by hand.
 
+> **Known and accepted:** `_portal/` is part of the published Pages tree, and the four
+> `val_*.csv` files in it (two current, two under `_prev/`) carry child-level PII - child
+> and father names, EPI card numbers, monitor names, surveyor emails. This is the same data
+> the public build strips out of `VCH`. Reviewed with the owner on 12-Oct-2026 and left in
+> place deliberately; do not add more, and do not treat the existing ones as an oversight.
+
 ### Harvesting from the legacy pipeline
 
 `C:\Users\HD\Downloads\ZD_Dashboard\_pipeline\zd_refresh.py` is the pre-October build
