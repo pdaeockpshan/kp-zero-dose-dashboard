@@ -51,6 +51,19 @@
       "config": {"asof": null},
       "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise sheet",
       "note": "config.asof = null keeps the as-of date already embedded in the dashboard; set it (YYYY-MM-DD) when a new monitoring round is loaded."
+    },
+    "adv": {
+      "label": "ZD reported & covered 2024-2025 (IDIMS advance reports)",
+      "const": "ADV",
+      "extractor": "extract_adv.py",
+      "roots": ["D:\\AMAZON DATA", "C:\\Users\\HD\\Downloads"],
+      "patterns": ["advance_reports_*.xls*"],
+      "exclude": ["~$*"],
+      "config": {
+        "campaigns": {"Bordering and ARC UCs Activity": {"y": 2025, "m": null, "t": "ACT"}}
+      },
+      "portal": "IDIMS > zero dose advance report > per-campaign UC export (all campaigns of a year in one file)",
+      "note": "Every advance_reports_*.xls under the roots is loaded - each file is self-contained, so dropping a new year's file is enough. Staleness tracks only the newest file. Campaign names without a month/year go in config.campaigns; anything else unknown aborts the extract."
     }
   },
 
