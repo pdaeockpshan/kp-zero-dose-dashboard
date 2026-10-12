@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026 · <b>SNID Nov-26</b>: 27 districts, 996 UCs, 4,808,167 children targeted, campaign starts Monday 02-Nov-2026 · <b>Evening review</b>: printable one-pager with day-wise targets · Last updated 12-Oct-2026 12:34</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026 · <b>SNID Nov-26</b>: 27 districts, 996 UCs, 4,808,167 children targeted, campaign starts Monday 02-Nov-2026 · <b>Evening review</b>: printable one-pager with day-wise targets · Last updated 12-Oct-2026 12:58</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -735,6 +735,45 @@ body.home .hdr, body.home .content .topbar{display:none}
 .ngrp.hg .tab .tl::before{content:attr(data-q);display:inline-grid;place-items:center;width:18px;height:18px;margin-right:7px;border-radius:50%;font:800 10.5px var(--font-sans);
  background:var(--tc);color:#fff;vertical-align:1px}
 .ngrp.hg .tab.on .tl::before{background:#fff;color:var(--tc)}
+/* ---------- mobile layout: phones & small tablets ---------- */
+.navtog{display:none}
+.navtog .car{display:inline-block;transition:transform .15s ease}
+body.navopen .navtog .car{transform:rotate(180deg)}
+@media (max-width:900px){
+ .navtog{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;margin:0 0 10px}
+ .sidenav{display:none;position:static;max-height:none}
+ body.navopen .sidenav{display:block}
+ .topbar{position:static}
+ #erSheet{overflow-x:auto;-webkit-overflow-scrolling:touch}
+}
+@media (max-width:700px){
+ body{padding:10px 10px 30px}
+ .hdr h1{font-size:17px}
+ .sub{font-size:12px;margin-bottom:10px}
+ .filters{gap:8px;padding:10px}
+ .filters label{flex:1 1 calc(50% - 8px);min-width:0}
+ .filters select,.filters input{font-size:16px;width:100%}
+ .cqbar select{font-size:16px;flex:1 1 140px;min-width:0}
+ .filters .btn{flex:1 1 100%}
+ .status{font-size:11.5px}
+ .kpis{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+ .card{padding:12px}
+ .kv{font-size:22px}
+ .scroll{max-height:none;-webkit-overflow-scrolling:touch}
+ .ch{height:300px}
+ .tblhdr{align-items:flex-start}
+ .kpis>*,.grid2>*,.agrid>*,.shgrid>*,.layout>*,.hgrid>*,.hgrid2>*,.nlayout>*,.hmbody>*,.cqbar>*{min-width:0}
+}
+@media (max-width:480px){
+ .filters label{flex:1 1 100%}
+ .kv{font-size:20px}
+ .tab{padding:8px 12px;font-size:13px}
+ .sncd .cd b{font-size:20px}
+ .snpopbox{padding:12px}
+ .snpopft .btn{flex:1 1 100%}
+ .snmap{gap:10px}
+}
+@media print{.navtog{display:none!important}}
 </style>
 <div class="layout">
 <nav class="sidenav" aria-label="Dashboard sections">
@@ -812,6 +851,7 @@ body.home .hdr, body.home .content .topbar{display:none}
   <label>UC<select id="fUC" aria-label="UC"></select></label> <label>Search<input id="q" placeholder="UC name, tehsil or code…"></label>
   <button class="btn" id="btnReset">Reset all</button>
  </div>
+ <button class="btn navtog" id="navTog" type="button" aria-expanded="false">Browse dashboard sections <span class="car" aria-hidden="true">▾</span></button>
  <div class="status"><span id="shown"></span><span id="chips" style="display:flex;gap:6px;flex-wrap:wrap"></span></div>
 </div>
 
@@ -823,7 +863,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 12-Oct-2026 12:34</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span id="hSnChip" style="cursor:pointer" title="Countdown to SNID Nov-26 and a map of the scoped districts — click to open">SNID Nov-26 · starts 2 Nov · 4.81M children</span><span>EPI Jan 2026 – Sep 2026</span></div>
+   <div class="hchips"><span>Updated 12-Oct-2026 12:58</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span id="hSnChip" style="cursor:pointer" title="Countdown to SNID Nov-26 and a map of the scoped districts — click to open">SNID Nov-26 · starts 2 Nov · 4.81M children</span><span>EPI Jan 2026 – Sep 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" id="hPop" type="button" title="Countdown to the campaign and a map of the 27 scoped districts"><span class="hi" data-ic="clock"></span>SNID Nov-26 countdown &amp; map</button><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -5070,6 +5110,19 @@ function snPopClose(){const p=el('snPop');if(p)p.classList.remove('on');}
   document.addEventListener('keydown',ev=>{if(ev.key==='Escape')snPopClose();});
   snTick();setInterval(snTick,1000);
   setTimeout(()=>{try{const on=document.querySelector('.pane.on');if(on&&on.id==='p-home'&&!sessionStorage.getItem(SNPOP_K))snPopOpen();}catch(e){}},900);
+ }
+}
+// ---------- mobile layout: collapsible section nav ----------
+{
+ const nt=el('navTog');
+ if(nt){
+  const mq=window.matchMedia('(max-width:900px)');
+  const ntClose=()=>{document.body.classList.remove('navopen');nt.setAttribute('aria-expanded','false');};
+  const ntSync=()=>nt.setAttribute('aria-expanded',document.body.classList.contains('navopen')?'true':'false');
+  nt.onclick=()=>{document.body.classList.toggle('navopen');ntSync();};
+  if(mq.addEventListener)mq.addEventListener('change',ntClose);else if(mq.addListener)mq.addListener(ntClose);
+  const _stM=setTab;
+  setTab=function(t){_stM(t);if(mq.matches)ntClose();};
  }
 }
 function renderSurv(){
