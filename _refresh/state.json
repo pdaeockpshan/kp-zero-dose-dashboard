@@ -1,0 +1,68 @@
+{
+ "datasets": {
+  "chd": {
+   "at": "2026-10-12T13:53:07+05:00",
+   "chars": 2103818,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx|1786962582|133839395",
+   "payload_sha1": "7c06f5460af300d8",
+   "source": {
+    "mtime": 1786962582.0,
+    "name": "kp+td uc spotting update.xlsx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx",
+    "size": 133839395
+   },
+   "stamp": "12-Oct-2026 12:58",
+   "summary": "86 campaigns Sep2017-May2026, 38 districts, 1553 UCs, 75777 UC rows"
+  },
+  "icm": {
+   "at": "2026-10-12T13:53:07+05:00",
+   "chars": 2982,
+   "file_id": "C:\\Users\\HD\\Downloads\\ICM Sheet (EOC Dashboard UC Wise Data).xlsx|1784011253|30407",
+   "payload_sha1": "6d364fa723906077",
+   "source": {
+    "mtime": 1784011253.172147,
+    "name": "ICM Sheet (EOC Dashboard UC Wise Data).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\ICM Sheet (EOC Dashboard UC Wise Data).xlsx",
+    "size": 30407
+   },
+   "stamp": "12-Oct-2026 12:58",
+   "summary": "KP-Special-1-Jul 2026, 30 UCs in 2 districts (BANNU+WAZIR-S Lower), recall 13215/15102"
+  },
+  "mism": {
+   "at": "2026-10-12T13:46:32+05:00",
+   "chars": 67,
+   "file_id": "manual|mism_test.json",
+   "payload_sha1": "fc59cd1abfe3c8b1",
+   "source": {
+    "mtime": 1791794751.7506225,
+    "name": "mism_test.json",
+    "path": "C:\\Users\\HD\\.qoder\\tmp\\mism_test.json",
+    "size": 68
+   },
+   "stamp": "12-Oct-2026 13:46",
+   "summary": "manual inject"
+  },
+  "snd": {
+   "at": "2026-10-12T13:53:07+05:00",
+   "chars": 37861,
+   "file_id": "D:\\AMAZON DATA\\SNID NOV-26 (2-8 NOV)\\Final Scope Nov SNID .xlsx|1791780897|304503",
+   "payload_sha1": "96831893691711b7",
+   "source": {
+    "mtime": 1791780897.811237,
+    "name": "Final Scope Nov SNID .xlsx",
+    "path": "D:\\AMAZON DATA\\SNID NOV-26 (2-8 NOV)\\Final Scope Nov SNID .xlsx",
+    "size": 304503
+   },
+   "stamp": "12-Oct-2026 12:58",
+   "summary": "27 districts, 113 tehsils, 996 UCs, target 4,808,167, day-1 1,459,109"
+  }
+ },
+ "last_run": {
+  "at": "2026-10-12T13:52:13+05:00",
+  "datasets": [
+   "icm"
+  ],
+  "dry_run": false,
+  "stamp": "12-Oct-2026 13:52"
+ }
+}

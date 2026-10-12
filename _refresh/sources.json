@@ -1,0 +1,115 @@
+{
+  "repo": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard",
+  "variants": [
+    "index.html",
+    "preview.html",
+    "public/index.html",
+    "Zero_Dose_Digitization_Dashboard.html"
+  ],
+  "identical_group": ["index.html", "preview.html", "public/index.html"],
+  "version_files": ["version.txt", "public/version.txt"],
+
+  "auto": {
+    "chd": {
+      "label": "Campaign history 2017-2026",
+      "const": "CHD",
+      "extractor": "extract_chd.py",
+      "roots": ["C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting"],
+      "patterns": ["kp+td uc spotting*.xlsx"],
+      "sheet": "DATA",
+      "cache": "cache/ch_rows.pkl",
+      "portal": "KP+TD UC spotting workbook (Dropbox, shared by EOC data cell)",
+      "note": "134MB workbook; first read streams the DATA sheet into cache/ch_rows.pkl (~3 min), later runs reuse the cache until the workbook mtime changes."
+    },
+    "snd": {
+      "label": "Upcoming campaign scope + day-wise targets",
+      "const": "SND",
+      "extractor": "extract_snd.py",
+      "roots": ["D:\\AMAZON DATA"],
+      "patterns": ["Final Scope*.xlsx", "*Scope*SNID*.xlsx", "*SNID*Scope*.xlsx"],
+      "exclude": ["~$*"],
+      "sheets": ["District", "UC Wise"],
+      "config": {
+        "name": "SNID Nov-26",
+        "start": "2026-11-02",
+        "days_5_districts": ["PESHAWAR", "KHYBER"],
+        "days_5": 5,
+        "days_3": 3,
+        "rename": {"WAZIR-S LOWER": "WAZIR-S Lower", "WAZIR-S UPPER": "WAZIR-S Upper"}
+      },
+      "portal": "Final scope workbook issued for the upcoming campaign (D:\\AMAZON DATA\\SNID <campaign> folder)",
+      "note": "When a new campaign scope arrives, edit config.name and config.start here - the tab title, hero chip, countdown popup and Evening Review day dates all follow SND.n / SND.st. Rename the tab labels separately (search the old campaign name across the 4 variants)."
+    },
+    "icm": {
+      "label": "Intra-campaign monitoring (ICM) UC-wise sheet",
+      "const": "ICMD",
+      "extractor": "extract_icm.py",
+      "roots": ["C:\\Users\\HD\\Downloads", "D:\\AMAZON DATA"],
+      "patterns": ["ICM Sheet*.xlsx", "ICM*UC Wise*.xlsx"],
+      "exclude": ["~$*"],
+      "sheet": "Sheet0",
+      "config": {"asof": null},
+      "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise sheet",
+      "note": "config.asof = null keeps the as-of date already embedded in the dashboard; set it (YYYY-MM-DD) when a new monitoring round is loaded."
+    }
+  },
+
+  "manual": {
+    "zd": {
+      "label": "Zero-dose reported vs digitized (IDIMS comparison report)",
+      "const": ["ZD", "DATA"],
+      "roots": ["D:\\AMAZON DATA", "C:\\Users\\HD\\Downloads"],
+      "patterns": ["Comparison_Report_*.xlsx"],
+      "portal": "IDIMS / SMC Tracker > Comparison Report export",
+      "howto": "Drop the newest Comparison_Report_YYYY-MM-DD.xlsx into D:\\AMAZON DATA, then rebuild with the legacy pipeline in C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_pipeline\\zd_refresh.py and port the ZD/DATA payloads across with: python _refresh/refresh.py inject --const ZD --from <json> (see SOURCES.md). Never run zd_refresh.py against this repo - it rebuilds from dashboard_template.html and would drop every tab added after 10-Oct-2026."
+    },
+    "epi": {
+      "label": "Routine EPI coverage (UC YTD + district monthly)",
+      "const": ["EPI", "EPIM", "EMETA"],
+      "roots": ["D:\\AMAZON DATA", "C:\\Users\\HD\\Downloads"],
+      "patterns": ["Consolidated_Facility_Wise_Vaccination*.xls*"],
+      "portal": "IDIMS > Consolidated facility-wise vaccination report",
+      "howto": "Export the facility-wise report, then rebuild EPI/EPIM/EMETA with _pipeline\\_epi_jansep_patch.py in the legacy folder and inject the payloads here."
+    },
+    "cq": {
+      "label": "Campaign quality / intra-campaign operational indicators",
+      "const": ["CQ"],
+      "roots": ["C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"],
+      "patterns": ["camp_quality.json"],
+      "portal": "NEOC (login required)",
+      "howto": "Export from NEOC into _portal/camp_quality.json, or use the in-dashboard NEOC import block on the Intra-campaign tab (stores to localStorage, never to the repo)."
+    },
+    "mism": {
+      "label": "Missed children & refusals",
+      "const": ["MISM"],
+      "roots": ["C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"],
+      "patterns": ["val_*.csv"],
+      "portal": "EOC dashboard (login required)",
+      "howto": "Export the missed/refusal UC list into _portal/, then rebuild MISM."
+    },
+    "surv": {
+      "label": "Surveillance (AFP + district surveillance)",
+      "const": ["SURVM", "AFP"],
+      "roots": ["C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"],
+      "patterns": ["surv_district.json", "afp_last.json", "polio_cases.json"],
+      "portal": "EOC surveillance / AFP case line-list",
+      "howto": "Refresh the _portal JSON exports, then rebuild SURVM/AFP."
+    },
+    "dprof": {
+      "label": "District profiles",
+      "const": ["DPROF"],
+      "roots": ["C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"],
+      "patterns": ["dprofile.json"],
+      "portal": "EOC dashboard (login required)",
+      "howto": "Refresh _portal/dprofile.json, then rebuild DPROF."
+    },
+    "neoc": {
+      "label": "NEOC operational indicators (AIC visited, teams monitored)",
+      "const": [],
+      "roots": [],
+      "patterns": [],
+      "portal": "NEOC (login required)",
+      "howto": "In-dashboard import only: Intra-campaign tab > NEOC block > paste table / import CSV-TSV-HTML export / run the copied snippet in your own NEOC console. Stored in localStorage['kpNEOC.icm.v1'], never committed. Session cookies are not used by any script here."
+    }
+  }
+}
