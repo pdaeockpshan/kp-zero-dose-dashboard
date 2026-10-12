@@ -1,8 +1,11 @@
-"""Extract the 2024-2025 zero-dose advance reports (const ADV) from the IDIMS advance_reports exports.
+"""Extract the zero-dose advance reports (const ADV) from the IDIMS advance_reports exports.
 
 Every advance_reports_*.xls under the configured roots is loaded - each file is a
-self-contained per-campaign dump, so a new year's file just gets dropped alongside
-the others. Unknown campaign names abort the extract (add them to
+self-contained per-campaign dump, and for campaigns present in several exports the
+newest file wins. A new year's file just gets dropped alongside the others.
+The Sept-2026-era export leaves the reported column empty and puts the tracked
+children in the covered column; those campaigns are repaired (coverage = unknown).
+Campaign names without a readable month/year abort the extract (add them to
 auto.adv.config.campaigns in sources.json).
 
 Usage: python _refresh/extract_adv.py [--out PATH] [--allow-unknown-districts]
@@ -23,8 +26,6 @@ MONTHS = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
 MONTH_RE = re.compile(r'\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|SEP|OCT|NOV|DEC)[A-Z]*')
 YEAR_RE = re.compile(r'\b(20\d\d|\d\d)\b')
 ASOF_RE = re.compile(r'(20\d{6})T(\d{6})')
-# completed years only: the current cycle is owned by the live ZD Reported & Covered tab
-CUR_YEAR = 2026
 
 
 def zd_divisions(repo):
@@ -129,6 +130,14 @@ def build(cfg, allow_unknown=False):
     for w in skipped:
         print('WARN adv skipped %s' % w)
 
+    # IDIMS Sept-2026-era layout: 'zero dose children' column empty, the tracked
+    # children sit in the covered column and coverage is not in the export at all.
+    for c, rows in sorted(rows_by_camp.items()):
+        if sum(r[3] for r in rows) == 0 and sum(r[4] for r in rows) > 0:
+            rows_by_camp[c] = [(d, t, uc, cv, None) for d, t, uc, rp, cv in rows]
+            print('WARN adv %s: reported column empty in the newest export - took the tracked '
+                  'children from the second column; covered-in-round is not in that export' % c)
+
     unknown = sorted({r[0] for rows in rows_by_camp.values() for r in rows} - set(div))
     if unknown and not allow_unknown:
         raise SystemExit('ERR adv districts not in dashboard ZD data: %s '
@@ -146,12 +155,9 @@ def build(cfg, allow_unknown=False):
     meta = {}
     for n in sorted(camps):
         y, m, t = campaign_meta(n, ovr)
-        if y >= CUR_YEAR:
-            print('WARN adv excluding %s (%d - current cycle lives on the ZD Reported & Covered tab)' % (n, y))
-            continue
         meta[n] = {'n': n, 'y': y, 'm': m, 't': t}
     if not meta:
-        raise SystemExit('ERR adv no completed-year campaigns found (nothing older than %d)' % CUR_YEAR)
+        raise SystemExit('ERR adv no campaigns found')
     order = sorted(meta, key=lambda n: (meta[n]['y'], 99 if meta[n]['m'] is None else meta[n]['m'], n))
 
     cs, rs = [], []
@@ -161,7 +167,7 @@ def build(cfg, allow_unknown=False):
         rs.append(rows)
 
     rep = sum(r[1] for rows in rs for r in rows)
-    cov = sum(r[2] for rows in rs for r in rows)
+    cov = sum(r[2] or 0 for rows in rs for r in rows)
     m = ASOF_RE.search(files[0]['name'])
     asof = '%s-%s-%s' % (m.group(1)[:4], m.group(1)[4:6], m.group(1)[6:]) if m else None
     note = '; skipped: %s' % ', '.join(skipped) if skipped else ''

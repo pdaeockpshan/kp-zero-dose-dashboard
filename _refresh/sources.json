@@ -63,7 +63,7 @@
         "campaigns": {"Bordering and ARC UCs Activity": {"y": 2025, "m": null, "t": "ACT"}}
       },
       "portal": "IDIMS > zero dose advance report > per-campaign UC export (all campaigns of a year in one file)",
-      "note": "Every advance_reports_*.xls under the roots is loaded - each file is self-contained, so dropping a new year's file is enough. Staleness tracks only the newest file. Campaign names without a month/year go in config.campaigns; anything else unknown aborts the extract."
+      "note": "Every advance_reports_*.xls under the roots is loaded - each file is self-contained, and a campaign present in several exports is taken from the newest file (so dropping a new year's file is enough). Staleness tracks only the newest file. Campaign names without a month/year go in config.campaigns; anything else unknown aborts the extract."
     }
   },
 
