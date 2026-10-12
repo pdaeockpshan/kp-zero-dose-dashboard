@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026 · <b>SNID Oct-26</b>: 27 districts, 996 UCs, 4,808,167 children targeted · <b>Evening review</b>: printable one-pager with day-wise targets · Last updated 12-Oct-2026 11:23</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 09-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,103 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026 · <b>SNID Oct-26</b>: 27 districts, 996 UCs, 4,808,167 children targeted · <b>Evening review</b>: printable one-pager with day-wise targets · Last updated 12-Oct-2026 11:45</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -791,7 +791,7 @@ body.home .hdr, body.home .content .topbar{display:none}
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 12-Oct-2026 11:23</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>SNID Oct-26 scope · 4.81M children</span><span>EPI Jan 2026 – Sep 2026</span></div>
+   <div class="hchips"><span>Updated 12-Oct-2026 11:45</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span>SNID Oct-26 scope · 4.81M children</span><span>EPI Jan 2026 – Sep 2026</span></div>
    <div class="hbtns">
     <button class="hgo" id="hGo">Open the detailed dashboard →</button>
     <div class="hql"><button class="hgo2" data-hl="present" title="Build a PowerPoint deck or an EOC / Division / District brief in one click"><span class="hi" data-ic="present"></span>Presentations</button>
@@ -1638,6 +1638,18 @@ body.home .hdr, body.home .content .topbar{display:none}
 <div class="card"><div id="cci4" class="ch"></div><div class="cap" id="capci4"></div></div>
 </div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Cluster findings &amp; operational indicators by district</h3><span class="cnt" id="cntCIO"></span><span style="flex:1"></span><button class="btn" id="btnCIOcsv">Download (CSV)</button></div><div class="scroll"><table id="tICMo"></table></div><div class="cap" id="capCIO"></div></div>
+<div class="cqbar"><b>NEOC operational indicators</b><span class="cnt" id="neocCamp"></span><span style="flex:1"></span><button class="btn" id="neocSnippet">Copy extractor snippet</button><button class="btn" id="neocClear">Clear saved data</button></div>
+<div class="hint" id="neocHint"></div>
+<div class="kpis">
+<div class="card"><div class="kl">AIC visited</div><div class="kv" id="nk1">–</div><div class="ks" id="nk1s"></div></div>
+<div class="card"><div class="kl">Teams monitored</div><div class="kv" id="nk2">–</div><div class="ks" id="nk2s"></div></div>
+<div class="card"><div class="kl">UCs monitored</div><div class="kv" id="nk3">–</div><div class="ks" id="nk3s"></div></div>
+<div class="card"><div class="kl">Monitors deployed</div><div class="kv" id="nk4">–</div><div class="ks" id="nk4s"></div></div>
+</div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Operational monitoring by district (NEOC)</h3><span class="cnt" id="cntNEOC"></span><span style="flex:1"></span><button class="btn" id="btnNEOCcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEOC"></table></div><div class="cap" id="capNEOC"></div>
+<div class="noprint" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="neocPasteBtn">Paste NEOC table</button><button class="btn" id="neocLoadBtn" style="display:none">Load pasted table</button><label class="btn" style="cursor:pointer;margin:0">Import file<input type="file" id="neocFile" accept=".csv,.tsv,.txt,.html" hidden></label><span class="cnt" id="neocStatus"></span></div>
+<textarea id="neocTA" class="noprint" style="width:100%;min-height:130px;margin-top:8px;display:none;font:12px/1.5 var(--font-mono);border:1px solid var(--color-border);border-radius:6px;padding:8px" placeholder="Paste the NEOC intra-campaign table here (header row included): either the district-level operational table, or a team-monitoring export with district_name / uc_name / g1_aic_name / g1_team_no / surveyor_name columns."></textarea>
+</div>
 <div class="cqbar"><b>UC-level cluster findings</b><span class="cnt" id="ciUCcamp"></span></div>
 <div class="hint" id="ciUCHint"></div>
 <div class="kpis">
@@ -5451,6 +5463,7 @@ function ciOper(R,lab){
  el('capCIO').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise — cluster, house and UC reporting indicators for '+lab+'.';
  el('btnCIOcsv').onclick=()=>cqCSV('ICM_operational_'+lab,['District','Division','Total UCs','Reported UCs','Clusters','Houses checked','Houses per cluster','Door marking %','No-response %','Children checked','Recall vaccinated','Recall %','Finger-marked %','Missed','Team did not visit','Team missed child','Child away','Refusal','Guest children','Guest vaccinated %','Children seen','Not vaccinated but finger-marked','Found unvaccinated','Poorly covered areas','Missed areas'],
   OR.map(x=>[x.d,x.dv,x.tuc,x.ruc,x.cl,x.hh,rnd(x.hpc),rnd(x.doorp),rnd(x.nrp),x.rc,x.rv,rnd(x.rec),rnd(x.fmp),x.mi,x.tdn,x.tm,x.na,x.rf,x.gr,rnd(x.gvp),x.seen,x.nvfm,x.unv,x.pca,x.ma]));
+ neocRender(lab);
 }
 function ciUCblock(){
  const T=ICMD.tot, rows=ICMU.filter(r=>!(fDist.value&&r.d!==fDist.value)&&!(fDiv.value&&r.dv!==fDiv.value));
@@ -5497,6 +5510,80 @@ function ciUCblock(){
  el('btnUCIcsv').onclick=()=>cqCSV('ICM_UC_'+ICMD.camp,['District','Division','Tehsil','Union council','Clusters','Houses checked','Children checked','Recall vaccinated','Recall %','Missed','Missed %','Team did not visit (NT)','Team visited but missed child','Child away','Refusal','Guest children by recall','Guest children vaccinated','Guest vaccinated %','Children seen','Finger-marked','Finger-marked %','Not vaccinated but finger-marked','Routine EPI doses under 2','Vaccinated by monitor','Poorly covered areas','Missed areas'],
   UR.map(x=>[x.d,x.dv,x.t,x.uc,x.cl,x.hh,x.rc,x.rv,rnd(x.rec),x.mi,rnd(x.mip),x.nt,x.tv,x.na,x.rf,x.gr,x.gv,rnd(x.gvp),x.seen,x.fm,rnd(x.fmp),x.nvfm,x.epi,x.mon,x.pca,x.ma]));
 }
+// ---------- NEOC operational indicators (import + merge) ----------
+const NEOCK='kpNEOC.icm.v1';
+const NEOC_COLS=[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'aic',l:'AIC visited',n:1,f:x=>fmt(x.aic)},{k:'t',l:'Teams monitored',n:1,f:x=>fmt(x.t)},{k:'u',l:'UCs monitored',n:1,f:x=>fmt(x.u)},{k:'m',l:'Monitors deployed',n:1,f:x=>fmt(x.m)},{k:'cl',l:'Clusters monitored',n:1,f:x=>fmt(x.cl)},{k:'ch',l:'Children examined',n:1,f:x=>fmt(x.ch)},{k:'dy',l:'Campaign days',n:1,f:x=>fmt(x.dy)}];
+const NEOCSNIP="(function(){var t=[].slice.call(document.querySelectorAll('table')).map(function(tb){return [].slice.call(tb.querySelectorAll('tr')).map(function(tr){return [].slice.call(tr.querySelectorAll('th,td')).map(function(c){return c.innerText.replace(/\\s+/g,' ').trim();}).join('\\t');}).join('\\n');}).filter(function(s){return s.length>30;}).join('\\n\\n');if(!t){alert('No tables found on this NEOC page.');return;}if(window.copy){copy(t);alert('NEOC tables copied to clipboard ('+t.length+' chars). Paste them into the dashboard importer.');}else{prompt('Copy the tables:',t);}})();";
+const neocStore=()=>{try{return JSON.parse(localStorage.getItem(NEOCK))||{};}catch(e){return {};}};
+const neocSave=(lab,d)=>{const s=neocStore(); if(d)s[lab]=d; else delete s[lab]; try{localStorage.setItem(NEOCK,JSON.stringify(s));}catch(e){}};
+const neocNum=v=>{if(v==null||v==='')return 0; const n=parseFloat(String(v).replace(/[, ]/g,'')); return isFinite(n)?n:0;};
+const neocKey=s=>String(s==null?'':s).toUpperCase().replace(/[^A-Z0-9]/g,'');
+function neocSplit(text){
+ const lines=String(text).replace(/\r/g,'').split('\n').filter(l=>l.trim()!=='');
+ if(!lines.length)return [];
+ const head=lines.slice(0,5), tab=head.filter(l=>l.indexOf('\t')>=0).length, sem=head.filter(l=>l.indexOf(';')>=0).length;
+ const d=tab>0?'\t':(sem>0?';':',');
+ return lines.map(l=>{ if(d!==',')return l.split(d).map(x=>x.trim());
+  const out=[]; let cur='',q=false; for(let i=0;i<l.length;i++){const c=l[i]; if(c==='"'){if(q&&l[i+1]==='"'){cur+='"';i++;}else q=!q;} else if(c===d&&!q){out.push(cur);cur='';} else cur+=c;} out.push(cur); return out.map(x=>x.trim()); });
+}
+function neocParse(text){
+ const M=neocSplit(text); if(!M.length)return null;
+ let hi=-1; for(let i=0;i<Math.min(8,M.length);i++){ if(M[i].some(c=>/district/i.test(c))){hi=i;break;} }
+ if(hi<0)return null;
+ const H=M[hi].map(neocKey), rows=M.slice(hi+1);
+ const col=function(){for(let a=0;a<arguments.length;a++){const p=arguments[a]; const j=H.findIndex(h=>h.indexOf(p)>=0); if(j>=0)return j;} return -1;};
+ const jD=col('DISTRICT'), jA=col('AICVISITED','AICSVISITED','AICNAME','AIC'), jT=col('TEAMSMONITORED','TEAMSVISITED','TEAMNO','TEAMS'), jU=col('UCSMONITORED','UCMONITORED','UCNAME','UCS'), jM=col('MONITORSDEPLOYED','SURVEYORNAME','SURVEYORS','MONITORS','SUPERVISORS'), jC=col('CLUSTERSMONITORED','CLUSTERS'), jCh=col('CHILDRENEXAMINED','CHILDRENSEEN','CHILDVACCINATEDTODAY','CHILDREN'), jDy=col('DAY');
+ if(jD<0)return null;
+ const agg=H.includes('TEAMNO')||(H.includes('SURVEYORNAME')&&H.includes('UCNAME'));
+ const out={};
+ if(agg){
+  rows.forEach(r=>{const d=String(r[jD]||'').trim(); if(!d||/^(TOTAL|GRANDTOTAL|DISTRICT)$/i.test(d))return; const g=out[d]=out[d]||{d:d,aic:{},t:0,u:{},m:{},dy:{},ch:0};
+   g.t++; const put=(j,o)=>{if(j<0)return; const v=String(r[j]||'').trim(); if(v)o[v]=1;};
+   put(jA,g.aic); put(jU,g.u); put(jM,g.m); put(jDy,g.dy); if(jCh>=0)g.ch+=neocNum(r[jCh]);});
+  return {mode:'visits',rows:Object.values(out).map(g=>[g.d,Object.keys(g.aic).length,g.t,Object.keys(g.u).length,Object.keys(g.m).length,0,g.ch,Object.keys(g.dy).length])};
+ }
+ rows.forEach(r=>{const d=String(r[jD]||'').trim(); if(!d||/^(TOTAL|GRANDTOTAL|DISTRICT)$/i.test(d))return;
+  out[d]=[d, jA>=0?neocNum(r[jA]):0, jT>=0?neocNum(r[jT]):0, jU>=0?neocNum(r[jU]):0, jM>=0?neocNum(r[jM]):0, jC>=0?neocNum(r[jC]):0, jCh>=0?neocNum(r[jCh]):0, 0];});
+ const rs=Object.values(out);
+ return rs.length?{mode:'table',rows:rs}:null;
+}
+function neocRender(lab){
+ const st=neocStore(), d=st[lab], inF=crInD();
+ const rows=(d&&d.rows?d.rows:[]).filter(r=>inF(r[0]));
+ const S=i=>rows.reduce((a,r)=>a+(r[i]||0),0);
+ el('neocCamp').textContent=lab+(d?' · saved '+d.t:' · nothing saved yet');
+ if(!d){
+  el('neocHint').textContent='AIC visited, teams monitored, UCs monitored and monitors deployed come from your logged-in NEOC intra-campaign session and are not in the public exports. Paste the intra-campaign table (or import a team-monitoring CSV) below, or copy the extractor snippet and run it in the NEOC tab console. Saved per campaign in this browser only.';
+  ['nk1','nk2','nk3','nk4'].forEach(id=>el(id).textContent='–');
+  ['nk1s','nk2s','nk3s','nk4s'].forEach(id=>el(id).textContent='');
+  drawTable('tNEOC',NEOC_COLS,[],'t',-1); el('cntNEOC').textContent='0 districts'; el('capNEOC').textContent=''; el('btnNEOCcsv').onclick=null; return;
+ }
+ el('neocHint').textContent='Imported from your NEOC session ('+d.src+', saved '+d.t+', '+(d.mode==='visits'?'aggregated from team-monitoring visits':'district table')+'): '+d.rows.length+' district rows for '+lab+'. AIC / UC / monitor counts are distinct values. Follows the division / district filter.';
+ el('nk1').textContent=fmt(S(1)); el('nk1s').textContent='distinct AICs visited by monitors';
+ el('nk2').textContent=fmt(S(2)); el('nk2s').textContent=d.mode==='visits'?'team visits recorded':'teams monitored';
+ el('nk3').textContent=fmt(S(3)); el('nk3s').textContent='distinct UCs monitored';
+ el('nk4').textContent=fmt(S(4)); el('nk4s').textContent='monitors / supervisors deployed · '+fmt(S(7))+' campaign days';
+ const NR=rows.map(r=>({d:r[0],aic:r[1]||0,t:r[2]||0,u:r[3]||0,m:r[4]||0,cl:r[5]||0,ch:r[6]||0,dy:r[7]||0}));
+ drawTable('tNEOC',NEOC_COLS,NR,'t',-1);
+ el('cntNEOC').textContent=NR.length+' districts';
+ el('capNEOC').textContent='Source: NEOC intra-campaign monitoring, imported '+d.t+' ('+d.src+').';
+ el('btnNEOCcsv').onclick=()=>cqCSV('NEOC_operational_'+lab,['District','AIC visited','Teams monitored','UCs monitored','Monitors deployed','Clusters monitored','Children examined','Campaign days'],NR.map(x=>[x.d,x.aic,x.t,x.u,x.m,x.cl,x.ch,x.dy]));
+}
+(function(){
+ const ta=el('neocTA'), lb=el('neocLoadBtn');
+ el('neocPasteBtn').onclick=()=>{const show=ta.style.display==='none'; ta.style.display=show?'block':'none'; lb.style.display=show?'inline-block':'none'; if(show)ta.focus();};
+ const load=(text,src)=>{const p=neocParse(text);
+  if(!p||!p.rows.length){el('neocStatus').textContent='Not recognised — include the header row with a District column.'; toast('NEOC table not recognised'); return;}
+  const lab=(CQ.camps||[])[CQI]?CQ.camps[CQI].l:'NEOC';
+  const t=new Date().toISOString().slice(0,16).replace('T',' ');
+  neocSave(lab,{t:t,src:src,mode:p.mode,rows:p.rows});
+  el('neocStatus').textContent='Saved '+p.rows.length+' district rows for '+lab+'.';
+  ta.value=''; ta.style.display='none'; lb.style.display='none'; render(); toast('NEOC operational indicators saved for '+lab);};
+ lb.onclick=()=>load(ta.value,'pasted table');
+ el('neocFile').onchange=e=>{const f=e.target.files[0]; if(!f)return; const rd=new FileReader(); rd.onload=()=>load(String(rd.result),f.name); rd.readAsText(f); e.target.value='';};
+ el('neocClear').onclick=()=>{const lab=(CQ.camps||[])[CQI]?CQ.camps[CQI].l:'NEOC'; neocSave(lab,null); render(); toast('Cleared NEOC indicators for '+lab);};
+ el('neocSnippet').onclick=()=>{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(NEOCSNIP).then(()=>toast('Extractor snippet copied — run it in the NEOC tab console'),()=>window.prompt('Copy the snippet:',NEOCSNIP));} else window.prompt('Copy the snippet:',NEOCSNIP); };
+})();
 // ---------- Post-campaign (LQAS + admin) ----------
 function renderCPost(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.l||r.m), lab=X.C?X.C.l:'';
  el('cl1').textContent=fmt(S.l_n||0); el('cl1s').textContent=`in ${R.filter(r=>r.l).length} districts · each lot = 1 UC`;
