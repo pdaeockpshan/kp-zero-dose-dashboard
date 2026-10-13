@@ -446,7 +446,8 @@ body.home .hdr, body.home .content .topbar{display:none}
 
 <style>
 /* ================= (9) missed children + surveillance quality ================= */
-.ngrp.gm{--gc:#c2410c}.tab[data-tab="mis"],#p-mis{--tc:#c2410c}
+.ngrp.gm{--gc:#c2410c}.tab[data-tab="c3"],#p-c3{--tc:#c2410c}
+.tab[data-tab="mis"],#p-mis{--tc:#c2410c}
 .tab[data-tab="ch"],#p-ch{--tc:#0369a1}
 .tab[data-tab="sn"],#p-sn{--tc:#7c3aed}
 .tab[data-tab="er"],#p-er{--tc:#be123c}
@@ -791,6 +792,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
   </div>
   <div class="ngrp hc"><div class="nhd">Campaigns</div>
    <button class="tab" data-tab="hcamp"><span class="tl">Campaign overview</span><span class="badge" id="bHC">–</span></button>
+   <button class="tab" data-tab="c3"><span class="tl">Last 3 campaigns</span><span class="badge" id="bC3">–</span></button>
    <button class="tab" data-tab="cpre"><span class="tl">Pre-campaign</span><span class="badge" id="bCP">–</span></button>
    <button class="tab" data-tab="cicm"><span class="tl">Intra-campaign (ICM)</span><span class="badge" id="bCI">–</span></button>
    <button class="tab" data-tab="cpost"><span class="tl">Post-campaign (LQAS)</span><span class="badge" id="bCL">–</span></button>
@@ -858,7 +860,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 13-Oct-2026 09:49</span>
+  <span class="hupd" id="hUpd">Updated 13-Oct-2026 10:18</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -867,7 +869,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <div class="hbtns">
     
     <div class="hql"><button class="hgo2" id="hPop" type="button" title="Countdown to the campaign and a map of the 27 scoped districts"><span class="hi" data-ic="clock"></span>SNID Nov-26 countdown &amp; map</button>
-    <button class="hgo2" data-hl="zov" title="Zero-dose reported &amp; covered — analysis of the last three campaigns"><span class="hi" data-ic="users"></span>NID Apr-26 · SNID May-26 · SNID Sept-26</button>
+    <button class="hgo2" data-hl="c3" title="Combined analysis of the last three campaigns — campaign coverage, missed children and zero-dose children recorded and covered, with the UCs that need focus"><span class="hi" data-ic="chart"></span>NID Apr-26 · SNID May-26 · SNID Sept-26</button>
     <button class="hgo2" data-hl="zins" title="Plain-English insights and notes on zero-dose reporting and coverage"><span class="hi" data-ic="bulb"></span>Insights</button>
     </div>
    </div>
@@ -1700,6 +1702,32 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <div class="hbody"><div class="hbig hbm" id="hM10n"></div><div class="hfacts" id="hF10"></div><div class="hrtop" id="hM10t"></div></div>
    <div class="halarm" id="hA10"></div>
   </div></div>
+</section>
+
+<!-- CAMPAIGNS: LAST 3 CAMPAIGNS — COVERAGE + ZERO DOSE (COMBINED) -->
+<section class="pane" id="p-c3">
+<div class="cqbar"><b>Last 3 campaigns</b><span class="cnt">NID Apr-26 · SNID May-26 · SNID Sept-26</span><span class="cnt" id="c3Note"></span></div>
+<div class="hint" id="c3Hint"></div>
+<div class="kpis">
+<div class="card"><div class="kl">Campaign coverage</div><div class="kv" id="c3k1">–</div><div class="ks" id="c3k1s"></div></div>
+<div class="card"><div class="kl">Children still missed · Sept</div><div class="kv" id="c3k2" style="color:#c2410c">–</div><div class="ks" id="c3k2s"></div></div>
+<div class="card"><div class="kl">ZD children reported</div><div class="kv" id="c3k3">–</div><div class="ks" id="c3k3s"></div></div>
+<div class="card"><div class="kl">ZD covered by next round</div><div class="kv" id="c3k4">–</div><div class="ks" id="c3k4s"></div></div>
+<div class="card"><div class="kl">UCs needing focus</div><div class="kv" id="c3k5" style="color:#b91c1c">–</div><div class="ks" id="c3k5s"></div></div>
+</div>
+<div class="grid2">
+<div class="card"><div id="c3g1" class="ch"></div><div class="cap" id="c3c1"></div></div>
+<div class="card"><div id="c3g2" class="ch"></div><div class="cap" id="c3c2"></div></div>
+</div>
+<div class="grid2">
+<div class="card"><div id="c3g3" class="ch"></div><div class="cap" id="c3c3"></div></div>
+<div class="card"><div id="c3g4" class="ch"></div><div class="cap" id="c3c4"></div></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">UC combined view — coverage, missed children and zero dose</h3><span style="display:flex;gap:8px;align-items:center"><span class="cnt" id="cntC3"></span><button class="btn" id="btnC3CSV">Download CSV</button></span></div>
+<div class="scroll"><table id="tC3"></table></div>
+<div class="cap" id="c3c5"></div>
+</div>
 </section>
 
 <!-- ================= HUB: Pre-campaign readiness ================= -->
@@ -3782,7 +3810,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','adv','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','ch','sn','er','act','hcamp','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why','closed'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','adv','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','afp','risk','watch','crit','surv','mis','ch','sn','er','act','hcamp','c3','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why','closed'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu'], DTABS=['overview','compare','followup','notes'];
 function setTab(t){
  if(!TABS.includes(t))t='home'; TAB=t; document.body.classList.toggle('home',t==='home');
  ZTAB=ZTABS.includes(t); VTAB=VTABS.includes(t);
@@ -3799,8 +3827,8 @@ function setTab(t){
 }
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
- renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); atBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,ch:renderCH,adv:renderADV,sn:renderSN,er:renderER,act:renderAct,hcamp:renderHCamp,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,closed:renderClosed,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
+ renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); c3Badge(); atBadge();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,ch:renderCH,adv:renderADV,sn:renderSN,er:renderER,act:renderAct,hcamp:renderHCamp,c3:renderC3,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,closed:renderClosed,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -4724,6 +4752,96 @@ const svCol=b=>({g:'#16a34a',a:'#d97706',r:'#dc2626',n:'#9ca3af'})[b];
 const svRate=v=>v==null?'–':Math.round(v)+'';
 function svBadge(){const b=el('bSV1'); if(b){const n=svStats(crInD()).low.length; b.textContent=n+' low';}}
 function misBadge(){const b=el('bM1'); if(b){const S=misStats(matchG); b.textContent=S.stp==null?'–':pc(S.stp)+' missed';}}
+// ---------- Campaigns: last 3 campaigns, coverage + zero dose (combined) ----------
+const C3W={lo:6,rf:5,ms:3,cv:2,zd:3,zb:1};
+const C3TAG={lo:['t-crit','not reached'],rf:['t-crit','persistent refusals'],ms:['t-low','3%+ still missed'],cv:['t-mod','coverage <90%'],zd:['t-low','ZD coverage <50%'],zb:['t-mod','ZDs rising']};
+let _C3U=null;
+function c3UC(){ if(_C3U)return _C3U;
+ const IX={}; CPS.forEach(k=>{IX[k]=(MISM.camps||[]).findIndex(l=>CQK(l)===CQK(CAMP[k]));});
+ const AU=misUC(), by={};
+ misHyd().forEach(r=>{ if(!r.d)return; const o=by[r.c]=by[r.c]||{dv:r.dv,d:r.d,t:r.t,u:r.u,c:r.c,h:{}}; o.h[r.ci]=r; });
+ const zc={}; ZD.forEach(z=>zc[z.c]=z);
+ _C3U=Object.values(by).map(o=>{ const z=zc[o.c]||{}, m=AU[o.c]||{}, R={dv:o.dv,d:o.d,t:o.t,u:o.u,c:o.c,pers:!!m.pers,f:[]};
+  CPS.forEach(k=>{ const x=IX[k]>=0?o.h[IX[k]]:null;
+   R['tg'+k]=x?x.tg:null; R['vc'+k]=x?x.vc:null; R['vp'+k]=x&&x.tg?x.vc/x.tg*100:null;
+   R['st'+k]=x?misSt(x):null; R['rf'+k]=x?(x.srf||0):null; R['lo'+k]=x?(x.slo||0):null; });
+  ['rA','cA','pA','rM','cM','pM','rS'].forEach(k=>R[k]=z[k]!=null?z[k]:null);
+  if(R.tgS&&R.loS!=null&&R.loS>=0.5*R.tgS)R.f.push('lo');
+  if(R.pers)R.f.push('rf');
+  if(R.tgS&&R.stS!=null&&R.stS/R.tgS>=0.03)R.f.push('ms');
+  if(R.vpS!=null&&R.vpS<90)R.f.push('cv');
+  if(R.rM>0&&R.pM!=null&&R.pM<50)R.f.push('zd');
+  if(R.rS!=null&&R.rS>=20&&R.rA!=null&&R.rS>R.rA)R.f.push('zb');
+  R.w=R.f.reduce((a,k)=>a+(C3W[k]||0),0);
+  return R; });
+ const ord=_C3U.slice().sort((a,b)=>(b.w-a.w)||((b.stS||0)-(a.stS||0))||((b.rS||0)-(a.rS||0)));
+ const cut=Math.ceil(_C3U.length*0.10);
+ ord.forEach((r,i)=>{r.top=i<cut&&r.w>0;});
+ return _C3U; }
+function c3Sum(rows){ const S={n:rows.length,focus:0,camps:CPS.map(k=>({k,l:CAMP[k],n:0,tg:0,vc:0,st:0,rf:0}))};
+ rows.forEach(r=>{ S.camps.forEach(c=>{ if(r['tg'+c.k]!=null){c.n++;c.tg+=r['tg'+c.k];c.vc+=r['vc'+c.k]||0;c.st+=r['st'+c.k]||0;c.rf+=r['rf'+c.k]||0;} }); if(r.top)S.focus++; });
+ S.camps.forEach(c=>c.vp=c.tg?c.vc/c.tg*100:null);
+ S.rA=sum_(rows.filter(r=>r.rA!=null),r=>r.rA); S.cA=sum_(rows.filter(r=>r.cA!=null),r=>r.cA);
+ S.rM=sum_(rows.filter(r=>r.rM!=null),r=>r.rM); S.cM=sum_(rows.filter(r=>r.cM!=null),r=>r.cM);
+ S.rS=sum_(rows.filter(r=>r.rS!=null),r=>r.rS);
+ return S; }
+function renderC3(){
+ const R0=c3UC().filter(r=>r.d&&matchG(r)), S=c3Sum(R0);
+ const sc=S.camps.find(c=>c.k==='S')||S.camps[S.camps.length-1];
+ el('c3Note').textContent=S.n+' UCs · '+new Set(R0.map(r=>r.d)).size+' districts';
+ el('c3Hint').innerHTML='<b>The last three campaigns side by side — campaign coverage, missed children and zero-dose children recorded and covered.</b> Campaign coverage is vaccinated ÷ target from the EOC summary coverage report (UC-wise, the same data as Missed children &amp; refusals). Zero-dose children reported, and covered by the next round, come from the ZD reported-and-covered workbook; Sept ZD coverage is not compiled yet. UCs score focus points for: half the target left over (not reached), 20+ children refusing in every campaign, 3%+ of the target still missed, campaign coverage under 90%, critical ZD covered-by-next-round (under 50%), or 20+ zero-dose children in September rising from April. The <b>top 10% of KP UCs by score</b> are the priority focus list (marked “focus” in the table); the ranking is province-wide, so filters only change what is shown. Follows the Division, District, Tehsil and search filters.';
+ el('c3k1').innerHTML=S.camps.map(c=>pcol(c.vp)).join('<small> → </small>');
+ el('c3k1s').textContent=sc.l+': '+fmt(sc.vc)+' of '+fmt(sc.tg)+' vaccinated';
+ el('c3k2').textContent=fN(sc.st); el('c3k2s').textContent=(sc.tg?pc(sc.st/sc.tg*100)+' of target · ':'')+fmt(sc.rf)+' still refusing';
+ el('c3k3').innerHTML=CPS.map(k=>fN(S['r'+k])).join('<small> → </small>');
+ el('c3k3s').textContent='zero-dose children reported, Apr → May → Sept';
+ const zpA=S.rA?S.cA/S.rA*100:null, zpM=S.rM?S.cM/S.rM*100:null;
+ el('c3k4').innerHTML=pcol(zpA)+'<small> → </small>'+pcol(zpM);
+ el('c3k4s').textContent='Apr ZDs covered by May · May ZDs covered by Sept';
+ el('c3k5').textContent=fmt(S.focus); el('c3k5s').textContent='top 10% of KP UCs by focus score · of '+fmt(S.n)+' UCs shown';
+ const G={}; R0.forEach(r=>{ const g=G[r.d]=G[r.d]||{k:r.d,n:0,t:{},v:{}}; g.n++;
+  CPS.forEach(k=>{ if(r['tg'+k]!=null){g.t[k]=(g.t[k]||0)+r['tg'+k]; g.v[k]=(g.v[k]||0)+(r['vc'+k]||0);} }); });
+ const Gs=Object.values(G).map(g=>{const o={k:g.k,n:g.n}; CPS.forEach(k=>o['vp'+k]=g.t[k]?g.v[k]/g.t[k]*100:null); return o;})
+  .sort((a,b)=>{const x=a.vpS==null?1e9:a.vpS,y=b.vpS==null?1e9:b.vpS;return x-y;});
+ el('c3g1').style.height=hFor(Gs.length,24)+'px';
+ const hm=[]; Gs.forEach((g,y)=>CPS.forEach((k,x)=>hm.push({x,y,value:g['vp'+k]==null?null:+g['vp'+k].toFixed(1)})));
+ HC('c3g1',{chart:{type:'heatmap',marginTop:60},title:{text:'Campaign coverage % by district'},subtitle:{text:'Worst '+CAMP.S+' coverage at the top · grey = district not in that campaign'},
+  xAxis:{categories:CATS,opposite:true},yAxis:{categories:Gs.map(g=>g.k),title:{text:null},reversed:true,gridLineWidth:0},
+  colorAxis:{dataClasses:[{to:50,color:C.crit,name:'<50%'},{from:50,to:80,color:C.low,name:'50–80%'},{from:80,to:90,color:C.mod,name:'80–90%'},{from:90,to:110,color:C.high,name:'90–110%'},{from:110,color:C.over,name:'>110%'}]},
+  legend:{align:'left',verticalAlign:'bottom'},
+  tooltip:{formatter(){const g=Gs[this.point.y];return '<b>'+esc(g.k)+'</b><br>'+CATS[this.point.x]+': <b>'+(this.point.value==null?'no data':this.point.value+'%')+'</b>';}},
+  series:[{name:'Coverage %',borderWidth:1,borderColor:C.bg2,nullColor:C.grid,data:hm,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500',fontSize:'10.5px'},formatter(){return this.point.value==null?'–':Math.round(this.point.value)+'%';}}}]});
+ el('c3c1').textContent=CAMP.S+' coverage under 90% in '+Gs.filter(g=>g.vpS!=null&&g.vpS<90).length+' of '+Gs.length+' districts · lowest: '+(Gs.length&&Gs[0].vpS!=null?Gs[0].k+' '+pc(Gs[0].vpS):'–')+'.';
+ const rep=CPS.map(k=>S['r'+k]), cov=CPS.map(k=>k==='A'?S.cA:k==='M'?S.cM:null), zpl=CPS.map(k=>k==='A'?zpA:k==='M'?zpM:null);
+ HC('c3g2',{chart:{type:'column'},title:{text:'Zero-dose children reported and covered by next round'},subtitle:{text:'Bars = children · line = covered % · '+CAMP.S+' covered not compiled yet'},
+  xAxis:{categories:CATS},yAxis:[{title:{text:'Zero-dose children'}},{title:{text:'Covered %'},opposite:true,min:0,max:120,gridLineWidth:0,plotLines:[{value:90,color:C.high,dashStyle:'Dash',width:1.5,zIndex:5,label:{text:'90%',align:'right',style:{color:C.high}}}]}],tooltip:{shared:true},
+  series:[{name:'Reported',data:rep,color:C.prim},{name:'Covered by next round',data:cov,color:C.high},{name:'Covered %',type:'line',yAxis:1,data:zpl,color:C.crit,marker:{radius:4}}]});
+ el('c3c2').textContent=fmt(S.rS)+' zero-dose children reported in '+CAMP.S+' · '+(S.rM?pc(zpM)+' of the May ZDs covered by Sept':'May covered % not available')+'.';
+ const MS={}; R0.forEach(r=>{ if(r.stS==null)return; const g=MS[r.d]=MS[r.d]||{k:r.d,st:0,rf:0,lo:0,na:0}; g.st+=r.stS; g.rf+=r.rfS||0; g.lo+=r.loS||0; g.na+=r.stS-(r.rfS||0)-(r.loS||0); });
+ const Mt=Object.values(MS).sort((a,b)=>b.st-a.st).slice(0,12);
+ HC('c3g3',{chart:{type:'column'},title:{text:'Children still missed after '+CAMP.S},subtitle:{text:'Top 12 districts · why they were missed'},
+  xAxis:{categories:Mt.map(g=>g.k)},yAxis:{title:{text:'Children'}},plotOptions:{column:{stacking:'normal'}},
+  series:[{name:'Not available',data:Mt.map(g=>g.na),color:C.mod},{name:'Refused',data:Mt.map(g=>g.rf),color:C.crit},{name:'Left over',data:Mt.map(g=>g.lo),color:C.low}]});
+ el('c3c3').textContent=Mt.length?('These 12 districts hold '+fmt(Mt.reduce((a,g)=>a+g.st,0))+' of the '+fmt(sc.st)+' children still missed · refusals '+fmt(Mt.reduce((a,g)=>a+g.rf,0))+'.'):'No Sept missed-children data in this selection.';
+ const FD={}; R0.forEach(r=>{ if(!r.top)return; const g=FD[r.d]=FD[r.d]||{k:r.d,n:0,w:0}; g.n++; g.w+=r.w; });
+ const Fs=Object.values(FD).sort((a,b)=>b.n-a.n||b.w-a.w);
+ el('c3g4').style.height=hFor(Fs.length,26)+'px';
+ HC('c3g4',{chart:{type:'bar'},title:{text:'UCs needing focus, by district'},subtitle:{text:'Priority UCs — top 10% of KP UCs by focus score'},
+  xAxis:{categories:Fs.map(g=>g.k)},yAxis:{title:{text:'UCs'}},
+  series:[{name:'Focus UCs',data:Fs.map(g=>g.n),color:C.crit,dataLabels:{enabled:true,style:{textOutline:'none'}}}]});
+ el('c3c4').textContent=Fs.length?('Most priority UCs: '+Fs.slice(0,3).map(g=>g.k+' ('+g.n+')').join(', ')+'. All of them are at the top of the table below.'):'No priority UCs in this selection.';
+ el('cntC3').textContent=R0.length+' UCs';
+ drawTable('tC3',[{k:'u',l:'UC'},{k:'c',l:'Code',f:r=>'<span style="font-family:var(--font-mono)">'+r.c+'</span>'},{k:'d',l:'District',f:r=>dz(r.d)},{k:'t',l:'Tehsil'},
+  zn('vpA','Cov % Apr',r=>pcol(r.vpA)),zn('vpM','Cov % May',r=>pcol(r.vpM)),zn('vpS','Cov % Sept',r=>pcol(r.vpS)),
+  zn('stS','Missed Sept',r=>fN(r.stS)),zn('rfS','Refusing',r=>r.rfS?fN(r.rfS):'–'),
+  zn('rA','ZD Apr',r=>fN(r.rA)),zn('rM','ZD May',r=>fN(r.rM)),zn('rS','ZD Sept',r=>fN(r.rS)),
+  zn('pM','ZD cov % May',r=>pcol(r.pM)),
+  {k:'w',l:'Focus',n:1,sv:r=>(r.top?1e6:0)+(r.w||0),f:r=>(r.top?tag('t-crit','focus')+' ':'')+(r.f.length?r.f.map(k=>tag(C3TAG[k][0],C3TAG[k][1])).join(' '):'–')}],R0,'w',-1);
+ el('c3c5').textContent='Coverage = vaccinated ÷ target (EOC summary coverage report). ZD cov % May = May-reported zero-dose children covered by the Sept round. Focus points: not reached = half the target left over · persistent refusals = 20+ refusing in every campaign · 3%+ still missed · coverage <90% · ZD coverage <50% · ZDs rising = 20+ ZDs in Sept, above April. The red “focus” mark = top 10% of KP UCs by score, ranked province-wide. Click a column header to sort; click a district to filter to it.';
+ const C3H=['UC','Code','District','Tehsil','Coverage % Apr','Coverage % May','Coverage % Sept','Still missed Sept','Still refusing Sept','ZD reported Apr','ZD reported May','ZD reported Sept','ZD covered % May','Focus flags','Priority focus'];
+ el('btnC3CSV').onclick=()=>csvDownload('Last3Campaigns_'+(fDist.value||'All_districts').replace(/\s+/g,'_')+'.csv',C3H,R0.map(r=>[r.u,r.c,r.d,r.t,r.vpA==null?'':+r.vpA.toFixed(1),r.vpM==null?'':+r.vpM.toFixed(1),r.vpS==null?'':+r.vpS.toFixed(1),r.stS==null?'':r.stS,r.rfS||'',r.rA==null?'':r.rA,r.rM==null?'':r.rM,r.rS==null?'':r.rS,r.pM==null?'':+r.pM.toFixed(1),r.f.join('; '),r.top?'yes':'']));
+}
+function c3Badge(){const b=el('bC3'); if(b){const U=c3UC().filter(r=>r.d&&matchG(r)); b.textContent=U.length?U.filter(r=>r.top).length+' focus':'–';}}
 Object.assign(KX,{sv1:['shield',null,null],sv2:['alert',null,null],sv3:['list',null,null],sv4:['flag',null,null],sv5:['alert',null,null],mk1:['users',null,null],mk2:['alert',null,null],mk3:['check',null,null],mk4:['flag',null,null],mk5:['alert',null,null]});
 
 
