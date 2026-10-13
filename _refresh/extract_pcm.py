@@ -6,8 +6,9 @@ Three sources, one payload:
   * post-campaign monitoring for the newest campaign
     D:\\AMAZON DATA\\POST CAMPAIGN MONITORING*.xlsx (currently SNID Sept-26)
   * per-UC intra-campaign monitoring (ICM) for the 2026 campaigns plus
-    campaign-level ICM/PCM aggregates back to 2017, from the KP+TD UC spotting
-    workbook DATA sheet (reuses cache/ch_rows.pkl, same cache as extract_chd)
+    campaign-level ICM/PCM/LQAS aggregates and campaign coverage back to 2017,
+    from the KP+TD UC spotting workbook DATA sheet (reuses cache/ch_rows.pkl,
+    same cache as extract_chd)
 
 Surveyor names / designations in the PCHS sheet are deliberately NOT extracted -
 the public variant is served on GitHub Pages.
@@ -96,6 +97,20 @@ def camp_label(raw, y, mo):
     if mo:
         return '%s %s %d' % (t, MONNAME[mo], y)
     return r if r else '%s %d' % (t, y)
+
+
+def rawtag(raw):
+    """Short distinguishing tail for campaigns sharing a month (e.g. BANNU, NORTH, P1)."""
+    t = re.sub(r'[^A-Z0-9]+', '', str(raw).upper())
+    for mt in ('SEPT', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'):
+        i = t.find(mt)
+        if i >= 0:
+            t = t[:i] + t[i + len(mt):]
+            break
+    t = re.sub(r'20\d\d', '', t)
+    t = re.sub(r'\d{2}', '', t)
+    t2 = re.sub(r'^(SNID|SIA|OBR|CRM|NID|CR|ER)', '', t)
+    return t2 if t2 else t
 
 
 def zd_codes(repo):
@@ -228,29 +243,56 @@ ICM_H = {'cl': 'ICM_Clusters_Taken', 'hh': 'ICM_HH_Checked', 'rc': 'ICMrecall 0-
          'pmg': 'PCM_Migrant', 'pfk': 'PCM_FM_notVacc (Fake)', 'pvm': 'PCM_VAccbyMon'}
 ICM_KEYS = ['cl', 'hh', 'rc', 'rv', 'ms', 'nt', 'tv', 'na', 'rf', 'sl', 'ot', 'sc', 'sv',
             'vb', 'dm', 'zd', 'pa', 'ma', 'vm', 'gu', 'gv', 'fk']
+LQ_H = {'qp': 'LQASpassed', 'qi': 'LQASinterm', 'qf': 'LQASfailed', 'qtm': 'LQAS_TotalMissed',
+        'qnt': 'LQAS_NT', 'qtv': 'LQAS_TVBMC', 'qna': 'LQAS_NA', 'qsl': 'LQAS_Asleep',
+        'qmg': 'LQAS_Migrated', 'qbn': 'LQAS_Born', 'qrf': 'LQAS_REF', 'qvb': 'LQAS_VBNFM',
+        'qfw': 'LQAS_FMwoSV', 'qin': 'LQAS_Inacessible', 'qot': 'LQAS_Others'}
+LQ_KEYS = list(LQ_H)
+CV_H = {'tg': 'AdmTarget', 'vc': 'AdmCovered'}
 
 
 def workbook_monitoring(hdr, rows, verbose=True):
-    """Campaign-level ICM + PCM aggregates (trend) and per-UC ICM rows for 2026."""
-    missing = [v for v in list(ICM_H.values()) + ['Year', 'Campaign', 'District', 'Tehsil', 'UC_NAME']
+    """Campaign-level ICM + PCM + LQAS + coverage aggregates (trend) and per-UC ICM rows for 2026."""
+    missing = [v for v in list(ICM_H.values()) + list(LQ_H.values()) + list(CV_H.values())
+               + ['Year', 'Campaign', 'District', 'Tehsil', 'UC_NAME']
                if v not in hdr]
     if missing:
         raise SystemExit('ERR pcm DATA sheet is missing columns %s - layout changed' % missing[:5])
     ix = {k: hdr.index(v) for k, v in ICM_H.items()}
+    for k, v in LQ_H.items():
+        ix[k] = hdr.index(v)
+    iyt, ivc = hdr.index(CV_H['tg']), hdr.index(CV_H['vc'])
     iy, icamp = hdr.index('Year'), hdr.index('Campaign')
     idist, iteh, iuc = hdr.index('District'), hdr.index('Tehsil'), hdr.index('UC_NAME')
+
+    # case-variant campaign spellings (NIDApr19 / NIDAPR19) aggregate into one campaign
+    spell = collections.Counter()
+    for r in rows:
+        camp = clean(r[icamp])
+        if camp:
+            spell[camp.upper()] += 1
+    canon = {}
+    for up, n in spell.items():
+        canon[up] = up if n == 1 else None
+    for r in rows:
+        camp = clean(r[icamp])
+        if camp and canon[camp.upper()] is None:
+            canon[camp.upper()] = camp  # first-seen spelling wins
 
     agg = collections.defaultdict(lambda: {k: 0 for k in ICM_KEYS})
     pac = collections.defaultdict(lambda: {k: 0 for k in ['pcl', 'pchk', 'pfm', 'pms', 'pna', 'prf',
                                                           'pborn', 'pnt', 'ptv', 'psl', 'pvb', 'pmg', 'pfk', 'pvm']})
+    lqg = collections.defaultdict(lambda: {k: 0 for k in LQ_KEYS})
+    cvg = collections.defaultdict(lambda: [0, 0])
     uc26 = collections.defaultdict(lambda: collections.defaultdict(lambda: {k: 0 for k in ICM_KEYS}))
     for r in rows:
         y = num(r[iy])
         camp = clean(r[icamp])
         if not camp:
             continue
+        camp = canon[camp.upper()]
         k = (y, camp)
-        a, p = agg[k], pac[k]
+        a, p, q = agg[k], pac[k], lqg[k]
         any_icm = 0
         for f in ICM_KEYS:
             v = num(r[ix[f]])
@@ -258,6 +300,11 @@ def workbook_monitoring(hdr, rows, verbose=True):
             any_icm += v
         for f in p:
             p[f] += num(r[ix[f]])
+        for f in q:
+            q[f] += num(r[ix[f]])
+        c = cvg[k]
+        c[0] += num(r[iyt])
+        c[1] += num(r[ivc])
         if y == 2026 and any_icm:
             d, t, u = clean(r[idist]), clean(r[iteh]), clean(r[iuc])
             if d and u:
@@ -276,7 +323,22 @@ def workbook_monitoring(hdr, rows, verbose=True):
             srcutil.say('#   ICM %-28s chk=%-7s fm=%-7s (%.1f%%) rchk=%-7s rfm=%-7s tmiss=%-6s reasons=%-6s zd=%-4s fk=%-3s dm=%-5s vm=%-5s'
                         % ('%s %s' % k, chk, fm, (fm / chk * 100 if chk else 0), a['rc'], a['rv'],
                            ms, rs, a['zd'], a['fk'], a['dm'], a['vm']))
-    return agg, pac, uc26
+        nlq = 0
+        for k in sorted(lqg):
+            q = lqg[k]
+            lots = q['qp'] + q['qi'] + q['qf']
+            if lots <= 0:
+                continue
+            nlq += 1
+            if nlq <= 3 or k[0] >= 2026:
+                rs = q['qnt'] + q['qtv'] + q['qna'] + q['qsl'] + q['qmg'] + q['qbn'] + q['qrf'] + q['qvb'] + q['qfw'] + q['qin'] + q['qot']
+                srcutil.say('#   LQAS %-28s lots=%-5s P=%-5s I=%-4s F=%-5s (%.1f%% pass) tmiss=%-6s reasons=%-6s'
+                            % ('%s %s' % k, lots, q['qp'], q['qi'], q['qf'], q['qp'] / lots * 100, q['qtm'], rs))
+        ncv = sum(1 for k in cvg if cvg[k][0] > 0)
+        zcov = [k for k in cvg if cvg[k][0] > 0 and cvg[k][1] <= 0]
+        srcutil.say('#   LQAS campaigns=%d, coverage campaigns=%d (target>0, covered=0: %d)'
+                    % (nlq, ncv, len(zcov)))
+    return agg, pac, lqg, cvg, uc26
 
 
 def main():
@@ -318,7 +380,7 @@ def main():
     cache_path = os.path.join(srcutil.HERE, chde.get('cache', 'cache/ch_rows.pkl').replace('/', os.sep))
     hdr, wrows, cached = extract_chd.read_rows(chd_rec, chde['sheet'], cache_path, use_cache=not a.no_cache)
     srcutil.say('# pcm: workbook %s (%d rows, cache=%s)' % (chd_rec['name'], len(wrows), 'hit' if cached else 'rebuilt'))
-    agg, pac, uc26 = workbook_monitoring(hdr, wrows)
+    agg, pac, lqg, cvg, uc26 = workbook_monitoring(hdr, wrows)
 
     umap = UCMapper(cfg['repo'])
 
@@ -334,13 +396,36 @@ def main():
     def keylab(y, mo, raw):
         return MONNAME[mo] + ' ' + str(y)[2:] if mo else camp_label(raw, y, mo)
 
-    wk = {}
-    for (y, camp) in sorted(agg):
+    def has_lq(k):
+        q = lqg[k]
+        return q['qp'] + q['qi'] + q['qf'] > 0
+
+    def has_cv(k):
+        return cvg[k][0] > 0
+
+    allc = []
+    for (y, camp) in sorted(set(agg) | set(lqg) | set(cvg)):
         ag, pc = agg[(y, camp)], pac[(y, camp)]
-        if sum(ag.values()) <= 0 and sum(pc.values()) <= 0:
+        if sum(ag.values()) <= 0 and pc['pchk'] + pc['pfm'] + pc['pms'] <= 0 \
+                and not has_lq((y, camp)) and not has_cv((y, camp)):
             continue
+        allc.append((y, camp))
+    grp = collections.defaultdict(list)
+    for y, camp in allc:
+        grp[(y, lab_month(camp))].append(camp)
+
+    def wklab(y, camp):
         mo = lab_month(camp)
-        wk[(y, camp)] = key(y, mo, keylab(y, mo, camp))
+        if len(grp[(y, mo)]) == 1:
+            return keylab(y, mo, camp)
+        base = camp_label(camp, y, mo)
+        if sum(1 for c in grp[(y, mo)] if camp_label(c, y, mo) == base) > 1:
+            base += ' \u00b7 ' + rawtag(camp)
+        return base
+
+    wk = {}
+    for (y, camp) in allc:
+        wk[(y, camp)] = key(y, lab_month(camp), wklab(y, camp))
     pk = {}
     for r in pchs:
         mo = lab_month(r['camp'])
@@ -379,6 +464,32 @@ def main():
     c26lab = camp_label(pcm26[0]['camp'], lab_year(pcm26[0]['camp'], 2026), mo26)
     tr.append([xof[ck], 1, 0, s26[0], s26[1], s26[2], 0, 0, c26lab])
     tr.sort(key=lambda t: (t[0], t[1]))
+
+    # ---- LQAS lots per campaign: [x, lots, P, I, F, tmiss, nt, tv, na, sl, mg, bn, rf, vb, fw, in, ot] ----
+    lq = []
+    for (y, camp) in sorted(lqg):
+        if not has_lq((y, camp)):
+            continue
+        x = xof.get(wk.get((y, camp)))
+        if x is None:
+            continue
+        q = lqg[(y, camp)]
+        lq.append([x, q['qp'] + q['qi'] + q['qf'], q['qp'], q['qi'], q['qf'], q['qtm'],
+                   q['qnt'], q['qtv'], q['qna'], q['qsl'], q['qmg'], q['qbn'],
+                   q['qrf'], q['qvb'], q['qfw'], q['qin'], q['qot']])
+    lq.sort()
+
+    # ---- campaign coverage: [x, target, covered] (drop campaigns with no covered counts) ----
+    cv = []
+    for (y, camp) in sorted(cvg):
+        t, v = cvg[(y, camp)]
+        if t <= 0 or v <= 0:
+            continue
+        x = xof.get(wk.get((y, camp)))
+        if x is None:
+            continue
+        cv.append([x, t, v])
+    cv.sort()
 
     # ---- datasets (newest first) + UC rows ----
     ds_out, rows = [], []
@@ -443,7 +554,7 @@ def main():
         r[0] = remap[r[0]]
     ds_out = newds
 
-    out = {'tc': tc, 'tr': tr, 'ds': ds_out, 'r': rows}
+    out = {'tc': tc, 'tr': tr, 'lq': lq, 'cv': cv, 'ds': ds_out, 'r': rows}
     js = srcutil.dumps(out)
     dest = a.out or os.path.join(srcutil.OUT, 'pcm.json')
     srcutil.write_text(dest, js)
@@ -464,8 +575,8 @@ def main():
         srcutil.say('#   WAZIR-N Sept-26 PCM: %d UCs, chk=%s fm=%s ms=%s no-team=%s'
                     % (len(wn), sum(r[7] for r in wn), sum(r[8] for r in wn),
                        sum(r[9] for r in wn), sum(r[10] for r in wn)))
-    summary = '%d trend pts (%d campaigns), %d datasets, %d UC rows' % (
-        len(tr), len(tc), len(ds_out), len(rows))
+    summary = '%d trend pts (%d campaigns), %d LQAS campaigns, %d with coverage, %d datasets, %d UC rows' % (
+        len(tr), len(tc), len(lq), len(cv), len(ds_out), len(rows))
     print('SRC pcm %s | %s' % (pchs_rec['path'], pcm_rec['path']))
     print('OK pcm %d %s' % (len(js), summary))
 
