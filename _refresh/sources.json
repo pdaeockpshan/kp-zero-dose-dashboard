@@ -52,6 +52,16 @@
       "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise sheet",
       "note": "config.asof = null keeps the as-of date already embedded in the dashboard; set it (YYYY-MM-DD) when a new monitoring round is loaded."
     },
+    "pcm": {
+      "label": "Post-campaign monitoring (PCHS + PCM + ICM)",
+      "const": "PCM",
+      "extractor": "extract_pcm.py",
+      "roots": ["D:\\AMAZON DATA"],
+      "patterns": ["PCHS Data*.xlsx", "POST CAMPAIGN MONITORING*.xlsx"],
+      "exclude": ["~$*"],
+      "portal": "PCHS household-check sheets + EOC post-campaign monitoring export (D:\\AMAZON DATA), plus ICM columns of the KP+TD spotting workbook (reuses the chd cache)",
+      "note": "One payload, three sources: the newest PCHS Data*.xlsx (campaign-wise household checks, currently Feb-Aug 2026), the newest POST CAMPAIGN MONITORING*.xlsx (currently SNID Sept-26) and per-UC ICM for the 2026 campaigns from the spotting workbook. Staleness tracks the newest matching file only - drop a new PCHS or PCM file into D:\\AMAZON DATA and run --only pcm --force. When a campaign's post-campaign file arrives, it becomes the newest PCM dataset automatically. Surveyor names are never extracted (public site)."
+    },
     "adv": {
       "label": "ZD reported & covered 2024-2025 (IDIMS advance reports)",
       "const": "ADV",
