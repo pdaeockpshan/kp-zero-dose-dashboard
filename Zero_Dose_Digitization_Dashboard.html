@@ -11,7 +11,7 @@
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
 <header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
-<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 12-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,243 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026 · <b>SNID Nov-26</b>: 27 districts, 996 UCs, 4,808,167 children targeted, campaign starts Monday 02-Nov-2026 · <b>Evening review</b>: printable one-pager with day-wise targets · Last updated 12-Oct-2026 23:21</div></header>
+<div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 12-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,243 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026</div></header>
 <style>
 *{box-sizing:border-box}
 body{background:var(--color-bg);font-family:var(--font-sans);color:var(--color-text);margin:0;padding:20px 24px 40px}
@@ -233,8 +233,8 @@ body.home .hdr, body.home .content .topbar{display:none}
 .hero h1{font-size:40px;line-height:1.08;margin:0 0 10px;font-weight:800;letter-spacing:-.01em;color:#fff;background:none;-webkit-text-fill-color:#fff}
 .hero h1 span{background:linear-gradient(90deg,#67e8f9,#86efac);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:15px;line-height:1.5;margin:0 0 16px;color:#e2e8f0}
-.hero .hchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.hero .hchips span{font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(3px)}
+.hupd{position:absolute;top:14px;right:16px;z-index:2;font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(3px)}
+#hSnChip{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:2;font-size:13px;font-weight:600;padding:7px 16px;border-radius:22px;background:rgba(190,18,60,.88);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px);box-shadow:0 6px 18px rgba(0,0,0,.35);white-space:nowrap}
 .hbtns{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .hql{display:flex;flex-wrap:wrap;gap:8px}
 .hgo2{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--font-sans);padding:8px 13px;border-radius:10px;cursor:pointer;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(3px);transition:background .15s ease,transform .15s ease}
@@ -356,7 +356,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 @keyframes hring{0%{transform:scale(.7);opacity:.95}100%{transform:scale(3.2);opacity:0}}
 
 @media (max-width:1150px){.hgrid{grid-template-columns:1fr}.hphotos{grid-template-columns:1fr 1fr}}
-@media (max-width:700px){.hero{min-height:440px;align-items:flex-end}.hero::before{width:100%;height:65%;bottom:auto;background-position:center 30%;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
+@media (max-width:700px){.hupd{top:10px;right:10px}#hSnChip{top:10px;left:10px;right:185px;transform:none;white-space:normal;font-size:12px;padding:6px 12px}.hero{min-height:440px;align-items:flex-end}.hero::before{width:100%;height:65%;bottom:auto;background-position:center 30%;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
  .hero .htxt{width:100%;padding:24px}.hero h1{font-size:30px}.hphotos{grid-template-columns:1fr}}
 </style>
 
@@ -526,7 +526,7 @@ body.home .hdr, body.home .content .topbar{display:none}
 .erdaybar button small{display:block;font-weight:400;font-size:9.5px;opacity:.85}
 @media print{
  body{background:#fff;padding:0}
- .hdr,.sidenav,.topbar,#toast,.noprint,.hbtns{display:none!important}
+ .hdr,.sidenav,.topbar,#toast,.noprint,.hbtns,.hupd,#hSnChip{display:none!important}
  .layout{display:block}
  .pane{display:none!important}
  .pane.on{display:block!important;border:0;background:none;padding:0;border-radius:0}
@@ -805,7 +805,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <button class="tab" data-tab="surv"><span class="tl">Surveillance quality</span><span class="badge" id="bSV1">–</span></button>
    <button class="tab" data-tab="watch"><span class="tl">Polio risk watch list</span><span class="badge" id="bW1">–</span></button>
   </div>
-  <div class="ngrp hz"><div class="nhd">Zero Dose</div>
+  <div class="ngrp hz"><div class="nhd">PEI SYNERGY</div>
    <button class="tab" data-tab="hzd"><span class="tl">Zero dose overview</span><span class="badge" id="bHZ">–</span></button>
    <div class="nsub">Reported &amp; covered</div>
    <button class="tab" data-tab="zov"><span class="tl">Reported vs Covered</span><span class="badge" id="bZ1">–</span></button>
@@ -858,14 +858,16 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
+  <span class="hupd" id="hUpd">Updated 13-Oct-2026 09:49</span>
+  <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
    <p>Finding every zero-dose child, reaching them in the next round, recording them in IDIMS, checking that they were truly vaccinated, and protecting them through routine immunization.</p>
-   <div class="hchips"><span>Updated 12-Oct-2026 23:21</span><span>NID Apr-26 · SNID May-26 · SNID Sept-26</span><span id="hSnChip" style="cursor:pointer" title="Countdown to SNID Nov-26 and a map of the scoped districts — click to open">SNID Nov-26 · starts 2 Nov · 4.81M children</span><span>EPI Jan 2026 – Sep 2026</span></div>
    <div class="hbtns">
     
     <div class="hql"><button class="hgo2" id="hPop" type="button" title="Countdown to the campaign and a map of the 27 scoped districts"><span class="hi" data-ic="clock"></span>SNID Nov-26 countdown &amp; map</button>
+    <button class="hgo2" data-hl="zov" title="Zero-dose reported &amp; covered — analysis of the last three campaigns"><span class="hi" data-ic="users"></span>NID Apr-26 · SNID May-26 · SNID Sept-26</button>
     <button class="hgo2" data-hl="zins" title="Plain-English insights and notes on zero-dose reporting and coverage"><span class="hi" data-ic="bulb"></span>Insights</button>
     </div>
    </div>
@@ -5183,7 +5185,8 @@ function snPopClose(){const p=el('snPop');if(p)p.classList.remove('on');}
   el('snPopEr').onclick=()=>{snPopClose();setTab('er');};
   const b=el('hPop');
   if(b){const i=b.querySelector('[data-ic]');if(i&&!i.innerHTML)i.innerHTML=SVGI(ICO[i.dataset.ic]);b.onclick=ev=>{ev.stopPropagation();snPopOpen();};}
-  const c=el('hSnChip');if(c)c.onclick=ev=>{ev.stopPropagation();snPopOpen();};
+  const c=el('hSnChip');if(c){try{if(sessionStorage.getItem('kpSNFLOAT.v1'))c.style.display='none';}catch(e){}
+ c.onclick=ev=>{ev.stopPropagation();c.style.display='none';try{sessionStorage.setItem('kpSNFLOAT.v1','1');}catch(e){}};}
   document.addEventListener('keydown',ev=>{if(ev.key==='Escape')snPopClose();});
   snTick();setInterval(snTick,1000);
   setTimeout(()=>{try{const on=document.querySelector('.pane.on');if(on&&on.id==='p-home'&&!sessionStorage.getItem(SNPOP_K))snPopOpen();}catch(e){}},900);

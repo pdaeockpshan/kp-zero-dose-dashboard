@@ -127,14 +127,16 @@ def get_stamp(v):
     m1 = re.findall(r'Updated ' + STAMP_RE, v.text)
     m2 = re.findall(r'Last updated ' + STAMP_RE, v.text)
     v.require(len(m1) == 1, 'hero "Updated" stamp found %d times' % len(m1))
-    v.require(len(m2) == 1, 'header "Last updated" stamp found %d times' % len(m2))
-    v.require(m1[0] == m2[0], 'stamps disagree: %s vs %s' % (m1[0], m2[0]))
+    v.require(len(m2) <= 1, 'header "Last updated" stamp found %d times' % len(m2))
+    if m2:
+        v.require(m1[0] == m2[0], 'stamps disagree: %s vs %s' % (m1[0], m2[0]))
     return m1[0]
 
 
 def set_stamp(v, new, old=None):
     old = old or get_stamp(v)
-    v.require(v.text.count(old) == 2, 'stamp %s occurs %d times (expected 2)' % (old, v.text.count(old)))
+    n = v.text.count(old)
+    v.require(n in (1, 2), 'stamp %s occurs %d times (expected 1 or 2)' % (old, n))
     v.text = v.text.replace(old, new)
     v.changes.append('stamp %s -> %s' % (old, new))
     return old
