@@ -18,6 +18,7 @@ Prints one status line: OK pcm <json chars> <summary> | ERR pcm <reason>
 """
 import argparse
 import collections
+import json
 import os
 import re
 import sys
@@ -248,7 +249,8 @@ LQ_H = {'qp': 'LQASpassed', 'qi': 'LQASinterm', 'qf': 'LQASfailed', 'qtm': 'LQAS
         'qmg': 'LQAS_Migrated', 'qbn': 'LQAS_Born', 'qrf': 'LQAS_REF', 'qvb': 'LQAS_VBNFM',
         'qfw': 'LQAS_FMwoSV', 'qin': 'LQAS_Inacessible', 'qot': 'LQAS_Others'}
 LQ_KEYS = list(LQ_H)
-CV_H = {'tg': 'AdmTarget', 'vc': 'AdmCovered'}
+CV_H = {'tg': 'AdmTarget', 'vc': 'AdmCovered', 'zd': 'Adm_ZeroDoze', 'na': 'Adm_Rec_NA',
+        'sna': 'Adm_StillNA', 'rec': 'Adm_TotalRecorded', 'st': 'Adm_TotalStillMissed'}
 
 
 def workbook_monitoring(hdr, rows, verbose=True):
@@ -261,7 +263,7 @@ def workbook_monitoring(hdr, rows, verbose=True):
     ix = {k: hdr.index(v) for k, v in ICM_H.items()}
     for k, v in LQ_H.items():
         ix[k] = hdr.index(v)
-    iyt, ivc = hdr.index(CV_H['tg']), hdr.index(CV_H['vc'])
+    icv = {k: hdr.index(v) for k, v in CV_H.items()}
     iy, icamp = hdr.index('Year'), hdr.index('Campaign')
     idist, iteh, iuc = hdr.index('District'), hdr.index('Tehsil'), hdr.index('UC_NAME')
 
@@ -283,7 +285,7 @@ def workbook_monitoring(hdr, rows, verbose=True):
     pac = collections.defaultdict(lambda: {k: 0 for k in ['pcl', 'pchk', 'pfm', 'pms', 'pna', 'prf',
                                                           'pborn', 'pnt', 'ptv', 'psl', 'pvb', 'pmg', 'pfk', 'pvm']})
     lqg = collections.defaultdict(lambda: {k: 0 for k in LQ_KEYS})
-    cvg = collections.defaultdict(lambda: [0, 0])
+    cvg = collections.defaultdict(lambda: [0] * 7)  # tg,vc,zd,rec,st,na,sna
     uc26 = collections.defaultdict(lambda: collections.defaultdict(lambda: {k: 0 for k in ICM_KEYS}))
     for r in rows:
         y = num(r[iy])
@@ -303,8 +305,8 @@ def workbook_monitoring(hdr, rows, verbose=True):
         for f in q:
             q[f] += num(r[ix[f]])
         c = cvg[k]
-        c[0] += num(r[iyt])
-        c[1] += num(r[ivc])
+        for j, f in enumerate(('tg', 'vc', 'zd', 'rec', 'st', 'na', 'sna')):
+            c[j] += num(r[icv[f]])
         if y == 2026 and any_icm:
             d, t, u = clean(r[idist]), clean(r[iteh]), clean(r[iuc])
             if d and u:
@@ -447,9 +449,10 @@ def main():
         lab = camp_label(camp, y, lab_month(camp))
         ag, pc = agg[(y, camp)], pac[(y, camp)]
         if sum(ag.values()) > 0:
-            tr.append([x, 0, ag['cl'], ag['sc'], ag['sv'], ag['ms'], ag['zd'], ag['fk'], lab])
+            tr.append([x, 0, ag['cl'], ag['sc'], ag['sv'], ag['ms'], ag['zd'], ag['fk'], lab,
+                       ag['rc'], ag['rv']])
         if pc['pchk'] + pc['pfm'] + pc['pms'] > 0:
-            tr.append([x, 1, pc['pcl'], pc['pchk'], pc['pfm'], pc['pms'], 0, pc['pfk'], lab])
+            tr.append([x, 1, pc['pcl'], pc['pchk'], pc['pfm'], pc['pms'], 0, pc['pfk'], lab, 0, 0])
     psum = collections.defaultdict(lambda: [0] * 7)  # cl,chk,fm,ms,zd,fk,n
     for r in pchs:
         s = psum[r['camp']]
@@ -457,12 +460,12 @@ def main():
     for camp, s in psum.items():
         mo = lab_month(camp)
         y = lab_year(camp, 2026)
-        tr.append([xof[pk[camp]], 2, s[0], s[1], s[2], s[3], s[4], s[5], camp_label(camp, y, mo)])
+        tr.append([xof[pk[camp]], 2, s[0], s[1], s[2], s[3], s[4], s[5], camp_label(camp, y, mo), 0, 0])
     s26 = [0] * 6
     for r in pcm26:
         s26[0] += r['chk']; s26[1] += r['fm']; s26[2] += r['ms']
     c26lab = camp_label(pcm26[0]['camp'], lab_year(pcm26[0]['camp'], 2026), mo26)
-    tr.append([xof[ck], 1, 0, s26[0], s26[1], s26[2], 0, 0, c26lab])
+    tr.append([xof[ck], 1, 0, s26[0], s26[1], s26[2], 0, 0, c26lab, 0, 0])
     tr.sort(key=lambda t: (t[0], t[1]))
 
     # ---- LQAS lots per campaign: [x, lots, P, I, F, tmiss, nt, tv, na, sl, mg, bn, rf, vb, fw, in, ot] ----
@@ -479,17 +482,54 @@ def main():
                    q['qrf'], q['qvb'], q['qfw'], q['qin'], q['qot']])
     lq.sort()
 
-    # ---- campaign coverage: [x, target, covered] (drop campaigns with no covered counts) ----
+    # ---- campaign coverage: [x, target, covered, zd-recorded, rec, still, na, still-na]
+    # (keep every campaign with a target; covered may be 0 when not yet compiled) ----
     cv = []
     for (y, camp) in sorted(cvg):
-        t, v = cvg[(y, camp)]
-        if t <= 0 or v <= 0:
+        t, v, zd, rec, st, na, sna = cvg[(y, camp)]
+        if t <= 0:
             continue
         x = xof.get(wk.get((y, camp)))
         if x is None:
             continue
-        cv.append([x, t, v])
+        cv.append([x, t, v, zd, rec, st, na, sna])
     cv.sort()
+
+    # ---- advance-report zero-dose chain per slot: [x, reported, covered|null] ----
+    # covered=null when every advance-report triplet for the campaign leaves it blank
+    ad = []
+    adv_path = os.path.join(srcutil.OUT, 'adv.json')
+    if os.path.exists(adv_path):
+        with open(adv_path, encoding='utf-8') as f:
+            advj = json.load(f)
+        ak = collections.defaultdict(lambda: [0, 0, 0, 0])  # rep, cov, nulls, rows
+        for ci, c in enumerate(advj['c']):
+            if not c.get('m'):
+                continue
+            ar = ak[(ctype(c['n']), c['m'], c.get('y') or 0)]
+            for t3 in advj['r'][ci]:
+                ar[0] += t3[1] or 0
+                ar[3] += 1
+                if t3[2] is None:
+                    ar[2] += 1
+                else:
+                    ar[1] += t3[2]
+        slot_ad = collections.defaultdict(lambda: [0, 0, 0, 0])
+        for (y, camp) in cvg:
+            x = xof.get(wk.get((y, camp)))
+            if x is None:
+                continue
+            d = (ctype(camp), lab_month(camp), y)
+            if d in ak:
+                sa, aa = slot_ad[x], ak[d]
+                for j in range(4):
+                    sa[j] += aa[j]
+        for x in sorted(slot_ad):
+            rep, cov, nul, n = slot_ad[x]
+            if rep > 0:
+                ad.append([x, rep, None if nul >= n else cov])
+        srcutil.say('# pcm: advance-report join: %d slots, %d campaigns rep>0'
+                    % (len(slot_ad), sum(1 for r in ad if r[2] is not None)))
 
     # ---- datasets (newest first) + UC rows ----
     ds_out, rows = [], []
@@ -554,7 +594,7 @@ def main():
         r[0] = remap[r[0]]
     ds_out = newds
 
-    out = {'tc': tc, 'tr': tr, 'lq': lq, 'cv': cv, 'ds': ds_out, 'r': rows}
+    out = {'tc': tc, 'tr': tr, 'lq': lq, 'cv': cv, 'ad': ad, 'ds': ds_out, 'r': rows}
     js = srcutil.dumps(out)
     dest = a.out or os.path.join(srcutil.OUT, 'pcm.json')
     srcutil.write_text(dest, js)
@@ -575,8 +615,8 @@ def main():
         srcutil.say('#   WAZIR-N Sept-26 PCM: %d UCs, chk=%s fm=%s ms=%s no-team=%s'
                     % (len(wn), sum(r[7] for r in wn), sum(r[8] for r in wn),
                        sum(r[9] for r in wn), sum(r[10] for r in wn)))
-    summary = '%d trend pts (%d campaigns), %d LQAS campaigns, %d with coverage, %d datasets, %d UC rows' % (
-        len(tr), len(tc), len(lq), len(cv), len(ds_out), len(rows))
+    summary = '%d trend pts (%d campaigns), %d LQAS campaigns, %d with coverage (%d with advance-report chain), %d datasets, %d UC rows' % (
+        len(tr), len(tc), len(lq), len(cv), len(ad), len(ds_out), len(rows))
     print('SRC pcm %s | %s' % (pchs_rec['path'], pcm_rec['path']))
     print('OK pcm %d %s' % (len(js), summary))
 
