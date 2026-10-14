@@ -158,7 +158,7 @@ a.lnk:hover,button.lnk:hover{text-decoration:underline}
 .tab.tsum{padding:8px 14px;font-size:14px}
 .tn{font-family:var(--font-mono);font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:17px;background:#ffffff;border:1px solid color-mix(in srgb,var(--nc) 40%,transparent);color:var(--nc);white-space:nowrap}
 .tn i{font-style:normal;font-family:var(--font-sans);font-weight:500;opacity:.8;margin-right:3px}
-.tn.z{--nc:#0f766e}.tn.d{--nc:#6d28d9}.tn.v{--nc:#15803d}
+.tn.z{--nc:#0f766e}.tn.d{--nc:#6d28d9}.tn.v{--nc:#15803d}.tn.c{--nc:#c2410c}
 .tabgrp{align-self:center;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;padding:4px 10px;border-radius:17px;white-space:nowrap}
 .tabgrp{align-self:center}
 .tabgrp.gz{background:#ccfbf1;color:#0f766e}.tabgrp.gd{background:#ede9fe;color:#6d28d9}.tabgrp.gv{background:#dcfce7;color:#15803d}
@@ -197,7 +197,7 @@ ul.ins.sm{font-size:12px;color:var(--color-text-secondary)} ul.ins.sm li{margin-
 @media (max-width:1000px){.grid2,.nlayout{grid-template-columns:1fr}}
 
 /* ---------- ④ EPI routine coverage ---------- */
-.ngrp.ge{--gc:#1d4ed8}.sec.s4{--sc:#1d4ed8}.tn.e{--nc:#1d4ed8}
+.ngrp.ge{--gc:#1d4ed8}.sec.s4{--sc:#1d4ed8}.tn.e{--nc:#1d4ed8}.sec.s5{--sc:#c2410c}
 .tab[data-tab="eov"],#p-eov{--tc:#1d4ed8}.tab[data-tab="efu"],#p-efu{--tc:#4338ca}
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin:0 0 14px}
 .ag{--ac:#1d4ed8;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--color-border-light);border-radius:12px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 14-Oct-2026 13:34</span>
+  <span class="hupd" id="hUpd">Updated 14-Oct-2026 14:03</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -978,12 +978,21 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card"><div class="kl">Penta-1 → Penta-3 dropout</div><div class="kv" id="s4e" style="color:var(--color-error-dark)">–</div><div class="ks" id="s4es"></div></div>
 </div></div>
 
+<div class="sec s5"><div class="sech"><h2><span class="num">5</span>Campaigns — coverage &amp; missed children</h2><span class="cnt">SNID Sept-26 · SNID May-26 · NID Apr-26 · latest campaign per UC</span><button class="btn" data-go="mis">Detailed analysis →</button></div>
+<div class="kpis">
+<div class="card"><div class="kl">Campaign coverage</div><div class="kv" id="s5a">–</div><div class="ks" id="s5as"></div></div>
+<div class="card"><div class="kl">Coverage trend</div><div class="kv" id="s5b">–</div><div class="ks" id="s5bs"></div></div>
+<div class="card"><div class="kl">Still missed after catch-up</div><div class="kv" id="s5c" style="color:var(--color-error-dark)">–</div><div class="ks" id="s5cs"></div></div>
+<div class="card"><div class="kl">Recovered on catch-up</div><div class="kv" id="s5d">–</div><div class="ks" id="s5ds"></div></div>
+<div class="card"><div class="kl">UCs 5%+ still missed</div><div class="kv" id="s5e" style="color:var(--color-error-dark)">–</div><div class="ks" id="s5es"></div></div>
+</div></div>
+
 <div class="grid2">
 <div class="card"><div id="cs1" class="ch"></div><div class="cap" id="caps1"></div></div>
 <div class="card"><div id="cs2" class="ch"></div><div class="cap" id="caps2"></div></div>
 </div>
 <div class="card">
-<div class="tblhdr"><h3 style="margin:0" id="sTblT">All four indicators by district</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntS"></span><button class="btn" id="btnSCSV">Download (CSV)</button></div></div>
+<div class="tblhdr"><h3 style="margin:0" id="sTblT">All indicators by district</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntS"></span><button class="btn" id="btnSCSV">Download (CSV)</button></div></div>
 <div class="scroll" style="max-height:520px"><table id="tSum"></table></div>
 <div class="cap">Click a district to filter all tabs to it. Coverage uses the latest campaign with coverage (May, or April where May did not run). Digitization covers only the 9 districts in the IDIMS comparison report ("–" elsewhere). Validation includes all validation campaigns.</div>
 </div>
@@ -1008,9 +1017,9 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="nbar"><button class="btn pri" id="btnXE">⬇ Antigen coverage by UC (CSV)</button><button class="btn pri" id="btnXEF">⬇ EPI priority UCs (CSV)</button></div>
 <div class="cap">By UC: targets, doses and coverage % for BCG, OPV-0, Penta-1/3, PCV-3, IPV-1/2, Rota-2, MR-1/2 and fully immunized (Jan 2026 – Sep 2026), with dropouts and flags. Priority list: UCs with low coverage, high dropout or target problems.</div></div>
 
-<div class="sec"><div class="sech"><h2>Combined</h2><span class="cnt">All four indicators side by side</span></div>
-<div class="nbar"><button class="btn" id="btnXSUM">⬇ All four indicators by district (CSV)</button><button class="btn" id="btnXALL">⬇ Download everything (all files)</button></div>
-<div class="cap">The combined table pairs coverage, digitization, validation and routine EPI coverage (Penta-3, MR-1, MR-2, fully immunized) for each district. "Download everything" saves all of the above as separate CSV files.</div></div>
+<div class="sec"><div class="sech"><h2>Combined</h2><span class="cnt">All indicators side by side</span></div>
+<div class="nbar"><button class="btn" id="btnXSUM">⬇ All indicators by district (CSV)</button><button class="btn" id="btnXALL">⬇ Download everything (all files)</button></div>
+<div class="cap">The combined table pairs coverage, digitization, validation, routine EPI coverage (Penta-3, MR-1, MR-2, fully immunized) and the campaign missed-children chain (still missed %, refusals — latest campaign per UC) for each district. "Download everything" saves all of the above as separate CSV files.</div></div>
 </section>
 
 <!-- ================= OVERVIEW: PRESENTATION ================= -->
@@ -2727,7 +2736,7 @@ function updateBadges(){
  const drep=S_(dR,r=>r.rep), dll=S_(dR,r=>r.ll), drp=S_(dR,r=>r.rp), dlp=S_(dR,r=>r.lp);
  const zl=zLatest(z), dp=drep?dll/drep*100:null;
  const tn=(cls,lab,val)=>`<span class="tn ${cls}"><i>${lab}</i>${val}</span>`;
- el('bS').innerHTML=tn('z','Covered',zl.p==null?'–':zl.p.toFixed(1)+'%')+tn('d','Digitized',dp==null?'–':dp.toFixed(1)+'%')+tn('v','Vaccinated',v.p==null?'–':v.p.toFixed(1)+'%')+(EPI.length?tn('e','Penta-3',(()=>{const e=aggE(EPI.filter(matchE));return e.p_p3==null?'–':e.p_p3.toFixed(1)+'%';})()):'');
+ el('bS').innerHTML=tn('z','Covered',zl.p==null?'–':zl.p.toFixed(1)+'%')+tn('d','Digitized',dp==null?'–':dp.toFixed(1)+'%')+tn('v','Vaccinated',v.p==null?'–':v.p.toFixed(1)+'%')+(EPI.length?tn('e','Penta-3',(()=>{const e=aggE(EPI.filter(matchE));return e.p_p3==null?'–':e.p_p3.toFixed(1)+'%';})()):'')+(MIS.length?tn('c','Missed',(()=>{const m=misStats(matchG);return m.stp==null?'–':m.stp.toFixed(1)+'%';})()):'');
  {const eR=EPI.filter(matchE), e=aggE(eR); el('bE1').textContent=e.p_p3==null?'–':`Penta-3 ${e.p_p3.toFixed(1)}%`; el('bE2').textContent=`${eR.filter(r=>/LP|BO/.test(r.fl)).length} UCs`;}
  el('bZ1').textContent=`Rep ${fk(z.rcM||z.rcA)} · Cov ${fk(zl.c)}`;
  el('bZ2').textContent=(z.lfA==null||z.lfM==null)?'–':`${z.lfA.toFixed(0)}→${z.lfM.toFixed(0)}%`;
@@ -2772,6 +2781,24 @@ function renderSummary(){
  const eR=EPI.filter(matchE), e4=aggE(eR);
  [['s4a','p3','Penta-3'],['s4b','mr1','MR-1'],['s4c','mr2','MR-2'],['s4d','fi','Fully immunized']].forEach(([id,k])=>{const p=e4['p_'+k];el(id).textContent=pc(p);el(id).style.color=colE(p);el(id+'s').textContent=e4.s?`${fmt(e4[k])} of ${fmt(e4.s)} target infants`:'No EPI data for this selection';});
  el('s4e').textContent=pc(e4.d13); el('s4es').textContent=e4.p1?`${fmt(Math.max(e4.p1-e4.p3,0))} children · ${eR.filter(r=>r.fl.includes('LP')).length} UCs below 80% Penta-3`:'';
+ // 5. campaigns — coverage & missed children
+ const cps5=(MISM.camps||[]), CP5=cps5.map(l=>({l,n:0,tg:0,vc:0,rec:0,st:0,srf:0,sna:0}));
+ misHyd().forEach(r=>{ if(!r.d||!matchG(r))return; const c=CP5[r.ci]; if(!c)return; c.n++; c.tg+=r.tg||0; c.vc+=r.vc||0; c.rec+=(r.rna||0)+(r.rrf||0); c.st+=misSt(r); c.srf+=r.srf||0; c.sna+=r.sna||0;});
+ const cN5=CP5[0]||{l:cps5[0]||''}, cO5=CP5[CP5.length-1]||{};
+ const cov5=c=>c.tg?c.vc/c.tg*100:null, rcv5=c=>c.rec?Math.max(0,c.rec-c.sna-c.srf)/c.rec*100:null, MS5=misStats(matchG);
+ let dd5=null;
+ if(cN5.tg){
+  const a5=cov5(cN5), o5=cov5(cO5); dd5=(a5!=null&&o5!=null)?a5-o5:null;
+  el('s5a').textContent=pc(a5); el('s5a').style.color=colCov(a5);
+  el('s5as').textContent=`${fmt(cN5.vc)} of ${fmt(cN5.tg)} children under 5 · ${fmt(cN5.n)} UCs · ${cN5.l}`;
+  el('s5b').innerHTML=o5==null?'–':`${pc(o5)} → ${pc(a5)}`; el('s5b').style.color=colCov(a5);
+  el('s5bs').innerHTML=dd5==null?'UC sets differ between rounds':`<span class="${dd5>=0?'up':'dn'}">${dd5>=0?'▲ +':'▼ '}${dd5.toFixed(1)} pts</span> · ${cO5.l} → ${cN5.l}`;
+  el('s5c').textContent=fmt(cN5.st); const p5=cN5.st/cN5.tg*100; el('s5c').style.color=p5>=3?C.crit:p5>0?C.mod:'';
+  el('s5cs').textContent=`${pc(p5)} of target · ${fmt(cN5.srf)} refused · ${fmt(cN5.sna)} not available`;
+  el('s5d').textContent=rcv5(cN5)==null?'–':pc(rcv5(cN5));
+  el('s5ds').textContent=`of ${fmt(cN5.rec)} children recorded missed · ${cN5.l}`;
+  el('s5e').textContent=fmt(MS5.u5); el('s5es').textContent=`${fmt(MS5.u3)} at 3%+ · ${fmt(MS5.pers.length)} persistent-refusal UCs`;
+ }else{['s5a','s5b','s5c','s5d','s5e'].forEach(i=>{el(i).textContent='–';el(i).style.color='';});el('s5as').textContent='No campaign coverage data for this selection';['s5bs','s5cs','s5ds','s5es'].forEach(i=>el(i).textContent='');}
 
  // chart 1: reported, covered, validated by campaign
  const vby=cp=>{const l=VCAMP.filter(x=>x.z===cp).map(x=>x.l);return l.length?S_(vR.filter(r=>l.includes(r.cp)),r=>r.n):null;};
@@ -2786,13 +2813,14 @@ function renderSummary(){
 
  // chart 2: three indicators side by side for the lowest-coverage places
  const eS=EPI.filter(matchE);
+ const mK5={}; misStats(matchG,L.key).groups.forEach(g=>mK5[g.k]=g);
  const keys=[...new Set([...zR,...dR,...vR].map(r=>r[L.key]))];
  const rowsS=keys.map(k=>{const zz=agg(zR.filter(r=>r[L.key]===k)),zl2=zLatest(zz),d2=dR.filter(r=>r[L.key]===k),v2=aggV(vR.filter(r=>r[L.key]===k));
    const rep=S_(d2,r=>r.rep),ll=S_(d2,r=>r.ll);
    return {k,dv:(zR.find(r=>r[L.key]===k)||vR.find(r=>r[L.key]===k)||d2[0]||{}).dv,zrs:ZSAME?zz.rM:zz.rS,zp:zl2.p,zcp:zl2.cp,zg:zl2.g,zdp:(zz.pA!=null&&zz.pM!=null)?zz.pM-zz.pA:null,zpl:zR.filter(r=>r[L.key]===k&&r.tr==='Persistent low').length,
     drep:d2.length?rep:null,dll:d2.length?ll:null,dp:rep?ll/rep*100:null,dgap:d2.length?S_(d2,gapOf):null,dfu:d2.length?d2.filter(r=>r.pr).length:null,
     vn:v2.n||null,vp:v2.p,vno:v2.n?v2.vn:null,vfl:v2.n?cR.filter(r=>r[L.key]===k).length:null,
-    ...(()=>{const e=aggE(eS.filter(r=>r[L.key]===k));return {ep3:e.s?e.p_p3:null,emr2:e.s?e.p_mr2:null,efi:e.s?e.p_fi:null};})()};});
+    ...(()=>{const e=aggE(eS.filter(r=>r[L.key]===k));return {ep3:e.s?e.p_p3:null,emr2:e.s?e.p_mr2:null,efi:e.s?e.p_fi:null};})(),...(()=>{const m=mK5[k]||{};return {cst:m.tg?m.st/m.tg*100:null,csf:m.srf||0};})()};});
  const low=rowsS.filter(x=>x.zp!=null).sort((a,b)=>a.zp-b.zp).slice(0,12);
  el('cs2').style.height=Math.max(340,low.length*38+110)+'px';
  const r1=v=>v==null?null:+v.toFixed(1);
@@ -2804,13 +2832,13 @@ function renderSummary(){
  el('caps2').textContent=low.length?`${low[0].k} has the lowest ZD coverage (${pc(low[0].zp)}). `+(both.length?`${both.length} ${L.pl} are below 80% coverage and below 95% validated as vaccinated: ${listNames(both.sort((a,b)=>a.zp-b.zp),4,x=>x.k)}.`:`No ${L.lvl} is below both 80% coverage and 95% validated as vaccinated.`)+' Missing bars = no data for that indicator.':'No coverage data for the current selection.';
 
  // table
- el('sTblT').textContent=`All four indicators by ${L.lvl}`; el('cntS').textContent=rowsS.length+' '+L.pl;
+ el('sTblT').textContent=`All indicators by ${L.lvl}`; el('cntS').textContent=rowsS.length+' '+L.pl;
  const nn=(k,l,f)=>({k,l,n:1,f});
  drawTable('tSum',[{k:'k',l:L.Lvl,f:x=>L.key==='d'?`<button class="lnk" data-sd="${esc(x.k)}"><b>${esc(x.k)}</b></button>`:`<b>${esc(x.k)}</b>`},
   nn('zrs','ZD reported · Sept',x=>fN(x.zrs)),nn('zp','Coverage %',x=>pcol(x.zp)+(x.zcp?` <span class="cnt">${esc(x.zcp.split(' ')[1]||x.zcp)}</span>`:'')),nn('zg','Not covered',x=>fN(x.zg)),
   nn('zdp','Cov. change (pts)',x=>x.zdp==null?'–':`<span class="${x.zdp>=0?'up':'dn'}">${sgn(x.zdp)}</span>`),nn('zpl','Persistent low UCs',x=>x.zpl||''),
   nn('dp','Digitized %',x=>x.dp==null?'–':`<span style="color:${x.dp>=95?C.high:x.dp>=80?C.mod:C.crit};font-weight:600">${pc(x.dp)}</span>`),nn('dgap','Not entered',x=>fN(x.dgap)),nn('dfu','Follow-up UCs',x=>x.dfu==null?'–':x.dfu),
-  nn('vn','Validated',x=>fN(x.vn)),nn('vp','% vaccinated',x=>pV(x.vp)),nn('vno','Not vaccinated',x=>x.vno==null?'–':x.vno?`<b class="dn">${x.vno}</b>`:'0'),nn('vfl','Records to check',x=>fN(x.vfl)),nn('ep3','Penta-3 %',x=>pE(x.ep3)),nn('emr2','MR-2 %',x=>pE(x.emr2))],rowsS,'zp',1);
+  nn('vn','Validated',x=>fN(x.vn)),nn('vp','% vaccinated',x=>pV(x.vp)),nn('vno','Not vaccinated',x=>x.vno==null?'–':x.vno?`<b class="dn">${x.vno}</b>`:'0'),nn('vfl','Records to check',x=>fN(x.vfl)),nn('cst','Still missed % (camp.)',x=>x.cst==null?'–':`<span style="color:${x.cst>=3?'#b91c1c':'inherit'};font-weight:${x.cst>=3?700:400}">${pc(x.cst)}</span>`),nn('csf','Refusing (camp.)',x=>x.csf?`<b>${fmt(x.csf)}</b>`:'0'),nn('ep3','Penta-3 %',x=>pE(x.ep3)),nn('emr2','MR-2 %',x=>pE(x.emr2))],rowsS,'zp',1);
  el('tSum').querySelectorAll('[data-sd]').forEach(b=>b.onclick=()=>{fDist.value=b.dataset.sd;fTeh.value='';cascade();render();});
  SUMROWS=rowsS;
 
@@ -2834,12 +2862,13 @@ function renderSummary(){
  if(both.length)I.push(`<b>Double concern:</b> ${listNames(both,5,x=>esc(x.k))} ${both.length>1?'are':'is'} below 80% ZD coverage <i>and</i> below 95% validated as vaccinated. Prioritise supervision here.`);
  {const eR2=EPI.filter(matchE), e5=aggE(eR2), gE=groupE(eR2,L.key).filter(x=>x.s>0).sort((x,y)=>x.p_p3-y.p_p3);
   if(e5.s)I.push(`<b>Routine EPI (${esc(EMETA.per||'')}):</b> Penta-3 ${pc(e5.p_p3)}, MR-1 ${pc(e5.p_mr1)}, MR-2 ${pc(e5.p_mr2)}, fully immunized ${pc(e5.p_fi)}. `+(gE.length>1?`Lowest Penta-3: ${listNames(gE.slice(0,3),3,x=>esc(x.k)+' '+pc(x.p_p3))}. `:'')+`${eR2.filter(r=>r.fl.includes('BO')).length} UCs are weak in both routine EPI and the polio zero-dose data.`);}
+ if(cN5.tg)I.push(`<b>Campaigns:</b> ${esc(cN5.l)} covered ${pc(cov5(cN5))} of the under-5 target; ${fmt(cN5.st)} children (${pc(cN5.st/cN5.tg*100)}) were still missed after catch-up — ${fmt(cN5.srf)} refusals, ${fmt(cN5.sna)} not available.`+(MS5.pers.length?` ${fmt(MS5.pers.length)} UCs refuse every round.`:'')+(dd5!=null&&dd5<0?` Coverage is ${dd5.toFixed(1)} pts below ${esc(cO5.l)}.`:''));
  el('sL').innerHTML=I.map(x=>`<li>${x}</li>`).join('');
 }
 let SUMROWS=[];
 el('btnSCSV').onclick=()=>{const L=lvlOf();csvDownload('ZD_Summary_by_'+L.lvl+'_'+(fDist.value||'All').replace(/\s+/g,'_')+'.csv',
- [L.Lvl,'ZD reported Sept','Coverage % (latest)','Coverage campaign','Not covered','Coverage change pts','Persistent low UCs','Digitized %','Not entered','Follow-up UCs','Children validated','% vaccinated','Not vaccinated','Records to check','Penta-3 %','MR-2 %','Fully immunized %'],
- SUMROWS.map(x=>[x.k,x.zrs,x.zp==null?'':x.zp.toFixed(1),x.zcp,x.zg,x.zdp==null?'':x.zdp.toFixed(1),x.zpl,x.dp==null?'':x.dp.toFixed(1),x.dgap,x.dfu,x.vn,x.vp==null?'':x.vp.toFixed(1),x.vno,x.vfl,x.ep3==null?'':x.ep3.toFixed(1),x.emr2==null?'':x.emr2.toFixed(1),x.efi==null?'':x.efi.toFixed(1)]));};
+ [L.Lvl,'ZD reported Sept','Coverage % (latest)','Coverage campaign','Not covered','Coverage change pts','Persistent low UCs','Digitized %','Not entered','Follow-up UCs','Children validated','% vaccinated','Not vaccinated','Records to check','Penta-3 %','MR-2 %','Still missed % (campaigns)','Refusing (campaigns)'],
+ SUMROWS.map(x=>[x.k,x.zrs,x.zp==null?'':x.zp.toFixed(1),x.zcp,x.zg,x.zdp==null?'':x.zdp.toFixed(1),x.zpl,x.dp==null?'':x.dp.toFixed(1),x.dgap,x.dfu,x.vn,x.vp==null?'':x.vp.toFixed(1),x.vno,x.vfl,x.ep3==null?'':x.ep3.toFixed(1),x.emr2==null?'':x.emr2.toFixed(1),x.efi==null?'':x.efi.toFixed(1),x.cst==null?'':x.cst.toFixed(1),x.csf||0]));};
 
 // ---------- EXPORT DATA ----------
 const _slug=()=>(fDist.value||fDiv.value||'All_districts').replace(/\s+/g,'_');
@@ -2858,6 +2887,7 @@ function vchRow(r){return [r.d,r.t,r.u,r.c,r.cp].concat(VSHOWN?[r.nm,r.fn]:[]).c
 function exSummaryRows(){
  const zR=exZD(), dR=exDATA(), vR=exVAL(), cR=exVCH();
  const keys=[...new Set([...zR,...dR,...vR].map(r=>r.d))].sort();
+ const mk5={}; misStats(matchG,'d').groups.forEach(g=>mk5[g.k]=g);
  return keys.map(k=>{
   const z=agg(zR.filter(r=>r.d===k)), zl=zLatest(z), d2=dR.filter(r=>r.d===k), v2=aggV(vR.filter(r=>r.d===k));
   const rep=S_(d2,r=>r.rep), ll=S_(d2,r=>r.ll);
@@ -2865,11 +2895,11 @@ function exSummaryRows(){
    zdp:(z.pA!=null&&z.pM!=null)?z.pM-z.pA:null, zpl:zR.filter(r=>r.d===k&&r.tr==='Persistent low').length,
    drep:d2.length?rep:null, dll:d2.length?ll:null, dp:rep?ll/rep*100:null, dgap:d2.length?S_(d2,gapOf):null,
    dfu:d2.length?d2.filter(r=>r.pr).length:null, vn:v2.n||null, vp:v2.p, vno:v2.n?v2.vn:null, vfl:v2.n?cR.filter(r=>r.d===k).length:null,
-   ...(()=>{const e=aggE(EPI.filter(matchE).filter(r=>r.d===k));return {ep3:e.s?e.p_p3:null,emr1:e.s?e.p_mr1:null,emr2:e.s?e.p_mr2:null,efi:e.s?e.p_fi:null};})()};});
+   ...(()=>{const e=aggE(EPI.filter(matchE).filter(r=>r.d===k));return {ep3:e.s?e.p_p3:null,emr1:e.s?e.p_mr1:null,emr2:e.s?e.p_mr2:null,efi:e.s?e.p_fi:null};})(),...(()=>{const m=mk5[k]||{};return {cst:m.tg?m.st/m.tg*100:null,csf:m.srf||0};})()};});
 }
-const SUMH=['District','ZD reported Sept','Coverage % (latest)','Coverage campaign','Not covered','Coverage change pts','Persistent low UCs','Digitized %','Not entered','Follow-up UCs','Children validated','% vaccinated','Not vaccinated','Records to check','Penta-3 %','MR-1 %','MR-2 %','Fully immunized %'];
+const SUMH=['District','ZD reported Sept','Coverage % (latest)','Coverage campaign','Not covered','Coverage change pts','Persistent low UCs','Digitized %','Not entered','Follow-up UCs','Children validated','% vaccinated','Not vaccinated','Records to check','Penta-3 %','MR-1 %','MR-2 %','Fully immunized %','Still missed % (campaigns)','Refusing (campaigns)'];
 const f1_=v=>v==null?'':v.toFixed(1);
-const sumRowCSV=x=>[x.k,x.zrs,x.zp==null?'':x.zp.toFixed(1),x.zcp,x.zg,x.zdp==null?'':x.zdp.toFixed(1),x.zpl,x.dp==null?'':x.dp.toFixed(1),x.dgap,x.dfu,x.vn,x.vp==null?'':x.vp.toFixed(1),x.vno,x.vfl,f1_(x.ep3),f1_(x.emr1),f1_(x.emr2),f1_(x.efi)];
+const sumRowCSV=x=>[x.k,x.zrs,x.zp==null?'':x.zp.toFixed(1),x.zcp,x.zg,x.zdp==null?'':x.zdp.toFixed(1),x.zpl,x.dp==null?'':x.dp.toFixed(1),x.dgap,x.dfu,x.vn,x.vp==null?'':x.vp.toFixed(1),x.vno,x.vfl,f1_(x.ep3),f1_(x.emr1),f1_(x.emr2),f1_(x.efi),f1_(x.cst),x.csf||0];
 
 function renderExport(){
  const nz=exZD().length, nd=exDATA().length, nv=exVAL(), nvc=exVCH().length;
@@ -3404,7 +3434,7 @@ function renderBrief(P,B){
   const BM=briefMessages(B); bullets(s,BM,{x:0.5,y:4.2,w:12.3,h:2.7,fs:BM.length>5?12:13});}
 
  // 3 Scorecard
- {const s=base(L.Lvl+' scorecard',HEAD,'All four indicators by '+L.lvl+' · cell colour shows status · lowest ZD coverage first');
+ {const s=base(L.Lvl+' scorecard',HEAD,'All indicators by '+L.lvl+' · cell colour shows status · lowest ZD coverage first');
   const g=B.G.slice().sort((a,b)=>(a.zp==null)-(b.zp==null)||(a.zp-b.zp)), cap=15;
   table(s,SCH,g.slice(0,cap).map(scoreRow),{x:0.5,y:1.4,w:12.33,colW:SCW,col:HEAD,more:g.length>cap?('Showing the '+cap+' lowest of '+g.length+' '+L.pl+'. See the dashboard for the rest.'):'',rh:0.3});
   const lg=[['Coverage','≥90% good · 80–90% · 50–80% · <50%'],['Digitized','≥95% · 80–95% · 50–80% · <50%'],['Vaccinated','≥98% · 95–98% · 90–95% · <90%']];
