@@ -70,6 +70,20 @@
    "stamp": "12-Oct-2026 13:46",
    "summary": "manual inject"
   },
+  "noc": {
+   "at": "2026-10-14T12:23:13+05:00",
+   "chars": 2906,
+   "file_id": "manual|noc.json",
+   "payload_sha1": "23f686a927983dbd",
+   "source": {
+    "mtime": 1791962043.7059145,
+    "name": "noc.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\noc.json",
+    "size": 2906
+   },
+   "stamp": "14-Oct-2026 12:23",
+   "summary": "manual inject (NEOC intra-campaign aggregates)"
+  },
   "snd": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 37861,
