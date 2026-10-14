@@ -70,6 +70,20 @@
    "stamp": "12-Oct-2026 13:46",
    "summary": "manual inject"
   },
+  "mon": {
+   "at": "2026-10-14T13:35:16+05:00",
+   "chars": 7426,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\7 SNID Sep 2026\\Team Monitoring.twbx|1791267446|7717476",
+   "payload_sha1": "1dc548921f07f77b",
+   "source": {
+    "mtime": 1791267446.0,
+    "name": "Team Monitoring.twbx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\7 SNID Sep 2026\\Team Monitoring.twbx",
+    "size": 7717476
+   },
+   "stamp": "14-Oct-2026 13:34",
+   "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
+  },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
    "chars": 2906,
