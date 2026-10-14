@@ -796,8 +796,8 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <button class="tab" data-tab="c3"><span class="tl">Last 3 campaigns</span><span class="badge" id="bC3">–</span></button>
    <button class="tab" data-tab="pcm"><span class="tl">Monitoring analysis</span><span class="badge" id="bPCM">–</span></button>
    <button class="tab" data-tab="cpre"><span class="tl">Pre-campaign</span><span class="badge" id="bCP">–</span></button>
-   <button class="tab" data-tab="cicm"><span class="tl">Intra-campaign (ICM)</span><span class="badge" id="bCI">–</span></button>
-   <button class="tab" data-tab="cpost"><span class="tl">Post-campaign (LQAS)</span><span class="badge" id="bCL">–</span></button>
+   <button class="tab" data-tab="cicm"><span class="tl">Intra-campaign ops</span><span class="badge" id="bCI">–</span></button>
+   <button class="tab" data-tab="cpost"><span class="tl">Post-campaign analysis</span><span class="badge" id="bCL">–</span></button>
    <button class="tab" data-tab="mis"><span class="tl">Missed children &amp; refusals</span><span class="badge" id="bM1">–</span></button>
    <button class="tab" data-tab="ch"><span class="tl">Campaign history</span><span class="badge" id="bCH">2017–26</span></button>
    <button class="tab" data-tab="sn"><span class="tl">SNID Nov-26 scope</span><span class="badge" id="bSN">4.81M</span></button>
@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 14-Oct-2026 12:25</span>
+  <span class="hupd" id="hUpd">Updated 14-Oct-2026 12:51</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1743,7 +1743,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 </section>
 <!-- ================= HUB: Campaigns ================= -->
 <section class="pane hubpane" id="p-hcamp">
-<div class="hubhd"><div><h2>Campaigns</h2><p>Pre-campaign readiness, intra-campaign monitoring and post-campaign results for one campaign, with each district classed as <b>good, average, poor or needs focus</b> and a cross-check of where the sources disagree. Tables follow the division / district filter.</p><div class="hubchips"><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="cpost">Post-campaign (LQAS)</button><button data-hl="mis">Missed children & refusals</button><button data-hl="present">▶ Post-campaign review presentation</button></div></div></div>
+<div class="hubhd"><div><h2>Campaigns</h2><p>Pre-campaign readiness, intra-campaign monitoring and post-campaign results for one campaign, with each district classed as <b>good, average, poor or needs focus</b> and a cross-check of where the sources disagree. Tables follow the division / district filter.</p><div class="hubchips"><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="cpost">Post-campaign analysis</button><button data-hl="mis">Missed children & refusals</button><button data-hl="present">▶ Post-campaign review presentation</button></div></div></div>
 <div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
 <div class="kpis"><div class="card"><div class="kl">Pre-campaign readiness</div><div class="kv" id="hc1">–</div><div class="ks" id="hc1s"></div></div><div class="card"><div class="kl">ICM recall coverage</div><div class="kv" id="hc2">–</div><div class="ks" id="hc2s"></div></div><div class="card"><div class="kl">LQAS lots passed</div><div class="kv" id="hc3">–</div><div class="ks" id="hc3s"></div></div><div class="card"><div class="kl">Children still missed</div><div class="kv" id="hc4" style="color:#c2410c">–</div><div class="ks" id="hc4s"></div></div><div class="card"><div class="kl">Children still refusing</div><div class="kv" id="hc5" style="color:#b91c1c">–</div><div class="ks" id="hc5s"></div></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">District performance in this campaign</h3><span style="flex:1"></span><button class="btn" id="btnPerfCSV">Download (CSV)</button><button class="btn pri" id="btnPCR2">▶ Post-campaign review (PPTX)</button></div>
@@ -1763,6 +1763,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <section class="pane" id="p-c3">
 <div class="cqbar"><b>Last 3 campaigns</b><span class="cnt">NID Apr-26 · SNID May-26 · SNID Sept-26</span><span class="cnt" id="c3Note"></span></div>
 <div class="hint" id="c3Hint"></div>
+<div class="hubchips" style="margin-top:10px"><button data-hl="cpost">Post-campaign analysis — ICM &amp; ops vs outcome</button><button data-hl="pcm">Monitoring analysis (ICM · LQAS · PCM/PCHS)</button><button data-hl="mis">Missed children &amp; refusals</button><button data-hl="ch">Campaign history 2017–26</button></div>
 <div class="kpis">
 <div class="card"><div class="kl">Campaign coverage</div><div class="kv" id="c3k1">–</div><div class="ks" id="c3k1s"></div></div>
 <div class="card"><div class="kl">Children still missed · Sept</div><div class="kv" id="c3k2" style="color:#c2410c">–</div><div class="ks" id="c3k2s"></div></div>
@@ -1821,7 +1822,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!-- ================= HUB: Pre-campaign readiness ================= -->
 <section class="pane hubpane" id="p-cpre">
-<div class="hubhd"><div><h2>Pre-campaign readiness</h2><p>Preparatory indicators reported to the EOC before the campaign: DPEC meetings, training, microplan validation and team composition.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="cpost">Post-campaign (LQAS)</button></div></div></div>
+<div class="hubhd"><div><h2>Pre-campaign readiness</h2><p>Preparatory indicators reported to the EOC before the campaign: DPEC meetings, training, microplan validation and team composition.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="cpost">Post-campaign analysis</button></div></div></div>
 <div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
 <div class="kpis"><div class="card"><div class="kl">DPEC held on time</div><div class="kv" id="cp1">–</div><div class="ks" id="cp1s"></div></div><div class="card"><div class="kl">Teams trained</div><div class="kv" id="cp2">–</div><div class="ks" id="cp2s"></div></div><div class="card"><div class="kl">Microplans field-validated</div><div class="kv" id="cp3">–</div><div class="ks" id="cp3s"></div></div><div class="card"><div class="kl">Teams with a female member</div><div class="kv" id="cp4">–</div><div class="ks" id="cp4s"></div></div><div class="card"><div class="kl">Teams with a local member</div><div class="kv" id="cp5">–</div><div class="ks" id="cp5s"></div></div></div>
 <div class="card"><div id="ccp1" class="ch"></div><div class="cap" id="capcp1"></div></div>
@@ -1831,8 +1832,32 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!-- ================= HUB: Intra-campaign monitoring (ICM) ================= -->
 <section class="pane hubpane" id="p-cicm">
-<div class="hubhd"><div><h2>Intra-campaign monitoring (ICM)</h2><p>What independent monitors found in houses during the campaign: recall coverage, finger-marking and why children were missed.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cpost">Post-campaign (LQAS)</button></div></div></div>
+<div class="hubhd"><div><h2>Intra-campaign operations</h2><p>Campaign-day operational monitoring recorded by NEOC: team visits, fixed sites and AICs monitored, supervisor checklists — with the district rollup you can extend by pasting or importing a NEOC export. The analysis of what independent monitors found (recall, missed reasons, cluster findings, operations vs outcome) lives under Post-campaign analysis.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cpost">Post-campaign analysis</button></div></div></div>
 <div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+
+<div class="cqbar"><b>NEOC operational indicators</b><span class="cnt" id="neocCamp"></span><span style="flex:1"></span><button class="btn" id="neocSnippet">Copy extractor snippet</button><button class="btn" id="neocClear">Clear saved data</button></div>
+<div class="hint" id="neocHint"></div>
+<div class="kpis">
+<div class="card"><div class="kl">AIC visited</div><div class="kv" id="nk1">–</div><div class="ks" id="nk1s"></div></div>
+<div class="card"><div class="kl">Teams monitored</div><div class="kv" id="nk2">–</div><div class="ks" id="nk2s"></div></div>
+<div class="card"><div class="kl">UCs monitored</div><div class="kv" id="nk3">–</div><div class="ks" id="nk3s"></div></div>
+<div class="card"><div class="kl">Monitors deployed</div><div class="kv" id="nk4">–</div><div class="ks" id="nk4s"></div></div>
+</div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Operational monitoring by district (NEOC)</h3><span class="cnt" id="cntNEOC"></span><span style="flex:1"></span><button class="btn" id="btnNEOCcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEOC"></table></div><div class="cap" id="capNEOC"></div>
+<div class="noprint" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="neocPasteBtn">Paste NEOC table</button><button class="btn" id="neocLoadBtn" style="display:none">Load pasted table</button><label class="btn" style="cursor:pointer;margin:0">Import file<input type="file" id="neocFile" accept=".csv,.tsv,.txt,.html" hidden></label><span class="cnt" id="neocStatus"></span></div>
+<textarea id="neocTA" class="noprint" style="width:100%;min-height:130px;margin-top:8px;display:none;font:12px/1.5 var(--font-mono);border:1px solid var(--color-border);border-radius:6px;padding:8px" placeholder="Paste the NEOC intra-campaign table here (header row included): either the district-level operational table, or a team-monitoring export with district_name / uc_name / g1_aic_name / g1_team_no / surveyor_name columns."></textarea>
+</div>
+
+
+</section>
+
+<!-- ================= HUB: Post-campaign results (LQAS) ================= -->
+<section class="pane hubpane" id="p-cpost">
+<div class="hubhd"><div><h2>Post-campaign analysis</h2><p>What happened after the campaign — LQAS lots, admin coverage and the children still missed after catch-up — together with what independent ICM monitors found during the campaign and how NEOC operations lined up against recall.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="mis">Missed children &amp; refusals</button><button data-hl="pcm">Monitoring analysis (ICM · LQAS · PCM/PCHS)</button><button data-hl="c3">Last 3 campaigns</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+<div class="kpis"><div class="card"><div class="kl">LQAS lots assessed</div><div class="kv" id="cl1">–</div><div class="ks" id="cl1s"></div></div><div class="card"><div class="kl">Lots passed</div><div class="kv" id="cl2">–</div><div class="ks" id="cl2s"></div></div><div class="card"><div class="kl">Lots failed</div><div class="kv" id="cl3" style="color:#b91c1c">–</div><div class="ks" id="cl3s"></div></div><div class="card"><div class="kl">Vaccinated (admin, % of target)</div><div class="kv" id="cl4">–</div><div class="ks" id="cl4s"></div></div><div class="card"><div class="kl">Still missed after catch-up</div><div class="kv" id="cl5" style="color:#c2410c">–</div><div class="ks" id="cl5s"></div></div></div>
+<div class="grid2"><div class="card"><div id="ccl1" class="ch"></div><div class="cap" id="capcl1"></div></div><div class="card"><div id="ccl2" class="ch"></div><div class="cap" id="capcl2"></div></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign results by district</h3><span class="cnt" id="cntCL"></span><span style="flex:1"></span><button class="btn" id="btnCLcsv">Download (CSV)</button></div><div class="scroll"><table id="tPost"></table></div><div class="cap" id="capCL"></div></div>
 <div class="kpis"><div class="card"><div class="kl">ICM recall coverage</div><div class="kv" id="ci1">–</div><div class="ks" id="ci1s"></div></div><div class="card"><div class="kl">Children missed (ICM)</div><div class="kv" id="ci2" style="color:#c2410c">–</div><div class="ks" id="ci2s"></div></div><div class="card"><div class="kl">Refusals (ICM)</div><div class="kv" id="ci3" style="color:#b91c1c">–</div><div class="ks" id="ci3s"></div></div><div class="card"><div class="kl">Child away (NA)</div><div class="kv" id="ci4">–</div><div class="ks" id="ci4s"></div></div><div class="card"><div class="kl">Finger-marked</div><div class="kv" id="ci5">–</div><div class="ks" id="ci5s"></div></div></div>
 <div class="grid2"><div class="card"><div id="cci1" class="ch"></div><div class="cap" id="capci1"></div></div><div class="card"><div id="cci2" class="ch"></div><div class="cap" id="capci2"></div></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring by district</h3><span class="cnt" id="cntCI"></span><span style="flex:1"></span><button class="btn" id="btnCIcsv">Download (CSV)</button></div><div class="scroll"><table id="tIcm"></table></div><div class="cap" id="capCI"></div></div>
@@ -1850,18 +1875,6 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div id="cci4" class="ch"></div><div class="cap" id="capci4"></div></div>
 </div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Cluster findings &amp; operational indicators by district</h3><span class="cnt" id="cntCIO"></span><span style="flex:1"></span><button class="btn" id="btnCIOcsv">Download (CSV)</button></div><div class="scroll"><table id="tICMo"></table></div><div class="cap" id="capCIO"></div></div>
-<div class="cqbar"><b>NEOC operational indicators</b><span class="cnt" id="neocCamp"></span><span style="flex:1"></span><button class="btn" id="neocSnippet">Copy extractor snippet</button><button class="btn" id="neocClear">Clear saved data</button></div>
-<div class="hint" id="neocHint"></div>
-<div class="kpis">
-<div class="card"><div class="kl">AIC visited</div><div class="kv" id="nk1">–</div><div class="ks" id="nk1s"></div></div>
-<div class="card"><div class="kl">Teams monitored</div><div class="kv" id="nk2">–</div><div class="ks" id="nk2s"></div></div>
-<div class="card"><div class="kl">UCs monitored</div><div class="kv" id="nk3">–</div><div class="ks" id="nk3s"></div></div>
-<div class="card"><div class="kl">Monitors deployed</div><div class="kv" id="nk4">–</div><div class="ks" id="nk4s"></div></div>
-</div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Operational monitoring by district (NEOC)</h3><span class="cnt" id="cntNEOC"></span><span style="flex:1"></span><button class="btn" id="btnNEOCcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEOC"></table></div><div class="cap" id="capNEOC"></div>
-<div class="noprint" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="neocPasteBtn">Paste NEOC table</button><button class="btn" id="neocLoadBtn" style="display:none">Load pasted table</button><label class="btn" style="cursor:pointer;margin:0">Import file<input type="file" id="neocFile" accept=".csv,.tsv,.txt,.html" hidden></label><span class="cnt" id="neocStatus"></span></div>
-<textarea id="neocTA" class="noprint" style="width:100%;min-height:130px;margin-top:8px;display:none;font:12px/1.5 var(--font-mono);border:1px solid var(--color-border);border-radius:6px;padding:8px" placeholder="Paste the NEOC intra-campaign table here (header row included): either the district-level operational table, or a team-monitoring export with district_name / uc_name / g1_aic_name / g1_team_no / surveyor_name columns."></textarea>
-</div>
 <div class="kpis">
 <div class="card"><div class="kl">NEOC team visits</div><div class="kv" id="ov1">–</div><div class="ks" id="ov1s"></div></div>
 <div class="card"><div class="kl">Fixed sites monitored</div><div class="kv" id="ov2">–</div><div class="ks" id="ov2s"></div></div>
@@ -1885,16 +1898,6 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div id="cci6" class="ch"></div><div class="cap" id="capci6"></div></div>
 </div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">UC-wise intra-campaign monitoring</h3><span class="cnt" id="cntUCI"></span><span style="flex:1"></span><button class="btn" id="btnUCIcsv">Download (CSV)</button></div><div class="scroll"><table id="tICMu"></table></div><div class="cap" id="capUCI"></div></div>
-
-</section>
-
-<!-- ================= HUB: Post-campaign results (LQAS) ================= -->
-<section class="pane hubpane" id="p-cpost">
-<div class="hubhd"><div><h2>Post-campaign results (LQAS)</h2><p>Lot quality assurance sampling after the campaign, with admin coverage and the children still missed after catch-up.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign (ICM)</button><button data-hl="mis">Missed children & refusals</button><button data-hl="pcm">Monitoring analysis (ICM · LQAS · PCM/PCHS)</button></div></div></div>
-<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
-<div class="kpis"><div class="card"><div class="kl">LQAS lots assessed</div><div class="kv" id="cl1">–</div><div class="ks" id="cl1s"></div></div><div class="card"><div class="kl">Lots passed</div><div class="kv" id="cl2">–</div><div class="ks" id="cl2s"></div></div><div class="card"><div class="kl">Lots failed</div><div class="kv" id="cl3" style="color:#b91c1c">–</div><div class="ks" id="cl3s"></div></div><div class="card"><div class="kl">Vaccinated (admin, % of target)</div><div class="kv" id="cl4">–</div><div class="ks" id="cl4s"></div></div><div class="card"><div class="kl">Still missed after catch-up</div><div class="kv" id="cl5" style="color:#c2410c">–</div><div class="ks" id="cl5s"></div></div></div>
-<div class="grid2"><div class="card"><div id="ccl1" class="ch"></div><div class="cap" id="capcl1"></div></div><div class="card"><div id="ccl2" class="ch"></div><div class="cap" id="capcl2"></div></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign results by district</h3><span class="cnt" id="cntCL"></span><span style="flex:1"></span><button class="btn" id="btnCLcsv">Download (CSV)</button></div><div class="scroll"><table id="tPost"></table></div><div class="cap" id="capCL"></div></div>
 
 </section>
 
@@ -1987,7 +1990,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!-- ================= (13) IMMUNITY GAP: WHY ================= -->
 <section class="pane" id="p-why">
-<div class="hubhd"><div><h2>Why are the children being missed?</h2><p id="wyHint"></p><div class="hubchips"><button data-hl="gap">← Where are they?</button><button data-hl="cicm">ICM evidence</button><button data-hl="cpost">LQAS evidence</button><button data-hl="cpre">Pre-campaign readiness</button><button data-hl="crit">Data quality</button></div></div></div>
+<div class="hubhd"><div><h2>Why are the children being missed?</h2><p id="wyHint"></p><div class="hubchips"><button data-hl="gap">← Where are they?</button><button data-hl="cpost">ICM &amp; LQAS evidence</button><button data-hl="cpre">Pre-campaign readiness</button><button data-hl="crit">Data quality</button></div></div></div>
 <div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
 <div class="kpis"><div class="card"><div class="kl">Main reason across the selection</div><div class="kv" id="wy1" style="color:#b45309">–</div><div class="ks" id="wy1s"></div></div><div class="card"><div class="kl">Missed by teams (LQAS)</div><div class="kv" id="wy2" style="color:#c2410c">–</div><div class="ks" id="wy2s"></div></div><div class="card"><div class="kl">Refusals (demand)</div><div class="kv" id="wy3" style="color:#b91c1c">–</div><div class="ks" id="wy3s"></div></div><div class="card"><div class="kl">Away / migrant / newborn</div><div class="kv" id="wy4" style="color:#475569">–</div><div class="ks" id="wy4s"></div></div><div class="card"><div class="kl">Districts with a data problem</div><div class="kv" id="wy5" style="color:#6d28d9">–</div><div class="ks" id="wy5s"></div></div></div>
 <div class="grid2"><div class="card"><div id="cwy1" class="ch"></div><div class="cap" id="capwy1"></div></div><div class="card"><div id="cwy2" class="ch"></div><div class="cap" id="capwy2"></div></div></div>
@@ -6375,28 +6378,9 @@ function renderCPre(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(
  el('cntCP').textContent=RR.length+' districts'; el('capCP').textContent='Source: EOC portal, Campaign › Pre Campaign › Pre-campaign Preparatory Indicators (district wise). Values are % unless stated; DC/DHO/UCMO/UC secretary = % of meetings attended.';
  el('btnCPcsv').onclick=()=>cqCSV('Pre_campaign_'+lab,['District','Division','Readiness %',...PRE_COL.map(x=>x[1])],RR.map(r=>[r.d,r.dv,rnd(r.rd),...PRE_COL.map(([k])=>r.p[k])]));
 }
-// ---------- Intra-campaign (ICM) ----------
-function renderCICM(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.i), lab=X.C?X.C.l:'', mi=S.i_mi||0, sh=v=>mi?pc(v/mi*100):'–';
- el('ci1').textContent=pc(S.rec); el('ci1s').textContent=`${fmt(S.i_rv||0)} of ${fmt(S.i_rc||0)} children 0–59 months recalled as vaccinated`;
- el('ci2').textContent=fmt(mi); el('ci2s').textContent=`team did not visit ${sh(S.i_tdn)} · team missed child ${sh(S.i_tm)}`;
- el('ci3').textContent=fmt(S.i_rf||0); el('ci3s').textContent=`${sh(S.i_rf)} of missed children`;
- el('ci4').textContent=fmt(S.i_na||0); el('ci4s').textContent=`${sh(S.i_na)} of missed children were away`;
- el('ci5').textContent=pc(S.fmp); el('ci5s').textContent=`${fmt(S.i_fm||0)} of ${fmt(S.i_seen||0)} children seen were finger-marked`;
- const G=RR.slice().sort((a,b)=>a.rec-b.rec);
- el('cci1').style.height=Math.max(320,G.length*21+110)+'px';
- HC('cci1',{chart:{type:'bar'},title:{text:'ICM recall coverage by district · '+lab},subtitle:{text:'Children 0–59 months recalled as vaccinated, % of children checked'},xAxis:{categories:G.map(r=>r.d)},yAxis:{min:Math.min(80,Math.floor((G[0]||{rec:90}).rec/5)*5),max:100,title:{text:'Recall coverage (%)'},plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1}]},legend:{enabled:false},
-  series:[{name:'Recall coverage',data:G.map(r=>({y:+r.rec.toFixed(1),color:r.rec>=95?'#16a34a':r.rec>=90?'#f59e0b':'#dc2626'})),dataLabels:{enabled:true,format:'{y:.1f}%'}}]});
- el('capci1').textContent=G.length?`Lowest recall coverage: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rec)+')').join(', ')}.`:'No ICM data for this campaign.';
- const rs=[['Team did not visit house',S.i_tdn],['Team visited but missed child',S.i_tm],['Child away (NA)',S.i_na],['Child refusal',S.i_rf]];
- HC('cci2',{chart:{type:'bar'},title:{text:'Why children were missed (ICM)'},subtitle:{text:fmt(mi)+' missed children found by monitors · '+lab},xAxis:{categories:rs.map(x=>x[0])},yAxis:{title:{text:'Missed children (count)'}},legend:{enabled:false},
-  series:[{name:'Children',data:rs.map(x=>x[1]||0),color:'#c2410c',dataLabels:{enabled:true,formatter(){return fmt(this.y)+(mi?' ('+(this.y/mi*100).toFixed(0)+'%)':'');}}}]});
- el('capci2').textContent=mi?`${sh(S.i_na)} of missed children were away and ${sh(S.i_rf)} refused; team-related misses (not visited or missed in the house) were ${sh((S.i_tdn||0)+(S.i_tm||0))}.`:'';
- drawTable('tIcm',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rec',l:'Recall coverage',n:1,f:x=>rgS(x.rec,x.B.rec)},{k:'fmp',l:'Finger-marked',n:1,f:x=>rgS(x.fmp,x.B.fmp)},
-  {k:'rc',l:'Children checked',n:1,sv:x=>x.i.rc,f:x=>fmt(x.i.rc||0)},{k:'mi',l:'Missed',n:1,sv:x=>x.i.mi,f:x=>fmt(x.i.mi||0)},{k:'tdn',l:'Team did not visit',n:1,sv:x=>x.i.tdn,f:x=>fmt(x.i.tdn||0)},{k:'tm',l:'Team missed child',n:1,sv:x=>x.i.tm,f:x=>fmt(x.i.tm||0)},
-  {k:'na',l:'Child away',n:1,sv:x=>x.i.na,f:x=>fmt(x.i.na||0)},{k:'rf',l:'Refusal',n:1,sv:x=>x.i.rf,f:x=>fmt(x.i.rf||0)},{k:'pca',l:'Poorly covered areas',n:1,sv:x=>x.i.pca,f:x=>fmt(x.i.pca||0)},{k:'unv',l:'Unvaccinated found',n:1,sv:x=>x.i.unv,f:x=>fmt(x.i.unv||0)}],RR,'rec',1);
- el('cntCI').textContent=RR.length+' districts'; el('capCI').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise, all days of work.';
- el('btnCIcsv').onclick=()=>cqCSV('ICM_'+lab,['District','Division','Recall coverage %','Finger-marked %','Children checked','Recall vaccinated','Missed','Team did not visit','Team missed child','Child away','Refusal','Poorly covered areas','Missed areas','Unvaccinated found'],RR.map(r=>[r.d,r.dv,rnd(r.rec),rnd(r.fmp),r.i.rc,r.i.rv,r.i.mi,r.i.tdn,r.i.tm,r.i.na,r.i.rf,r.i.pca,r.i.ma,r.i.unv]));
- ciOper(R,lab); ciUCblock();
+// ---------- Intra-campaign ops (NEOC) ----------
+function renderCICM(){ cqSel(); const {X,R}=cqScopeR(), lab=X.C?X.C.l:'';
+ neocRender(lab);
 }
 // ---------- ICM cluster findings & operational indicators ----------
 const ICMU=(function(){const k=ICMD.k;return ICMD.u.map(a=>{const o={};k.forEach((x,i)=>o[x]=a[i]);return o;});})();
@@ -6451,7 +6435,6 @@ function ciOper(R,lab){
  el('capCIO').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise — cluster, house and UC reporting indicators for '+lab+'.';
  el('btnCIOcsv').onclick=()=>cqCSV('ICM_operational_'+lab,['District','Division','Total UCs','Reported UCs','Clusters','Houses checked','Houses per cluster','Door marking %','No-response %','Children checked','Recall vaccinated','Recall %','Finger-marked %','Missed','Team did not visit','Team missed child','Child away','Refusal','Guest children','Guest vaccinated %','Children seen','Not vaccinated but finger-marked','Found unvaccinated','Poorly covered areas','Missed areas'],
   OR.map(x=>[x.d,x.dv,x.tuc,x.ruc,x.cl,x.hh,rnd(x.hpc),rnd(x.doorp),rnd(x.nrp),x.rc,x.rv,rnd(x.rec),rnd(x.fmp),x.mi,x.tdn,x.tm,x.na,x.rf,x.gr,rnd(x.gvp),x.seen,x.nvfm,x.unv,x.pca,x.ma]));
- neocRender(lab);
  ooRender(OR,lab);
 }
 function ooRender(OR,lab){
@@ -6655,7 +6638,28 @@ function renderCPost(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter
  drawTable('tPost',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'ln',l:'Lots',n:1,sv:x=>x.l?x.l.n:-1,f:x=>x.l?x.l.n:'–'},{k:'lP',l:'Passed',n:1,sv:x=>x.l?x.l.P||0:-1,f:x=>x.l?(x.l.P||0):'–'},{k:'lI',l:'Intermediate',n:1,sv:x=>x.l?x.l.I||0:-1,f:x=>x.l?(x.l.I||0):'–'},{k:'lF',l:'Failed',n:1,sv:x=>x.l?x.l.F||0:-1,f:x=>x.l?(x.l.F||0):'–'},
   {k:'lqp',l:'Passed %',n:1,f:x=>rgS(x.lqp,x.B.lqp)},{k:'vp',l:'Admin vaccinated % of target',n:1,f:x=>x.vp==null?'–':pc(x.vp)},{k:'stp',l:'Still missed',n:1,f:x=>rgS(x.stp,x.B.stp)},{k:'srp',l:'Still refusing',n:1,f:x=>rgS(x.srp,x.B.srp,2)}],RR,'lqp',1);
  el('cntCL').textContent=RR.length+' districts'; el('capCL').textContent='Sources: EOC portal post-campaign LQAS (UC wise) and the campaign coverage summary (still NA, still refusing and left over after catch-up, % of the household target).';
- el('btnCLcsv').onclick=()=>cqCSV('Post_campaign_'+lab,['District','Division','LQAS lots','Passed','Intermediate','Failed','Passed %','Admin vaccinated % of target','Still missed %','Still refusing %'],RR.map(r=>[r.d,r.dv,r.l?r.l.n:'',r.l?r.l.P||0:'',r.l?r.l.I||0:'',r.l?r.l.F||0:'',rnd(r.lqp),rnd(r.vp),rnd(r.stp),rnd(r.srp,2)]));
+ el('btnCLcsv').onclick=()=>cqCSV('Post_campaign_'+lab,['District','Division','LQAS lots','Passed','Intermediate','Failed','Passed %','Admin vaccinated % of target','Still missed %','Still refusing %'],RR.map(r=>[r.d,r.dv,r.l?r.l.n:'',r.l?r.l.P||0:'',r.l?r.l.I||0:'',r.l?r.l.F||0:'',rnd(r.lqp),rnd(r.vp),rnd(r.stp),rnd(r.srp,2)])); const RRI=R.filter(r=>r.i), mi=S.i_mi||0, sh=v=>mi?pc(v/mi*100):'–';
+ el('ci1').textContent=pc(S.rec); el('ci1s').textContent=`${fmt(S.i_rv||0)} of ${fmt(S.i_rc||0)} children 0–59 months recalled as vaccinated`;
+ el('ci2').textContent=fmt(mi); el('ci2s').textContent=`team did not visit ${sh(S.i_tdn)} · team missed child ${sh(S.i_tm)}`;
+ el('ci3').textContent=fmt(S.i_rf||0); el('ci3s').textContent=`${sh(S.i_rf)} of missed children`;
+ el('ci4').textContent=fmt(S.i_na||0); el('ci4s').textContent=`${sh(S.i_na)} of missed children were away`;
+ el('ci5').textContent=pc(S.fmp); el('ci5s').textContent=`${fmt(S.i_fm||0)} of ${fmt(S.i_seen||0)} children seen were finger-marked`;
+ const GI=RRI.slice().sort((a,b)=>a.rec-b.rec);
+ el('cci1').style.height=Math.max(320,GI.length*21+110)+'px';
+ HC('cci1',{chart:{type:'bar'},title:{text:'ICM recall coverage by district · '+lab},subtitle:{text:'Children 0–59 months recalled as vaccinated, % of children checked'},xAxis:{categories:GI.map(r=>r.d)},yAxis:{min:Math.min(80,Math.floor((GI[0]||{rec:90}).rec/5)*5),max:100,title:{text:'Recall coverage (%)'},plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1}]},legend:{enabled:false},
+  series:[{name:'Recall coverage',data:GI.map(r=>({y:+r.rec.toFixed(1),color:r.rec>=95?'#16a34a':r.rec>=90?'#f59e0b':'#dc2626'})),dataLabels:{enabled:true,format:'{y:.1f}%'}}]});
+ el('capci1').textContent=GI.length?`Lowest recall coverage: ${GI.slice(0,3).map(r=>r.d+' ('+pc(r.rec)+')').join(', ')}.`:'No ICM data for this campaign.';
+ const RSI=[['Team did not visit house',S.i_tdn],['Team visited but missed child',S.i_tm],['Child away (NA)',S.i_na],['Child refusal',S.i_rf]];
+ HC('cci2',{chart:{type:'bar'},title:{text:'Why children were missed (ICM)'},subtitle:{text:fmt(mi)+' missed children found by monitors · '+lab},xAxis:{categories:RSI.map(x=>x[0])},yAxis:{title:{text:'Missed children (count)'}},legend:{enabled:false},
+  series:[{name:'Children',data:RSI.map(x=>x[1]||0),color:'#c2410c',dataLabels:{enabled:true,formatter(){return fmt(this.y)+(mi?' ('+(this.y/mi*100).toFixed(0)+'%)':'');}}}]});
+ el('capci2').textContent=mi?`${sh(S.i_na)} of missed children were away and ${sh(S.i_rf)} refused; team-related misses (not visited or missed in the house) were ${sh((S.i_tdn||0)+(S.i_tm||0))}.`:'';
+ drawTable('tIcm',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rec',l:'Recall coverage',n:1,f:x=>rgS(x.rec,x.B.rec)},{k:'fmp',l:'Finger-marked',n:1,f:x=>rgS(x.fmp,x.B.fmp)},
+  {k:'rc',l:'Children checked',n:1,sv:x=>x.i.rc,f:x=>fmt(x.i.rc||0)},{k:'mi',l:'Missed',n:1,sv:x=>x.i.mi,f:x=>fmt(x.i.mi||0)},{k:'tdn',l:'Team did not visit',n:1,sv:x=>x.i.tdn,f:x=>fmt(x.i.tdn||0)},{k:'tm',l:'Team missed child',n:1,sv:x=>x.i.tm,f:x=>fmt(x.i.tm||0)},
+  {k:'na',l:'Child away',n:1,sv:x=>x.i.na,f:x=>fmt(x.i.na||0)},{k:'rf',l:'Refusal',n:1,sv:x=>x.i.rf,f:x=>fmt(x.i.rf||0)},{k:'pca',l:'Poorly covered areas',n:1,sv:x=>x.i.pca,f:x=>fmt(x.i.pca||0)},{k:'unv',l:'Unvaccinated found',n:1,sv:x=>x.i.unv,f:x=>fmt(x.i.unv||0)}],RRI,'rec',1);
+ el('cntCI').textContent=RRI.length+' districts'; el('capCI').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise, all days of work.';
+ el('btnCIcsv').onclick=()=>cqCSV('ICM_'+lab,['District','Division','Recall coverage %','Finger-marked %','Children checked','Recall vaccinated','Missed','Team did not visit','Team missed child','Child away','Refusal','Poorly covered areas','Missed areas','Unvaccinated found'],RRI.map(r=>[r.d,r.dv,rnd(r.rec),rnd(r.fmp),r.i.rc,r.i.rv,r.i.mi,r.i.tdn,r.i.tm,r.i.na,r.i.rf,r.i.pca,r.i.ma,r.i.unv]));
+
+ ciOper(R,lab); ciUCblock();
 }
 // ---------- hub card wiring ----------
 function hubCards(pid){ const P=el(pid); if(!P)return; renderHome();
