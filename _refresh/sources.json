@@ -192,6 +192,25 @@
    ],
    "exclude": [],
    "note": "Scans every campaign folder; maps ActivityName to dashboard cq labels. Surveyor Email used for distinct counts only, never embedded. Stale duplicate folders (KP-Special-1-Jul = May byte-copy) are skipped."
+  },
+  "icmq": {
+   "label": "Intra-campaign monitoring quality (team monitored + AIC visited, UC level)",
+   "const": "ICMQ",
+   "extractor": "extract_icmq.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "INTRA*TEAM MONITORED*.csv",
+    "INTRA*AIC*VISITED*.csv"
+   ],
+   "exclude": [
+    "~$*",
+    "*.xls",
+    "*.xlsx"
+   ],
+   "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise (team-monitored and AIC-visited tables)",
+   "note": "One CSV per table; the \"2 campaigns\" exports carry the newest campaign (SNID Sept 2026) with a slightly different column set, the big exports carry the full 2021-2026 history. District x campaign aggregates are count-weighted means rounded to whole percent; -1 = indicator absent from that export. 'Total' rows are skipped. The AIC 2-campaign export has no supervisor count column, so those rows are averaged per UC (wt.aic = \"uc\")."
   }
  },
  "manual": {
