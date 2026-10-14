@@ -14,19 +14,33 @@
    "stamp": "14-Oct-2026 10:05",
    "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34193 rows, reported 1,766,482, covered 1,090,061"
   },
-  "chd": {
-   "at": "2026-10-12T13:53:07+05:00",
-   "chars": 2103818,
-   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx|1786962582|133839395",
-   "payload_sha1": "7c06f5460af300d8",
+  "can": {
+   "at": "2026-10-14T11:30:33+05:00",
+   "chars": 230786,
+   "file_id": "manual|can.json",
+   "payload_sha1": "d4a200fda9e687ff",
    "source": {
-    "mtime": 1786962582.0,
-    "name": "kp+td uc spotting update.xlsx",
-    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx",
-    "size": 133839395
+    "mtime": 1791958368.109723,
+    "name": "can.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\can.json",
+    "size": 230786
    },
-   "stamp": "12-Oct-2026 12:58",
-   "summary": "86 campaigns Sep2017-May2026, 38 districts, 1553 UCs, 75777 UC rows"
+   "stamp": "14-Oct-2026 11:30",
+   "summary": "manual inject"
+  },
+  "chd": {
+   "at": "2026-10-14T11:30:33+05:00",
+   "chars": 4429862,
+   "file_id": "manual|chd.json",
+   "payload_sha1": "997c23841950f8e5",
+   "source": {
+    "mtime": 1791958422.9459178,
+    "name": "chd.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\chd.json",
+    "size": 4429862
+   },
+   "stamp": "14-Oct-2026 11:30",
+   "summary": "manual inject"
   },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
