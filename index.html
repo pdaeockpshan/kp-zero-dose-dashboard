@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 14-Oct-2026 10:05</span>
+  <span class="hupd" id="hUpd">Updated 14-Oct-2026 10:16</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -5189,13 +5189,14 @@ function adSel(){
 function renderADV(){
  adSel();
  const sel=ADSM&&ADSM.length?ADSM.slice():[ADS], multi=sel.length>1;
- const cp=ADV.c[ADS], qq=q.value.trim().toLowerCase();
+ if(!multi)ADS=sel[0];
+ const cp=ADV.c[sel[0]], qq=q.value.trim().toLowerCase();
  let R;
  if(multi){const M={};
   sel.forEach(ci=>ADV.r[ci].forEach(a=>{const u=ADV.u[a[0]];const g=M[a[0]]||(M[a[0]]={dv:ADV.dv[u[0]],d:ADV.ds[u[0]],t:u[1],u:u[2],rep:0,cov:0,nc:null,n:0,cn:0});
    g.rep+=a[1];g.n++;if(a[2]!=null){g.cov+=a[2];g.cn++;}}));
   R=Object.keys(M).map(k=>{const g=M[k];g.nc=g.cn?g.rep-g.cov:null;return g;});
- }else R=adRows(ADS).map(r=>({dv:r.dv,d:r.d,t:r.t,u:r.u,rep:r.rep,cov:r.cov,nc:r.nc,n:1,cn:r.cov==null?0:1}));
+ }else R=adRows(sel[0]).map(r=>({dv:r.dv,d:r.d,t:r.t,u:r.u,rep:r.rep,cov:r.cov,nc:r.nc,n:1,cn:r.cov==null?0:1}));
  R=R.filter(r=>adVis(r)&&(!qq||(r.u+' '+r.t+' '+r.d).toLowerCase().indexOf(qq)>=0));
  const covMiss=sel.filter(ci=>!ADV.r[ci].some(x=>x[2]!=null)).length;
  const rep=sum_(R,r=>r.rep),cov=sum_(R,r=>r.cov),covK=R.some(r=>r.cn>0);
