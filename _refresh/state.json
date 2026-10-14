@@ -84,6 +84,20 @@
    "stamp": "14-Oct-2026 12:23",
    "summary": "manual inject (NEOC intra-campaign aggregates)"
   },
+  "novr": {
+   "at": "2026-10-14T13:02:08+05:00",
+   "chars": 1995,
+   "file_id": "D:\\AMAZON DATA\\SNID NOV-26 (2-8 NOV)\\RESOURCE PLAN SNID NOVEMBER-26.csv|1791960781|2046",
+   "payload_sha1": "727bd9510b28d090",
+   "source": {
+    "mtime": 1791960781.2630117,
+    "name": "RESOURCE PLAN SNID NOVEMBER-26.csv",
+    "path": "D:\\AMAZON DATA\\SNID NOV-26 (2-8 NOV)\\RESOURCE PLAN SNID NOVEMBER-26.csv",
+    "size": 2046
+   },
+   "stamp": "14-Oct-2026 13:01",
+   "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
+  },
   "snd": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 37861,
