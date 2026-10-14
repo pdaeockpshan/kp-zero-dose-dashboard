@@ -24,7 +24,14 @@ COLS = {'year': 'Year', 'month': 'Month', 'vaccine': 'Vaccine', 'camp': 'Campaig
         'prov': 'Province', 'dist': 'District', 'uc': 'UC_NAME',
         'tgt_adm': 'AdmTarget', 'tgt_mp': 'Adm_MPTarget', 'cov': 'AdmCovered',
         'na': 'Adm_StillNA', 'ref': 'Adm_StillREF', 'sm': 'Adm_TotalStillMissed',
-        'zd': 'Adm_ZeroDoze'}
+        'zd': 'Adm_ZeroDoze',
+        'rec_na': 'Adm_Rec_NA', 'rec_ref': 'Adm_Rec_Ref', 'sdc': 'Adm_SDC',
+        'icm_clu': 'ICM_Clusters_Taken',
+        'icm_chk': 'ICMrecall 0-59 Check', 'icm_ver': 'ICMrecall 0-59 Verified',
+        'icm_schk': 'ICMseen 0-59 Check', 'icm_sver': 'ICMseen 0-59 verified',
+        'ms_n': '# of MS', 'ms_chk': 'MS_Checked', 'ms_ver': 'MS_Verified',
+        'lq_p': 'LQASpassed', 'lq_f': 'LQASfailed',
+        'pcm_chk': 'PCM Total Check', 'pcm_fm': 'PCM_FM'}
 MONTHS = [('jan', 1), ('feb', 2), ('mar', 3), ('apr', 4), ('may', 5), ('jun', 6),
           ('jul', 7), ('aug', 8), ('sept', 9), ('sep', 9), ('oct', 10), ('nov', 11), ('dec', 12)]
 MONNAME = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
@@ -41,6 +48,11 @@ def num(x):
         return int(round(float(str(x).replace(',', '').strip())))
     except ValueError:
         return 0
+
+
+def pm(num_, den):
+    """Permille share, '' when the denominator is absent."""
+    return '' if not den else int(round(1000.0 * num_ / den))
 
 
 def lab_month(lab):
@@ -108,7 +120,7 @@ def build(hdr, rows, repo):
     ix = {k: hdr.index(v) for k, v in COLS.items()}
     order, div = district_order(repo)
 
-    G = collections.defaultdict(lambda: [0, 0, 0, 0, 0, 0, set(), []])
+    G = collections.defaultdict(lambda: [0] * 21 + [set(), []])
     for r in rows:
         d = str(r[ix['dist']]).strip()
         u = re.sub(r'\s+', ' ', str(r[ix['uc']]).strip())
@@ -124,17 +136,36 @@ def build(hdr, rows, repo):
         g[3] += num(r[ix['ref']])
         g[4] += num(r[ix['sm']])
         g[5] += num(r[ix['zd']])
-        g[6].add(str(r[ix['vaccine']]).strip())
+        g[6] += num(r[ix['rec_na']])
+        g[7] += num(r[ix['rec_ref']])
+        g[8] += num(r[ix['sdc']])
+        g[9] += num(r[ix['icm_clu']])
+        g[10] += num(r[ix['icm_chk']])
+        g[11] += num(r[ix['icm_ver']])
+        g[12] += num(r[ix['icm_schk']])
+        g[13] += num(r[ix['icm_sver']])
+        g[14] += num(r[ix['ms_n']])
+        g[15] += num(r[ix['ms_chk']])
+        g[16] += num(r[ix['ms_ver']])
+        g[17] += num(r[ix['lq_p']])
+        g[18] += num(r[ix['lq_f']])
+        g[19] += num(r[ix['pcm_chk']])
+        g[20] += num(r[ix['pcm_fm']])
+        g[21].add(str(r[ix['vaccine']]).strip())
         if r[ix['month']]:
-            g[7].append(MONIDX.get(str(r[ix['month']]).strip()[:3].title(), 0))
+            g[22].append(MONIDX.get(str(r[ix['month']]).strip()[:3].title(), 0))
 
     C = collections.defaultdict(lambda: {'rows': {}, 'vax': set(), 'mos': []})
     for (y, lab, d, u), g in G.items():
         c = C[(y, lab)]
         if sum(g[0:6]) > 0:
-            c['rows'][(d, u)] = list(g[0:6])
-        c['vax'] |= g[6]
-        c['mos'] += g[7]
+            c['rows'][(d, u)] = list(g[0:6]) + [g[6], g[7], g[8], g[9],
+                                                pm(g[11], g[10]), pm(g[13], g[12]),
+                                                pm(g[16], g[15]),
+                                                pm(g[17], g[17] + g[18]),
+                                                pm(g[20], g[19])]
+        c['vax'] |= g[21]
+        c['mos'] += g[22]
 
     cams = []
     for (y, lab), c in C.items():

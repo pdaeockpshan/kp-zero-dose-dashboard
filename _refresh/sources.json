@@ -21,6 +21,17 @@
       "portal": "KP+TD UC spotting workbook (Dropbox, shared by EOC data cell)",
       "note": "134MB workbook; first read streams the DATA sheet into cache/ch_rows.pkl (~3 min), later runs reuse the cache until the workbook mtime changes."
     },
+    "can": {
+      "label": "Campaign analysis - district x campaign template rows",
+      "const": "CAN",
+      "extractor": "extract_can.py",
+      "roots": ["C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting"],
+      "patterns": ["kp+td uc spotting*.xlsx"],
+      "sheet": "DATA",
+      "cache": "cache/ch_rows.pkl",
+      "portal": "KP+TD UC spotting workbook (Dropbox, shared by EOC data cell)",
+      "note": "District-level aggregate of the same DATA sheet as chd: recorded missed NA/refusal, same-day covered, ICM missed + reasons and recall check/verified, market survey, LQAS pass/intermediate/fail, PCM clusters/checks/FM per campaign per district. Campaign order asserted against CHD."
+    },
     "snd": {
       "label": "Upcoming campaign scope + day-wise targets",
       "const": "SND",
