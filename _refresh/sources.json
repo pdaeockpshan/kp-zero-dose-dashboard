@@ -211,6 +211,25 @@
    ],
    "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise (team-monitored and AIC-visited tables)",
    "note": "One CSV per table; the \"2 campaigns\" exports carry the newest campaign (SNID Sept 2026) with a slightly different column set, the big exports carry the full 2021-2026 history. District x campaign aggregates are count-weighted means rounded to whole percent; -1 = indicator absent from that export. 'Total' rows are skipped. The AIC 2-campaign export has no supervisor count column, so those rows are averaged per UC (wt.aic = \"uc\")."
+  },
+  "neap": {
+   "label": "Upcoming campaign pre-campaign readiness (NEAP district-wise status)",
+   "const": "NEAP",
+   "extractor": "extract_neap.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "NEAP*.xls",
+    "NEAP*.csv"
+   ],
+   "exclude": [
+    "neapreport*",
+    "allneapreport*",
+    "~$*"
+   ],
+   "portal": "EOC dashboard > Campaign > Pre Campaign > NEAP readiness (district wise)",
+   "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter, so the newest save wins; older-shape neapreport*/allneapreport* exports are excluded by pattern and skipped by shape. District names must match the SND scope or the extractor aborts."
   }
  },
  "manual": {
