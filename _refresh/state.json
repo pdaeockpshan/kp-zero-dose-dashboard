@@ -1,18 +1,18 @@
 {
  "datasets": {
   "adv": {
-   "at": "2026-10-14T10:10:10+05:00",
-   "chars": 461033,
-   "file_id": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls|1791952963|1574143",
-   "payload_sha1": "139a65633473b1ad",
+   "at": "2026-10-15T15:04:52+05:00",
+   "chars": 458008,
+   "file_id": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls|1791955631|10058",
+   "payload_sha1": "b5b9e4532bb1223a",
    "source": {
-    "mtime": 1791952963.3684866,
+    "mtime": 1791955631.3421476,
     "name": "advance_reports_20261014T044243011Z.xls",
     "path": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls",
-    "size": 1574143
+    "size": 10058
    },
-   "stamp": "14-Oct-2026 10:05",
-   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34193 rows, reported 1,766,482, covered 1,090,061"
+   "stamp": "15-Oct-2026 15:04",
+   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,151,312"
   },
   "can": {
    "at": "2026-10-14T11:30:33+05:00",
@@ -128,11 +128,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-12T13:52:13+05:00",
+  "at": "2026-10-15T15:04:52+05:00",
   "datasets": [
-   "icm"
+   "adv"
   ],
   "dry_run": false,
-  "stamp": "12-Oct-2026 13:52"
+  "stamp": "15-Oct-2026 15:04"
  }
 }
