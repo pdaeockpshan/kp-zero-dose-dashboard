@@ -230,6 +230,22 @@
    ],
    "portal": "EOC dashboard > Campaign > Pre Campaign > NEAP readiness (district wise)",
    "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter, so the newest save wins; older-shape neapreport*/allneapreport* exports are excluded by pattern and skipped by shape. District names must match the SND scope or the extractor aborts."
+  },
+  "ind": {
+   "label": "Compiled campaign indicators (Admin, ICM, market survey, LQAS, PCM)",
+   "const": "INDIC",
+   "extractor": "extract_ind.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Indicators*.csv"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "EOC dashboard compiled campaign indicators export (2017-2026, 85 campaigns)",
+   "note": "One row per UC per campaign (84 columns, 75,792 rows). The payload carries district aggregates for every campaign plus the raw UC rows of the 2025+ campaigns, so the five dashboard tables offer a district / UC toggle. Percent columns are recomputed from their count pairs; Same Day coverage and ICM Seen % have no count pair and are stored as the district mean of UC values. A literal -1 in the source counts as not reported, other negatives are kept. Keep the payload under refresh.py's 5 MB size ceiling - if the next export adds more UC-detail years, raise UC_FROM_YEAR or the ceiling."
   }
  },
  "manual": {
