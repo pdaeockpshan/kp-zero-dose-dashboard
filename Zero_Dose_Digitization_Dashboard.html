@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zero Dose Digitization Dashboard</title>
+<title>KP Polio and Synergy Dashboard</title>
 <style>:root{--color-bg:#faf9fc;--color-bg-secondary:#ffffff;--color-text:#1a1a1a;--color-text-secondary:#5e5e5e;--color-text-muted:#9ca3af;
 --color-text-on-primary:#ffffff;--color-border:rgba(0,0,0,.12);--color-border-light:rgba(0,0,0,.06);--color-surface:#f9fafb;--color-surface-hover:#f3f4f6;
 --color-surface-active:#e5e7eb;--color-primary:#6d28d9;--color-primary-bg:#f3e8ff;--color-success:#22c55e;--color-success-bg:rgba(34,197,94,.1);
@@ -10,7 +10,7 @@
 --color-error:#ef4444;--color-error-bg:rgba(239,68,68,.1);--color-error-dark:#dc2626;
 --font-sans:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--font-mono:Consolas,'SF Mono',Menlo,monospace;--radius-sm:6px;--radius-md:10px;--radius-pill:17px}</style>
 </head><body>
-<header class="hdr"><h1>Zero Dose Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
+<header class="hdr"><h1>KP Polio and Synergy Dashboard: Reported &amp; Covered · Digitization · Validation · EPI Coverage</h1>
 <div class="sub">KP · <b>ZD Reported &amp; Covered</b>: NID Apr-26 / SNID May-26 / SNID Sept-26 (37 districts) · <b>Digitization</b>: SNID Sept 2026 linelist vs IDIMS, report of 12-Oct-2026 (421 UCs, 9 districts), compared with SNID May 2026 (22-Jun-2026) · <b>Validation</b>: 18,243 children validated · 97.3% confirmed vaccinated · 7 campaigns (NID FEB 2026 to SNID Sep 2026) · <b>EPI coverage</b>: KP EPI-MIS, Jan 2026 – Sep 2026</div></header>
 <style>
 *{box-sizing:border-box}
@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 15-Oct-2026 12:05</span>
+  <span class="hupd" id="hUpd">Updated 15-Oct-2026 12:36</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -3056,7 +3056,7 @@ function collectDeckData(){
   flags:VFL.map(x=>({l:x[1],n:ff(x[0])})),flG:Object.values(flG),sel};
 }
 function renderDeck(P,D){
- const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Zero Dose Update: '+D.scope; pptx.company='Zero Dose Dashboard';
+ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Zero Dose Update: '+D.scope; pptx.company='KP Polio and Synergy Dashboard';
  const TEAL='0F766E',PUR='6D28D9',GRN='15803D',IND='4338CA',AMB='B45309',RED='DC2626',GRY='6B7280',TXT='1F2937',F='Segoe UI',BLU='1D4ED8';
  const ec=p=>p==null?TXT:p>110?'7C3AED':p>=90?GRN:p>=80?AMB:RED;
  const p1=v=>v==null?'–':v.toFixed(1)+'%', n0=v=>v==null?'–':Math.round(v).toLocaleString('en-US');
@@ -3426,7 +3426,7 @@ function briefActions(B){
 }
 function renderBrief(P,B){
  const kind=B.level==='kp'?'EOC Brief':B.level==='dv'?'Division Brief':'District Brief';
- const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Zero Dose '+kind+': '+B.scope; pptx.company='Zero Dose Dashboard';
+ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Zero Dose '+kind+': '+B.scope; pptx.company='KP Polio and Synergy Dashboard';
  const TEAL='0F766E',PUR='6D28D9',GRN='15803D',AMB='B45309',RED='DC2626',GRY='6B7280',TXT='1F2937',F='Segoe UI';
  const HEAD={kp:'1E3A8A',dv:'0F766E',d:'9A3412'}[B.level], BLU='1D4ED8';
  const p1=bp1,n0=bn0,R=v=>v==null?null:Math.round(v*10)/10, z=B.z,d=B.d,v=B.v,L=B.L;
@@ -5197,7 +5197,7 @@ function monMsgs(X){
  if(X.r4.length)M.push('Monitors found a higher missed % than admin reported in '+gap.length+' of '+X.r4.length+' districts'+(gap[0]?' \u2014 widest '+gap[0].k+' (monitors '+pc(gap[0].mo)+' vs admin '+pc(gap[0].ad)+')':'')+'.');
  return M.slice(0,7);}
 function renderMON(P,X){
- const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Critical monitoring analysis: '+X.D.q; pptx.company='Zero Dose Dashboard';
+ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Critical monitoring analysis: '+X.D.q; pptx.company='KP Polio and Synergy Dashboard';
  const OR='4338CA',RED='DC2626',GRN='15803D',GRY='6B7280',TXT='1F2937',F='Segoe UI',RAG={r:['FEE2E2','991B1B']};
  let pg=0; const S=X.S,V=X.V;
  const base=(t,sub)=>{const s=pptx.addSlide(); pg++; s.background={color:'FFFFFF'}; s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.12,fill:{color:OR},line:{color:OR}});
@@ -7569,7 +7569,7 @@ function pcrMsgs(X){const S=X.S, M=[];
  if(S.stp!=null)M.push(`${fmt(S.m_st)} children (${pc(S.stp)} of the target) were still missed after catch-up, including ${fmt(S.m_srf)} refusing.`);
  if(X.wpv.length)M.push(`${X.wpv.length} confirmed polio case${X.wpv.length>1?'s':''} in 2026 (${[...new Set(X.wpv.map(w=>w.d))].join(', ')}); ${X.esPos.length} districts with positive sewage.`);
  return M;}
-async function renderPCR(P,X){ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Post-campaign review: '+X.lab+' · '+X.scopeL; pptx.company='Zero Dose Dashboard';
+async function renderPCR(P,X){ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Post-campaign review: '+X.lab+' · '+X.scopeL; pptx.company='KP Polio and Synergy Dashboard';
  const OR='C2410C',RED='DC2626',AMB='B45309',GRN='15803D',GRY='6B7280',TXT='1F2937',F='Segoe UI', S=X.S; let pg=0;
  const base=(t,sub)=>{const s=pptx.addSlide(); pg++; s.background={color:'FFFFFF'}; s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.12,fill:{color:OR},line:{color:OR}});
   s.addText(t,{x:0.5,y:0.28,w:12.3,h:0.6,fontFace:F,fontSize:24,bold:true,color:OR}); if(sub)s.addText(sub,{x:0.5,y:0.86,w:12.3,h:0.36,fontFace:F,fontSize:12,color:GRY});
@@ -8063,7 +8063,7 @@ function igbActions(B){const A=[], G=B.G, nm=a=>a.slice(0,4).join(', ')+(a.lengt
  if(B.CS.top&&B.CS.top[1])A.push(`Main thing keeping UCs open: ${CL_F[B.CS.top[0]]} (${fmt(B.CS.top[1])} UCs). ${B.CS.top[0]==='p3'?'Ask EPI for a routine catch-up and defaulter tracing plan in these UCs.':B.CS.top[0]==='st'?'Strengthen mop-up so children still missed fall under 2% of target.':''}`);
  if(B.CS.C.ro)A.push(`Investigate the ${fmt(B.CS.C.ro)} reopened UCs: they had closed the gap and slipped back.`);
  return A.slice(0,8);}
-async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Immunity gap brief: '+B.scopeL; pptx.company='Zero Dose Dashboard';
+async function renderIGB(P,B){const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pptx.title='Immunity gap brief: '+B.scopeL; pptx.company='KP Polio and Synergy Dashboard';
  const BR='7C2D12', K=pptKit(pptx,BR,'Immunity gap brief · '+B.scopeL+' · '+B.date), {GRY,TXT,F}=K, G=B.G, CS=B.CS, C=CS.C, wd=CS.wd||1, RED='DC2626', GRN='15803D', AMB='B45309'; {const _b0=K.base; K.base=(t,sub)=>{K._qc=/^①/.test(t)?'BE123C':/^②/.test(t)?'B45309':/^③/.test(t)?'15803D':null; const s0=_b0(t,sub); K._qc=null; return s0;};}
  const p1=v=>v==null?'–':(Math.round(v*10)/10).toFixed(1)+'%', n0=v=>v==null?'–':fmt(Math.round(v)), cut=(t,n)=>{t=String(t==null?'':t);return t.length>n?t.slice(0,n-1)+'…':t;};
  // 1 title
