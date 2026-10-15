@@ -3,8 +3,14 @@
 Every advance_reports_*.xls under the configured roots is loaded - each file is a
 self-contained per-campaign dump, and for campaigns present in several exports the
 newest file wins. A new year's file just gets dropped alongside the others.
-The Sept-2026-era export leaves the reported column empty and puts the tracked
-children in the covered column; those campaigns are repaired (coverage = unknown).
+Some exports (the 202610xx re-exports) are small .xls "shells" whose table lives in a
+sibling <name>_files/sheet001.htm - those are read from the companion file. The newest
+layout carries explicit ZERO DOSE REPORTED / ZERO DOSE COVERED columns.
+The Sept-2026-era export leaves the reported column empty and puts the tracked children
+in the covered column; for campaigns also tracked by the dashboard's ZD reported &
+covered dataset (NID Apr 26, SNID May 2026, SNID Sept 2026) both figures are filled
+from that dataset, other such campaigns keep the tracked children as reported with
+coverage unknown.
 Campaign names without a readable month/year abort the extract (add them to
 auto.adv.config.campaigns in sources.json).
 
@@ -27,19 +33,48 @@ MONTH_RE = re.compile(r'\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|SEP|OCT|NOV|DEC)
 YEAR_RE = re.compile(r'\b(20\d\d|\d\d)\b')
 ASOF_RE = re.compile(r'(20\d{6})T(\d{6})')
 
+# campaigns that also appear on the dashboard's ZD reported & covered page, with the
+# ZD row keys for this campaign's reported/covered (labels mirror the ZD tab).
+ZD_CAMPS = {'NID APR 26': ('rA', 'cA'), 'SNID MAY 2026': ('rM', 'cM'),
+            'SNID SEPT 2026': ('rS', None)}
 
-def zd_divisions(repo):
-    """district -> division, taken from the dashboard's own ZD payload so filters line up."""
+
+def norm_label(s):
+    return re.sub(r'\s+', ' ', str(s)).strip().upper()
+
+
+def zd_rows(repo):
     s = srcutil.read_text(os.path.join(repo, 'index.html'))
     i = s.find('const ZD = ')
     if i < 0:
         raise SystemExit('ERR adv const ZD not found in index.html')
     j = s.find('\n', i)
-    zd = json_load(s[i + len('const ZD = '):j].rstrip().rstrip(';'))
+    return json_load(s[i + len('const ZD = '):j].rstrip().rstrip(';'))
+
+
+def zd_divisions(repo):
+    """district -> division, taken from the dashboard's own ZD payload so filters line up."""
     div = {}
-    for r in zd:
+    for r in zd_rows(repo):
         div[r['d']] = r['dv']
     return div
+
+
+def zd_reported_covered(repo):
+    """ZD_CAMPS campaign -> {(district, uc): (reported, covered or None)} from const ZD."""
+    rows = zd_rows(repo)
+    out = {}
+    for cname, (rk, ck) in ZD_CAMPS.items():
+        m = {}
+        for r in rows:
+            rep = r.get(rk)
+            if rep is None:
+                continue
+            cv = r.get(ck) if ck else None
+            m[(norm_label(r['d']), norm_label(r['u']))] = (
+                int(rep), None if cv is None else int(cv))
+        out[cname] = m
+    return out
 
 
 def json_load(s):
@@ -74,32 +109,51 @@ def file_key(rec):
     return (1, '%d' % int(rec['mtime'] * 1000))
 
 
+def shell_table_path(path):
+    """The companion table file IDIMS writes next to the small .xls shells, if present."""
+    h = os.path.join(os.path.splitext(path)[0] + '_files', 'sheet001.htm')
+    return h if os.path.exists(h) else None
+
+
 def read_frame(rec):
     import pandas as pd
-    try:
-        tables = pd.read_html(rec['path'], header=0)
-    except Exception as ex:
-        return None, 'cannot read: %s' % ex
+    tables, err = None, 'no tables in file'
+    for path in (rec['path'], shell_table_path(rec['path'])):
+        if not path:
+            continue
+        try:
+            tables = pd.read_html(path, header=0)
+        except Exception as ex:
+            err = 'cannot read: %s' % ex
+            continue
+        if tables:
+            break
+    if not tables:
+        return None, err
     df = tables[0]
     cols = [str(c).strip() for c in df.columns]
-    def find(prefix):
-        for i, c in enumerate(cols):
-            if c.lower().startswith(prefix.lower()):
-                return i
+    def find(*prefixes):
+        for p in prefixes:
+            for i, c in enumerate(cols):
+                if c.lower().startswith(p.lower()):
+                    return i
         return -1
-    ix = {k: find(p) for k, p in (('camp', 'Campaign'), ('dist', 'District'), ('teh', 'Tehsil'),
-                                  ('uc', 'UC'), ('rep', 'Zero dose children'),
-                                  ('cov', 'Zero dose ('))}
+    ix = {k: find(*p) for k, p in (('camp', ('Campaign',)), ('dist', ('District',)),
+                                   ('teh', ('Tehsil',)), ('uc', ('UC',)),
+                                   ('rep', ('Zero dose children', 'Zero dose reported')),
+                                   ('cov', ('Zero dose (', 'Zero dose covered')))}
     if min(ix.values()) < 0 or ix['uc'] < 0:
         missing = [k for k, v in ix.items() if v < 0]
         return None, 'missing columns %s' % (missing or ['UC'])
     keep = ['camp', 'dist', 'teh', 'uc', 'rep', 'cov']
     df = df.iloc[:, [ix[k] for k in keep]]
     df.columns = keep
-    df['camp'] = df['camp'].astype(str).str.strip()
+    # the shell-HTML layout pads names with doubled spaces - collapse so both layouts
+    # produce the same labels and the same (district, tehsil, UC) triples.
+    df['camp'] = df['camp'].astype(str).str.replace(r'\s+', ' ', regex=True).str.strip()
     df = df[df.camp != 'Campaign']
     for c in ('dist', 'teh', 'uc'):
-        df[c] = df[c].astype(str).str.strip()
+        df[c] = df[c].astype(str).str.replace(r'\s+', ' ', regex=True).str.strip()
     for c in ('rep', 'cov'):
         df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0)
     return df, None
@@ -130,13 +184,47 @@ def build(cfg, allow_unknown=False):
     for w in skipped:
         print('WARN adv skipped %s' % w)
 
-    # IDIMS Sept-2026-era layout: 'zero dose children' column empty, the tracked
-    # children sit in the covered column and coverage is not in the export at all.
-    for c, rows in sorted(rows_by_camp.items()):
-        if sum(r[3] for r in rows) == 0 and sum(r[4] for r in rows) > 0:
-            rows_by_camp[c] = [(d, t, uc, cv, None) for d, t, uc, rp, cv in rows]
-            print('WARN adv %s: reported column empty in the newest export - took the tracked '
-                  'children from the second column; covered-in-round is not in that export' % c)
+    # IDIMS Sept-2026-era layout: the reported column is empty and the tracked children
+    # sit in the covered column. For campaigns tracked by the dashboard's ZD reported &
+    # covered dataset, fill both figures (and UCs missing from this export) from it.
+    deficient = [c for c, rows in rows_by_camp.items()
+                 if sum(r[3] for r in rows) == 0 and sum(r[4] for r in rows) > 0]
+    if deficient:
+        zdmap = zd_reported_covered(cfg['repo'])
+        triples = {}
+        for rows in rows_by_camp.values():
+            for d, t, uc, rp, cv in rows:
+                triples.setdefault((norm_label(d), norm_label(uc)), (d, t, uc))
+        for c in sorted(deficient):
+            m = zdmap.get(norm_label(c))
+            if m is None:
+                rows_by_camp[c] = [(d, t, uc, cv, None) for d, t, uc, rp, cv in rows_by_camp[c]]
+                print('WARN adv %s: reported column empty in the newest export - took the tracked '
+                      'children from the second column; covered-in-round is not in that export' % c)
+                continue
+            new, seen, added, miss = [], set(), 0, 0
+            for d, t, uc, rp, cv in rows_by_camp[c]:
+                key = (norm_label(d), norm_label(uc))
+                seen.add(key)
+                z = m.get(key)
+                if z is None:
+                    miss += 1
+                    new.append((d, t, uc, 0, None))
+                else:
+                    new.append((d, t, uc, z[0], z[1]))
+            for key, (rp, cv) in m.items():
+                if key in seen:
+                    continue
+                tri = triples.get(key)
+                if tri is None:
+                    miss += 1
+                    continue
+                new.append((tri[0], tri[1], tri[2], rp, cv))
+                added += 1
+            rows_by_camp[c] = new
+            print('WARN adv %s: reported column empty in the newest export - filled from the dashboard '
+                  'ZD reported & covered data (%d UCs, %d added%s)'
+                  % (c, len(new), added, ', %d UCs unmatched' % miss if miss else ''))
 
     unknown = sorted({r[0] for rows in rows_by_camp.values() for r in rows} - set(div))
     if unknown and not allow_unknown:
