@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 15-Oct-2026 10:17</span>
+  <span class="hupd" id="hUpd">Updated 15-Oct-2026 10:39</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1841,7 +1841,9 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!-- ================= HUB: Pre-campaign readiness ================= -->
 <section class="pane hubpane" id="p-cpre">
-<div class="hubhd"><div><h2>Pre-campaign readiness</h2><p>Preparatory indicators reported to the EOC before the campaign: DPEC meetings, training, microplan validation and team composition. The top block is the live NEAP status of the upcoming SNID Nov-26 round; the same indicators for earlier rounds follow below.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="cpost">Post-campaign analysis</button><button data-hl="sn">SNID Nov-26 scope &amp; resources</button></div></div></div>
+<div class="hubhd"><div><h2>Pre-campaign readiness</h2><p>Preparatory indicators reported to the EOC before the campaign: DPEC meetings, training, microplan validation and team composition. Pick a campaign from the dropdown: the live NEAP status of the upcoming SNID Nov-26 round, or the preparatory indicators of an earlier round — one campaign is shown at a time.</p><div class="hubchips"><button data-hl="hcamp">← Campaign overview</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="cpost">Post-campaign analysis</button><button data-hl="sn">SNID Nov-26 scope &amp; resources</button></div></div></div>
+<div class="cqbar"><b>Campaign</b><select id="fCPC" aria-label="Campaign"></select><span class="cnt" id="fCPCnote"></span></div>
+<div id="cpreNew">
 <div class="hint" id="nepHint"></div>
 <div class="kpis">
 <div class="card"><div class="kl">DPEC held on time</div><div class="kv" id="nep1">–</div><div class="ks" id="nep1s"></div></div>
@@ -1852,10 +1854,13 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">MT with a female member</div><div class="kv" id="nep6">–</div><div class="ks" id="nep6s"></div></div>
 </div>
 <div class="card" id="cardNEP" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">SNID Nov-26 pre-campaign activities by district — NEAP live status</h3><span class="cnt" id="cntNEP"></span><span style="flex:1"></span><button class="btn" id="btnNEPcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEP"></table></div><div class="cap" id="capNEP"></div></div>
-<div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
+</div>
+<div id="cpreOld">
+<div class="cqbar" style="display:none"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
 <div class="kpis"><div class="card"><div class="kl">DPEC held on time</div><div class="kv" id="cp1">–</div><div class="ks" id="cp1s"></div></div><div class="card"><div class="kl">Teams trained</div><div class="kv" id="cp2">–</div><div class="ks" id="cp2s"></div></div><div class="card"><div class="kl">Microplans field-validated</div><div class="kv" id="cp3">–</div><div class="ks" id="cp3s"></div></div><div class="card"><div class="kl">Teams with a female member</div><div class="kv" id="cp4">–</div><div class="ks" id="cp4s"></div></div><div class="card"><div class="kl">Teams with a local member</div><div class="kv" id="cp5">–</div><div class="ks" id="cp5s"></div></div></div>
 <div class="card"><div id="ccp1" class="ch"></div><div class="cap" id="capcp1"></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Pre-campaign preparatory indicators by district</h3><span class="cnt" id="cntCP"></span><span style="flex:1"></span><button class="btn" id="btnCPcsv">Download (CSV)</button></div><div class="scroll"><table id="tPre"></table></div><div class="cap" id="capCP"></div></div>
+</div>
 
 </section>
 
@@ -6619,7 +6624,19 @@ function renderNEP(){
 
 // ---------- Pre-campaign ----------
 const PRE_COL=[['dpec','DPEC on time'],['dc','DC attended'],['dho','DHO attended'],['must','Must members %'],['ucmo','UCMO present'],['ucsec','UC secretary'],['aic','AICs trained %'],['trn','Teams trained %'],['mpv','Microplans validated %'],['adult','Members 18+ %'],['loc','Local member %'],['gov','Govt accountable %'],['fem','Female member %'],['inacc','Inaccessible areas']];
-function renderCPre(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.p), lab=X.C?X.C.l:'';
+let CPCC='nep';
+function cpreCamp(){ const s=el('fCPC'); if(!s)return;
+ if(!s.options.length){ s.innerHTML='<option value="nep">'+esc((NEAP&&NEAP.camp)||'SNID Nov-26')+' · pre-campaign activities (live)</option>'+(CQ.camps||[]).map((c,i)=>'<option value="'+i+'">'+esc(c.l)+' · preparatory indicators</option>').join(''); s.onchange=()=>{CPCC=s.value; if(CPCC!=='nep')CQI=+CPCC; render();};}
+ s.value=CPCC;
+}
+function renderCPre(){ cqSel();
+ if(CPCC!=='nep')CPCC=String(CQI);
+ cpreCamp();
+ const isN=CPCC==='nep';
+ el('cpreNew').style.display=isN?'':'none'; el('cpreOld').style.display=isN?'none':'';
+ if(isN){ el('fCPCnote').textContent=(NEAP&&NEAP.camp?NEAP.camp+' · ':'')+'NEAP live status reported to the EOC'+(NEAP&&NEAP.asof?' · as of '+NEAP.asof:''); renderNEP(); return; }
+ el('fCPCnote').textContent=document.querySelector('#p-cpre .cqnote').textContent;
+ const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(r=>r.p), lab=X.C?X.C.l:'';
  el('cp1').textContent=pc(S.p_dpec); el('cp1s').textContent='district polio eradication committee meetings held on time';
  el('cp2').textContent=pc(S.p_trn); el('cp2s').textContent=`area in-charges trained ${pc(S.p_aic)}`;
  el('cp3').textContent=pc(S.p_mpv); el('cp3s').textContent='microplans field-validated by UC staff';
@@ -6635,7 +6652,6 @@ function renderCPre(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter(
  drawTable('tPre',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>rgS(x.rd,x.B.rd)},...PRE_COL.map(([k,l])=>({k,l,n:1,sv:x=>x.p[k],f:x=>k==='inacc'?fmt(Math.round(x.p[k]||0)):['fem','loc','gov'].includes(k)?c(x.p[k],75,50):c(x.p[k],95,85)}))],RR,'rd',1);
  el('cntCP').textContent=RR.length+' districts'; el('capCP').textContent='Source: EOC portal, Campaign › Pre Campaign › Pre-campaign Preparatory Indicators (district wise). Values are % unless stated; DC/DHO/UCMO/UC secretary = % of meetings attended.';
  el('btnCPcsv').onclick=()=>cqCSV('Pre_campaign_'+lab,['District','Division','Readiness %',...PRE_COL.map(x=>x[1])],RR.map(r=>[r.d,r.dv,rnd(r.rd),...PRE_COL.map(([k])=>r.p[k])]));
- renderNEP();
 }
 // ---------- Intra-campaign ops (monitors) ----------
 function renderCICM(){ cqSel(); iqDraw(iqSel()); }
@@ -7629,7 +7645,7 @@ async function runPCR(ci,scope,btn){ const st=el('pcrStatus'); btn=btn||el('btnP
  if(c&&document.activeElement!==c)c.value=String(CQI); if(s&&document.activeElement!==s&&fDiv.value&&!fDist.value)s.value=fDiv.value;};}
 
 {const _rd2=render; render=function(){_rd2(); document.querySelectorAll('.pane.on .hubchips [data-hl]').forEach(b=>b.onclick=()=>setTab(b.dataset.hl));};}
-{const _rd3=render; render=function(){_rd3(); const b=el('snToNep'); if(b)b.onclick=()=>{setTab('cpre'); setTimeout(()=>{const c=el('cardNEP'); if(c)c.scrollIntoView({block:'start',behavior:'smooth'});},360);};};}
+{const _rd3=render; render=function(){_rd3(); const b=el('snToNep'); if(b)b.onclick=()=>{CPCC='nep'; setTab('cpre'); setTimeout(()=>{const c=el('cardNEP'); if(c)c.scrollIntoView({block:'start',behavior:'smooth'});},360);};};}
 
 
 // ================= (12) IMMUNITY GAP: WHERE =================
@@ -7716,11 +7732,11 @@ function renderHomeQ(){ if(!el('hQ1b'))return; const P=el('p-home');
   `<div><b>${fmt(S.zu)}</b> zero-dose children not yet covered · <b>${fmt(S.nr)}</b> never got Penta-1 · <b>${fmt(S.dd)}</b> did not complete Penta-3 · <b>${fmt(S.rf)}</b> still refusing</div>`;
  hAlarm('hQ1a','Alarm',[[S.T.P1.length,'Priority 1 UCs','Gap index 50%+ and on the polio watch list or in a watch district','gap'],[S.T.P2.length,'Priority 2 UCs','Gap index 50%+, or 25%+ with polio risk','gap']]);
  // why
- const X=cqSum(cqDist(0).R), mi=X.i_mi||0, lt=X.l_tt||0;
+ const XD=cqDist(0), X=cqSum(XD.R), mi=X.i_mi||0, lt=X.l_tt||0;
  const icm=[['Child away',X.i_na||0,'#64748b'],['Refusal',X.i_rf||0,'#b91c1c'],['Team did not visit',X.i_tdn||0,'#c2410c'],['Team missed child',X.i_tm||0,'#f59e0b']];
  const lq=[['Away / newborn / migrant',(X.l_aw||0)+(X.l_nb||0)+(X.l_mg||0),'#64748b'],['Refused',X.l_rf||0,'#b91c1c'],['Team did not visit / missed child',(X.l_dn||0)+(X.l_tm||0),'#c2410c'],['Other',X.l_ot||0,'#cbd5e1']];
  const team=lt?((X.l_dn||0)+(X.l_tm||0))/lt*100:null, iteam=mi?((X.i_tdn||0)+(X.i_tm||0))/mi*100:null;
- el('hQ2b').innerHTML=team!=null?`<b>${Math.round(team)}%</b><span>of children missed in LQAS lots were missed by teams (not visited or missed in the house) · ${esc(X.C?X.C.l:'')}</span>`:'<b>–</b><span>no LQAS data</span>';
+ el('hQ2b').innerHTML=team!=null?`<b>${Math.round(team)}%</b><span>of children missed in LQAS lots were missed by teams (not visited or missed in the house) · ${esc(XD.C?XD.C.l:'')}</span>`:'<b>–</b><span>no LQAS data</span>';
  const bar=(A,tot)=>`<div class="qbar">${A.map(([l,v,c])=>`<i style="width:${tot?v/tot*100:0}%;background:${c}" title="${esc(l)}: ${fmt(v)}"></i>`).join('')}</div><div class="qleg">${A.map(([l,v,c])=>`<span><i style="background:${c}"></i>${esc(l)} ${tot?Math.round(v/tot*100):0}%</span>`).join('')}</div>`;
  el('hQ2f').innerHTML=`<div><b>LQAS</b> (${fmt(lt)} children${lt<500?', small sample':''})</div>${bar(lq,lt)}<div><b>Monitors during the campaign (ICM)</b> (${fmt(mi)} children)</div>${bar(icm,mi)}`+
   (team!=null&&iteam!=null&&Math.abs(team-iteam)>=20?`<div style="color:#92400e"><b>The two sources disagree:</b> team-related ${Math.round(team)}% in LQAS vs ${Math.round(iteam)}% in ICM.</div>`:'');
@@ -7738,7 +7754,7 @@ function renderHomeQ(){ if(!el('hQ1b'))return; const P=el('p-home');
  el('hQ3f').innerHTML=`<div class="qtr"><span>Still missed after catch-up</span><span>${cs.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')}</span>`+
   `<span>LQAS lots passed</span><span>${LC.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')||'–'}</span>`+
   `<span>Zero-dose covered next round</span><span>${esc(CAMP.A)} → ${esc(CAMP.M)}: ${arrow(zA,zM,true)}</span>`+
-  `<span>Polio cases 2026</span><span><b style="color:${WPV.length?'#b91c1c':'#15803d'}">${WPV.length}</b> WPV1 · last onset ${esc(AMETA.wlast||((WPV.slice().sort((a,b)=>String(b.on).localeCompare(String(a.on)))[0]||{}).mo||'–'))}</span></div>`;
+  `<span>Polio cases 2026</span><span><b style="color:${WPV.length?'#b91c1c':'#15803d'}">${WPV.length}</b> WPV1 · last onset ${esc(AMETA.last||AMETA.wlast||((WPV.slice().sort((a,b)=>String(b.on).localeCompare(String(a.on)))[0]||{}).mo||'–'))}</span></div>`;
  P.querySelectorAll('.hq').forEach(h=>{h.onclick=()=>setTab(h.dataset.go); h.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(h.dataset.go);}}; h.querySelectorAll('[data-hgo]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();setTab(b.dataset.hgo);});});
 }
 {const _rh=renderHome; renderHome=function(){_rh(); try{renderHomeQ();}catch(e){console.warn('home q',e);}};}
