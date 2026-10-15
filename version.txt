@@ -35,3 +35,4 @@ Summary page now covers the campaigns too: a fifth section shows coverage and th
 15-Oct-2026 10:17 Benchmark colour trends: campaign-history league still % (2/4), advance-report covered % (90/80), surveillance % of KP median, digitised % (95/80), ZD triangulation, EPI dropout (5/10, 10/20) and evening-review pace (95/80) now coloured.
 15-Oct-2026 10:34 Pre-campaign tab: single campaign dropdown (live SNID Nov-26 NEAP block by default; each earlier round shown one at a time).
 15-Oct-2026 10:39 Home three questions: campaign label restored on the Q2 headline; Q3 shows the exact last polio onset date (13-Sep-26).
+15-Oct-2026 10:57 Pre-campaign: readiness-by-district bar chart added to the live SNID Nov-26 NEAP block (same style as earlier campaigns).

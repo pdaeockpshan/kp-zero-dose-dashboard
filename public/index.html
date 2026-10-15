@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 15-Oct-2026 10:39</span>
+  <span class="hupd" id="hUpd">Updated 15-Oct-2026 11:06</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1853,6 +1853,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">Teams trained</div><div class="kv" id="nep5">–</div><div class="ks" id="nep5s"></div></div>
 <div class="card"><div class="kl">MT with a female member</div><div class="kv" id="nep6">–</div><div class="ks" id="nep6s"></div></div>
 </div>
+<div class="card"><div id="ccpN" class="ch"></div><div class="cap" id="capcpN"></div></div>
 <div class="card" id="cardNEP" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">SNID Nov-26 pre-campaign activities by district — NEAP live status</h3><span class="cnt" id="cntNEP"></span><span style="flex:1"></span><button class="btn" id="btnNEPcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEP"></table></div><div class="cap" id="capNEP"></div></div>
 </div>
 <div id="cpreOld">
@@ -6618,6 +6619,11 @@ function renderNEP(){
   {k:'inacc',l:'Inaccessible areas',n:1,f:x=>x.inacc==null?'<span class="cnt">–</span>':(x.inacc<=0?'<span class="rg g">0</span>':'<span class="rg a">'+rnd(x.inacc,0)+'</span>')}],R,'rd',1);
  el('cntNEP').textContent=n+' districts · '+ad;
  const G=R.filter(r=>r.rd!=null).sort((a,b)=>a.rd-b.rd);
+ el('ccpN').style.height=Math.max(320,G.length*21+110)+'px';
+ HC('ccpN',{chart:{type:'bar'},title:{text:'Pre-campaign readiness by district · '+N.camp},subtitle:{text:'Mean of DPEC on time, must-members attended, AICs trained, teams trained and microplans field-validated'},xAxis:{categories:G.map(r=>r.d)},yAxis:{min:Math.min(50,Math.floor((G[0]||{rd:80}).rd/10)*10),max:100,title:{text:'Readiness (%)'},plotLines:[{value:95,color:'#16a34a',dashStyle:'Dash',width:1}]},legend:{enabled:false},
+  series:[{name:'Readiness',data:G.map(r=>({y:+r.rd.toFixed(1),color:r.rd>=95?'#16a34a':r.rd>=85?'#f59e0b':'#dc2626'})),dataLabels:{enabled:true,format:'{y:.1f}%'}}]});
+ const nf=R.filter(r=>r.fem!=null).sort((a,b)=>a.fem-b.fem).slice(0,3);
+ el('capcpN').textContent=(G.length?`Lowest readiness: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rd)+')').join(', ')}.`:'')+(nf.length?` Fewest female team members: ${nf.map(r=>r.d+' '+Math.round(r.fem)+'%').join(', ')}.`:'')+' Readiness is the same five indicators used in the table below.';
  el('capNEP').textContent='Benchmarks: status columns green at 100% (reported complete), amber when under way, red at 0 (not yet reported); composition columns use the programme bands (female / local / govt-accountable 75-50, members 18+ 95-85) and Inaccessible areas are better at zero. Ready = mean of DPEC held on time, must-members attended, AICs trained, teams trained and microplans validated (the same five as the readiness column below).'+(G.length?' Lowest readiness: '+G.slice(0,3).map(r=>r.d+' ('+rnd(r.rd)+'%)').join(', ')+'.':'');
  el('btnNEPcsv').onclick=()=>cqCSV('NEAP_'+N.camp,['District','Ready %'].concat(NEAP.k.map(x=>x[1])),R.map(r=>[r.d,rnd(r.rd)].concat(NEPK.map(k=>r[k]==null?'':r[k]))));
 }
