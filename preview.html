@@ -862,7 +862,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 15-Oct-2026 11:45</span>
+  <span class="hupd" id="hUpd">Updated 15-Oct-2026 12:05</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1778,13 +1778,13 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
   </div></div>
 <!--PKHC-->
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Campaign data pack &mdash; compiled EOC indicators</h3><span class="cnt">Admin &middot; ICM &middot; Market survey &middot; LQAS &middot; PCM</span></div>
-<div class="cap" style="margin-top:0">The portal&rsquo;s compiled campaign export, split into five tables. Each table keeps its own campaign picker and switches between districts and the raw UC rows. Percent columns are recomputed from their counts; Same Day coverage and ICM Seen % are the district mean of the UC values. &ldquo;&ndash;&rdquo; = not reported.</div></div>
+<div class="cap" style="margin-top:0">The portal&rsquo;s compiled campaign export, split into five tables. Each table keeps its own campaign picker &mdash; pick one round or several (All / Clear / year chips inside) &mdash; and switches between districts and the raw UC rows. A multi-campaign table adds a Campaign column: one row per campaign, never summed across campaigns. Percent columns are recomputed from their counts; Same Day coverage and ICM Seen % are the district mean of the UC values. &ldquo;&ndash;&rdquo; = not reported.</div></div>
 <style>.pkseg{padding:2px 10px;font-size:12px;border-radius:999px}.pkseg.off{opacity:.45;cursor:not-allowed}</style>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Admin coverage and missed children</h3><select class="cqsel" id="pksel_hc_admin" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_hc_admin_d">Districts</button><button class="btn pkseg" id="pklv_hc_admin_u">UC detail</button><span class="cnt" id="pkcnt_hc_admin"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_admin">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_admin"></table></div><div class="cap" id="pkcap_hc_admin"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring (ICM)</h3><select class="cqsel" id="pksel_hc_icm" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_hc_icm_d">Districts</button><button class="btn pkseg" id="pklv_hc_icm_u">UC detail</button><span class="cnt" id="pkcnt_hc_icm"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_icm">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_icm"></table></div><div class="cap" id="pkcap_hc_icm"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Market survey</h3><select class="cqsel" id="pksel_hc_ms" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_hc_ms_d">Districts</button><button class="btn pkseg" id="pklv_hc_ms_u">UC detail</button><span class="cnt" id="pkcnt_hc_ms"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_ms">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_ms"></table></div><div class="cap" id="pkcap_hc_ms"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">E-LQAS (lot quality)</h3><select class="cqsel" id="pksel_hc_lqas" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_hc_lqas_d">Districts</button><button class="btn pkseg" id="pklv_hc_lqas_u">UC detail</button><span class="cnt" id="pkcnt_hc_lqas"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_lqas">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_lqas"></table></div><div class="cap" id="pkcap_hc_lqas"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign monitoring (PCM)</h3><select class="cqsel" id="pksel_hc_pcm" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_hc_pcm_d">Districts</button><button class="btn pkseg" id="pklv_hc_pcm_u">UC detail</button><span class="cnt" id="pkcnt_hc_pcm"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_pcm">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_pcm"></table></div><div class="cap" id="pkcap_hc_pcm"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Admin coverage and missed children</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_hc_admin" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_hc_admin">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_hc_admin" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_hc_admin_d">Districts</button><button class="btn pkseg" id="pklv_hc_admin_u">UC detail</button><span class="cnt" id="pkcnt_hc_admin"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_admin">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_admin"></table></div><div class="cap" id="pkcap_hc_admin"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring (ICM)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_hc_icm" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_hc_icm">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_hc_icm" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_hc_icm_d">Districts</button><button class="btn pkseg" id="pklv_hc_icm_u">UC detail</button><span class="cnt" id="pkcnt_hc_icm"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_icm">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_icm"></table></div><div class="cap" id="pkcap_hc_icm"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Market survey</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_hc_ms" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_hc_ms">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_hc_ms" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_hc_ms_d">Districts</button><button class="btn pkseg" id="pklv_hc_ms_u">UC detail</button><span class="cnt" id="pkcnt_hc_ms"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_ms">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_ms"></table></div><div class="cap" id="pkcap_hc_ms"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">E-LQAS (lot quality)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_hc_lqas" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_hc_lqas">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_hc_lqas" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_hc_lqas_d">Districts</button><button class="btn pkseg" id="pklv_hc_lqas_u">UC detail</button><span class="cnt" id="pkcnt_hc_lqas"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_lqas">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_lqas"></table></div><div class="cap" id="pkcap_hc_lqas"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign monitoring (PCM)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_hc_pcm" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_hc_pcm">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_hc_pcm" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_hc_pcm_d">Districts</button><button class="btn pkseg" id="pklv_hc_pcm_u">UC detail</button><span class="cnt" id="pkcnt_hc_pcm"></span><span style="flex:1"></span><button class="btn" id="pkdl_hc_pcm">Download (CSV)</button></div><div class="scroll"><table id="pkt_hc_pcm"></table></div><div class="cap" id="pkcap_hc_pcm"></div></div>
 <!--/PKHC-->
 </section>
 
@@ -1965,13 +1965,13 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!--PKPC-->
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Campaign data pack &mdash; compiled EOC indicators</h3><span class="cnt">Admin &middot; ICM &middot; Market survey &middot; LQAS &middot; PCM</span></div>
-<div class="cap" style="margin-top:0">The portal&rsquo;s compiled campaign export, split into five tables. Each table keeps its own campaign picker and switches between districts and the raw UC rows. Percent columns are recomputed from their counts; Same Day coverage and ICM Seen % are the district mean of the UC values. &ldquo;&ndash;&rdquo; = not reported.</div></div>
+<div class="cap" style="margin-top:0">The portal&rsquo;s compiled campaign export, split into five tables. Each table keeps its own campaign picker &mdash; pick one round or several (All / Clear / year chips inside) &mdash; and switches between districts and the raw UC rows. A multi-campaign table adds a Campaign column: one row per campaign, never summed across campaigns. Percent columns are recomputed from their counts; Same Day coverage and ICM Seen % are the district mean of the UC values. &ldquo;&ndash;&rdquo; = not reported.</div></div>
 <style>.pkseg{padding:2px 10px;font-size:12px;border-radius:999px}.pkseg.off{opacity:.45;cursor:not-allowed}</style>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Admin coverage and missed children</h3><select class="cqsel" id="pksel_pc_admin" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_pc_admin_d">Districts</button><button class="btn pkseg" id="pklv_pc_admin_u">UC detail</button><span class="cnt" id="pkcnt_pc_admin"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_admin">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_admin"></table></div><div class="cap" id="pkcap_pc_admin"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring (ICM)</h3><select class="cqsel" id="pksel_pc_icm" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_pc_icm_d">Districts</button><button class="btn pkseg" id="pklv_pc_icm_u">UC detail</button><span class="cnt" id="pkcnt_pc_icm"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_icm">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_icm"></table></div><div class="cap" id="pkcap_pc_icm"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Market survey</h3><select class="cqsel" id="pksel_pc_ms" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_pc_ms_d">Districts</button><button class="btn pkseg" id="pklv_pc_ms_u">UC detail</button><span class="cnt" id="pkcnt_pc_ms"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_ms">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_ms"></table></div><div class="cap" id="pkcap_pc_ms"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">E-LQAS (lot quality)</h3><select class="cqsel" id="pksel_pc_lqas" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_pc_lqas_d">Districts</button><button class="btn pkseg" id="pklv_pc_lqas_u">UC detail</button><span class="cnt" id="pkcnt_pc_lqas"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_lqas">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_lqas"></table></div><div class="cap" id="pkcap_pc_lqas"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign monitoring (PCM)</h3><select class="cqsel" id="pksel_pc_pcm" style="max-width:250px" aria-label="Campaign"></select><button class="btn pkseg" id="pklv_pc_pcm_d">Districts</button><button class="btn pkseg" id="pklv_pc_pcm_u">UC detail</button><span class="cnt" id="pkcnt_pc_pcm"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_pcm">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_pcm"></table></div><div class="cap" id="pkcap_pc_pcm"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Admin coverage and missed children</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_pc_admin" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_pc_admin">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_pc_admin" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_pc_admin_d">Districts</button><button class="btn pkseg" id="pklv_pc_admin_u">UC detail</button><span class="cnt" id="pkcnt_pc_admin"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_admin">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_admin"></table></div><div class="cap" id="pkcap_pc_admin"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Intra-campaign monitoring (ICM)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_pc_icm" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_pc_icm">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_pc_icm" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_pc_icm_d">Districts</button><button class="btn pkseg" id="pklv_pc_icm_u">UC detail</button><span class="cnt" id="pkcnt_pc_icm"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_icm">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_icm"></table></div><div class="cap" id="pkcap_pc_icm"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Market survey</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_pc_ms" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_pc_ms">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_pc_ms" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_pc_ms_d">Districts</button><button class="btn pkseg" id="pklv_pc_ms_u">UC detail</button><span class="cnt" id="pkcnt_pc_ms"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_ms">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_ms"></table></div><div class="cap" id="pkcap_pc_ms"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">E-LQAS (lot quality)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_pc_lqas" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_pc_lqas">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_pc_lqas" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_pc_lqas_d">Districts</button><button class="btn pkseg" id="pklv_pc_lqas_u">UC detail</button><span class="cnt" id="pkcnt_pc_lqas"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_lqas">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_lqas"></table></div><div class="cap" id="pkcap_pc_lqas"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">Post-campaign monitoring (PCM)</h3><div class="hmcwrap"><button type="button" class="hmcbtn" id="pkpb_pc_pcm" aria-haspopup="true" aria-expanded="false" style="min-width:200px;max-width:270px" title="Choose one or more campaigns &mdash; the table and the CSV download then carry every selected campaign"><span id="pkpbT_pc_pcm">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="pkpp_pc_pcm" hidden style="min-width:250px"></div></div><button class="btn pkseg" id="pklv_pc_pcm_d">Districts</button><button class="btn pkseg" id="pklv_pc_pcm_u">UC detail</button><span class="cnt" id="pkcnt_pc_pcm"></span><span style="flex:1"></span><button class="btn" id="pkdl_pc_pcm">Download (CSV)</button></div><div class="scroll"><table id="pkt_pc_pcm"></table></div><div class="cap" id="pkcap_pc_pcm"></div></div>
 <!--/PKPC-->
 </section>
 
@@ -8265,60 +8265,87 @@ function pkCampLab(c){const y=String(c.y||'');return (y&&c.l.indexOf(y)<0)?(c.l+
 function pkVal(v,t){if(v==null||v===-1)return '\u2013';return t==='p'?pc(v):fmt(Math.round(v));}
 function pkNum(v,t){if(v==null||v===-1)return '';return t==='p'?(Math.round(v*10)/10):Math.round(v);}
 function pkSeg(b,on,off){if(!b)return;b.className='btn pkseg'+(off?' off':'');b.style.background=on?'#1f2937':'';b.style.color=on?'#fff':'';}
+function pkSel(st){return (st.msel&&st.msel.length)?st.msel:[st.one];}
+function pkUCsel(st){return pkSel(st).filter(i=>INDIC.ucmin.indexOf(i)>=0);}
+function pkSyncSel(pfx,k){ const st=PKC[pfx][k], p=el('pkpp_'+pfx+'_'+k), b=el('pkpbT_'+pfx+'_'+k); if(!p)return;
+ const sel=pkSel(st);
+ p.querySelectorAll('input[type=checkbox]').forEach(x=>{x.checked=sel.indexOf(+x.value)>=0;});
+ if(b)b.textContent=sel.length>1?(sel.length+' campaigns compiled'):pkCampLab(INDIC.camps[sel[0]]||{l:''});
+}
+function pkFromBoxes(pfx,k){ const p=el('pkpp_'+pfx+'_'+k), st=PKC[pfx][k];
+ const arr=[...p.querySelectorAll('input[type=checkbox]')].filter(x=>x.checked).map(x=>+x.value).sort((a,z)=>a-z);
+ if(arr.length===1){st.one=arr[0];st.msel=null;}else st.msel=arr.length?arr:null;
+ pkDraw(pfx,k); pkSyncSel(pfx,k);
+}
+function pkBuild(pfx,k){ const p=el('pkpp_'+pfx+'_'+k), b=el('pkpb_'+pfx+'_'+k);
+ if(!p||!b||p.dataset.built)return;
+ p.innerHTML='<div class="hmcacts"><button type="button" data-a="all">All '+INDIC.camps.length+'</button><button type="button" data-a="none">Clear</button></div>'
+  +'<div class="hmcacts" style="border-bottom:0;margin-bottom:2px">'+[...new Set(INDIC.camps.map(c=>c.y))].map(y=>'<button type="button" data-a="y'+y+'">'+y+'</button>').join('')+'</div>'
+  +INDIC.camps.map((c,i)=>({c:c,i:i})).map(x=>'<label class="hmcopt"><input type="checkbox" value="'+x.i+'"><span>'+esc(pkCampLab(x.c))+'</span></label>').join('');
+ p.dataset.built='1';
+ p.addEventListener('change',e=>{if(e.target&&e.target.type==='checkbox')pkFromBoxes(pfx,k);});
+ p.addEventListener('click',e=>{const bt=e.target.closest('button[data-a]');if(!bt)return;e.preventDefault();
+  const a=bt.dataset.a,bx=[...p.querySelectorAll('input[type=checkbox]')];
+  if(a==='all')bx.forEach(x=>x.checked=true);
+  else if(a==='none')bx.forEach(x=>x.checked=false);
+  else{const y=a.slice(1);bx.forEach(x=>x.checked=String(INDIC.camps[+x.value].y)===y);}
+  pkFromBoxes(pfx,k);});
+ b.onclick=e=>{e.stopPropagation();p.hidden=!p.hidden;b.setAttribute('aria-expanded',p.hidden?'false':'true');};
+ document.addEventListener('click',e=>{if(p.hidden)return;if(p.contains(e.target)||b.contains(e.target))return;p.hidden=true;b.setAttribute('aria-expanded','false');});
+}
 function pkIni(pfx){ if(PKC[pfx])return; if(typeof INDIC==undefined||!INDIC)return;
  const st=PKC[pfx]={};
  PKSEC.forEach(k=>{
-  st[k]={ci:0,lvl:'d'};
-  const sel=el('pksel_'+pfx+'_'+k); if(!sel)return;
-  sel.innerHTML=(INDIC.camps||[]).map((c,i)=>'<option value="'+i+'">'+esc(pkCampLab(c))+'</option>').join('');
-  sel.onchange=()=>{ st[k].ci=+sel.value; pkDraw(pfx,k); };
+  st[k]={one:0,msel:null,lvl:'d'};
+  pkBuild(pfx,k); pkSyncSel(pfx,k);
   const bd=el('pklv_'+pfx+'_'+k+'_d'), bu=el('pklv_'+pfx+'_'+k+'_u'), dl=el('pkdl_'+pfx+'_'+k);
   if(bd)bd.onclick=()=>{ st[k].lvl='d'; pkDraw(pfx,k); };
-  if(bu)bu.onclick=()=>{ if(INDIC.ucmin.indexOf(st[k].ci)<0)return; st[k].lvl='u'; pkDraw(pfx,k); };
+  if(bu)bu.onclick=()=>{ if(!pkUCsel(st[k]).length)return; st[k].lvl='u'; pkDraw(pfx,k); };
   if(dl)dl.onclick=()=>pkCSV(pfx,k);
  });
 }
 function pkSync(pfx){ try{ const st=PKC[pfx]; if(!st)return;
- PKSEC.forEach(k=>{ const sel=el('pksel_'+pfx+'_'+k); if(sel&&st[k]&&sel.value!==String(st[k].ci))sel.value=String(st[k].ci); });
- if(!PKOK[pfx]){ PKOK[pfx]=1; PKSEC.forEach(k=>pkDraw(pfx,k)); }
+ if(!PKOK[pfx]){ PKOK[pfx]=1; PKSEC.forEach(k=>pkDraw(pfx,k)); PKSEC.forEach(k=>pkSyncSel(pfx,k)); }
 }catch(e){ console.warn('data pack',e); } }
 function pkDraw(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
  const S=INDIC.S[k]; if(!S)return;
- const ci=st.ci, c=INDIC.camps[ci]||{l:'',y:''};
- const ucOK=INDIC.ucmin.indexOf(ci)>=0;
+ const sel=pkSel(st), multi=sel.length>1;
+ const ucSel=pkUCsel(st), ucOK=ucSel.length>0;
  if(st.lvl==='u'&&!ucOK)st.lvl='d';
- const sel=el('pksel_'+pfx+'_'+k); if(sel&&sel.value!==String(ci))sel.value=String(ci);
  const bd=el('pklv_'+pfx+'_'+k+'_d'), bu=el('pklv_'+pfx+'_'+k+'_u');
  pkSeg(bd,st.lvl==='d',false); pkSeg(bu,st.lvl==='u',!ucOK);
  if(bu)bu.title=ucOK?'':'UC rows are embedded for the 2025 and 2026 campaigns only';
  const K=S.k.map((x,j)=>({l:x[0],t:x[1],j:j}));
+ const V=K.map(x=>({k:'v'+x.j,l:x.l,n:1,sv:r=>r['v'+x.j],f:r=>pkVal(r['v'+x.j],x.t)}));
+ const CP=multi?[{k:'cp',l:'Campaign',sv:r=>-r.cs,f:r=>esc(r.cn)}]:[];
  const ucm=st.lvl==='u';
- let cols,rows;
+ let cols,rows=[];
  if(ucm){
-  cols=[{k:'d',l:'District',f:r=>esc(r.d)},{k:'t',l:'Tehsil',f:r=>esc(r.t)},{k:'u',l:'UC',f:r=>esc(r.u)},{k:'c',l:'UC Code',f:r=>esc(r.c)}].concat(K.map(x=>({k:'v'+x.j,l:x.l,n:1,sv:r=>r['v'+x.j],f:r=>pkVal(r['v'+x.j],x.t)})));
-  rows=(S.uu[String(ci)]||[]).map(pr=>{ const u=INDIC.ucs[pr[0]], o={d:INDIC.dn[u[1]],t:INDIC.teh[u[2]],u:u[0],c:u[3]}; pr[1].forEach((v,j)=>{o['v'+j]=v;}); return o; });
+  cols=CP.concat([{k:'d',l:'District',f:r=>esc(r.d)},{k:'t',l:'Tehsil',f:r=>esc(r.t)},{k:'u',l:'UC',f:r=>esc(r.u)},{k:'c',l:'UC Code',f:r=>esc(r.c)}],V);
+  ucSel.forEach(ci=>{ (S.uu[String(ci)]||[]).forEach(pr=>{ const u=INDIC.ucs[pr[0]], o={cn:INDIC.camps[ci].l,cs:ci,d:INDIC.dn[u[1]],t:INDIC.teh[u[2]],u:u[0],c:u[3]}; pr[1].forEach((v,j)=>{o['v'+j]=v;}); rows.push(o); }); });
  }else{
-  cols=[{k:'d',l:'District',f:r=>'<b>'+esc(r.d)+'</b>'}].concat(K.map(x=>({k:'v'+x.j,l:x.l,n:1,sv:r=>r['v'+x.j],f:r=>pkVal(r['v'+x.j],x.t)})));
-  const dd=S.dd[String(ci)]||{};
-  rows=Object.keys(dd).map(di=>{ const o={d:INDIC.dn[+di]}; dd[di].forEach((v,j)=>{o['v'+j]=v;}); return o; });
+  cols=CP.concat([{k:'d',l:'District',f:r=>multi?esc(r.d):'<b>'+esc(r.d)+'</b>'}],V);
+  sel.forEach(ci=>{ const dd=S.dd[String(ci)]||{}; Object.keys(dd).forEach(di=>{ const o={cn:INDIC.camps[ci].l,cs:ci,d:INDIC.dn[+di]}; dd[di].forEach((v,j)=>{o['v'+j]=v;}); rows.push(o); }); });
  }
- drawTable('pkt_'+pfx+'_'+k,cols,rows,'d',1);
- const lab=pkCampLab(c);
- el('pkcnt_'+pfx+'_'+k).textContent=lab+' \u00b7 '+rows.length+(ucm?' UC rows':' districts')+' \u00b7 as of '+INDIC.asof;
- el('pkcap_'+pfx+'_'+k).innerHTML=ucm?('Raw UC rows of '+esc(lab)+' as exported by the portal. \u201c\u2013\u201d = not reported. The district view aggregates exactly these rows (counts summed, percentages recomputed).'):('Source: EOC portal compiled campaign indicators export \u00b7 '+INDIC.camps[INDIC.camps.length-1].y+'\u2013'+INDIC.camps[0].y+' \u00b7 '+fmt(INDIC.rows)+' UC rows, '+fmt(INDIC.ucs.length)+' UCs. District rows sum the UC rows; percentages are recomputed from their counts; Same Day coverage and ICM Seen % are the mean of the UC values. '+(ucOK?'Switch to UC detail for the raw UC rows.':'UC detail is embedded for the 2025 and 2026 campaigns only.')+' \u201c\u2013\u201d = not reported.');
+ drawTable('pkt_'+pfx+'_'+k,cols,rows,multi?'cp':'d',1);
+ const lab=multi?(((ucm?ucSel:sel).length)+' campaigns'):pkCampLab(INDIC.camps[sel[0]]);
+ el('pkcnt_'+pfx+'_'+k).textContent=lab+' \u00b7 '+rows.length+(ucm?' UC rows':(multi?' district rows':' districts'))+' \u00b7 as of '+INDIC.asof;
+ const CAP=multi?('Compiled selection of '+(ucm?ucSel.length:sel.length)+' campaigns: one row per campaign \u00d7 '+(ucm?'UC':'district')+', with a Campaign column. Counts are never summed across campaigns \u2014 each row keeps its own campaign\u2019s figures. '+(ucm?'UC detail covers the '+ucSel.length+' campaign'+(ucSel.length===1?'':'s')+' with embedded UC rows. ':'UC rows are embedded for the 2025 and 2026 campaigns only. ')+'\u201c\u2013\u201d = not reported.')
+  :(ucm?('Raw UC rows of '+esc(lab)+' as exported by the portal. \u201c\u2013\u201d = not reported. The district view aggregates exactly these rows (counts summed, percentages recomputed).')
+   :('Source: EOC portal compiled campaign indicators export \u00b7 '+INDIC.camps[INDIC.camps.length-1].y+'\u2013'+INDIC.camps[0].y+' \u00b7 '+fmt(INDIC.rows)+' UC rows, '+fmt(INDIC.ucs.length)+' UCs. District rows sum the UC rows; percentages are recomputed from their counts; Same Day coverage and ICM Seen % are the mean of the UC values. '+(ucOK?'Switch to UC detail for the raw UC rows.':'UC detail is embedded for the 2025 and 2026 campaigns only.')+' \u201c\u2013\u201d = not reported.'));
+ el('pkcap_'+pfx+'_'+k).innerHTML=CAP;
 }
 function pkCSV(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
  const S=INDIC.S[k]; if(!S)return;
- const ci=st.ci, c=INDIC.camps[ci]||{l:'campaign'};
+ const sel=pkSel(st), multi=sel.length>1, ucSel=pkUCsel(st);
  const K=S.k.map((x,j)=>({l:x[0],t:x[1],j:j}));
- let H,rows;
- if(st.lvl==='u'){ H=['District','Tehsil','UC','UC Code'].concat(K.map(x=>x.l));
-  rows=(S.uu[String(ci)]||[]).map(pr=>{ const u=INDIC.ucs[pr[0]]; return [INDIC.dn[u[1]],INDIC.teh[u[2]],u[0],u[3]].concat(K.map(x=>pkNum(pr[1][x.j],x.t))); });
- }else{ H=['District'].concat(K.map(x=>x.l));
-  const dd=S.dd[String(ci)]||{};
-  rows=Object.keys(dd).map(di=>[INDIC.dn[+di]].concat(K.map(x=>pkNum(dd[di][x.j],x.t))));
+ let H,rows=[];
+ if(st.lvl==='u'){ H=(multi?['Campaign']:[]).concat(['District','Tehsil','UC','UC Code'],K.map(x=>x.l));
+  ucSel.forEach(ci=>{ (S.uu[String(ci)]||[]).forEach(pr=>{ const u=INDIC.ucs[pr[0]]; rows.push((multi?[INDIC.camps[ci].l]:[]).concat([INDIC.dn[u[1]],INDIC.teh[u[2]],u[0],u[3]],K.map(x=>pkNum(pr[1][x.j],x.t)))); }); });
+ }else{ H=(multi?['Campaign']:[]).concat(['District'],K.map(x=>x.l));
+  sel.forEach(ci=>{ const dd=S.dd[String(ci)]||{}; Object.keys(dd).forEach(di=>{ rows.push((multi?[INDIC.camps[ci].l]:[]).concat([INDIC.dn[+di]],K.map(x=>pkNum(dd[di][x.j],x.t)))); }); });
  }
- cqCSV(PKNM[k]+'_'+c.l,H,rows);
+ cqCSV(PKNM[k]+'_'+(multi?((st.lvl==='u'?ucSel.length:sel.length)+' campaigns'):(INDIC.camps[sel[0]]||{l:'campaign'}).l),H,rows);
 }
 try{ pkIni('hc'); pkIni('pc'); }catch(e){ console.warn('data pack init',e); }
 {const _f=renderHCamp; renderHCamp=function(){_f(); pkSync('hc');};}
