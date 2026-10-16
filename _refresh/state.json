@@ -43,46 +43,46 @@
    "summary": "manual inject"
   },
   "epim": {
-   "at": "2026-10-16T10:30:40+05:00",
-   "chars": 158805,
-   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792052881|7385137",
-   "payload_sha1": "877c1aedebad7cfa",
+   "at": "2026-10-16T14:14:55+05:00",
+   "chars": 249289,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2024\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792141345|200488",
+   "payload_sha1": "6857dc82f7023834",
    "source": {
-    "mtime": 1792052881.2304325,
+    "mtime": 1792141345.8529646,
     "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
-    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
-    "size": 7385137
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2024\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "size": 200488
    },
-   "stamp": "16-Oct-2026 10:30",
-   "summary": "777 rows: 333 embedded 2026 + 444 new (2025: 12 months x 37 districts)"
+   "stamp": "16-Oct-2026 14:14",
+   "summary": "1221 rows: 777 embedded 2026 + 888 new (pre-2026: 24 months x 37 districts)"
   },
   "epm": {
-   "at": "2026-10-16T10:30:40+05:00",
-   "chars": 1598,
-   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792052881|7385137",
-   "payload_sha1": "76c309e99fa5c812",
+   "at": "2026-10-16T14:14:55+05:00",
+   "chars": 2230,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2024\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792141345|200488",
+   "payload_sha1": "9c48a14ed464dc84",
    "source": {
-    "mtime": 1792052881.2304325,
+    "mtime": 1792141345.8529646,
     "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
-    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
-    "size": 7385137
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2024\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "size": 200488
    },
-   "stamp": "16-Oct-2026 10:30",
-   "summary": "21 months (12 new: 2025-01..2025-12), 481 district-months from 13 exports (0 parsed now)"
+   "stamp": "16-Oct-2026 14:14",
+   "summary": "33 months (12 new: 2024-01..2024-12), 925 district-months from 25 exports (0 parsed now)"
   },
   "esup": {
-   "at": "2026-10-16T10:30:40+05:00",
-   "chars": 238661,
-   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Supervisory_Checklist_Report (41).xls|1792051306|369165674",
-   "payload_sha1": "1d1eafbcfcc141b9",
+   "at": "2026-10-16T14:14:55+05:00",
+   "chars": 240566,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2024\\Supervisory_Checklist_Report (43).xls|1792139567|126812",
+   "payload_sha1": "b6e6b61a7e55c082",
    "source": {
-    "mtime": 1792051306.9596071,
-    "name": "Supervisory_Checklist_Report (41).xls",
-    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Supervisory_Checklist_Report (41).xls",
-    "size": 369165674
+    "mtime": 1792139567.2511253,
+    "name": "Supervisory_Checklist_Report (43).xls",
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2024\\Supervisory_Checklist_Report (43).xls",
+    "size": 126812
    },
-   "stamp": "16-Oct-2026 10:30",
-   "summary": "62640 fixed + 39899 outreach visits, 37 districts, 2025-02..2026-10 (56 files: Supervisory_Checklist_Report (41).xls)"
+   "stamp": "16-Oct-2026 14:14",
+   "summary": "62649 fixed + 39909 outreach visits, 37 districts, 2024-08..2026-10 (60 files: Supervisory_Checklist_Report (43).xls)"
   },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
@@ -125,6 +125,20 @@
    },
    "stamp": "14-Oct-2026 13:34",
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
+  },
+  "nact": {
+   "at": "2026-10-16T14:27:06+05:00",
+   "chars": 9516,
+   "file_id": "C:\\Users\\HD\\Downloads\\SNID November 2026 ACTIVITY CALENDAR (1).xlsx|1792141637|23162",
+   "payload_sha1": "0862b3a814c7c2ea",
+   "source": {
+    "mtime": 1792141637.4821477,
+    "name": "SNID November 2026 ACTIVITY CALENDAR (1).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\SNID November 2026 ACTIVITY CALENDAR (1).xlsx",
+    "size": 23162
+   },
+   "stamp": "16-Oct-2026 14:23",
+   "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
    "at": "2026-10-16T11:49:22+05:00",
@@ -198,11 +212,13 @@
   }
  },
  "last_run": {
-  "at": "2026-10-16T11:49:22+05:00",
+  "at": "2026-10-16T14:14:55+05:00",
   "datasets": [
-   "neap"
+   "epm",
+   "epim",
+   "esup"
   ],
   "dry_run": false,
-  "stamp": "16-Oct-2026 11:49"
+  "stamp": "16-Oct-2026 14:14"
  }
 }
