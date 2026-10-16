@@ -155,18 +155,18 @@
    "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
   },
   "rca": {
-   "at": "2026-10-16T10:55:31+05:00",
-   "chars": 278555,
+   "at": "2026-10-16T11:03:53+05:00",
+   "chars": 279044,
    "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\RCA_Report (35).xls|1792051225|391426674",
-   "payload_sha1": "8878e5d019bbd8a2",
+   "payload_sha1": "544375a539c0f0de",
    "source": {
     "mtime": 1792051225.3416681,
     "name": "RCA_Report (35).xls",
     "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\RCA_Report (35).xls",
     "size": 391426674
    },
-   "stamp": "16-Oct-2026 10:55",
-   "summary": "113182 visits, 1,041,948 children checked, 37 districts, 25 orgs, 1405 UCs, 2025-02..2026-10 (39 files: RCA_Report (35).xls)"
+   "stamp": "16-Oct-2026 11:03",
+   "summary": "113182 visits, 1,041,948 children checked, 37 districts, 24 orgs, 1405 UCs, 2025-02..2026-10 (39 files: RCA_Report (35).xls)"
   },
   "snd": {
    "at": "2026-10-12T13:53:07+05:00",
@@ -184,11 +184,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-16T10:55:31+05:00",
+  "at": "2026-10-16T11:03:53+05:00",
   "datasets": [
    "rca"
   ],
   "dry_run": false,
-  "stamp": "16-Oct-2026 10:55"
+  "stamp": "16-Oct-2026 11:03"
  }
 }
