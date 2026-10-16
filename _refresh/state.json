@@ -126,6 +126,20 @@
    "stamp": "14-Oct-2026 13:34",
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
   },
+  "neap": {
+   "at": "2026-10-16T11:39:43+05:00",
+   "chars": 2631,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (28).xls|1792132607|35039",
+   "payload_sha1": "b1dbde68056e0cda",
+   "source": {
+    "mtime": 1792132607.0727077,
+    "name": "NEAP (28).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (28).xls",
+    "size": 35039
+   },
+   "stamp": "16-Oct-2026 11:39",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 24, AIC training reported by 17 districts (best 100.0%), teams with a female member reported by 2"
+  },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
    "chars": 2906,
@@ -184,11 +198,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-16T11:03:53+05:00",
+  "at": "2026-10-16T11:39:43+05:00",
   "datasets": [
-   "rca"
+   "neap"
   ],
   "dry_run": false,
-  "stamp": "16-Oct-2026 11:03"
+  "stamp": "16-Oct-2026 11:39"
  }
 }
