@@ -863,7 +863,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 16-Oct-2026 11:49</span>
+  <span class="hupd" id="hUpd">Updated 16-Oct-2026 12:00</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1902,7 +1902,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">Teams trained</div><div class="kv" id="nep5">–</div><div class="ks" id="nep5s"></div></div>
 <div class="card"><div class="kl">MT with a female member</div><div class="kv" id="nep6">–</div><div class="ks" id="nep6s"></div></div>
 </div>
-<div class="card"><div id="ccpN" class="ch"></div><div class="cap" id="capcpN"></div></div>
+<div class="card" id="cardNEPB" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Core-team briefing — pre-campaign progress &amp; push list</h3><span class="cnt" id="cntNEPB"></span><span style="flex:1"></span><button class="btn" id="btnNEPBcopy">Copy briefing</button></div><div id="nepB" style="font-size:13.5px;line-height:1.6"></div></div><div class="card"><div id="ccpN" class="ch"></div><div class="cap" id="capcpN"></div></div>
 <div class="card" id="cardNEP" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">SNID Nov-26 pre-campaign activities by district — NEAP live status</h3><span class="cnt" id="cntNEP"></span><span style="flex:1"></span><button class="btn" id="btnNEPcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEP"></table></div><div class="cap" id="capNEP"></div></div><div class="card" id="cardNEPU" style="margin-bottom:16px;display:none"><div class="cqbar" style="margin:0 0 10px"><b>District</b><select id="fNEPU" aria-label="District"></select><span class="cnt" id="cntNEPU"></span><span style="flex:1"></span><button class="btn" id="btnNEPUcsv">Download (CSV)</button></div><div class="scroll" style="max-height:560px"><table id="tNEPU"></table></div><div class="cap" id="capNEPU"></div></div>
 </div>
 <div id="cpreOld">
@@ -6900,6 +6900,42 @@ function renderNEP(){
   el('capNEPU').textContent='UC-wise status from '+U.src+' (as of '+U.asof+'), same indicators and colour rules as the district table. Click a district row in the table above to open its UCs; the dropdown selects a district or returns to all. UC names are as reported to the NEAP portal.';
   el('btnNEPUcsv').onclick=()=>cqCSV('NEAP_UC_'+N.camp,['District','Tehsil','UC','Ready %'].concat(NEAP.k.map(x=>x[1])),F.map(x=>[x.d,x.t,x.u,rnd(x.rd)].concat(NEPK.map(k=>x[k]==null?'':x[k]))));
  }
+ const DNb=d=>{const M={DIKHAN:'DI Khan',LAKKIMRWT:'Lakki Marwat',KOHISTANUPPER:'Kohistan Upper',KOHISTANLOWER:'Kohistan Lower',KOLAIPALAS:'Kohistan Palas',TORGHAR:'Tor Ghar',DIRLOWER:'Dir Lower',DIRUPPER:'Dir Upper',ABOTABAD:'Abbottabad','WAZIR-N':'Wazir-N','WAZIR-S Lower':'Wazir-S Lower','WAZIR-S Upper':'Wazir-S Upper'}; if(M[d])return M[d]; return d.replace(/^WAZIR-S/,'Wazir-S').split(' ').map(w=>w.charAt(0)+w.slice(1).toLowerCase()).join(' ');};
+ const dTo=(SND&&SND.st)?Math.ceil((new Date(SND.st+'T00:00:00')-new Date())/864e5):null;
+ const uBy={}; (NEAP.u?NEAP.u.r:[]).forEach(a=>{const b=uBy[a[0]]||(uBy[a[0]]=[0,0,0]); b[0]++; if(a[3]>=100)b[1]++; if(a[9]>0)b[2]++;});
+ const ucN=d=>uBy[d]?uBy[d][0]:0;
+ const pcT=(a,b)=>b?Math.round(a/b*100)+'%':'\u2013';
+ const nHeld=R.filter(r=>r.dpec===100), aicGo=R.filter(r=>r.aic>0);
+ const done=aicGo.filter(r=>r.aic>=100).sort((a,b)=>b.aic-a.aic), slow=aicGo.filter(r=>r.aic<90).sort((a,b)=>a.aic-b.aic);
+ const T1=R.filter(r=>r.dpec==null||r.dpec===0), T2=R.filter(r=>r.dpec===100&&r.aic===0).sort((a,b)=>ucN(b.d)-ucN(a.d));
+ const ucTot=NEAP.u?NEAP.u.r.length:0, ucHeld=NEAP.u?NEAP.u.r.filter(a=>a[3]>=100).length:0, ucAic=NEAP.u?NEAP.u.r.filter(a=>a[9]>0).length:0;
+ const dhoMiss=R.filter(r=>r.dpec===100&&r.dho===0).map(r=>DNb(r.d));
+ const femN=R.filter(r=>r.fem>0).length, compN=R.filter(r=>r.adult>0).length;
+ const secs=[];
+ secs.push(['Progress',[
+  'DPECs held on time in <b>'+nHeld.length+' of '+n+' districts</b> ('+pc(N.tot[0])+')'+(ucTot?' \u2014 <b>'+ucHeld+'/'+ucTot+' UCs</b> ('+pcT(ucHeld,ucTot)+') at UC level':'')+'.',
+  'DC attended '+pc(N.tot[1])+' \u00b7 DHO attended '+pc(N.tot[2])+(dhoMiss.length?' \u00b7 no DHO on record in '+dhoMiss.join(', '):'')+'.',
+  'AIC training started in <b>'+aicGo.length+' of '+n+' districts</b> ('+pc(N.tot[6])+')'+(ucTot?' \u2014 '+ucAic+'/'+ucTot+' UCs ('+pcT(ucAic,ucTot)+')':'')+(done.length?'. Completed: '+done.map(r=>DNb(r.d)).join(', '):'')+'.',
+  (compN? 'Team-composition reporting started in '+compN+' district'+(compN>1?'s':'')+'.':'Team composition not yet reported by any district.')+(N.tot[13]>0?'':' No inaccessible areas reported.')]]);
+ const gaps=[];
+ if(N.tot[7]<=0)gaps.push('<b>Teams trained 0%</b> \u2014 not started in any district. Biggest risk '+(dTo!=null&&dTo>0?'with '+dTo+' days to campaign start.':'before campaign start.'));
+ if(N.tot[8]<=0)gaps.push('<b>Microplans field-validated 0%</b> \u2014 not reported anywhere.');
+ if(!R.some(r=>r.ucmo>0)&&!R.some(r=>r.ucsec>0))gaps.push('<b>UCMO / UC secretary attendance not reported</b> by any district.');
+ if(femN<=2)gaps.push('Female team members reported by only '+femN+' of '+n+' districts.');
+ secs.push(['Critical gaps \u2014 zero province-wide',gaps]);
+ secs.push(['Districts needing push \u2014 Tier 1: nothing moving (no DPEC held)', T1.length? [T1.map(r=>'<b>'+DNb(r.d)+'</b> ('+ucN(r.d)+' UCs)').join(', ')+' \u2014 at 0% on every indicator; needs DC-level intervention to hold DPECs before month-end.'] : ['None \u2014 every district has held its DPEC.']]);
+ secs.push(['Tier 2: DPEC held, AIC training not started', T2.length? [T2.map(r=>'<b>'+DNb(r.d)+'</b> ('+ucN(r.d)+' UCs)').join(', ')+' \u2014 commence AIC training within 48 hours'+(T2.length>1?'; '+DNb(T2[0].d)+' first (largest UC load).':'.')] : ['None.']]);
+ secs.push(['Tier 3: started but behind (<90% AICs trained)', slow.length? [slow.map(r=>'<b>'+DNb(r.d)+'</b> '+rnd(r.aic)+'%').join(', ')+' \u2014 close out this week.'] : ['None \u2014 every started district is at or above 90%.']]);
+ secs.push(['Ask to the core team',[
+  'DC-level push in '+(T1.map(r=>DNb(r.d)).join(', ')||'\u2013')+' to hold DPECs.',
+  'AIC training to start in '+(T2.map(r=>DNb(r.d)).join(', ')||'\u2013')+' within 48 hours.',
+  'Province-wide start of team training and microplan validation \u2014 both at 0%'+(dTo!=null&&dTo>0?' with '+dTo+' days left.':'.'),
+  'Districts to report UCMO / UC-secretary attendance and team composition with their NEAP updates.']]);
+ el('nepB').innerHTML=secs.map(s=>'<div style="margin:10px 0 2px"><b>'+s[0]+'</b></div><ul style="margin:2px 0 8px;padding-left:18px">'+s[1].map(x=>'<li>'+x+'</li>').join('')+'</ul>').join('');
+ el('cntNEPB').textContent=(N.camp?N.camp+' \u00b7 ':'')+'as of '+ad+(dTo!=null&&dTo>0?' \u00b7 '+dTo+' days to start':dTo!=null&&dTo<=0?' \u00b7 campaign under way':'');
+ const TXT=[(N.camp||'SNID Nov-26')+' pre-campaign status \u2014 as of '+ad+(dTo!=null&&dTo>0?' ('+dTo+' days to campaign start)':'')];
+ secs.forEach(s=>{TXT.push('');TXT.push(s[0]+':');s[1].forEach(b=>TXT.push('\u2022 '+b.replace(/<[^>]+>/g,'')));});
+ el('btnNEPBcopy').onclick=()=>{const t=TXT.join('\n'); if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>toast('Briefing copied to clipboard'),()=>toast('Could not access clipboard')); else toast('Copy not supported in this browser');};
 }
 
 // ---------- Pre-campaign ----------
