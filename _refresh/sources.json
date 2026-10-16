@@ -246,6 +246,70 @@
    ],
    "portal": "EOC dashboard compiled campaign indicators export (2017-2026, 85 campaigns)",
    "note": "One row per UC per campaign (84 columns, 75,792 rows). The payload carries district aggregates for every campaign plus the raw UC rows of the 2025+ campaigns, so the five dashboard tables offer a district / UC toggle. Percent columns are recomputed from their count pairs; Same Day coverage and ICM Seen % have no count pair and are stored as the district mean of UC values. A literal -1 in the source counts as not reported, other negatives are kept. Keep the payload under refresh.py's 5 MB size ceiling - if the next export adds more UC-detail years, raise UC_FROM_YEAR or the ceiling."
+  },
+  "epm": {
+   "label": "EPI month index (EMETA) with the 2025 monthly exports",
+   "const": "EMETA",
+   "extractor": "extract_emeta.py",
+   "roots": [
+    "D:\\AMAZON DATA",
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Consolidated_Facility_Wise_Vaccination*.xls*"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html (2026) are kept; parsed months are added. Run together with epim."
+  },
+  "epim": {
+   "label": "EPI district-month coverage rows (EPIM) with 2025",
+   "const": "EPIM",
+   "extractor": "extract_epim.py",
+   "roots": [
+    "D:\\AMAZON DATA",
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Consolidated_Facility_Wise_Vaccination*.xls*"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "note": "Companion to epm (same parse cache). 2025 district rows are aggregated from the monthly UC-wise exports; the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract."
+  },
+  "rca": {
+   "label": "EPI-MIS rapid coverage assessments, visit-level (const ERCA)",
+   "const": "ERCA",
+   "extractor": "extract_rca.py",
+   "roots": [
+    "D:\\AMAZON DATA",
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "RCA_Report*.xls*"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "note": "Every RCA_Report*.xls is loaded (each export covers its own date range); month x district aggregates are cached per file id (_refresh/cache/rcamon.pkl). Newest file wins per month x district. Monitor names/IDs/designations are never extracted (public site)."
+  },
+  "esup": {
+   "label": "EPI supervisory checklist visits, fixed + outreach (const ESUP)",
+   "const": "ESUP",
+   "extractor": "extract_esup.py",
+   "roots": [
+    "D:\\AMAZON DATA",
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Supervisory_Checklist_Report*.xls*"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "note": "Every Supervisory_Checklist_Report*.xls is loaded (2026 arrives as two exports: fixed-site and outreach). Newest file wins per month x district x site type; per-file cache in _refresh/cache/esumon.pkl. Monitor names/CNICs/designations are never extracted (public site)."
   }
  },
  "manual": {
@@ -316,7 +380,7 @@
     "Consolidated_Facility_Wise_Vaccination*.xls*"
    ],
    "portal": "IDIMS > Consolidated facility-wise vaccination report",
-   "howto": "Export the facility-wise report, then rebuild EPI/EPIM/EMETA with _pipeline\\_epi_jansep_patch.py in the legacy folder and inject the payloads here."
+   "howto": "EMETA/EPIM now refresh automatically (auto.epm + auto.epim). The UC-level EPI payload (const EPI, Jan-Sep 2026 YTD) is still rebuilt with _pipeline\\_epi_jansep_patch.py in the legacy folder and injected here until 2026 monthly exports exist."
   },
   "cq": {
    "label": "Campaign quality / intra-campaign operational indicators",
