@@ -863,7 +863,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 16-Oct-2026 12:00</span>
+  <span class="hupd" id="hUpd">Updated 16-Oct-2026 12:13</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -6900,7 +6900,7 @@ function renderNEP(){
   el('capNEPU').textContent='UC-wise status from '+U.src+' (as of '+U.asof+'), same indicators and colour rules as the district table. Click a district row in the table above to open its UCs; the dropdown selects a district or returns to all. UC names are as reported to the NEAP portal.';
   el('btnNEPUcsv').onclick=()=>cqCSV('NEAP_UC_'+N.camp,['District','Tehsil','UC','Ready %'].concat(NEAP.k.map(x=>x[1])),F.map(x=>[x.d,x.t,x.u,rnd(x.rd)].concat(NEPK.map(k=>x[k]==null?'':x[k]))));
  }
- const DNb=d=>{const M={DIKHAN:'DI Khan',LAKKIMRWT:'Lakki Marwat',KOHISTANUPPER:'Kohistan Upper',KOHISTANLOWER:'Kohistan Lower',KOLAIPALAS:'Kohistan Palas',TORGHAR:'Tor Ghar',DIRLOWER:'Dir Lower',DIRUPPER:'Dir Upper',ABOTABAD:'Abbottabad','WAZIR-N':'Wazir-N','WAZIR-S Lower':'Wazir-S Lower','WAZIR-S Upper':'Wazir-S Upper'}; if(M[d])return M[d]; return d.replace(/^WAZIR-S/,'Wazir-S').split(' ').map(w=>w.charAt(0)+w.slice(1).toLowerCase()).join(' ');};
+ const DNb=d=>{const M={DIKHAN:'DI Khan',LAKKIMRWT:'Lakki Marwat',KOHISTANUPPER:'Kohistan Upper',KOHISTANLOWER:'Kohistan Lower',KOLAIPALAS:'Kohistan Palas',TORGHAR:'Tor Ghar',DIRLOWER:'Dir Lower',DIRUPPER:'Dir Upper',ABOTABAD:'Abbottabad','CHITRALUPPER':'Chitral Upper','CHITRALLOWER':'Chitral Lower','WAZIR-N':'Wazir-N','WAZIR-S Lower':'Wazir-S Lower','WAZIR-S Upper':'Wazir-S Upper'}; if(M[d])return M[d]; return d.replace(/^WAZIR-S/,'Wazir-S').split(' ').map(w=>w.charAt(0)+w.slice(1).toLowerCase()).join(' ');};
  const dTo=(SND&&SND.st)?Math.ceil((new Date(SND.st+'T00:00:00')-new Date())/864e5):null;
  const uBy={}; (NEAP.u?NEAP.u.r:[]).forEach(a=>{const b=uBy[a[0]]||(uBy[a[0]]=[0,0,0]); b[0]++; if(a[3]>=100)b[1]++; if(a[9]>0)b[2]++;});
  const ucN=d=>uBy[d]?uBy[d][0]:0;
