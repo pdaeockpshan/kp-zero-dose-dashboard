@@ -56,6 +56,17 @@ def org_key(s):
     return t
 
 
+def org_merge(og):
+    """WHO-POLIO and WHO-PEI are the same teams - report them as one organization."""
+    out = {}
+    for o, t in og.items():
+        k = 'WHO-POLIO/PEI' if o in ('WHO-POLIO', 'WHO-PEI') else o
+        g = out.setdefault(k, [0, 0])
+        g[0] += t[0]
+        g[1] += t[1]
+    return out
+
+
 def load_cache():
     try:
         with open(CACHE, 'rb') as f:
@@ -190,7 +201,7 @@ def build(cfg):
         out_rows.append({'mo': mo, 'ed': ed, 'ds': ds, 'dv': dv, 'v': v[0], 'k': v[1],
                          **{a: v[2 + i] for i, a in enumerate(AGS)},
                          'hv': v[-4], 'hk': v[-3],
-                         'og': {o: t for o, t in sorted(v[-2].items())}})
+                         'og': {o: t for o, t in sorted(org_merge(v[-2]).items())}})
         for ucl, u in v[-1].items():
             g = uc_all.setdefault((dn, ucl), [0, 0, 0, 0, 0, u[5], mo, mo])
             g[0] += u[0]
