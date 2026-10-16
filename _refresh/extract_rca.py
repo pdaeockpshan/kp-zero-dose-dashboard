@@ -7,7 +7,10 @@ the children checked and the per-antigen vaccinated counts); this extractor
 aggregates them to month x EPI district and caches the aggregates per file id in
 _refresh/cache/rcamon.pkl, so the 200-400 MB exports are streamed only once.
 The newest file wins per (month, district). Monitor name / ID / designation
-columns are never read into the payload (public site).
+columns are never read into the payload (public site) - the monitor ORGANIZATION
+(cells[12], e.g. WHO-POLIO / UNICEF-POLIO / Govt) is aggregate-safe and is kept
+per district-month row as `og`, and the UC name (cells[3]) is aggregated over the
+whole period into the top-level `u` list (focus-UC analysis).
 
 Usage: python _refresh/extract_rca.py [--out PATH]
 Prints: SRC rca <newest file> | OK rca <json chars> <summary> | ERR rca <reason>
@@ -35,6 +38,22 @@ AG_COL = {'bcg': 18, 'opv0': 22, 'p1': 34, 'p3': 38, 'pcv3': 44,
 DATE_RE = re.compile(r'^(20\d\d-\d\d)-\d\d')
 NUM_RE = re.compile(r'^\d+')
 JUNK_D = ('', '0', '0.0', 'nan', 'none', 'null', 'total', 'longitude (x.y')
+# monitor organization (cells[12]): normalize spelling/casing variants; the
+# organization is aggregate-safe (no names/IDs/designations are extracted)
+ORG_NORM = {'': 'Unknown', 'GOV': 'Govt', 'GOVT': 'Govt', 'GOVERNMENT': 'Govt',
+            'HEALTH DEPARTMENT': 'Govt', 'HEALTH DEPT': 'Govt', 'OTHER': 'Other'}
+
+
+def org_key(s):
+    t = re.sub(r'\s+', ' ', (s or '')).strip()
+    u = t.upper().rstrip('.').strip()
+    if not u:
+        return ORG_NORM['']
+    if u in ORG_NORM:
+        return ORG_NORM[u]
+    if u.startswith('RIZ'):
+        return 'RIZ/GATES'
+    return t
 
 
 def load_cache():
@@ -78,7 +97,11 @@ def period(rec):
 
 
 def parse_file(rec, edn_ok):
-    """One export -> {(mo, district): [v, k, ag..., hv, hk]} (aggregates only)."""
+    """One export -> {(mo, district): [v, k, ag..., hv, hk, og, uc]} (aggregates only).
+
+    og = {organization: [visits, children]}, uc = {uc_lower: [visits, children,
+    bcg, p3, mr1, display_name]} for the whole-file UC aggregation.
+    """
     rows = {}
     junk, n = 0, 0
     for pr in stream_rows(rec['path']):
@@ -104,14 +127,31 @@ def parse_file(rec, edn_ok):
             s = cells[col].strip()
             ag[a] = int(NUM_RE.match(s).group(0)) if s and NUM_RE.match(s) else 0
         htr = (cells[15] or '').strip().lower() == 'yes'
-        r = rows.setdefault((mo, dn), [0, 0] + [0] * len(AGS) + [0, 0])
+        r = rows.setdefault((mo, dn), [0, 0] + [0] * len(AGS) + [0, 0, {}, {}])
         r[0] += 1
         r[1] += k
         for i, a in enumerate(AGS):
             r[2 + i] += ag[a]
         if htr:
-            r[-2] += 1
-            r[-1] += k
+            r[-4] += 1
+            r[-3] += k
+        ok = org_key(cells[12])
+        og = r[-2]
+        if ok not in og:
+            og[ok] = [0, 0]
+        og[ok][0] += 1
+        og[ok][1] += k
+        ucl = re.sub(r'\s+', ' ', (cells[3] or '')).strip().lower()
+        if ucl:
+            uc = r[-1]
+            if ucl not in uc:
+                uc[ucl] = [0, 0, 0, 0, 0, re.sub(r'\s+', ' ', (cells[3] or '')).strip()]
+            u = uc[ucl]
+            u[0] += 1
+            u[1] += k
+            u[2] += ag['bcg']
+            u[3] += ag['p3']
+            u[4] += ag['mr1']
         n += 1
     print('# rca %s: %d visits, %d month-districts, %d junk rows skipped'
           % (rec['name'], n, len(rows), junk))
@@ -142,13 +182,28 @@ def build(cfg):
         raise SystemExit('ERR %s no rows parsed' % DS)
 
     out_rows = []
+    uc_all = {}  # (district_lower, uc_lower) -> [visits, k, bcg, p3, mr1, disp, mo0, mo1]
     for (mo, dn) in sorted(by):
         v = by[(mo, dn)]
         ed = next(k for k in edm if k.lower() == dn)
         ds, dv = edm[ed]
         out_rows.append({'mo': mo, 'ed': ed, 'ds': ds, 'dv': dv, 'v': v[0], 'k': v[1],
                          **{a: v[2 + i] for i, a in enumerate(AGS)},
-                         'hv': v[-2], 'hk': v[-1]})
+                         'hv': v[-4], 'hk': v[-3],
+                         'og': {o: t for o, t in sorted(v[-2].items())}})
+        for ucl, u in v[-1].items():
+            g = uc_all.setdefault((dn, ucl), [0, 0, 0, 0, 0, u[5], mo, mo])
+            g[0] += u[0]
+            g[1] += u[1]
+            g[2] += u[2]
+            g[3] += u[3]
+            g[4] += u[4]
+            if mo < g[6]:
+                g[6] = mo
+            if mo > g[7]:
+                g[7] = mo
+    u_rows = [[edm_of(edm, dn), g[5], g[0], g[1], g[2], g[3], g[4], g[6], g[7]]
+              for (dn, ucl), g in sorted(uc_all.items(), key=lambda kv: (kv[0][0], kv[1][5].lower()))]
     nv = sum(r['v'] for r in out_rows)
     nk = sum(r['k'] for r in out_rows)
     asof = None
@@ -161,13 +216,19 @@ def build(cfg):
         asof = datetime.date.fromtimestamp(files[0]['mtime']).isoformat()
     molab = lambda mo: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
                         'Sep', 'Oct', 'Nov', 'Dec'][int(mo[5:7]) - 1] + ' ' + mo[:4]
-    summary = ('%d visits, %s children checked, %d districts, %s..%s (%d files: %s)'
+    summary = ('%d visits, %s children checked, %d districts, %d orgs, %d UCs, '
+               '%s..%s (%d files: %s)'
                % (nv, format(nk, ','), len({r['ed'] for r in out_rows}),
+                  len({o for r in out_rows for o in r['og']}), len(u_rows),
                   out_rows[0]['mo'], out_rows[-1]['mo'], len(used), used[0]))
     out = {'src': 'EPI-MIS RCA reports (%d files: %s)' % (len(used), ', '.join(used)),
            'asof': asof, 'from': molab(out_rows[0]['mo']), 'to': molab(out_rows[-1]['mo']),
-           'ag': list(AGS), 'rows': out_rows}
+           'ag': list(AGS), 'rows': out_rows, 'u': u_rows}
     return out, summary
+
+
+def edm_of(edm, dn):
+    return next(k for k in edm if k.lower() == dn)
 
 
 def main():
