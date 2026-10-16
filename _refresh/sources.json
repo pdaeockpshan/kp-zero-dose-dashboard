@@ -231,6 +231,22 @@
    "portal": "EOC dashboard > Campaign > Pre Campaign > NEAP readiness (district wise)",
    "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter, so the newest save wins; older-shape neapreport*/allneapreport* exports are excluded by pattern and skipped by shape. District names must match the SND scope or the extractor aborts."
   },
+  "nact": {
+   "label": "SNID Nov-26 activity countdown calendar (planned timeline)",
+   "const": "NACT",
+   "extractor": "extract_nact.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "SNID*ACTIVITY*CALENDAR*.xlsx"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "PEOC/NEOC countdown-of-SNIDs activity calendar issued before each round",
+   "note": "Manual Gantt grid: day numbers in row 2 (C..AC = Oct 5..31, AD..AS = Nov 1..16), activities 1-28 in rows 4..31, windows as cell fills (accent4 main, FF00B0F0 secondary, FFFF0000 post-campaign reviews, accent2 catch-up/LQAS days, accent6 campaign week; white + orange = grid base/Sundays). Merged notes inside the grid ride as activity notes. The B1 header supplies title/vaccine/dates; the campaign month is asserted against auto.snd.config.start so a stale calendar cannot land after the scope moves to the next round."
+  },
   "ind": {
    "label": "Compiled campaign indicators (Admin, ICM, market survey, LQAS, PCM)",
    "const": "INDIC",
@@ -248,7 +264,7 @@
    "note": "One row per UC per campaign (84 columns, 75,792 rows). The payload carries district aggregates for every campaign plus the raw UC rows of the 2025+ campaigns, so the five dashboard tables offer a district / UC toggle. Percent columns are recomputed from their count pairs; Same Day coverage and ICM Seen % have no count pair and are stored as the district mean of UC values. A literal -1 in the source counts as not reported, other negatives are kept. Keep the payload under refresh.py's 5 MB size ceiling - if the next export adds more UC-detail years, raise UC_FROM_YEAR or the ceiling."
   },
   "epm": {
-   "label": "EPI month index (EMETA) with the 2025 monthly exports",
+   "label": "EPI month index (EMETA) with the 2024/2025 monthly exports",
    "const": "EMETA",
    "extractor": "extract_emeta.py",
    "roots": [
@@ -264,7 +280,7 @@
    "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html (2026) are kept; parsed months are added. Run together with epim."
   },
   "epim": {
-   "label": "EPI district-month coverage rows (EPIM) with 2025",
+   "label": "EPI district-month coverage rows (EPIM) with 2024-2025",
    "const": "EPIM",
    "extractor": "extract_epim.py",
    "roots": [
@@ -277,7 +293,7 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Companion to epm (same parse cache). 2025 district rows are aggregated from the monthly UC-wise exports; the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract."
+   "note": "Companion to epm (same parse cache). pre-2026 district rows are aggregated from the monthly exports (2025 UC-wise, 2024 district-level); the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract."
   },
   "rca": {
    "label": "EPI-MIS rapid coverage assessments, visit-level (const ERCA)",
@@ -291,9 +307,10 @@
     "RCA_Report*.xls*"
    ],
    "exclude": [
-    "~$*"
+    "~$*",
+    "RCA_Report (36)*"
    ],
-   "note": "Every RCA_Report*.xls is loaded (each export covers its own date range); month x district aggregates are cached per file id (_refresh/cache/rcamon.pkl). Newest file wins per month x district. Monitor names/IDs/designations are never extracted (public site)."
+   "note": "Every RCA_Report*.xls is loaded (each export covers its own date range); month x district aggregates are cached per file id (_refresh/cache/rcamon.pkl). Newest file wins per month x district. Monitor names/IDs/designations are never extracted (public site). RCA_Report (36).xls (16-Oct-2026) is a NATIONAL export (GB/Punjab/Sindh/ICT districts, 593 rows) that is not the KP series - excluded in sources.json."
   },
   "esup": {
    "label": "EPI supervisory checklist visits, fixed + outreach (const ESUP)",
