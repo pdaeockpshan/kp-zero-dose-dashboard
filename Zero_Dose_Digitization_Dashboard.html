@@ -863,7 +863,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 16-Oct-2026 14:37</span>
+  <span class="hupd" id="hUpd">Updated 16-Oct-2026 15:02</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1902,7 +1902,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">Teams trained</div><div class="kv" id="nep5">–</div><div class="ks" id="nep5s"></div></div>
 <div class="card"><div class="kl">MT with a female member</div><div class="kv" id="nep6">–</div><div class="ks" id="nep6s"></div></div>
 </div>
-<div class="card" id="cardNEPB" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Core-team briefing — pre-campaign progress &amp; push list</h3><span class="cnt" id="cntNEPB"></span><span style="flex:1"></span><button class="btn" id="btnNEPBcopy">Copy briefing</button></div><div id="nepB" style="font-size:13.5px;line-height:1.6"></div></div><div class="card" id="cardNACT" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Activity timeline — countdown calendar vs NEAP status</h3><span class="cnt" id="cntNACT"></span><span style="flex:1"></span><button class="btn" id="btnNACTcsv">Download (CSV)</button></div><div id="nactG" class="scroll" style="max-height:640px"></div><div class="cap" id="capNACT"></div></div><div class="card"><div id="ccpN" class="ch"></div><div class="cap" id="capcpN"></div></div>
+<div class="card" id="cardNEPB" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Core-team briefing — pre-campaign progress &amp; push list</h3><span class="cnt" id="cntNEPB"></span><span style="flex:1"></span><button class="btn" id="btnNEPBcopy">Copy briefing</button></div><div id="nepB" style="font-size:13.5px;line-height:1.6"></div></div><div class="card" id="cardNACT" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Activity timeline — countdown calendar vs NEAP status</h3><span class="cnt" id="cntNACT"></span><span style="flex:1"></span><button class="btn" id="btnNACTimg">Download (PNG)</button></div><div id="nactG" class="scroll" style="max-height:640px"></div><div class="cap" id="capNACT"></div></div><div class="card"><div id="ccpN" class="ch"></div><div class="cap" id="capcpN"></div></div>
 <div class="card" id="cardNEP" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">SNID Nov-26 pre-campaign activities by district — NEAP live status</h3><span class="cnt" id="cntNEP"></span><span style="flex:1"></span><button class="btn" id="btnNEPcsv">Download (CSV)</button></div><div class="scroll"><table id="tNEP"></table></div><div class="cap" id="capNEP"></div></div><div class="card" id="cardNEPU" style="margin-bottom:16px;display:none"><div class="cqbar" style="margin:0 0 10px"><b>District</b><select id="fNEPU" aria-label="District"></select><span class="cnt" id="cntNEPU"></span><span style="flex:1"></span><button class="btn" id="btnNEPUcsv">Download (CSV)</button></div><div class="scroll" style="max-height:560px"><table id="tNEPU"></table></div><div class="cap" id="capNEPU"></div></div>
 </div>
 <div id="cpreOld">
@@ -6849,6 +6849,159 @@ const nepPC=v=>v==null||v<0?'–':'<span class="rg '+(v>=100?'g':v>0?'a':'r')+'"
 const NACTMAP={4:'dpec',6:'aic',7:'mpv',14:'trn'};
 const NACTCH={dpec:'DPEC',aic:'AIC',trn:'Teams',mpv:'MPs'};
 const NACTCL={m:'#0f9ed5',s:'#8ec9e6',r:'#dc2626',c:'#4ea72e',u:'#e97132',q:'#e97132'};
+// ---------- activity timeline PNG export ----------
+const NACT_MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const NACT_WD=['M','T','W','T','F','S','S'];
+const NACT_C={teal:'#0f766e',ink:'#181e22',grey:'#5f696e',lgr:'#8a949b',lnh:'#e5e7eb',lnb:'#eef0f3',
+ sun:'#f3f4f6',tbg:'#fee2e2',ttx:'#b91c1c',cbg:'#dcfce7',ctx:'#166534',mbg:'#f8fafc',
+ can:'#f4f6f8',cbd:'#dfe5ea',cg:'#16a34a',ca:'#f59e0b',cr:'#dc2626',cn:'#9ca3af'};
+let nactMC=null;
+function nactFont(sz,b){return (b?'bold ':'')+sz+'px "Segoe UI",Arial,sans-serif';}
+function nactMeas(t,sz,b){if(!nactMC)nactMC=document.createElement('canvas').getContext('2d');nactMC.font=nactFont(sz,b);return nactMC.measureText(t).width;}
+function nactWrap(t,sz,w){const out=[];let cur='';t.split(' ').forEach(q=>{const z=cur?cur+' '+q:q;if(cur&&nactMeas(z,sz)>w){out.push(cur);cur=q;}else cur=z;});if(cur)out.push(cur);return out;}
+function nactEll(t,sz,w){if(nactMeas(t,sz)<=w)return t;let q=t;while(q&&nactMeas(q+'\u2026',sz)>w)q=q.slice(0,-1);return q+'\u2026';}
+function nactP2(n){return String(n).padStart(2,'0');}
+function nactRect(g,x0,y0,x1,y1,f,s){if(f){g.fillStyle=f;g.fillRect(x0,y0,x1-x0,y1-y0);}if(s){g.strokeStyle=s;g.lineWidth=1;g.strokeRect(x0+.5,y0+.5,x1-x0-1,y1-y0-1);}}
+function nactLine(g,x0,y0,x1,y1,col,w){g.strokeStyle=col;g.lineWidth=w||1;g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();}
+function nactTxt(g,x,y,t,sz,b,col,al){g.font=nactFont(sz,b);g.fillStyle=col;g.textAlign=al||'left';g.textBaseline='middle';g.fillText(t,x,y);}
+function nactRound(g,x,y,w,h,r,f){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();g.fillStyle=f;g.fill();}
+function nactGeom(){
+ const D2=x=>/^\d{4}-\d{2}-\d{2}$/.test(x||'')?new Date(x+'T00:00:00'):null;
+ const iso=x=>x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+ const days=[]; for(let x=D2(NACT.from),e2=D2(NACT.to);x<=e2;x.setDate(x.getDate()+1))days.push(new Date(x));
+ const now=new Date(), tIso=iso(now), tI=days.findIndex(x=>iso(x)===tIso);
+ const st=D2(NACT.st), en=D2(NACT.en);
+ const dTo=Math.ceil((new Date(st.getFullYear(),st.getMonth(),st.getDate())-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/864e5);
+ const o={D2:D2,iso:iso,days:days,now:now,tIso:tIso,tI:tI,st:st,en:en,dTo:dTo,S:2,MG:18,PAD:20,BAND:88,LABW:340,CHPW:94,DAYW:26,ROWH:30,H0:26,H1:24,H2:20,RAD:12};
+ o.W=o.PAD*2+340+94+26*days.length+36;
+ const notes=NACT.a.filter(a=>a.x);
+ o.notesTxt='Calendar notes: '+notes.map(a=>a.n+' '+a.t+': '+a.x.replace(/\s+/g,' ')).join('  \u00b7  ');
+ o.noteLines=nactWrap(o.notesTxt,10.8,o.W-36-2*20-24);
+ o.bodyH=30*NACT.a.length;
+ o.H=18+88+10+26+24+20+o.bodyH+13+42+o.noteLines.length*16+10+30+16;
+ return o;
+}
+function nactRR(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+function nactHead(g,o){
+ const C=NACT_C,W=o.W,H=o.H,cx0=18,cy0=18,cx1=W-18,cy1=H-18;
+ nactRect(g,0,0,W,H,C.can);
+ nactRR(g,cx0,cy0,cx1-cx0,cy1-cy0,o.RAD);g.fillStyle='#ffffff';g.fill();g.strokeStyle=C.cbd;g.lineWidth=1;g.stroke();
+ nactRR(g,cx0,cy0,cx1-cx0,o.BAND,o.RAD);g.fillStyle=C.teal;g.fill();
+ nactRect(g,cx0,cy0+o.BAND-o.RAD,cx1,cy0+o.BAND,C.teal);
+ nactTxt(g,cx0+o.PAD,cy0+24,'Activity timeline vs NEAP status \u2014 '+NACT.camp,19.5,1,'#ffffff');
+ const e0=o.days[o.days.length-1];
+ const sub='Countdown calendar '+nactP2(o.days[0].getDate())+' '+NACT_MN[o.days[0].getMonth()]+' \u2013 '+nactP2(e0.getDate())+' '+NACT_MN[e0.getMonth()]+' \u00b7 campaign '+o.st.getDate()+'\u2013'+o.en.getDate()+' '+NACT_MN[o.st.getMonth()]+(NACT.vac?' ('+NACT.vac+')':'')+' \u00b7 '+NACT.a.length+' activities \u00b7 today '+nactP2(o.now.getDate())+'-'+NACT_MN[o.now.getMonth()]+'-'+o.now.getFullYear()+' \u00b7 '+o.dTo+' days to campaign start';
+ nactTxt(g,cx0+o.PAD,cy0+58,sub,12.2,0,'#d6f0ed');
+ const ty=cy0+o.BAND+10;
+ o.ty=ty;o.x_lab=o.PAD;o.x_chp=o.PAD+o.LABW;o.x_day=o.PAD+o.LABW+o.CHPW;
+ let c0=0;
+ for(let i=0;i<=o.days.length;i++){
+  if(i===o.days.length||o.days[i].getMonth()!==o.days[c0].getMonth()){
+   const x0=o.x_day+o.DAYW*c0,x1=o.x_day+o.DAYW*i;
+   nactRect(g,x0,ty,x1,ty+o.H0,C.mbg,C.lnh);
+   nactTxt(g,(x0+x1)/2,ty+o.H0/2,NACT_MN[o.days[c0].getMonth()]+' '+o.days[c0].getFullYear(),11,1,'#333d48','center');
+   c0=i;
+  }
+ }
+ for(let i=0;i<o.days.length;i++){
+  const dy=o.days[i],x0=o.x_day+o.DAYW*i,h1=ty+o.H0,h2=h1+o.H1,h3=h2+o.H2;
+  let bg=null,fg='#333d48';
+  if(i===o.tI){bg=C.tbg;fg=C.ttx;}
+  else if(o.st&&o.en&&o.st<=dy&&dy<=o.en){bg=C.cbg;fg=C.ctx;}
+  nactRect(g,x0,h1,x0+o.DAYW,h2,bg,C.lnh);
+  nactTxt(g,x0+o.DAYW/2,h1+o.H1/2,String(dy.getDate()),11,1,fg,'center');
+  nactRect(g,x0,h2,x0+o.DAYW,h3,bg,C.lnh);
+  nactTxt(g,x0+o.DAYW/2,h2+o.H2/2,NACT_WD[(dy.getDay()+6)%7],9.6,0,i===o.tI?C.ttx:C.lgr,'center');
+ }
+ const y3=ty+o.H0+o.H1+o.H2;
+ nactRect(g,o.x_chp,ty,o.x_chp+o.CHPW,y3,null,C.lnh);
+ nactTxt(g,o.x_chp+o.CHPW/2,ty+(o.H0+o.H1+o.H2)/2,'NEAP',9.6,0,C.lgr,'center');
+ o.by0=y3;
+}
+function nactBody(g,o){
+ const C=NACT_C;
+ for(let r=0;r<NACT.a.length;r++){
+  const a=NACT.a[r],ry=o.by0+o.ROWH*r,km={};
+  a.b.forEach(b=>{const b1=o.D2(b[1]);for(let dd=o.D2(b[0]);dd<=b1;dd.setDate(dd.getDate()+1))km[o.iso(dd)]=b[2];});
+  const first=a.b[0][0];
+  for(let i=0;i<o.days.length;i++){
+   const dy=o.days[i],x0=o.x_day+o.DAYW*i,k2=km[o.iso(dy)];
+   const bg=k2?NACTCL[k2]:(dy.getDay()===0?C.sun:null);
+   if(bg)nactRect(g,x0,ry,x0+o.DAYW,ry+o.ROWH,bg);
+   if(k2&&a.x&&o.iso(dy)===first)nactTxt(g,x0+o.DAYW/2,ry+o.ROWH/2+1,'*',9.6,0,'#ffffff','center');
+  }
+  nactLine(g,19,ry+o.ROWH,o.W-19,ry+o.ROWH,C.lnb,1);
+  const kk=NACTMAP[a.n];
+  if(kk&&typeof NEAP!=='undefined'&&NEAP&&NEAP.tot){
+   const v=NEAP.tot[{dpec:0,aic:6,trn:7,mpv:8}[kk]];
+   const col=v==null?C.cn:v>=100?C.cg:v>0?C.ca:C.cr;
+   const label=NACTCH[kk]+' '+(v==null?'n/a':v>=100?'100%':(Math.round(v*10)/10)+'%');
+   const cw=nactMeas(label,10.6,1)+18,xc=o.x_chp+(o.CHPW-cw)/2;
+   nactRound(g,xc,ry+(o.ROWH-20)/2,cw,20,9,col);
+   nactTxt(g,xc+cw/2,ry+o.ROWH/2,label,10.6,1,'#ffffff','center');
+  }
+  const nm=String(a.n)+' ',pn=nactMeas(nm,12.6,1),wm=o.LABW-26-pn;
+  let fs=12.6;
+  if(nactMeas(a.t,12.6,0)>wm){fs=12;if(nactMeas(a.t,12,0)>wm)fs=11.4;}
+  nactTxt(g,o.x_lab+12,ry+o.ROWH/2,nm,12.6,1,C.ink);
+  nactTxt(g,o.x_lab+12+pn,ry+o.ROWH/2,nactEll(a.t,fs,wm),fs,0,C.ink);
+ }
+ for(let i=0;i<=o.days.length;i++){const x0=o.x_day+o.DAYW*i;nactLine(g,x0,o.by0,x0,o.by0+o.bodyH,C.lnb,1);}
+ nactLine(g,19,o.by0,o.W-19,o.by0,C.lnb,1);
+ if(o.tI>=0){
+  nactLine(g,o.x_day+o.DAYW*o.tI,o.by0,o.x_day+o.DAYW*o.tI,o.by0+o.bodyH,C.ttx,2);
+  nactLine(g,o.x_day+o.DAYW*(o.tI+1),o.by0,o.x_day+o.DAYW*(o.tI+1),o.by0+o.bodyH,C.ttx,2);
+ }
+}
+function nactFoot(g,o){
+ const C=NACT_C,ly=o.by0+o.bodyH+13;
+ let lx=o.PAD+12;
+ nactTxt(g,lx,ly+8,'Bars:',11.4,0,C.grey);
+ lx+=nactMeas('Bars:',11.4)+10;
+ [['m','Scheduled window'],['s','Correction / re-do window'],['c','Campaign days'],['u','Catch-up day'],['q','LQAS / PCM'],['r','Post-campaign review']].forEach(it=>{
+  nactRect(g,lx,ly+1,lx+12,ly+13,NACTCL[it[0]]);
+  nactTxt(g,lx+17,ly+7,it[1],11.4,0,C.grey);
+  lx+=17+nactMeas(it[1],11.4)+14;
+ });
+ nactRect(g,lx+1,ly+1,lx+11,ly+13,'#ffffff');
+ g.strokeStyle=C.ttx;g.lineWidth=2;g.strokeRect(lx+2,ly+2,8,10);
+ nactTxt(g,lx+17,ly+7,'Today',11.4,0,C.grey);
+ lx+=17+nactMeas('Today',11.4)+14;
+ nactRect(g,lx,ly+1,lx+12,ly+13,C.sun,C.cbd);
+ nactTxt(g,lx+17,ly+7,'Sunday (no activity day)',11.4,0,C.grey);
+ let lx2=o.PAD+12;
+ nactTxt(g,lx2,ly+27,'Chips:',11.4,0,C.grey);
+ lx2+=nactMeas('Chips:',11.4)+10;
+ [['green complete',C.cg],['amber under way',C.ca],['red not started',C.cr]].forEach(it=>{
+  g.beginPath();g.arc(lx2+4.5,ly+28.5,4.5,0,6.2832);g.fillStyle=it[1];g.fill();
+  nactTxt(g,lx2+13,ly+28,it[0],11.4,0,C.grey);
+  lx2+=13+nactMeas(it[0],11.4)+14;
+ });
+ nactTxt(g,lx2,ly+28,'\u2014 NEAP status of the mapped activity (totals across '+((typeof NEAP!=='undefined'&&NEAP&&NEAP.n)||0)+' districts)',11.4,0,C.grey);
+ const ny=ly+42;
+ o.noteLines.forEach((ln,i)=>nactTxt(g,o.PAD+12,ny+i*16+8,ln,10.8,0,'#465056'));
+ const pkt=new Date(Date.now()+5*3600e3);
+ const gts=nactP2(pkt.getUTCDate())+'-'+NACT_MN[pkt.getUTCMonth()]+'-'+pkt.getUTCFullYear()+' '+nactP2(pkt.getUTCHours())+':'+nactP2(pkt.getUTCMinutes());
+ const usrc=(typeof NEAP!=='undefined'&&NEAP&&NEAP.u)||{};
+ const src='Sources: '+NACT.src+(typeof NEAP!=='undefined'&&NEAP&&NEAP.src?' + '+NEAP.src:'')+(usrc.src?' + '+usrc.src+' (UC-wise)':'')+' \u00b7 generated '+gts+' PKT \u00b7 KP Polio & Synergy Dashboard';
+ nactTxt(g,o.PAD+12,o.H-18-30+10,src,10.4,0,C.lgr);
+}
+function nactCanvas(){
+ if(typeof NACT==='undefined'||!NACT||!(NACT.a||[]).length)return null;
+ const o=nactGeom(),S=o.S,c=document.createElement('canvas');
+ c.width=o.W*S;c.height=o.H*S;
+ const g=c.getContext('2d');g.scale(S,S);
+ nactHead(g,o);nactBody(g,o);nactFoot(g,o);
+ return c;
+}
+function nactPng(){
+ const c=nactCanvas();
+ if(!c)return;
+ const a=document.createElement('a');
+ a.href=c.toDataURL('image/png');
+ a.download='NACT_Timeline_NEAP_'+String(NACT.camp||'campaign').replace(/\s+/g,'_')+'_'+new Date(Date.now()+5*3600e3).toISOString().slice(0,10)+'.png';
+ document.body.appendChild(a);a.click();a.remove();
+}
 function renderNACT(R){
  const card=el('cardNACT'); if(!card)return;
  if(typeof NACT==='undefined'||!NACT||!(NACT.a||[]).length){card.style.display='none';return;}
@@ -6894,7 +7047,7 @@ function renderNACT(R){
  const notes=NACT.a.filter(a=>a.x).map(a=>'<b>'+a.n+'</b> '+esc(a.t)+': '+esc(a.x));
  el('capNACT').innerHTML='Planned windows read from the countdown calendar <b>'+esc(NACT.src)+'</b> ('+esc(NACT.camp)+(NACT.vac?' \u00b7 '+esc(NACT.vac):'')+', campaign '+NACT.st+'\u2013'+NACT.en+'). Bars: scheduled window (blue), correction / re-do window (light blue), campaign days (green), catch-up day and LQAS/PCM (orange), post-campaign review (red). Sundays carry no activity day in the calendar. Chips carry the live NEAP status of the mapped activities \u2014 green complete, amber under way, red not started. The red outline marks today.'+(notes.length?'<br><b>Calendar notes:</b> '+notes.join(' \u00b7 '):'');
  el('cntNACT').textContent=NACT.a.length+' activities \u00b7 '+NACT.from+' to '+NACT.to+' \u00b7 today '+tIso;
- el('btnNACTcsv').onclick=()=>cqCSV('SNID_activity_timeline',['#','Activity','Full text','Planned start','Planned end','Windows','Calendar note','NEAP status'],NACT.a.map(a=>{const k=NACTMAP[a.n];const v=k&&NEAP&&NEAP.tot?NEAP.tot[{dpec:0,aic:6,trn:7,mpv:8}[k]]:null;return [a.n,a.t,a.d,a.s,a.e,a.b.map(b=>b[2]+': '+b[0]+' to '+b[1]).join('; '),a.x||'',k?(v==null?'':rnd(v)+'%'):''];}));
+ el('btnNACTimg').onclick=nactPng;
 }
 function renderNEP(){
  const R=nepRows(),N=NEAP,n=R.length;
