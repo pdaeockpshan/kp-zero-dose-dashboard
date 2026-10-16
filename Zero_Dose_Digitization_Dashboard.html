@@ -863,7 +863,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 16-Oct-2026 11:03</span>
+  <span class="hupd" id="hUpd">Updated 16-Oct-2026 11:18</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -4022,88 +4022,119 @@ function renderERv(){
  // extra months are partial by definition and cannot be picked as the EPI month (no coverage data).
  const MS=eMonths(), seenM={};MS.forEach(m=>seenM[m.mo]=1);
  const MSv=MS.concat([...new Set(R.map(r=>r.mo).concat(S.map(r=>r.mo)))].filter(mo=>!seenM[mo]).sort().map(mo=>({mo,l:moLab(mo),pt:true,x:1})));
- // cv1: RCA month by month
- const rm=MSv.map(m=>({...m,a:aggRV(R.filter(r=>r.mo===m.mo))})).filter(m=>m.a.v);
- el('cv1').style.height='360px';
- if(rm.length){const lf=rm.map(m=>EM?true:!m.pt&&m.a.v).lastIndexOf(true);
-  HC('cv1',{title:{text:'RCA: visits and confirmed coverage, month by month'},subtitle:{text:'Bars = children checked · lines = share confirmed vaccinated (right axis) · click a month to select it'},
-   xAxis:{categories:rm.map(m=>m.l.replace(' 20',' ’'))},
-   yAxis:[{title:{text:'Children checked'}},{title:{text:'Vaccinated (%)'},opposite:true,min:0,max:100,gridLineWidth:0,plotLines:[{value:90,color:C.mut,dashStyle:'Dash',width:1.2,zIndex:5}]}],
-   tooltip:{shared:true,useHTML:true,formatter(){const m=rm[this.points[0].point.x];return `<b>${m.l}</b><br>${fmt(m.a.k)} children checked in ${fmt(m.a.v)} visits<br>`+RVAGS.map(([k,l])=>`${l}: ${pc(m.a['p_'+k])}`).join('<br>');}},
-   plotOptions:{column:{borderRadius:2,point:{events:{click(){if(rm[this.x].x)return;EM=rm[this.x].mo;document.querySelectorAll('.emsel').forEach(s=>{s.value=EM;});render();}}}}},
-   series:[{type:'column',name:'Children checked',color:EM?'#1d4ed8':'#93c5fd',data:rm.map(m=>m.a.k)},
-    ...RVAGS.map(([k,l],i)=>({type:'line',name:l,yAxis:1,color:['#16a34a','#1d4ed8','#d97706'][i],zoneAxis:'x',zones:[{value:lf+.5},{dashStyle:'ShortDot',color:'#94a3b8'}],marker:{radius:3},dataLabels:{...dl,format:'{y:.0f}%'},data:rm.map(m=>m.a['p_'+k]==null?null:+m.a['p_'+k].toFixed(1))}))]});
-  const best=rm.reduce((q,m)=>m.a.k>q.a.k?m:q,rm[0]);
-  el('capv1').textContent=`Field assessments peak with campaign-linked sweeps: the busiest month was ${best.l} with ${fmt(best.a.v)} visits covering ${fmt(best.a.k)} children. Dashed line = after the last full month (data to ${ERCA.asof||'the export date'}; the final month is still partial).`;}
+ // HTML visuals (no chart library - renders in any browser)
+ const setEM=mo=>{EM=mo;document.querySelectorAll('.emsel').forEach(s=>{s.value=EM;});render();};
+ const setD=ed=>{const code=emDist(ed);if(code){fDist.value=code;fTeh.value='';cascade();render();}};
+ const HHD=t=>`<div style="font-weight:600;font-size:12.5px;margin-bottom:8px">${t}</div>`;
+ const HCV=p=>p==null?'#f1f5f9':p>=70?'#16a34a':p>=50?'#d97706':'#dc2626';
+ const mAgg=MSv.map(m=>({...m,a:aggRV(R.filter(r=>r.mo===m.mo))})).filter(m=>m.a.v);
+ const sAgg=MSv.map(m=>({...m,a:aggSV(S.filter(r=>r.mo===m.mo))})).filter(m=>m.a.f+m.a.o);
+ // cv1: district x month heatmap, Penta-3 confirmed %
+ el('cv1').style.height='auto';
+ if(R.length){const hM={};R.forEach(r=>{const g=hM[r.ed]=hM[r.ed]||{};g[r.mo]=[rvP(r.p3||0,r.k),r.k,r.v];});
+  const dn=[...new Set(R.map(r=>r.ed))].sort();
+  let t=HHD('RCA Penta-3 confirmed % — district × month')+'<div style="overflow:auto;max-height:520px;border:1px solid #e2e8f0;border-radius:8px"><table style="border-collapse:collapse;font-size:10.5px;width:100%"><tr><th style="position:sticky;left:0;background:#fff;text-align:left;padding:3px 6px;border-bottom:1px solid #e2e8f0;z-index:1">District</th>';
+  MSv.forEach(m=>{t+=`<th style="padding:3px 2px;border-bottom:1px solid #e2e8f0;font-weight:500;color:#64748b;white-space:nowrap">${m.l.slice(0,3)} ${m.mo.slice(2,4)}</th>`;});
+  t+='</tr>';
+  dn.forEach(d=>{t+=`<tr data-d="${esc(d)}" style="cursor:pointer"><td style="position:sticky;left:0;background:#fff;padding:2px 6px;border-bottom:1px solid #f1f5f9;font-weight:600;white-space:nowrap;z-index:1">${esc(d)}</td>`;
+   MSv.forEach(m=>{const c=(hM[d]||{})[m.mo],p=c?c[0]:null;
+    t+=`<td title="${esc(d)} · ${m.l}: ${p==null?'no RCA visits':pc(p)+' confirmed · '+fmt(c[1])+' children in '+fmt(c[2])+' visits'}" style="padding:0;border-bottom:1px solid #f1f5f9"><div style="margin:1px;border-radius:3px;height:17px;line-height:17px;font-size:9.5px;${p==null?'':'background:'+HCV(p)+';color:#fff;'}">${p==null?'':Math.round(p)}</div></td>`;});
+   t+='</tr>';});
+  t+='</table></div><div style="font-size:10.5px;color:#64748b;margin-top:6px">green ≥70% confirmed · amber 50–70 · red &lt;50 · grey = no visits that month</div>';
+  el('cv1').innerHTML=t;
+  el('cv1').querySelectorAll('tr[data-d]').forEach(tr=>tr.onclick=()=>setD(tr.dataset.d));
+  const b1=mAgg.reduce((q,m)=>m.a.k>q.a.k?m:q,mAgg[0]);
+  el('capv1').textContent=`Field assessments peak with campaign-linked sweeps: the busiest month was ${b1.l} with ${fmt(b1.a.v)} visits covering ${fmt(b1.a.k)} children. Each cell is the share of checked children confirmed vaccinated (Penta-3) for that district and month — grey months had no RCA visits, and the last month is still partial (data to ${ERCA.asof||'the export date'}). Click a district row to open it.`;}
  else{el('cv1').innerHTML='<div class="empty">No RCA data for this selection.</div>';el('capv1').textContent='';}
- // cv2: supervisory visits month by month
- const sm=MSv.map(m=>({...m,a:aggSV(S.filter(r=>r.mo===m.mo))})).filter(m=>m.a.f+m.a.o);
- el('cv2').style.height='360px';
- if(sm.length){HC('cv2',{title:{text:'Supervisory checklist visits, month by month'},subtitle:{text:'Fixed sites vs outreach sessions · click a month to select it'},
-  xAxis:{categories:sm.map(m=>m.l.replace(' 20',' ’'))},yAxis:{title:{text:'Visits'},allowDecimals:false},
-  tooltip:{shared:true,useHTML:true,formatter(){const m=sm[this.points[0].point.x];return `<b>${m.l}</b><br>Fixed: ${fmt(m.a.f)}<br>Outreach: ${fmt(m.a.o)}`;}},
-  plotOptions:{column:{borderRadius:2,point:{events:{click(){if(sm[this.x].x)return;EM=sm[this.x].mo;document.querySelectorAll('.emsel').forEach(s=>{s.value=EM;});render();}}}}},
-  series:[{type:'column',name:'Fixed site',color:'#1d4ed8',data:sm.map(m=>m.a.f)},{type:'column',name:'Outreach session',color:'#0f766e',data:sm.map(m=>m.a.o)}]});
-  const tf=sm.reduce((q,m)=>q+m.a.f,0), to=sm.reduce((q,m)=>q+m.a.o,0);
-  el('capv2').textContent=`${fmt(tf)} fixed-site visits and ${fmt(to)} outreach visits (${sR}); regular outreach-session checklists start with the 2026 round.`;}
- else{el('cv2').innerHTML='<div class="empty">No supervisory visits for this selection.</div>';el('capv2').textContent='';}
- // cv3: RCA Penta-3 by district
- const rd={};rSel.forEach(r=>{const g=rd[r.ed]=rd[r.ed]||{ed:r.ed,ds:r.ds,dv:r.dv,v:0,k:0,p3:0};g.v+=r.v;g.k+=r.k;g.p3+=r.p3||0;});
- const gd=Object.values(rd).filter(g=>g.k>0).map(g=>({...g,pp:rvP(g.p3,g.k)})).sort((x,y)=>x.pp-y.pp);
- el('cv3').style.height=hFor(gd.length,22)+'px';
- if(gd.length){HC('cv3',{chart:{type:'bar'},title:{text:'RCA: Penta-3 confirmed coverage by district'},subtitle:{text:(EM?emLab(EM):per)+' · lowest at the top · click a bar to open the district'},
-  xAxis:{categories:gd.map(g=>g.ed)},yAxis:{title:{text:'Penta-3 vaccinated (%)'},min:0,max:100,plotLines:[{value:90,color:C.mut,dashStyle:'Dash',width:1.5,zIndex:5}]},
-  legend:{enabled:false},tooltip:{useHTML:true,formatter(){const g=gd[this.point.x];return `<b>${esc(g.ed)}</b><br>Penta-3: ${pc(g.pp)}<br>${fmt(g.p3)} of ${fmt(g.k)} children checked in ${fmt(g.v)} visits`;}},
-  plotOptions:{bar:{borderRadius:2,cursor:'pointer',dataLabels:{...dl,format:'{y:.0f}%'},point:{events:{click(){const code=emDist(gd[this.x].ed);if(code){fDist.value=code;fTeh.value='';cascade();render();}}}}}},
-  series:[{name:'Penta-3',data:gd.map(g=>({y:+g.pp.toFixed(1),color:colE(g.pp)}))}]});
-  el('capv3').textContent=`${gd[0].ed} is lowest at ${pc(gd[0].pp)}; ${gd.filter(g=>g.pp<80).length} of ${gd.length} districts fall below 80% and ${gd.filter(g=>g.pp>=90).length} reach the 90% mark. RCA includes campaign-linked sweeps, so months with campaigns check far more children.`;}
- else{el('cv3').innerHTML='<div class="empty">No RCA data for this selection.</div>';el('capv3').textContent='';}
+ // cv2: children checked per month
+ el('cv2').style.height='auto';
+ if(mAgg.length){const mx=Math.max(...mAgg.map(m=>m.a.k));
+  let t=HHD('RCA: children checked, month by month')+'<div style="max-height:520px;overflow:auto">';
+  mAgg.forEach(m=>{const w=(m.a.k/mx*100).toFixed(1);
+   t+=`<div${m.x?'':` data-m="${m.mo}"`} title="${m.l}: ${fmt(m.a.k)} children in ${fmt(m.a.v)} visits · BCG ${pc(m.a.p_bcg)} · Penta-3 ${pc(m.a.p_p3)} · MR-1 ${pc(m.a.p_mr1)}" style="display:flex;align-items:center;gap:8px;padding:2px 0;${m.x?'':'cursor:pointer'}">
+    <span style="flex:none;width:58px;font-size:10.5px;color:#64748b">${m.l.replace(' 20',' ’')}</span>
+    <span style="flex:1;display:block;background:#f1f5f9;border-radius:3px;height:15px;overflow:hidden"><i style="display:block;height:100%;width:${w}%;background:${m.x?'#94a3b8':'#3b82f6'};border-radius:3px"></i></span>
+    <span style="flex:none;width:140px;font-size:10.5px;text-align:right">${fmt(m.a.k)} <span style="color:#64748b">· P3 ${pc(m.a.p_p3)}</span></span></div>`;});
+  const mlo=mAgg.reduce((q,m)=>(m.a.p_p3!=null&&(q==null||m.a.p_p3<q.a.p_p3))?m:q,null), mhi=mAgg.reduce((q,m)=>(m.a.p_p3!=null&&(q==null||m.a.p_p3>q.a.p_p3))?m:q,null);
+  t+=`</div><div style="font-size:10.5px;color:#64748b;margin-top:6px">Bar = children checked · label = Penta-3 confirmed · grey = partial month · click a month to select it</div>`;
+  el('cv2').innerHTML=t;
+  el('cv2').querySelectorAll('[data-m]').forEach(d=>d.onclick=()=>setEM(d.dataset.m));
+  el('capv2').textContent=`Confirmed Penta-3 runs from ${pc(mlo.a.p_p3)} (${mlo.l}) to ${pc(mhi.a.p_p3)} (${mhi.l}) across months — remarkably flat around 60% despite very different visit volumes. Hover a row for BCG/Penta-3/MR-1 detail; click a month to select it.`;}
+ else{el('cv2').innerHTML='<div class="empty">No RCA data for this selection.</div>';el('capv2').textContent='';}
+ // cv3: supervisory visits per month
+ el('cv3').style.height='auto';
+ if(sAgg.length){const sx=Math.max(...sAgg.map(m=>m.a.f+m.a.o));
+  let t=HHD('Supervisory checklist visits, month by month')+'<div style="max-height:520px;overflow:auto">';
+  sAgg.forEach(m=>{const T=m.a.f+m.a.o;
+   t+=`<div${m.x?'':` data-m="${m.mo}"`} title="${m.l}: ${fmt(m.a.f)} fixed · ${fmt(m.a.o)} outreach" style="display:flex;align-items:center;gap:8px;padding:2px 0;${m.x?'':'cursor:pointer'}">
+    <span style="flex:none;width:58px;font-size:10.5px;color:#64748b">${m.l.replace(' 20',' ’')}</span>
+    <span style="flex:1;display:block;background:#f1f5f9;border-radius:3px;height:15px;overflow:hidden;white-space:nowrap"><i style="display:inline-block;height:100%;width:${(m.a.f/sx*100).toFixed(1)}%;background:#1d4ed8"></i><i style="display:inline-block;height:100%;width:${(m.a.o/sx*100).toFixed(1)}%;background:#0f766e"></i></span>
+    <span style="flex:none;width:140px;font-size:10.5px;text-align:right">${fmt(T)} <span style="color:#64748b">· ${fmt(m.a.f)}F ${fmt(m.a.o)}O</span></span></div>`;});
+  const tf=sAgg.reduce((q,m)=>q+m.a.f,0), to=sAgg.reduce((q,m)=>q+m.a.o,0);
+  t+='</div><div style="font-size:10.5px;color:#64748b;margin-top:6px"><span style="display:inline-block;width:10px;height:10px;background:#1d4ed8;border-radius:2px;margin-right:4px"></span>fixed site<span style="display:inline-block;width:10px;height:10px;background:#0f766e;border-radius:2px;margin:0 4px 0 10px"></span>outreach session · click a month to select it</div>';
+  el('cv3').innerHTML=t;
+  el('cv3').querySelectorAll('[data-m]').forEach(d=>d.onclick=()=>setEM(d.dataset.m));
+  el('capv3').textContent=`${fmt(tf)} fixed-site visits and ${fmt(to)} outreach visits (${sR}); regular outreach-session checklists start with the 2026 round.`;}
+ else{el('cv3').innerHTML='<div class="empty">No supervisory visits for this selection.</div>';el('capv3').textContent='';}
  // cv4: checklist indicators
- const IL=ESUP.indlab||{}, keys=(ESUP.ind||[]).filter(k=>sv.i[k]&&sv.i[k][1]>0).map(k=>({k,l:IL[k]||k,p:rvP(sv.i[k][0],sv.i[k][1]),n:sv.i[k][1]})).sort((x,y)=>x.p-y.p);
- el('cv4').style.height=hFor(keys.length,24)+'px';
- if(keys.length){const bad=k=>k==='so';
-  HC('cv4',{chart:{type:'bar'},title:{text:'Supervisory checklist indicators'},subtitle:{text:(EM?emLab(EM):sR)+' · share of visits answering yes · red = needs attention'},
-  xAxis:{categories:keys.map(x=>x.l)},yAxis:{title:{text:'% yes'},min:0,max:100},
-  legend:{enabled:false},tooltip:{useHTML:true,formatter(){const x=keys[this.point.x];return `<b>${esc(x.l)}</b><br>${pc(x.p)} yes · answered at ${fmt(x.n)} visits`;}},
-  plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:.0f}%'}},series:{colorByPoint:false}},
-  series:[{name:'% yes',data:keys.map(x=>({y:+x.p.toFixed(1),color:bad(x.k)?(x.p>20?'#dc2626':x.p>10?'#d97706':'#16a34a'):(x.p>=90?'#16a34a':x.p>=80?'#d97706':'#dc2626')}))}]});
-  const worst=keys[0], bestK=keys[keys.length-1];
-  el('capv4').textContent=`Weakest checklist item: ${worst.l.toLowerCase()} (${pc(worst.p)} yes). Strongest: ${bestK.l.toLowerCase()} (${pc(bestK.p)}). Stockout is inverted — a high share there is bad.`;}
- else{el('cv4').innerHTML='<div class="empty">No checklist answers for this selection.</div>';el('capv4').textContent='';}
- // cv5: which organization did the RCAs (monitor organization, month by month)
- const oga=mo=>{const o2={};R.forEach(r=>{if(r.mo!==mo)return;const g=r.og||{};for(const k2 in g){const t=o2[k2]=o2[k2]||[0,0];t[0]+=g[k2][0];t[1]+=g[k2][1];}});return o2;};
+ el('cv4').style.height='auto';
+ {const IL=ESUP.indlab||{}, kk=(ESUP.ind||[]).filter(k=>sv.i[k]&&sv.i[k][1]>0).map(k=>({k,l:IL[k]||k,p:rvP(sv.i[k][0],sv.i[k][1]),n:sv.i[k][1]})).sort((x,y)=>x.p-y.p);
+  if(kk.length){const bad=k=>k==='so';
+   const col=x=>bad(x.k)?(x.p>20?'#dc2626':x.p>10?'#d97706':'#16a34a'):(x.p>=90?'#16a34a':x.p>=80?'#d97706':'#dc2626');
+   let t=HHD('Supervisory checklist indicators')+'<div style="max-height:520px;overflow:auto">';
+   kk.forEach(x=>{t+=`<div title="${esc(x.l)}: ${pc(x.p)} yes · answered at ${fmt(x.n)} visits" style="display:flex;align-items:center;gap:8px;padding:2px 0">
+    <span style="flex:none;width:190px;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.l)}</span>
+    <span style="flex:1;display:block;background:#f1f5f9;border-radius:3px;height:15px;overflow:hidden"><i style="display:block;height:100%;width:${x.p.toFixed(1)}%;background:${col(x)};border-radius:3px"></i></span>
+    <span style="flex:none;width:44px;font-size:10.5px;text-align:right;font-weight:600">${pc(x.p)}</span></div>`;});
+   t+='</div><div style="font-size:10.5px;color:#64748b;margin-top:6px">Share of visits answering yes · stockout is inverted — high is bad</div>';
+   el('cv4').innerHTML=t;
+   const w2=kk[0], b2=kk[kk.length-1];
+   el('capv4').textContent=`Weakest checklist item: ${w2.l.toLowerCase()} (${pc(w2.p)} yes). Strongest: ${b2.l.toLowerCase()} (${pc(b2.p)}). Stockout is inverted — a high share there is bad.`;}
+  else{el('cv4').innerHTML='<div class="empty">No checklist answers for this selection.</div>';el('capv4').textContent='';}}
+ // cv5: RCA visits by organization, month by month
+ el('cv5').style.height='auto';
+ const oga=mo=>{const o2={};R.forEach(r=>{if(r.mo!==mo)return;const g=r.og||{};for(const k2 in g){const t2=o2[k2]=o2[k2]||[0,0];t2[0]+=g[k2][0];t2[1]+=g[k2][1];}});return o2;};
  const om=MSv.map(m=>({...m,o:oga(m.mo)})).filter(m=>Object.keys(m.o).length);
  const otot={};om.forEach(m=>{for(const k2 in m.o)otot[k2]=(otot[k2]||0)+m.o[k2][0];});
- const oAll=Object.entries(otot).sort((a,b)=>b[1]-a[1]), oKeep=oAll.slice(0,8).map(x=>x[0]);
+ const oAll=Object.entries(otot).sort((a,b)=>b[1]-a[1]);
+ const oKeep=oAll.filter(([o])=>o!=='Other'&&o!=='Unknown').slice(0,8).map(x=>x[0]);
  const OCOLS=['#1d4ed8','#0f766e','#d97706','#7c3aed','#dc2626','#0369a1','#65a30d','#c026d3'];
- el('cv5').style.height='360px';
  if(om.length){
-  const othersN=m=>Object.values(m.o).reduce((q,t)=>q+t[0],0)-oKeep.reduce((q,o)=>q+(m.o[o]?m.o[o][0]:0),0);
-  HC('cv5',{chart:{type:'column'},title:{text:'RCA visits by monitoring organization'},subtitle:{text:'Share of RCA visits each organization conducted · click a month to select it'},
-   xAxis:{categories:om.map(m=>m.l.replace(' 20',' ’'))},yAxis:{title:{text:'Share of visits (%)'},max:100},
-   tooltip:{shared:true,useHTML:true,formatter(){const m=om[this.points[0].point.x];const tot=Object.values(m.o).reduce((q,t)=>q+t[0],0);return `<b>${m.l}</b> · ${fmt(tot)} visits<br>`+oAll.filter(([o])=>m.o[o]).map(([o,t])=>`${esc(o)}: ${fmt(t[0])} (${(t[0]/tot*100).toFixed(0)}%)`).join('<br>');}},
-   plotOptions:{column:{stacking:'percent',borderWidth:0,borderRadius:2,point:{events:{click(){if(om[this.x].x)return;EM=om[this.x].mo;document.querySelectorAll('.emsel').forEach(s=>{s.value=EM;});render();}}}}},
-   series:[...oKeep.map((o,i)=>({name:o,color:OCOLS[i%OCOLS.length],data:om.map(m=>m.o[o]?m.o[o][0]:0)})),
-    {name:'All others',color:'#94a3b8',data:om.map(othersN)}]});
+  const segN=(m,org)=>org==null?Object.values(m.o).reduce((q,t)=>q+t[0],0)-oKeep.reduce((q,o)=>q+(m.o[o]?m.o[o][0]:0),0):(m.o[org]?m.o[org][0]:0);
+  const oseg=(m,org,i)=>{const n=segN(m,org);const T=Object.values(m.o).reduce((q,t)=>q+t[0],0);return n?`<i title="${org==null?'All others (incl. Other/Unknown)':esc(org)}: ${fmt(n)} of ${fmt(T)} visits (${(n/T*100).toFixed(0)}%)" style="display:inline-block;height:100%;width:${(n/T*100).toFixed(2)}%;background:${org==null?'#94a3b8':OCOLS[i]}"></i>`:'';};
+  let t=HHD('RCA visits by monitoring organization')+'<div style="margin-bottom:6px">'+oKeep.map((o,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;margin:0 10px 4px 0;font-size:10.5px"><i style="width:10px;height:10px;border-radius:2px;background:${OCOLS[i]}"></i>${esc(o)}</span>`).join('')+'<span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px"><i style="width:10px;height:10px;border-radius:2px;background:#94a3b8"></i>All others</span></div><div style="max-height:440px;overflow:auto">';
+  om.forEach(m=>{const T=Object.values(m.o).reduce((q,x)=>q+x[0],0);
+   t+=`<div${m.x?'':` data-m="${m.mo}"`} title="${m.l}: ${fmt(T)} RCA visits" style="display:flex;align-items:center;gap:8px;padding:2px 0;${m.x?'':'cursor:pointer'}">
+    <span style="flex:none;width:58px;font-size:10.5px;color:#64748b">${m.l.replace(' 20',' ’')}</span>
+    <span style="flex:1;display:block;background:#f1f5f9;border-radius:3px;height:15px;overflow:hidden;white-space:nowrap">${oKeep.map((o,i)=>oseg(m,o,i)).join('')}${oseg(m,null)}</span></div>`;});
+  t+='</div>';
+  el('cv5').innerHTML=t;
+  el('cv5').querySelectorAll('[data-m]').forEach(d=>d.onclick=()=>setEM(d.dataset.m));
   const gT=oAll[0], gS=oAll.reduce((q,x)=>q+x[1],0), gov=otot['Govt']||0, who=oAll.reduce((q,x)=>/^WHO|^UNICEF/.test(x[0])?q+x[1]:q,0);
-  el('capv5').textContent=`${gT[0]} leads with ${fmt(gT[1])} of ${fmt(gS)} RCA visits (${pc(gT[1]/gS*100)}) in this selection. Government monitors conducted ${pc(gov/gS*100)} and WHO/UNICEF teams ${pc(who/gS*100)}; the rest are AKU, PHC Global, NSTOP, COMNET and other partners. The 8 largest organizations are drawn separately.`;}
+  el('capv5').textContent=`${gT[0]} leads with ${fmt(gT[1])} of ${fmt(gS)} RCA visits (${pc(gT[1]/gS*100)}) in this selection. Government monitors conducted ${pc(gov/gS*100)} and WHO/UNICEF teams ${pc(who/gS*100)}; the rest are AKU, PHC Global, NSTOP, COMNET and other partners. Each row is a month — government sweeps dominate the campaign peaks, WHO/UNICEF and partners carry the routine months.`;}
  else{el('cv5').innerHTML='<div class="empty">No RCA data for this selection.</div>';el('capv5').textContent='';}
- // cv6: RCA confirmed vs reported (EPI-MIS), same district and month
+ // cv6: reported vs RCA-confirmed dumbbells
+ el('cv6').style.height='auto';
  const common=MS.map(m=>m.mo).filter(mo=>R.some(r=>r.mo===mo));
  const tm=(EM&&common.includes(EM))?EM:common[common.length-1];
  const rb={};R.forEach(r=>{if(r.mo!==tm)return;const g=rb[r.ed]=rb[r.ed]||{k:0,p3:0,v:0};g.k+=r.k;g.p3+=r.p3||0;g.v+=r.v;});
  const tp=EPIM.filter(r=>r.mo===tm&&matchEM(r)&&rb[r.ed]&&rb[r.ed].k>0).map(r=>({ed:r.ed,x:+eP(r,'p3').toFixed(1),y:+(rvP(rb[r.ed].p3,rb[r.ed].k)||0).toFixed(1),k:rb[r.ed].k,v:rb[r.ed].v}));
- el('cv6').style.height='360px';
  if(tp.length){const gm=(EMETA.months||[]).find(m=>m.mo===tm), tml=gm?gm.l:moLab(tm);
-  HC('cv6',{chart:{type:'scatter',zoomType:'xy'},title:{text:'Reported vs RCA-confirmed Penta-3 coverage'},subtitle:{text:tml+' · one dot per district · dotted line = confirmed equals reported · drag to zoom'},
-   xAxis:{title:{text:'Reported coverage, EPI-MIS (%)'},max:130,plotLines:[{value:90,color:C.mut,dashStyle:'Dash',width:1.2}]},
-   yAxis:{title:{text:'RCA-confirmed vaccinated (%)'},min:0,max:100,plotLines:[{value:90,color:C.mut,dashStyle:'Dash',width:1.2}]},
-   legend:{enabled:false},tooltip:{useHTML:true,formatter(){const p=this.point;return `<b>${esc(p.ed)}</b> · ${tml}<br>Reported: ${p.x}% · RCA-confirmed: ${p.y}%<br>Gap: ${(p.x-p.y).toFixed(1)} pts · ${fmt(p.k)} children in ${fmt(p.v)} visits`;}},
-   series:[{type:'line',name:'Confirmed = reported',color:'#94a3b8',dashStyle:'Dot',lineWidth:1.2,enableMouseTracking:false,marker:{enabled:false},data:[[0,0],[110,110]]},
-    {type:'scatter',name:'Districts',cursor:'pointer',point:{events:{click(){const code=emDist(this.ed);if(code){fDist.value=code;fTeh.value='';cascade();render();}}}},
-     data:tp.map(p=>({x:p.x,y:p.y,ed:p.ed,k:p.k,v:p.v,color:p.x-p.y>=25?'#dc2626':p.x-p.y>=10?'#d97706':'#16a34a'}))}]});
+  const ts=tp.slice().sort((a,b)=>(b.x-b.y)-(a.x-a.y));
+  const pos=v=>Math.max(0,Math.min(100,v/130*100));
+  const gcol=p=>p.x-p.y>=25?'#dc2626':p.x-p.y>=10?'#d97706':'#16a34a';
+  let t=HHD('Reported vs RCA-confirmed Penta-3 — '+tml)+'<div style="max-height:520px;overflow:auto">';
+  ts.forEach(p=>{t+=`<div title="${esc(p.ed)} · ${tml}: reported ${p.x}% · confirmed ${p.y}% · gap ${(p.x-p.y).toFixed(1)} pts · ${fmt(p.k)} children in ${fmt(p.v)} visits" data-d="${esc(p.ed)}" style="display:flex;align-items:center;gap:8px;padding:2px 0;cursor:pointer">
+   <span style="flex:none;width:104px;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600">${esc(p.ed)}</span>
+   <span style="flex:1;display:block;background:#f1f5f9;border-radius:8px;height:15px;position:relative">
+    <i style="position:absolute;left:${pos(p.x).toFixed(1)}%;top:1px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid #64748b;transform:translateX(-50%)"></i>
+    <i style="position:absolute;left:${pos(p.y).toFixed(1)}%;top:1px;width:9px;height:9px;border-radius:50%;background:${gcol(p)};transform:translateX(-50%)"></i></span>
+   <span style="flex:none;width:118px;font-size:10.5px;text-align:right;color:#64748b">${p.x}% → <b style="color:${gcol(p)}">${p.y}%</b></span></div>`;});
+  t+='</div><div style="font-size:10.5px;color:#64748b;margin-top:6px"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid #64748b;margin-right:4px"></span>reported (EPI-MIS)<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#dc2626;margin:0 4px 0 10px"></span>RCA-confirmed — red = 25+ pts behind reported, amber 10+, green ≈ confirmed equals reported</div>';
+  el('cv6').innerHTML=t;
+  el('cv6').querySelectorAll('[data-d]').forEach(d=>d.onclick=()=>setD(d.dataset.d));
   const g25=tp.filter(p=>p.x-p.y>=25).length, g10=tp.filter(p=>p.x-p.y>=10).length, wg=tp.slice().sort((a,b)=>(b.x-b.y)-(a.x-a.y))[0];
-  el('capv6').textContent=`In ${tml}, ${g25} of ${tp.length} districts report 25+ points more than RCA finds (red) and ${g10} trail by 10+ points (amber). Widest gap: ${esc(wg.ed)} (${wg.x}% reported vs ${wg.y}% confirmed). Green dots sit on the dotted line — monitoring confirms what was reported; a red dot means reported figures are not backed by household checks (reporting or access problem — triangulate before acting).`;}
+  el('capv6').textContent=`In ${tml}, ${g25} of ${tp.length} districts report 25+ points more than RCA finds (red) and ${g10} trail by 10+ points (amber). Widest gap: ${esc(wg.ed)} (${wg.x}% reported vs ${wg.y}% confirmed). Rows are sorted by the gap — work down the red ones first. Click a row to open the district.`;}
  else{el('cv6').innerHTML='<div class="empty">No month where RCA and reported coverage overlap for this selection.</div>';el('capv6').textContent='';}
  // focus UCs (whole-period RCA by UC, names as recorded by monitors)
  const pcR=p=>p==null?'–':`<span style="color:${p>=70?'#16a34a':p>=50?'#d97706':'#dc2626'}">${p.toFixed(0)}%</span>`;
