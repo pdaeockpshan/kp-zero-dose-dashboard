@@ -1,7 +1,8 @@
-"""Extend the dashboard's EPIM (const EPIM) with the 2025 monthly EPI-MIS exports.
+"""Extend the dashboard's EPIM (const EPIM) with the 2024/2025 monthly EPI-MIS exports.
 
 Companion to extract_emeta.py: same discovery, same per-file cache. Rows for the
-2025 months are aggregated per EPI district from the monthly UC-wise exports;
+pre-2026 months are aggregated per EPI district from the monthly exports (2025
+arrives UC-wise, 2024 as district-level summaries - the shared cache handles both);
 the months already embedded in index.html (2026) are kept verbatim (they were
 built from that year's exports, which are no longer on disk). The EPI district ->
 dashboard district(s) / division mapping is taken from the embedded EPIM rows;
@@ -84,7 +85,7 @@ def build(cfg):
             added += 1
     rows.sort(key=lambda r: (r['mo'], r['ed']))
     n25 = len({r['mo'] for r in rows if r['mo'] < '2026'})
-    summary = '%d rows: %d embedded 2026 + %d new (2025: %d months x %d districts)' % (
+    summary = '%d rows: %d embedded 2026 + %d new (pre-2026: %d months x %d districts)' % (
         len(rows), len(old), added, n25, len(dmap))
     return rows, summary
 

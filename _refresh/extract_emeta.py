@@ -1,10 +1,10 @@
-"""Extend the dashboard's EMETA (const EMETA) with the 2025 monthly EPI-MIS exports.
+"""Extend the dashboard's EMETA (const EMETA) with the pre-2026 monthly EPI-MIS exports.
 
 Every Consolidated_Facility_Wise_Vaccination*.xls under the configured roots is a
-single-month UC-wise export; its month is read from the file's own
-"<h5>YYYY-MM - YYYY-MM</h5>" period header. The parsed per-district aggregates are
-cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the
-pandas parse cost.
+single-month export (2025 UC-wise, 2024 district-level); its month is read from the
+file's own "<h5>YYYY-MM - YYYY-MM</h5>" period header. The parsed per-district
+aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new
+files pay the pandas parse cost.
 
 The months already embedded in index.html (2026) are kept verbatim; months parsed
 from the exports are added (a re-parse of the same month replaces that month's
@@ -116,8 +116,9 @@ def build(cfg):
     partial = [m for m in months if m.get('pt')]
     meta['partial'] = partial[-1]['l'] if partial else meta.get('partial')
     n25 = sum(1 for m in months if m['mo'] < '2026')
-    meta['src'] = ('epi_months_2025-01_2026-09 (2025: %d monthly UC-wise exports; '
-                   '2026: Jan-Sep YTD, month view from the earlier build)' % n25)
+    meta['src'] = ('epi_months_%s_%s (pre-2026: %d monthly exports; '
+                   '2026: Jan-Sep YTD, month view from the earlier build)'
+                   % (months[0]['mo'], months[-1]['mo'], n25))
     out = meta
     tot = sum(len(v) for v in by_mo.values())
     summary = '%d months (%d new: %s..%s), %d district-months from %d exports (%d parsed now)' % (

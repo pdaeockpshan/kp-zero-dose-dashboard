@@ -67,7 +67,12 @@ def read_consolidated(rec):
     miss = [c for c in need if c not in t.columns]
     if miss:
         raise RuntimeError('monthly export %s is missing columns %s' % (rec['name'], miss))
-    t = t[pd.to_numeric(t['Uncode'], errors='coerce').notna()].copy()
+    # UC-wise exports carry Uncode (numeric per-UC rows, totals lack it); the
+    # district-level 2024 exports instead carry Distcode.
+    if 'Uncode' in t.columns:
+        t = t[pd.to_numeric(t['Uncode'], errors='coerce').notna()].copy()
+    elif 'Distcode' in t.columns:
+        t = t[pd.to_numeric(t['Distcode'], errors='coerce').notna()].copy()
     num = ['Target Newborns', 'Target Surviving Infants'] + [a[1] for a in AG]
     for c in num:
         t[c] = pd.to_numeric(t[c], errors='coerce').fillna(0)
