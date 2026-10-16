@@ -115,6 +115,26 @@ def parse(path):
     return rows[hi], rows[hi + 1:]
 
 
+def parse_uc(path):
+    """-> (header, body rows) of the UC-wise NEAP export, or None for other shapes.
+
+    The UC-wise export carries the same 14 indicator columns in the same order
+    after four geo columns (Province, District, Tehsil, UC)."""
+    raw = srcutil.read_text(path)
+    rows = cells_html(path) if '<tr' in raw[:4000].lower() else cells_csv(path)
+    rows = [r for r in rows if any(c for c in r)]
+    if not rows:
+        return None
+    hi = None
+    for i, r in enumerate(rows[:12]):
+        if norm_head(r)[:5] == ['province', 'district', 'tehsil', 'uc', 'dpecheldintime']:
+            hi = i
+            break
+    if hi is None:
+        return None
+    return norm_head(rows[hi]), rows[hi + 1:]
+
+
 def num(v):
     t = ('' if v is None else str(v)).replace(',', '').strip()
     if t == '' or t.upper() in ('-', 'NA', 'N/A', 'NULL', 'NONE'):
@@ -179,6 +199,49 @@ def build(path, repo):
     return neap, summary
 
 
+def build_uc(path, repo):
+    """-> (u payload, summary) from the newest UC-wise export, or (None, reason)."""
+    got = parse_uc(path)
+    if not got:
+        return None, 'not a UC-wise NEAP export'
+    hdr, body = got
+    want = 4 + len(K)
+    if len(hdr) < want:
+        raise SystemExit('ERR neap UC export %s has %d columns, want >= %d'
+                         % (os.path.basename(path), len(hdr), want))
+    for j in range(len(K)):
+        if hdr[4 + j] != SRC_HEAD[2 + j]:
+            raise SystemExit('ERR neap UC export %s column %d is %r, want %r'
+                             % (os.path.basename(path), 4 + j, hdr[4 + j], SRC_HEAD[2 + j]))
+    scope, camp = snd_scope(repo)
+    t, tr = [], {}
+    r = []
+    for row in body:
+        if len(row) < want:
+            row = list(row) + [''] * (want - len(row))
+        dn = RENAME.get(row[1].strip().upper(), row[1].strip())
+        if not dn or dn.upper() in ('TOTAL', 'GRAND TOTAL', 'KP'):
+            continue
+        if dn not in scope:
+            raise SystemExit('ERR neap UC export district %r not in the %s scope'
+                             % (dn, camp or 'SND'))
+        tn = re.sub(r'\s+', ' ', row[2]).strip()
+        ti = tr.get(tn)
+        if ti is None:
+            ti = tr[tn] = len(t)
+            t.append(tn)
+        r.append([dn, ti, re.sub(r'\s+', ' ', row[3]).strip()] + [num(row[4 + j]) for j in range(len(K))])
+    if not r:
+        return None, 'UC-wise export has no district rows'
+    mtime = datetime.datetime.fromtimestamp(os.stat(path).st_mtime)
+    u = {'src': os.path.basename(path), 'asof': mtime.date().isoformat(),
+         't': t, 'r': r}
+    aic = sum(1 for x in r if x[3 + 6] > 0)
+    summary = ('%s, %d UCs, %d tehsils, DPEC held on time %d, AIC training under way %d'
+               % (camp or 'SND', len(r), len(t), sum(1 for x in r if x[3] >= 100), aic))
+    return u, summary
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--source')
@@ -203,6 +266,16 @@ def main():
             if str(e).startswith('ERR neap %s is not' % os.path.basename(p)):
                 continue
             raise
+        ucands = cands if not a.source else srcutil.discover(cfg['auto'][DS])
+        for rec2 in ucands:
+            p2 = rec2['path']
+            if not os.path.exists(p2):
+                continue
+            u, usum = build_uc(p2, cfg['repo'])
+            if u:
+                neap['u'] = u
+                summary += '; UC-wise: ' + usum + ' (' + u['src'] + ')'
+                break
         js = srcutil.dumps(neap)
         dest = a.out or os.path.join(srcutil.OUT, 'neap.json')
         srcutil.write_text(dest, js)
