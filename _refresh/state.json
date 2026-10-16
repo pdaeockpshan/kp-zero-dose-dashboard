@@ -42,6 +42,48 @@
    "stamp": "14-Oct-2026 11:30",
    "summary": "manual inject"
   },
+  "epim": {
+   "at": "2026-10-16T10:30:40+05:00",
+   "chars": 158805,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792052881|7385137",
+   "payload_sha1": "877c1aedebad7cfa",
+   "source": {
+    "mtime": 1792052881.2304325,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "size": 7385137
+   },
+   "stamp": "16-Oct-2026 10:30",
+   "summary": "777 rows: 333 embedded 2026 + 444 new (2025: 12 months x 37 districts)"
+  },
+  "epm": {
+   "at": "2026-10-16T10:30:40+05:00",
+   "chars": 1598,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls|1792052881|7385137",
+   "payload_sha1": "76c309e99fa5c812",
+   "source": {
+    "mtime": 1792052881.2304325,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (32).xls",
+    "size": 7385137
+   },
+   "stamp": "16-Oct-2026 10:30",
+   "summary": "21 months (12 new: 2025-01..2025-12), 481 district-months from 13 exports (0 parsed now)"
+  },
+  "esup": {
+   "at": "2026-10-16T10:30:40+05:00",
+   "chars": 238661,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\Supervisory_Checklist_Report (41).xls|1792051306|369165674",
+   "payload_sha1": "1d1eafbcfcc141b9",
+   "source": {
+    "mtime": 1792051306.9596071,
+    "name": "Supervisory_Checklist_Report (41).xls",
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\Supervisory_Checklist_Report (41).xls",
+    "size": 369165674
+   },
+   "stamp": "16-Oct-2026 10:30",
+   "summary": "62640 fixed + 39899 outreach visits, 37 districts, 2025-02..2026-10 (56 files: Supervisory_Checklist_Report (41).xls)"
+  },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 2982,
@@ -112,6 +154,20 @@
    "stamp": "14-Oct-2026 13:01",
    "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
   },
+  "rca": {
+   "at": "2026-10-16T10:30:40+05:00",
+   "chars": 150080,
+   "file_id": "D:\\AMAZON DATA\\EPI DATA\\2025\\RCA_Report (35).xls|1792051225|391426674",
+   "payload_sha1": "10662f11b59a9138",
+   "source": {
+    "mtime": 1792051225.3416681,
+    "name": "RCA_Report (35).xls",
+    "path": "D:\\AMAZON DATA\\EPI DATA\\2025\\RCA_Report (35).xls",
+    "size": 391426674
+   },
+   "stamp": "16-Oct-2026 10:30",
+   "summary": "113182 visits, 1,041,948 children checked, 37 districts, 2025-02..2026-10 (39 files: RCA_Report (35).xls)"
+  },
   "snd": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 37861,
@@ -128,11 +184,14 @@
   }
  },
  "last_run": {
-  "at": "2026-10-15T15:04:52+05:00",
+  "at": "2026-10-16T10:30:40+05:00",
   "datasets": [
-   "adv"
+   "epm",
+   "epim",
+   "rca",
+   "esup"
   ],
   "dry_run": false,
-  "stamp": "15-Oct-2026 15:04"
+  "stamp": "16-Oct-2026 10:30"
  }
 }
