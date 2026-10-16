@@ -248,10 +248,11 @@ def main():
     ap.add_argument('--out')
     a = ap.parse_args()
     cfg = srcutil.load_sources()
+    cands = srcutil.discover(cfg['auto'][DS])
     if a.source:
-        cands = [srcutil.stat_rec(a.source)]
-    else:
-        cands = srcutil.discover(cfg['auto'][DS])
+        s_abs = os.path.normcase(os.path.abspath(a.source))
+        cands = [srcutil.stat_rec(a.source)] + [
+            c for c in cands if os.path.normcase(os.path.abspath(c['path'])) != s_abs]
     if not cands:
         raise SystemExit('ERR neap no NEAP files found under %s' % cfg['auto'][DS]['roots'])
     for rec in cands:
@@ -261,12 +262,15 @@ def main():
         try:
             neap, summary = build(p, cfg['repo'])
         except SystemExit as e:
-            if a.source:
-                raise
             if str(e).startswith('ERR neap %s is not' % os.path.basename(p)):
+                # the newest save is often the UC-wise shape; the district
+                # payload comes from the newest district-wise file instead
+                if a.source and os.path.normcase(os.path.abspath(p)) == os.path.normcase(os.path.abspath(a.source)):
+                    print('WARN neap %s is not the district-wise shape - trying the other candidates'
+                          % os.path.basename(p))
                 continue
             raise
-        ucands = cands if not a.source else srcutil.discover(cfg['auto'][DS])
+        ucands = cands
         for rec2 in ucands:
             p2 = rec2['path']
             if not os.path.exists(p2):

@@ -229,7 +229,7 @@
     "~$*"
    ],
    "portal": "EOC dashboard > Campaign > Pre Campaign > NEAP readiness (district wise)",
-   "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter, so the newest save wins; older-shape neapreport*/allneapreport* exports are excluded by pattern and skipped by shape. District names must match the SND scope or the extractor aborts."
+   "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter and mixes two shapes: district-wise (~35 KB) and UC-wise (Province/District/Tehsil/UC before the same 14 indicators, emitted as `u`). Whatever the newest save is, the district payload is read from the newest district-wise file and `u` from the newest UC-wise file; older-shape neapreport*/allneapreport* exports are excluded by pattern. District names must match the SND scope or the extractor aborts."
   },
   "nact": {
    "label": "SNID Nov-26 activity countdown calendar (planned timeline)",
