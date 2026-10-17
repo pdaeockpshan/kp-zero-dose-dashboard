@@ -82,6 +82,28 @@
    "portal": "Final scope workbook issued for the upcoming campaign (D:\\AMAZON DATA\\SNID <campaign> folder)",
    "note": "When a new campaign scope arrives, edit config.name and config.start here - the tab title, hero chip, countdown popup and Evening Review day dates all follow SND.n / SND.st. Rename the tab labels separately (search the old campaign name across the 4 variants)."
   },
+  "fipv": {
+   "label": "fIPV Peshawar & Khyber scope (78 UCs)",
+   "const": "FIPV",
+   "extractor": "extract_fipv.py",
+   "roots": [
+    "C:/Users/HD/Downloads"
+   ],
+   "patterns": [
+    "fIPV Peshawar*UCs.xlsx"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "config": {
+    "name": "fIPV — Peshawar & Khyber",
+    "start": "2026-10-26",
+    "age": "4 months–10 years",
+    "scope_glob": "fIPV Peshawar*Scope*.pptx"
+   },
+   "portal": "Peshawar & Khyber fIPV scope workbook + scope slide (Downloads)",
+   "note": "Separate fIPV distribution plan for Peshawar and Khyber: 78 UCs, 1,184,376 children aged 4 months-10 years. The workbook supplies UC targets; the scope slide supplies the new/existing split and totals. Only the workbook is tracked for staleness - if the slide is revised run --only fipv --force."
+  },
   "icm": {
    "label": "Intra-campaign monitoring (ICM) UC-wise sheet",
    "const": "ICMD",
