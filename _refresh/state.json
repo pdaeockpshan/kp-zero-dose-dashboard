@@ -98,6 +98,20 @@
    "stamp": "12-Oct-2026 12:58",
    "summary": "KP-Special-1-Jul 2026, 30 UCs in 2 districts (BANNU+WAZIR-S Lower), recall 13215/15102"
   },
+  "inda": {
+   "at": "2026-10-17T10:55:10+05:00",
+   "chars": 122843,
+   "file_id": "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal\\cov_SNID Sept 2026.xls|1791347850|1938698",
+   "payload_sha1": "e0c14630a271a874",
+   "source": {
+    "mtime": 1791347850.7513754,
+    "name": "cov_SNID Sept 2026.xls",
+    "path": "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal\\cov_SNID Sept 2026.xls",
+    "size": 1938698
+   },
+   "stamp": "17-Oct-2026 10:52",
+   "summary": "1402 UCs, 37 districts, target 6,348,405, vaccinated 6,231,909, still missed 125,592"
+  },
   "mism": {
    "at": "2026-10-12T13:46:32+05:00",
    "chars": 67,
