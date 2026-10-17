@@ -84,6 +84,20 @@
    "stamp": "16-Oct-2026 14:14",
    "summary": "62649 fixed + 39909 outreach visits, 37 districts, 2024-08..2026-10 (60 files: Supervisory_Checklist_Report (43).xls)"
   },
+  "fipv": {
+   "at": "2026-10-17T11:37:19+05:00",
+   "chars": 4139,
+   "file_id": "C:/Users/HD/Downloads\\fIPV Peshawar and Khyber UCs.xlsx|1792217736|25378",
+   "payload_sha1": "94499df9983da53a",
+   "source": {
+    "mtime": 1792217736.1603918,
+    "name": "fIPV Peshawar and Khyber UCs.xlsx",
+    "path": "C:/Users/HD/Downloads\\fIPV Peshawar and Khyber UCs.xlsx",
+    "size": 25378
+   },
+   "stamp": "17-Oct-2026 11:37",
+   "summary": "78 UCs (Peshawar 48, Khyber 30), fIPV target 1,184,376, HH 534,888, school 245,869, 26 new / 52 existing"
+  },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 2982,
@@ -226,11 +240,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-17T10:31:35+05:00",
+  "at": "2026-10-17T11:37:19+05:00",
   "datasets": [
-   "neap"
+   "fipv"
   ],
   "dry_run": false,
-  "stamp": "17-Oct-2026 10:31"
+  "stamp": "17-Oct-2026 11:37"
  }
 }
