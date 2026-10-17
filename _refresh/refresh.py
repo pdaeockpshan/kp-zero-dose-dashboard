@@ -397,12 +397,15 @@ def verify_pages(cfg, repo, wait=180):
     hdrs = dict((l.split(':', 1)[0].strip().lower(), l.split(':', 1)[1].strip())
                 for l in out.splitlines() if ':' in l)
     local = srcutil.read_text(os.path.join(repo, 'index.html'))
-    expect = len(local.encode('utf-8')) - local.count('\r\n')
+    raw = len(local.encode('utf-8'))
+    expect = raw - local.count('\r\n')
     got = int(hdrs.get('content-length') or -1)
-    print('verify: live content-length %s vs local LF-normalised %s -> %s' % (
-        format(got, ','), format(expect, ','), 'MATCH' if got == expect else 'DIFFERS'))
+    ok = got in (raw, expect)
+    print('verify: live content-length %s vs local %s (LF-normalised %s) -> %s' % (
+        format(got, ','), format(raw, ','), format(expect, ','),
+        'MATCH' if ok else 'DIFFERS'))
     print('verify: last-modified %s' % hdrs.get('last-modified', '?'))
-    return 0 if got == expect else 1
+    return 0 if ok else 1
 
 
 # ---------------------------------------------------------------- main

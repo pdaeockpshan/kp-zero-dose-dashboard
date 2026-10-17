@@ -263,6 +263,22 @@
    "portal": "EOC dashboard compiled campaign indicators export (2017-2026, 85 campaigns)",
    "note": "One row per UC per campaign (84 columns, 75,792 rows). The payload carries district aggregates for every campaign plus the raw UC rows of the 2025+ campaigns, so the five dashboard tables offer a district / UC toggle. Percent columns are recomputed from their count pairs; Same Day coverage and ICM Seen % have no count pair and are stored as the district mean of UC values. A literal -1 in the source counts as not reported, other negatives are kept. Keep the payload under refresh.py's 5 MB size ceiling - if the next export adds more UC-detail years, raise UC_FROM_YEAR or the ceiling."
   },
+  "inda": {
+   "label": "Admin coverage and missed children for SNID Sept 2026 (const INDA)",
+   "const": "INDA",
+   "extractor": "extract_inda.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal"
+   ],
+   "patterns": [
+    "cov_SNID Sept*.xls"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "EOC summary coverage report (portal > coverage > export UC-wise), saved by the legacy pipeline as cov_SNID Sept 2026.xls",
+   "note": "Fills the Sept-2026 gap in the compiled-indicators export: the data pack's Admin table gets SNID Sept 2026 from the same UC-wise coverage workbook as the Missed children tab. Only admin coverage/missed columns are available; MP target, same-day coverage, guest, HRMP mobile and school stay not reported. Drop the new coverage export into _portal and run --only inda --force."
+  },
   "epm": {
    "label": "EPI month index (EMETA) with the 2024/2025 monthly exports",
    "const": "EMETA",
