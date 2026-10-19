@@ -237,14 +237,28 @@
    },
    "stamp": "12-Oct-2026 12:58",
    "summary": "27 districts, 113 tehsils, 996 UCs, target 4,808,167, day-1 1,459,109"
+  },
+  "ucc": {
+   "at": "2026-10-19T16:12:25+05:00",
+   "chars": 2758,
+   "file_id": "C:\\Users\\HD\\Downloads\\Master Sheet -2026 f(1).xlsx|1792389226|379562",
+   "payload_sha1": "03ec46ce19a49964",
+   "source": {
+    "mtime": 1792389226.5181794,
+    "name": "Master Sheet -2026 f(1).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\Master Sheet -2026 f(1).xlsx",
+    "size": 379562
+   },
+   "stamp": "19-Oct-2026 16:12",
+   "summary": "1402 UCs, 37 districts (Afghan bordering 7, Core District 2, Endemic 7, High Risk 1, Rest of KP 20), 55 Afghan-bordering UCs, aliases: WAZIR-S, legacy AFG aliases: WAZIR-S 5"
   }
  },
  "last_run": {
-  "at": "2026-10-19T13:57:03+05:00",
+  "at": "2026-10-19T16:12:25+05:00",
   "datasets": [
-   "neap"
+   "ucc"
   ],
   "dry_run": false,
-  "stamp": "19-Oct-2026 13:57"
+  "stamp": "19-Oct-2026 16:12"
  }
 }

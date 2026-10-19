@@ -122,10 +122,19 @@
     ],
     "alias": {
      "WAZIR-S": "Endemic"
+    },
+    "legacy_afg": {
+     "WAZIR-S": [
+      "ANGOOR ADDA",
+      "NAZAI NARAI",
+      "NIZAI NARAI",
+      "ZAR MELLON",
+      "ZHALAI"
+     ]
     }
    },
    "portal": "EOC UC master categorization workbook (Master Sheet tab) - IDIMS + COMNet + EOC Cat blocks",
-   "note": "One row per UC (1,402) with the EOC categorization blocks. Only the geo columns plus `Boardering UC` and `SKP/Rest KP` are read; COMNet staff names, PDA and IDIMS figures stay out of the payload. District categories are NOT taken from the workbook - they come from the dashboard's own `const SND` (the upcoming round's scope categories), so the criteria vocabulary follows the campaign. A UC flagged as bordering Afghanistan is labelled `Afghan bordering` even when its district sits in another category (8 UCs of KHYBER, 3 of WAZIR-N, 4 of WAZIR-S Lower). Districts outside the SND scope fall back to `Rest of KP`, asserted against the master's own SKP/Rest KP value. `al` carries legacy district spellings used by older payloads (combined WAZIR-S in CHD). Drop a newer Master Sheet into Downloads and run `--only ucc --force`."
+   "note": "One row per UC (1,402) with the EOC categorization blocks. Only the geo columns plus `Boardering UC` and `SKP/Rest KP` are read; COMNet staff names, PDA and IDIMS figures stay out of the payload. District categories are NOT taken from the workbook - they come from the dashboard's own `const SND` (the upcoming round's scope categories), so the criteria vocabulary follows the campaign. A UC flagged as bordering Afghanistan is labelled `Afghan bordering` even when its district sits in another category (8 UCs of KHYBER, 3 of WAZIR-N, 4 of WAZIR-S Lower). Districts outside the SND scope fall back to `Rest of KP`, asserted against the master's own SKP/Rest KP value. `al` carries legacy district spellings used by older payloads (combined WAZIR-S in CHD). Drop a newer Master Sheet into Downloads and run `--only ucc --force`. `aluc` repeats those Afghan-bordering UC names under legacy district names (config `legacy_afg`, incl. CHD spelling variants such as NIZAI NARAI) so rows recorded under the old combined WAZIR-S still tag as Afghan bordering."
   },
   "fipv": {
    "label": "fIPV Peshawar & Khyber scope (78 UCs)",

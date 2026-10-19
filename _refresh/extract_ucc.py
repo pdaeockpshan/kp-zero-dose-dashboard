@@ -27,9 +27,13 @@ Per UC the label is:
 Payload: {"src":..,"asof":..,"sheet":..,"camp":..,"n":<UCs>,
           "k":[label,..],"d":[[district,critIdx],..],
           "al":[[alias district,critIdx],..],"a":[[district,"UC NAME"],..],
-          "ac":["UC code",..]}
+          "ac":["UC code",..],"aluc":[[alias district,["UC NAME",..]],..]}
 `a`/`ac` are the Afghan-bordering UCs by name and by code; the page tries the code
 first because a few datasets spell UC names differently from the master.
+`aluc` repeats the Afghan-bordering UC names under a legacy district name (config
+`legacy_afg`) so rows recorded under the old combined district (CHD's WAZIR-S)
+still tag as Afghan bordering; spellings that differ from the master (CHD's
+NIZAI NARAI) are listed alongside the master spelling.
 """
 import argparse
 import datetime
@@ -176,18 +180,28 @@ def build(path, cfg, repo):
     for a, i in al:
         if not (0 <= i < len(labels)):
             raise SystemExit('ERR ucc alias %r points at criteria index %r' % (a, i))
+    lafg = k.get('legacy_afg') or {}
+    aluc = [[a, sorted(v)] for a, v in sorted(lafg.items())]
+    for a, ucs in aluc:
+        if a not in [x[0] for x in al]:
+            raise SystemExit('ERR ucc legacy_afg district %r has no `alias` category' % a)
+        if not ucs:
+            raise SystemExit('ERR ucc legacy_afg %r has no UC names' % a)
 
     ucc = {'src': os.path.basename(path),
            'asof': datetime.datetime.fromtimestamp(os.stat(path).st_mtime).date().isoformat(),
            'sheet': sheet, 'camp': camp, 'n': len(seen), 'k': labels,
            'd': d, 'al': al, 'a': sorted(a_list), 'ac': sorted(a_code)}
+    if aluc:
+        ucc['aluc'] = aluc
 
     mix = Counter(labels[i] for _, i in d)
-    summary = ('%d UCs, %d districts (%s), %d Afghan-bordering UCs%s'
+    summary = ('%d UCs, %d districts (%s), %d Afghan-bordering UCs%s%s'
                % (len(seen), len(d),
                   ', '.join('%s %d' % (lab, mix[lab]) for lab in labels if mix[lab]),
                   len(a_list),
-                  (', aliases: ' + ', '.join(x[0] for x in al)) if al else ''))
+                  (', aliases: ' + ', '.join(x[0] for x in al)) if al else '',
+                  (', legacy AFG aliases: ' + ', '.join('%s %d' % (a, len(u)) for a, u in aluc)) if aluc else ''))
     return ucc, summary
 
 
