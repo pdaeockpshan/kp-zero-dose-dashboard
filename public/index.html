@@ -202,7 +202,7 @@ ul.ins.sm{font-size:12px;color:var(--color-text-secondary)} ul.ins.sm li{margin-
 @media (max-width:1000px){.grid2,.nlayout{grid-template-columns:1fr}}
 
 /* ---------- ④ EPI routine coverage ---------- */
-.ngrp.ge{--gc:#1d4ed8}.sec.s4{--sc:#1d4ed8}.tn.e{--nc:#1d4ed8}.sec.s5{--sc:#c2410c}
+.ngrp.ge{--gc:#1d4ed8}.sec.s4{--sc:#1d4ed8}.tn.e{--nc:#1d4ed8}.sec.s5{--sc:#c2410c}.sec.s6{--sc:#b91c1c}
 .tab[data-tab="eov"],#p-eov{--tc:#1d4ed8}.tab[data-tab="efu"],#p-efu{--tc:#4338ca}.tab[data-tab="erv"],#p-erv{--tc:#0f766e}
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin:0 0 14px}
 .ag{--ac:#1d4ed8;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--color-border-light);border-radius:12px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 19-Oct-2026 17:15</span>
+  <span class="hupd" id="hUpd">Updated 19-Oct-2026 18:27</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1009,6 +1009,15 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card"><div class="kl">Still missed after catch-up</div><div class="kv" id="s5c" style="color:var(--color-error-dark)">–</div><div class="ks" id="s5cs"></div></div>
 <div class="card"><div class="kl">Recovered on catch-up</div><div class="kv" id="s5d">–</div><div class="ks" id="s5ds"></div></div>
 <div class="card"><div class="kl">UCs 5%+ still missed</div><div class="kv" id="s5e" style="color:var(--color-error-dark)">–</div><div class="ks" id="s5es"></div></div>
+</div></div>
+
+<div class="sec s6"><div class="sech"><h2><span class="num">6</span>AFP Surveillance</h2><span class="cnt" id="s6h">Weekly surveillance log + AFP line list</span><button class="btn" data-go="surv">Detailed analysis &rarr;</button></div>
+<div class="kpis">
+<div class="card"><div class="kl">AFP cases 2026</div><div class="kv" id="s6a">&ndash;</div><div class="ks" id="s6as"></div></div>
+<div class="card"><div class="kl">NP-AFP rate</div><div class="kv" id="s6b">&ndash;</div><div class="ks">Per 100,000 under 15 &middot; target &ge; 2</div></div>
+<div class="card"><div class="kl">Stool adequacy</div><div class="kv" id="s6c">&ndash;</div><div class="ks">Two adequate samples &middot; target &ge; 90%</div></div>
+<div class="card"><div class="kl">Zero-dose AFP cases</div><div class="kv" id="s6d" style="color:var(--color-error-dark)">&ndash;</div><div class="ks" id="s6ds"></div></div>
+<div class="card"><div class="kl">Pending classification</div><div class="kv" id="s6e" style="color:var(--color-warning-dark)">&ndash;</div><div class="ks" id="s6es"></div></div>
 </div></div>
 
 <div class="grid2">
@@ -3029,6 +3038,17 @@ function renderSummary(){
   el('s5e').textContent=fmt(MS5.u5); el('s5es').textContent=`${fmt(MS5.u3)} at 3%+ · ${fmt(MS5.pers.length)} persistent-refusal UCs`;
  }else{['s5a','s5b','s5c','s5d','s5e'].forEach(i=>{el(i).textContent='–';el(i).style.color='';});el('s5as').textContent='No campaign coverage data for this selection';['s5bs','s5cs','s5ds','s5es'].forEach(i=>el(i).textContent='');}
 
+ // 6. AFP surveillance
+ if(typeof SURVW!=='undefined'&&SURVW&&SURVW.ll&&SURVW.ind&&SURVW.ind.r&&Object.keys(SURVW.ind.r).length){
+  const S6=svwScope(),L6=svwSum(S6.ds),rw6=SURVW.ind.r[S6.key]||SURVW.ind.r.KP;
+  const gv6=(g,y)=>{const ys=rw6.y[g]||[],i=ys.indexOf(y);return i<0?null:rw6.v[g][i];};
+  el('s6h').textContent='Weekly surveillance log + AFP line list \u00b7 '+S6.name+' \u00b7 as of '+(SURVW.asof||'');
+  el('s6a').textContent=fmt(L6.n[3]); el('s6as').textContent=fmt(L6.n[2])+' cases in full-year 2025 \u00b7 line list to '+(SURVW.llasof||'');
+  const np6=gv6('np',2026); el('s6b').textContent=np6==null?'\u2013':(Math.round(np6*10)/10).toFixed(1); el('s6b').style.color=np6!=null&&np6<2?C.crit:'';
+  const sa6=gv6('sa',2026); el('s6c').textContent=sa6==null?'\u2013':pc(sa6); el('s6c').style.color=sa6==null?'':(sa6>=90?C.high:sa6>=80?C.mod:C.crit);
+  el('s6d').textContent=fmt(L6.zd[3]); el('s6ds').textContent=(L6.n[3]?pc(L6.zd[3]/L6.n[3]*100):'\u2013')+' of 2026 AFP cases \u00b7 '+fmt(L6.zd[2])+' in 2025';
+  el('s6e').textContent=fmt(L6.cp[3]); el('s6es').textContent=fmt(L6.cw[3])+' polio cases in 2026 \u00b7 '+fmt(L6.c3[3])+' discarded';
+ }
  // chart 1: reported, covered, validated by campaign
  const vby=cp=>{const l=VCAMP.filter(x=>x.z===cp).map(x=>x.l);return l.length?S_(vR.filter(r=>l.includes(r.cp)),r=>r.n):null;};
  HC('cs1',{chart:{type:'column'},title:{text:'Zero-dose children reported, covered and validated'},subtitle:{text:'By campaign · validation is a sample check of covered children'},
@@ -3091,6 +3111,8 @@ function renderSummary(){
  if(both.length)I.push(`<b>Double concern:</b> ${listNames(both,5,x=>esc(x.k))} ${both.length>1?'are':'is'} below 80% ZD coverage <i>and</i> below 95% validated as vaccinated. Prioritise supervision here.`);
  {const eR2=EPI.filter(matchE), e5=aggE(eR2), gE=groupE(eR2,L.key).filter(x=>x.s>0).sort((x,y)=>x.p_p3-y.p_p3);
   if(e5.s)I.push(`<b>Routine EPI (${esc(EMETA.per||'')}):</b> Penta-3 ${pc(e5.p_p3)}, MR-1 ${pc(e5.p_mr1)}, MR-2 ${pc(e5.p_mr2)}, fully immunized ${pc(e5.p_fi)}. `+(gE.length>1?`Lowest Penta-3: ${listNames(gE.slice(0,3),3,x=>esc(x.k)+' '+pc(x.p_p3))}. `:'')+`${eR2.filter(r=>r.fl.includes('BO')).length} UCs are weak in both routine EPI and the polio zero-dose data.`);}
+  if(typeof SURVW!=='undefined'&&SURVW&&SURVW.ll){const S6b=svwScope(),L6b=svwSum(S6b.ds),rw6b=SURVW.ind.r[S6b.key]||SURVW.ind.r.KP,g6b=(g,y)=>{const ys=rw6b.y[g]||[],i=ys.indexOf(y);return i<0?null:rw6b.v[g][i];};
+  I.push(`<b>AFP surveillance (${esc(S6b.name)}):</b> ${fmt(L6b.n[3])} AFP cases in 2026 so far; NP-AFP rate ${g6b('np',2026)==null?'\u2013':(Math.round(g6b('np',2026)*10)/10).toFixed(1)} per 100,000 (target \u2265 2) and stool adequacy ${g6b('sa',2026)==null?'\u2013':pc(g6b('sa',2026))} (target \u2265 90%). <b>${fmt(L6b.zd[3])} zero-dose AFP cases</b> \u2014 children the system missed until paralysis \u2014 and ${fmt(L6b.cp[3])} cases still await expert classification.`);}
  if(cN5.tg)I.push(`<b>Campaigns:</b> ${esc(cN5.l)} covered ${pc(cov5(cN5))} of the under-5 target; ${fmt(cN5.st)} children (${pc(cN5.st/cN5.tg*100)}) were still missed after catch-up — ${fmt(cN5.srf)} refusals, ${fmt(cN5.sna)} not available.`+(MS5.pers.length?` ${fmt(MS5.pers.length)} UCs refuse every round.`:'')+(dd5!=null&&dd5<0?` Coverage is ${dd5.toFixed(1)} pts below ${esc(cO5.l)}.`:''));
  el('sL').innerHTML=I.map(x=>`<li>${x}</li>`).join('');
 }
