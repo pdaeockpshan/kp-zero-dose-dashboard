@@ -238,6 +238,20 @@
    "stamp": "12-Oct-2026 12:58",
    "summary": "27 districts, 113 tehsils, 996 UCs, target 4,808,167, day-1 1,459,109"
   },
+  "surv": {
+   "at": "2026-10-19T17:15:53+05:00",
+   "chars": 103281,
+   "file_id": "C:\\Users\\HD\\Downloads\\Surv. Weekly Updates Log 14-Oct-2026.xlsx|1792393547|7615557",
+   "payload_sha1": "71e70bc11db8cee5",
+   "source": {
+    "mtime": 1792393547.5272365,
+    "name": "Surv. Weekly Updates Log 14-Oct-2026.xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\Surv. Weekly Updates Log 14-Oct-2026.xlsx",
+    "size": 7615557
+   },
+   "stamp": "19-Oct-2026 17:15",
+   "summary": "36 districts, YTD 14-Oct-2026 (NP-AFP 29.0, SA 86.7%, Notif7d 81.7%), 6 division rows, monthly 2019-2026, pendency 14-Oct-2026, line list cases 2023:4934, 2024:5887, 2025:5410, 2026:4043, last EPID KP/54/26/071, 0 non-KP rows skipped"
+  },
   "ucc": {
    "at": "2026-10-19T16:12:25+05:00",
    "chars": 2758,
@@ -254,11 +268,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-19T16:12:25+05:00",
+  "at": "2026-10-19T17:15:53+05:00",
   "datasets": [
-   "ucc"
+   "surv"
   ],
   "dry_run": false,
-  "stamp": "19-Oct-2026 16:12"
+  "stamp": "19-Oct-2026 17:15"
  }
 }

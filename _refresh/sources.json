@@ -288,6 +288,29 @@
    "portal": "EOC dashboard > Intra-campaign monitoring > export UC-wise (team-monitored and AIC-visited tables)",
    "note": "One CSV per table; the \"2 campaigns\" exports carry the newest campaign (SNID Sept 2026) with a slightly different column set, the big exports carry the full 2021-2026 history. District x campaign aggregates are count-weighted means rounded to whole percent; -1 = indicator absent from that export. 'Total' rows are skipped. The AIC 2-campaign export has no supervisor count column, so those rows are averaged per UC (wt.aic = \"uc\")."
   },
+  "surv": {
+   "label": "AFP surveillance: weekly updates log + line list 2023-2026 (YTD and yearly indicators, month-wise detection, pendency, case aggregates)",
+   "const": "SURVW",
+   "extractor": "extract_surv.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Surv. Weekly Updates Log*.xlsx",
+    "LineList-*.xlsx"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "sheets": [
+    "Summary",
+    "Indicators ",
+    "PointinTimeCaseDetection..",
+    "District Wise Pendency"
+   ],
+   "portal": "EOC surveillance cell weekly updates log + provincial AFP line list (manual download)",
+   "note": "Two sources per refresh: the weekly log gives YTD and 2013-2026 yearly indicator histories per district plus division roll-ups, month-wise AFP detection 2019-2026 and the newest pendency snapshot; the line list gives case aggregates only (OPV dose buckets, stool adequacy, notification/investigation timeliness, classification) - no names or addresses are extracted. The `Indicators ` sheet name has a trailing space; its district rows sit above the Grand Total and division rows below it."
+  },
   "neap": {
    "label": "Upcoming campaign pre-campaign readiness (NEAP district-wise status)",
    "const": "NEAP",
