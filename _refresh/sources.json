@@ -82,6 +82,51 @@
    "portal": "Final scope workbook issued for the upcoming campaign (D:\\AMAZON DATA\\SNID <campaign> folder)",
    "note": "When a new campaign scope arrives, edit config.name and config.start here - the tab title, hero chip, countdown popup and Evening Review day dates all follow SND.n / SND.st. Rename the tab labels separately (search the old campaign name across the 4 variants)."
   },
+  "ucc": {
+   "label": "UC criteria (EOC master categorization: Afghan bordering / core / endemic / high risk / rest of KP)",
+   "const": "UCC",
+   "extractor": "extract_ucc.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads",
+    "D:\\AMAZON DATA"
+   ],
+   "patterns": [
+    "Master Sheet*.xlsx"
+   ],
+   "exclude": [
+    "~$*",
+    "*detergent*"
+   ],
+   "sheets": [
+    "Master Sheet"
+   ],
+   "config": {
+    "labels": [
+     "Afghan bordering",
+     "Core District",
+     "Endemic",
+     "High Risk",
+     "Rest of KP"
+    ],
+    "scope_map": {
+     "Afg Bordering": 0,
+     "Core District": 1,
+     "Endemic": 2,
+     "High Risk": 3,
+     "Rest of KP": 4
+    },
+    "fallback": 4,
+    "fallback_scp": "Rest Of KP",
+    "afg_tokens": [
+     "AFG"
+    ],
+    "alias": {
+     "WAZIR-S": "Endemic"
+    }
+   },
+   "portal": "EOC UC master categorization workbook (Master Sheet tab) - IDIMS + COMNet + EOC Cat blocks",
+   "note": "One row per UC (1,402) with the EOC categorization blocks. Only the geo columns plus `Boardering UC` and `SKP/Rest KP` are read; COMNet staff names, PDA and IDIMS figures stay out of the payload. District categories are NOT taken from the workbook - they come from the dashboard's own `const SND` (the upcoming round's scope categories), so the criteria vocabulary follows the campaign. A UC flagged as bordering Afghanistan is labelled `Afghan bordering` even when its district sits in another category (8 UCs of KHYBER, 3 of WAZIR-N, 4 of WAZIR-S Lower). Districts outside the SND scope fall back to `Rest of KP`, asserted against the master's own SKP/Rest KP value. `al` carries legacy district spellings used by older payloads (combined WAZIR-S in CHD). Drop a newer Master Sheet into Downloads and run `--only ucc --force`."
+  },
   "fipv": {
    "label": "fIPV Peshawar & Khyber scope (78 UCs)",
    "const": "FIPV",
@@ -96,9 +141,9 @@
     "~$*"
    ],
    "config": {
-    "name": "fIPV — Peshawar & Khyber",
+    "name": "fIPV \u2014 Peshawar & Khyber",
     "start": "2026-10-26",
-    "age": "4 months–10 years",
+    "age": "4 months\u201310 years",
     "scope_glob": "fIPV Peshawar*Scope*.pptx"
    },
    "portal": "Peshawar & Khyber fIPV scope workbook + scope slide (Downloads)",
