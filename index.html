@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 20-Oct-2026 08:56</span>
+  <span class="hupd" id="hUpd">Updated 20-Oct-2026 09:05</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -7597,7 +7597,8 @@ function renderNEP(){
  }
  let t1line;
  if(T1o.length)t1line=[T1o.map(r=>'<b>'+DNb(r.d)+'</b> ('+ucN(r.d)+' UCs)').join(', ')+' \u2014 at 0% on every indicator; needs DC-level intervention to hold DPECs before month-end.'+(T1f.length?' <b>Peshawar and Khyber are excluded from this push</b> — both are in fIPV preparation for the 26-Oct launch, so their SNID pre-campaign activities start late.':'')];
- else if(T1f.length)t1line=['None outside the fIPV districts \u2014 every other district has held its DPEC. Peshawar and Khyber have not, but both are in fIPV preparation for the 26-Oct launch; their SNID pre-campaign activities start late.'];
+ else if(T1f.length){const nm1=T1f.map(r=>DNb(r.d)), rest1=FI2.filter(d=>!T1f.some(r=>r.d===d)).map(d=>DNb(d));
+  t1line=['None outside the fIPV districts \u2014 every other district has held its DPEC. '+nm1.join(' and ')+' '+(nm1.length>1?'have':'has')+' not held '+(nm1.length>1?'their':'its')+' DPEC yet'+(rest1.length?' while '+rest1.join(' and ')+' has':'')+' \u2014 fIPV preparation for the 26-Oct launch comes first, so '+(nm1.length>1?'their':'its')+' SNID pre-campaign activities start late.'];}
  else t1line=['None'+(NEPDV?' in '+dvL:'')+' \u2014 every district has held its DPEC.'];
  secs.push(['Districts needing push \u2014 Tier 1: nothing moving (no DPEC held)', t1line]);
  secs.push(['Tier 2: DPEC held, AIC training not started', T2.length? [T2.map(r=>'<b>'+DNb(r.d)+'</b> ('+ucN(r.d)+' UCs)').join(', ')+' \u2014 commence AIC training within 48 hours'+(T2.length>1?'; '+DNb(T2[0].d)+' first (largest UC load).':'.')] : ['None'+(NEPDV?' in '+dvL:'')+'.']]);
