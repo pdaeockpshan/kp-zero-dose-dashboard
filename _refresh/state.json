@@ -169,18 +169,18 @@
    "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
-   "at": "2026-10-19T13:57:03+05:00",
-   "chars": 95523,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (36).xls|1792396445|35119",
-   "payload_sha1": "7a459e25ba613426",
+   "at": "2026-10-20T08:56:37+05:00",
+   "chars": 98049,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (38).xls|1792466618|1324095",
+   "payload_sha1": "6329fc44e75311c7",
    "source": {
-    "mtime": 1792396445.6834793,
-    "name": "NEAP (36).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (36).xls",
-    "size": 35119
+    "mtime": 1792466618.5166228,
+    "name": "NEAP (38).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (38).xls",
+    "size": 1324095
    },
-   "stamp": "19-Oct-2026 13:57",
-   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 25 districts (best 100.0%), teams with a female member reported by 6; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 840, AIC training under way 616 (NEAP (35).xls)"
+   "stamp": "20-Oct-2026 08:56",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 25 districts (best 100.0%), teams with a female member reported by 8; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 836 (NEAP (38).xls)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -268,11 +268,11 @@
   }
  },
  "last_run": {
-  "at": "2026-10-19T17:15:53+05:00",
+  "at": "2026-10-20T08:56:37+05:00",
   "datasets": [
-   "surv"
+   "neap"
   ],
   "dry_run": false,
-  "stamp": "19-Oct-2026 17:15"
+  "stamp": "20-Oct-2026 08:56"
  }
 }
