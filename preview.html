@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 20-Oct-2026 09:05</span>
+  <span class="hupd" id="hUpd">Updated 20-Oct-2026 18:34</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1610,6 +1610,11 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="tblhdr"><h3 style="margin:0">AFP surveillance indicators — official weekly log</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntSVW"></span><button class="btn" id="btnSVW">Download (CSV)</button></div></div>
 <div class="scroll"><table id="tSVW"></table></div>
 <div class="cap" id="capSVW"></div>
+</div>
+<div class="card">
+<div class="tblhdr"><h3 style="margin:0">WPV1 cases by month — stacked by area</h3><div class="pills" id="wpvMy"></div></div>
+<div id="wpvM" class="ch" style="height:430px"></div>
+<div class="cap" id="capwpvM"></div>
 </div>
 <div class="grid2">
 <div class="card"><div id="svw1" class="ch"></div><div class="cap" id="capsvw1"></div></div>
@@ -6695,6 +6700,38 @@ function svwMon(SC){const MY=SURVW.mon.y,ys=[2023,2024,2025,2026].filter(y=>MY.i
  const add=r=>{if(!r)return;ys.forEach((y,i)=>{const j=MY.indexOf(y);for(let m=0;m<12;m++)a[i][m]+=(r[j]&&r[j][m])||0;});};
  if(SC.key==='KP')add(SURVW.mon.d.KP);else SC.ds.forEach(d=>add(SURVW.mon.d[d]));
  return{ys,a};}
+let WPVMY=new Set([2022,2023,2024,2025,2026]);
+const WPVMC=['#dc2626','#ea580c','#d97706','#15803d','#0e7490','#2563eb','#7c3aed','#64748b'];
+function renderWpvMon(SC){
+ const box=document.getElementById('wpvM'); if(!box||typeof WPVH==='undefined'||!WPVH||!WPVH.length)return;
+ const dvKey=SC.key.indexOf('DIV:')===0?SC.key.slice(4):null,isD=!dvKey&&SC.key!=='KP',dk=isD?SC.key:null;
+ const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ const ALL=[...new Set(WPVH.map(r=>+String(r.on).slice(0,4)))].sort();
+ const yrs=[...WPVMY].sort();
+ el('wpvMy').innerHTML='<button class="pill" data-y="all">All years</button>'+ALL.map(y=>'<button class="pill'+(WPVMY.has(y)?' on':'')+'" data-y="'+y+'">'+y+'</button>').join('');
+ el('wpvMy').querySelectorAll('button').forEach(b=>{b.onclick=()=>{if(b.dataset.y==='all'){WPVMY=new Set(ALL);}else{const y=+b.dataset.y; if(WPVMY.has(y))WPVMY.delete(y); else WPVMY.add(y);} renderSurvW();};});
+ if(!yrs.length){box.innerHTML=''; el('capwpvM').textContent='Pick at least one year above.'; return;}
+ const keyOf=r=>isD?(r.d===dk?r.d:null):dvKey?(SC.ds.indexOf(r.d)>=0?r.d:null):(r.dv||(typeof D2DV!=='undefined'&&D2DV[r.d])||'Other');
+ const keys=isD?[dk]:dvKey?SC.ds.slice():[...new Set(WPVH.map(r=>r.dv||(typeof D2DV!=='undefined'&&D2DV[r.d])||'Other'))].sort();
+ const cnt={};
+ WPVH.forEach(r=>{const y=+String(r.on).slice(0,4); if(!WPVMY.has(y))return; const k=keyOf(r); if(k==null)return; const m=+String(r.on).slice(5,7)-1; const ym=cnt[y]||(cnt[y]={}); const mm=ym[m]||(ym[m]={}); mm[k]=(mm[k]||0)+1;});
+ const tot={}; keys.forEach(k=>tot[k]=0);
+ yrs.forEach(y=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const mm=ym[m]||{}; for(const k in mm)if(tot[k]!=null)tot[k]+=mm[k];}});
+ const use=keys.filter(k=>tot[k]>0).sort((a,b)=>tot[b]-tot[a]);
+ if(isD&&!use.length)use.push(dk);
+ const cats=[],pl=[];
+ yrs.forEach((y,i)=>{for(let m=0;m<12;m++)cats.push(m===0?MN[m]+'<br><b>'+y+'</b>':MN[m]); if(i)pl.push({color:'#cbd5e1',width:1,value:i*12-0.5});});
+ const dnm=k=>(typeof DNAME==='function'?DNAME(k):k);
+ const ser=use.map((k,i)=>({name:isD||dvKey?dnm(k):k,color:WPVMC[i%WPVMC.length],data:yrs.reduce((out,y)=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const v=((ym[m]||{})[k])||0; out.push(v?{y:v,dataLabels:{enabled:v>=2}}:null);} return out;},[])}));
+ HC('wpvM',{chart:{type:'column'},title:{text:null},subtitle:{text:SC.name+' \u00b7 EOC WPV case line list'},
+  xAxis:{categories:cats,plotLines:pl,labels:{style:{fontSize:'10px'}}},yAxis:{title:{text:'Cases'},allowDecimals:false,min:0},
+  plotOptions:{column:{stacking:'normal',borderRadius:1,dataLabels:{enabled:true,inside:true,color:'#fff',format:'{y}',style:{fontSize:'9px',fontWeight:'600',textOutline:'none'}}}},
+  tooltip:{shared:true},series:ser});
+ const T=use.reduce((s,k)=>s+tot[k],0);
+ let pk=null; yrs.forEach(y=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const mm=ym[m]||{}; let s=0; for(const k in mm)s+=mm[k]; if(s>0&&(!pk||s>pk.n))pk={n:s,y:y,m:m};}});
+ const last=WPVH.map(r=>({on:String(r.on),k:keyOf(r)})).filter(x=>x.k!=null).sort((a,b)=>a.on<b.on?1:-1)[0];
+ el('capwpvM').textContent=fmt(T)+' WPV1 cases in '+SC.name+' in '+yrs.join(', ')+(pk?' \u2014 peak '+MN[pk.m]+' '+pk.y+' ('+pk.n+').':'.')+' Most recent case: '+(last?new Date(last.on+'-15T12:00:00').toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'\u2013')+'. Months with no case are blank. Source: EOC WPV case line list (month of onset).';
+}
 function renderSurvW(){
  if(typeof SURVW==='undefined'||!SURVW||!SURVW.ind||!Object.keys(SURVW.ind.r||{}).length)return;
  msrmSel();
@@ -6707,6 +6744,7 @@ function renderSurvW(){
  el('tSVW').innerHTML='<thead><tr><th style="text-align:left">Indicator</th>'+YRS.map(y=>'<th>'+y+'</th>').join('')+'</tr></thead><tbody>'+
   SURVW.ind.g.map((g,i)=>'<tr><td style="text-align:left"><b>'+esc(SURVW.ind.lab[i])+'</b></td>'+YRS.map(y=>'<td>'+cell(g,gv(g,y))+'</td>').join('')+'</tr>').join('')+'</tbody>';
  el('capSVW').textContent='Official AFP surveillance indicators for '+SC.name+' from the EOC weekly surveillance log (up to '+(SURVW.asof||'')+'). Colour bands for the three % targets: green \u2265 90, amber 80\u201390, red < 80. Residual weakness is the count of non-polio AFP cases with residual weakness; EV + SL is the combined enterovirus / Sabin-like isolation share.';
+ renderWpvMon(SC);
  const MM=svwMon(SC),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
  el('svw1').style.height='360px';
  HC('svw1',{chart:{type:'line'},title:{text:'AFP cases by month'},subtitle:{text:SC.name+' \u00b7 weekly surveillance log'},xAxis:{categories:MN},yAxis:{title:{text:'AFP cases'},allowDecimals:false},legend:{verticalAlign:'top'},plotOptions:{line:{marker:{enabled:false}}},series:MM.ys.map((y,i)=>({name:String(y),data:MM.a[i]}))});
