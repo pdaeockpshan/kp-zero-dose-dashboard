@@ -311,6 +311,23 @@
    "portal": "EOC surveillance cell weekly updates log + provincial AFP line list (manual download)",
    "note": "Two sources per refresh: the weekly log gives YTD and 2013-2026 yearly indicator histories per district plus division roll-ups, month-wise AFP detection 2019-2026 and the newest pendency snapshot; the line list gives case aggregates only (OPV dose buckets, stool adequacy, notification/investigation timeliness, classification) - no names or addresses are extracted. The `Indicators ` sheet name has a trailing space; its district rows sit above the Grand Total and division rows below it."
   },
+  "afpd": {
+   "label": "AFP case + lab database: EOC master AFP.DBF and AFPLAB.DBF exports (2026 case, timeliness, dose-history and lab-result aggregates)",
+   "const": "AFPD",
+   "extractor": "extract_afpd.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "AFP.DBF",
+    "AFPLAB.DBF"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "EOC AFP case database + polio lab database (manual DBF export)",
+   "note": "Two files per refresh: AFP.DBF is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB.DBF is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Both are dBase III files with fixed-width ASCII fields; the portal writes non-standard field type codes but every value is a string and dates are YYYYMMDD. Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it."
+  },
   "neap": {
    "label": "Upcoming campaign pre-campaign readiness (NEAP district-wise status)",
    "const": "NEAP",
