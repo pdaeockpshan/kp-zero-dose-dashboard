@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 20-Oct-2026 18:44</span>
+  <span class="hupd" id="hUpd">Updated 21-Oct-2026 10:49</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1612,7 +1612,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="cap" id="capSVW"></div>
 </div>
 <div class="card">
-<div class="tblhdr"><h3 style="margin:0">WPV1 cases by month — stacked by area</h3><div class="pills" id="wpvMy"></div></div>
+<div class="tblhdr"><h3 style="margin:0">WPV1 cases by district — stacked by year</h3><div class="pills" id="wpvMy"></div></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px"><button class="btn" id="btnWPVMpptx">Download slide (PPTX)</button><button class="btn" id="btnWPVMjpg">Download JPG</button><button class="btn" id="btnWPVMpng">Download PNG</button><button class="btn" id="btnWPVMcsv">Download table (CSV)</button></div>
 <div id="wpvM" class="ch" style="height:430px"></div>
 <div class="cap" id="capwpvM"></div>
@@ -6715,9 +6715,9 @@ async function wpvMonImgURL(kind){
  await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(new Error('svg raster'));img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);});
  const cv=document.createElement('canvas');cv.width=W*S;cv.height=(H+TB)*S;
  const x=cv.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,cv.width,cv.height);
- x.fillStyle='#0f172a';x.font='bold '+(22*S)+'px "Segoe UI",Arial,sans-serif';
- x.fillText('WPV1 cases by month \u2014 stacked by area',16*S,36*S);
- x.fillStyle='#475569';x.font=(13*S)+'px "Segoe UI",Arial,sans-serif';
+ x.fillStyle='#0f172a';x.font='bold '+(28*S)+'px "Segoe UI",Arial,sans-serif';
+ x.fillText('WPV1 cases by district \u2014 stacked by year',16*S,36*S);
+ x.fillStyle='#475569';x.font=(16*S)+'px "Segoe UI",Arial,sans-serif';
  x.fillText((WPVMSC?WPVMSC.name:'KP (whole province)')+' \u00b7 '+[...WPVMY].sort().join(', ')+' \u00b7 EOC WPV case line list',16*S,58*S);
  x.drawImage(img,0,TB*S,W*S,H*S);
  return kind==='jpeg'?cv.toDataURL('image/jpeg',0.92):cv.toDataURL('image/png');}
@@ -6726,7 +6726,7 @@ async function wpvMonImg(kind){
   const url=await wpvMonImgURL(kind);
   if(!url){toast('Nothing to download \u2014 pick at least one year');return;}
   const a=document.createElement('a');
-  a.href=url;a.download='WPV1_cases_by_month_'+wpvMonSlug()+(kind==='jpeg'?'.jpg':'.png');
+  a.href=url;a.download='WPV1_cases_by_district_'+wpvMonSlug()+(kind==='jpeg'?'.jpg':'.png');
   document.body.appendChild(a);a.click();a.remove();
   toast(kind==='jpeg'?'JPG downloaded':'PNG downloaded');
  }catch(e){console.error(e);toast('Could not create the image');}}
@@ -6734,15 +6734,18 @@ function wpvMonCsv(){
  try{
   if(!WPVMSC){toast('Render the chart first');return;}
   const SC=WPVMSC,dvKey=SC.key.indexOf('DIV:')===0?SC.key.slice(4):null,isD=!dvKey&&SC.key!=='KP',dk=isD?SC.key:null;
-  const keyOf=r=>isD?(r.d===dk?r.d:null):dvKey?(SC.ds.indexOf(r.d)>=0?r.d:null):(r.dv||(typeof D2DV!=='undefined'&&D2DV[r.d])||'Other');
   const yrs=[...WPVMY].sort();
-  const keys=(isD?[dk]:dvKey?SC.ds.slice():[...new Set(WPVH.map(keyOf))].sort()).filter(k=>k!=null);
-  const cnt={};
-  WPVH.forEach(r=>{const y=+String(r.on).slice(0,4); if(!WPVMY.has(y))return; const k=keyOf(r); if(k==null)return; const m=+String(r.on).slice(5,7)-1; const ym=cnt[y]||(cnt[y]={}); const mm=ym[m]||(ym[m]={}); mm[k]=(mm[k]||0)+1;});
-  const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const rows=[];yrs.forEach(y=>{for(let m=0;m<12;m++){const mm=(cnt[y]||{})[m]||{};let t=0;const row=[y,MN[m]];keys.forEach(k=>{const v=mm[k]||0;t+=v;row.push(v);});row.push(t);rows.push(row);}});
   const dnm=k=>(typeof DNAME==='function'?DNAME(k):k);
-  csvDownload('WPV1_cases_by_month_'+wpvMonSlug()+'.csv',['Year','Month'].concat(keys.map(k=>isD||dvKey?dnm(k):k)).concat(['Total']),rows);
+  const inScope=r=>isD?(r.d===dk):dvKey?(SC.ds.indexOf(r.d)>=0):true;
+  const cnt={};
+  WPVH.forEach(r=>{const y=+String(r.on).slice(0,4); if(!WPVMY.has(y)||!inScope(r))return; const c=cnt[r.d]||(cnt[r.d]={}); c[y]=(c[y]||0)+1;});
+  const tot={}; Object.keys(cnt).forEach(d=>{tot[d]=0;for(const y in cnt[d])tot[d]+=cnt[d][y];});
+  let use=Object.keys(tot).filter(d=>tot[d]>0).sort((a,b)=>tot[b]-tot[a]||dnm(a).localeCompare(dnm(b)));
+  const othY={};let othT=0;
+  if(use.length>18){use.slice(18).forEach(d=>{yrs.forEach(y=>{const v=(cnt[d]||{})[y]||0;othY[y]=(othY[y]||0)+v;othT+=v;});});use=use.slice(0,18);}
+  const rows=use.map(d=>{const c=cnt[d]||{};let t=0;const row=[dnm(d)];yrs.forEach(y=>{const v=c[y]||0;t+=v;row.push(v);});row.push(t);return row;});
+  if(othT){const row=['Other districts'];yrs.forEach(y=>row.push(othY[y]||0));row.push(othT);rows.push(row);}
+  csvDownload('WPV1_cases_by_district_'+wpvMonSlug()+'.csv',['District'].concat(yrs.map(String)).concat(['Total']),rows);
  }catch(e){console.error(e);toast('Could not create the CSV');}}
 async function wpvMonPptx(){
  try{
@@ -6750,10 +6753,10 @@ async function wpvMonPptx(){
   if(!ch||!ch.series.length){toast('Nothing to download \u2014 pick at least one year');return;}
   await loadPptx();
   const P=window.PptxGenJS,pptx=new P();
-  pptx.layout='LAYOUT_WIDE';pptx.title='WPV1 cases by month';
+  pptx.layout='LAYOUT_WIDE';pptx.title='WPV1 cases by district';
   const s=pptx.addSlide();s.background={color:'FFFFFF'};
   s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.14,fill:{color:'1F497D'},line:{color:'1F497D'}});
-  s.addText('WPV1 cases by month \u2014 stacked by area',{x:0.5,y:0.24,w:12.3,h:0.55,fontFace:'Segoe UI',fontSize:24,bold:true,color:'1F497D'});
+  s.addText('WPV1 cases by district \u2014 stacked by year',{x:0.5,y:0.24,w:12.3,h:0.55,fontFace:'Segoe UI',fontSize:24,bold:true,color:'1F497D'});
   s.addText((WPVMSC?WPVMSC.name:'KP (whole province)')+' \u00b7 '+[...WPVMY].sort().join(', ')+' \u00b7 EOC WPV case line list',{x:0.5,y:0.84,w:12.3,h:0.35,fontFace:'Segoe UI',fontSize:12,color:'6B7280'});
   const W=ch.chartWidth||900,H=(ch.chartHeight||400)+64;
   let iw=12.43,ih=iw*H/W; if(ih>5.4){ih=5.4;iw=ih*W/H;}
@@ -6761,14 +6764,13 @@ async function wpvMonPptx(){
   const cap=(document.getElementById('capwpvM')||{}).textContent||'';
   s.addText(cap,{x:0.5,y:1.35+ih+0.12,w:12.3,h:Math.max(0.4,6.85-(1.35+ih+0.12)),fontFace:'Segoe UI',fontSize:10.5,color:'374151',valign:'top'});
   s.addShape(pptx.ShapeType.line,{x:0.5,y:7.0,w:12.33,h:0,line:{color:'E5E7EB',width:0.75}});
-  s.addText('WPV1 monthly trend \u00b7 '+(WPVMSC?WPVMSC.name:'KP')+' \u00b7 '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),{x:0.5,y:7.05,w:10.5,h:0.3,fontFace:'Segoe UI',fontSize:9,color:'6B7280'});
-  await saveDeck(pptx,'WPV1_cases_by_month_'+wpvMonSlug()+'_'+new Date().toISOString().slice(0,10)+'.pptx');
+  s.addText('WPV1 district breakdown \u00b7 '+(WPVMSC?WPVMSC.name:'KP')+' \u00b7 '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),{x:0.5,y:7.05,w:10.5,h:0.3,fontFace:'Segoe UI',fontSize:9,color:'6B7280'});
+  await saveDeck(pptx,'WPV1_cases_by_district_'+wpvMonSlug()+'_'+new Date().toISOString().slice(0,10)+'.pptx');
   toast('Slide downloaded');
  }catch(e){console.error(e);toast('Could not create the slide (needs internet for the PPTX library)');}}
 function renderWpvMon(SC){
  const box=document.getElementById('wpvM'); if(!box||typeof WPVH==='undefined'||!WPVH||!WPVH.length)return;
  const dvKey=SC.key.indexOf('DIV:')===0?SC.key.slice(4):null,isD=!dvKey&&SC.key!=='KP',dk=isD?SC.key:null;
- const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
  const ALL=[...new Set(WPVH.map(r=>+String(r.on).slice(0,4)))].sort();
  const yrs=[...WPVMY].sort();
  el('wpvMy').innerHTML='<button class="pill" data-y="all">All years</button>'+ALL.map(y=>'<button class="pill'+(WPVMY.has(y)?' on':'')+'" data-y="'+y+'">'+y+'</button>').join('');
@@ -6779,26 +6781,29 @@ function renderWpvMon(SC){
  el('btnWPVMcsv').onclick=wpvMonCsv;
  el('btnWPVMpptx').onclick=wpvMonPptx;
  if(!yrs.length){box.innerHTML=''; el('capwpvM').textContent='Pick at least one year above.'; return;}
- const keyOf=r=>isD?(r.d===dk?r.d:null):dvKey?(SC.ds.indexOf(r.d)>=0?r.d:null):(r.dv||(typeof D2DV!=='undefined'&&D2DV[r.d])||'Other');
- const keys=isD?[dk]:dvKey?SC.ds.slice():[...new Set(WPVH.map(r=>r.dv||(typeof D2DV!=='undefined'&&D2DV[r.d])||'Other'))].sort();
- const cnt={};
- WPVH.forEach(r=>{const y=+String(r.on).slice(0,4); if(!WPVMY.has(y))return; const k=keyOf(r); if(k==null)return; const m=+String(r.on).slice(5,7)-1; const ym=cnt[y]||(cnt[y]={}); const mm=ym[m]||(ym[m]={}); mm[k]=(mm[k]||0)+1;});
- const tot={}; keys.forEach(k=>tot[k]=0);
- yrs.forEach(y=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const mm=ym[m]||{}; for(const k in mm)if(tot[k]!=null)tot[k]+=mm[k];}});
- const use=keys.filter(k=>tot[k]>0).sort((a,b)=>tot[b]-tot[a]);
- if(isD&&!use.length)use.push(dk);
- const cats=[],pl=[];
- yrs.forEach((y,i)=>{for(let m=0;m<12;m++)cats.push(m===0?MN[m]+'<br><b>'+y+'</b>':MN[m]); if(i)pl.push({color:'#cbd5e1',width:1,value:i*12-0.5});});
  const dnm=k=>(typeof DNAME==='function'?DNAME(k):k);
- const ser=use.map((k,i)=>({name:isD||dvKey?dnm(k):k,color:WPVMC[i%WPVMC.length],data:yrs.reduce((out,y)=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const v=((ym[m]||{})[k])||0; out.push(v?{y:v,dataLabels:{enabled:v>=2}}:null);} return out;},[])}));
- HC('wpvM',{chart:{type:'column'},title:{text:null},subtitle:{text:SC.name+' \u00b7 EOC WPV case line list'},
-  xAxis:{categories:cats,plotLines:pl,labels:{style:{fontSize:'10px'}}},yAxis:{title:{text:'Cases'},allowDecimals:false,min:0},
-  plotOptions:{column:{stacking:'normal',borderRadius:1,dataLabels:{enabled:true,inside:true,color:'#fff',format:'{y}',style:{fontSize:'9px',fontWeight:'600',textOutline:'none'}}}},
+ const inScope=r=>isD?(r.d===dk):dvKey?(SC.ds.indexOf(r.d)>=0):true;
+ const cnt={};
+ WPVH.forEach(r=>{const y=+String(r.on).slice(0,4); if(!WPVMY.has(y)||!inScope(r))return; const c=cnt[r.d]||(cnt[r.d]={}); c[y]=(c[y]||0)+1;});
+ const tot={}; Object.keys(cnt).forEach(d=>{tot[d]=0;for(const y in cnt[d])tot[d]+=cnt[d][y];});
+ let use=Object.keys(tot).filter(d=>tot[d]>0).sort((a,b)=>tot[b]-tot[a]||dnm(a).localeCompare(dnm(b)));
+ const othY={};let othT=0;
+ if(use.length>18){use.slice(18).forEach(d=>{yrs.forEach(y=>{const v=(cnt[d]||{})[y]||0;othY[y]=(othY[y]||0)+v;othT+=v;});});use=use.slice(0,18);}
+ if(isD&&!use.length)use=[dk];
+ const catKeys=use.concat(othT?['__OTH__']:[]);
+ const cats=catKeys.map(d=>d==='__OTH__'?'Other districts':dnm(d));
+ const val=(d,y)=>d==='__OTH__'?(othY[y]||0):((cnt[d]||{})[y]||0);
+ const ser=yrs.map(y=>({name:String(y),color:WPVMC[ALL.indexOf(y)%WPVMC.length],data:catKeys.map(d=>{const v=val(d,y);return v?{y:v,dataLabels:{enabled:v>=3}}:null;})}));
+ HC('wpvM',{chart:{type:'column',style:{fontSize:'13px'}},title:{text:null},subtitle:{text:SC.name+' \u00b7 EOC WPV case line list',style:{color:'#475569',fontSize:'13px'}},
+  xAxis:{categories:cats,labels:{rotation:-38,align:'right',style:{color:'#1f2937',fontSize:'11.5px',fontWeight:'600'}}},
+  yAxis:{title:{text:'Cases',style:{color:'#334155',fontSize:'12px',fontWeight:'600'}},labels:{style:{color:'#334155',fontSize:'11.5px'}},allowDecimals:false,min:0,stackLabels:{enabled:true,style:{color:'#0f172a',fontSize:'11px',fontWeight:'700',textOutline:'2px #ffffff'}}},
+  legend:{itemStyle:{color:'#1f2937',fontSize:'12.5px',fontWeight:'600'}},
+  plotOptions:{column:{stacking:'normal',borderRadius:1,dataLabels:{enabled:true,inside:true,color:'#fff',format:'{y}',style:{fontSize:'10px',fontWeight:'700',textOutline:'1px rgba(0,0,0,0.35)'}}}},
   tooltip:{shared:true},series:ser});
- const T=use.reduce((s,k)=>s+tot[k],0);
- let pk=null; yrs.forEach(y=>{const ym=cnt[y]||{}; for(let m=0;m<12;m++){const mm=ym[m]||{}; let s=0; for(const k in mm)s+=mm[k]; if(s>0&&(!pk||s>pk.n))pk={n:s,y:y,m:m};}});
- const last=WPVH.map(r=>({on:String(r.on),k:keyOf(r)})).filter(x=>x.k!=null).sort((a,b)=>a.on<b.on?1:-1)[0];
- el('capwpvM').textContent=fmt(T)+' WPV1 cases in '+SC.name+' in '+yrs.join(', ')+(pk?' \u2014 peak '+MN[pk.m]+' '+pk.y+' ('+pk.n+').':'.')+' Most recent case: '+(last?new Date(last.on+'-15T12:00:00').toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'\u2013')+'. Months with no case are blank. Source: EOC WPV case line list (month of onset).';
+ const T=use.reduce((s,d)=>s+tot[d],0)+othT;
+ const top=use[0];
+ const last=WPVH.filter(inScope).map(r=>String(r.on)).sort().pop();
+ el('capwpvM').textContent=fmt(T)+' WPV1 cases in '+SC.name+' in '+yrs.join(', ')+(top&&tot[top]>0?' \u2014 most in '+dnm(top)+' ('+fmt(tot[top])+(othT?'; '+fmt(othT)+' more in other districts':'')+').':'.')+' Most recent case: '+(last?new Date(last+'-15T12:00:00').toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'\u2014')+'. Districts with no case in the selected years are not shown. Source: EOC WPV case line list (month of onset).';
 }
 function renderSurvW(){
  if(typeof SURVW==='undefined'||!SURVW||!SURVW.ind||!Object.keys(SURVW.ind.r||{}).length)return;
