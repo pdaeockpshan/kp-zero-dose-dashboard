@@ -1,32 +1,32 @@
 {
  "datasets": {
   "adv": {
-   "at": "2026-10-15T15:04:52+05:00",
-   "chars": 458008,
-   "file_id": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls|1791955631|10058",
-   "payload_sha1": "b5b9e4532bb1223a",
+   "at": "2026-10-22T12:48:23+05:00",
+   "chars": 455588,
+   "file_id": "manual|adv.json",
+   "payload_sha1": "e34ecc6981e0a321",
    "source": {
-    "mtime": 1791955631.3421476,
-    "name": "advance_reports_20261014T044243011Z.xls",
-    "path": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls",
-    "size": 10058
+    "mtime": 1792655228.374387,
+    "name": "adv.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\adv.json",
+    "size": 455588
    },
-   "stamp": "15-Oct-2026 15:04",
-   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,151,312"
+   "stamp": "22-Oct-2026 14:12",
+   "summary": "manual inject"
   },
   "afpd": {
-   "at": "2026-10-22T10:26:49+05:00",
-   "chars": 20170,
+   "at": "2026-10-22T14:23:36+05:00",
+   "chars": 73461,
    "file_id": "C:\\Users\\HD\\Downloads\\AFPLAB.DBF|1792566470|61908992",
-   "payload_sha1": "333ffe4cda2a8712",
+   "payload_sha1": "14a3483f49fc31a9",
    "source": {
     "mtime": 1792566470.2249446,
     "name": "AFPLAB.DBF",
     "path": "C:\\Users\\HD\\Downloads\\AFPLAB.DBF",
     "size": 61908992
    },
-   "stamp": "22-Oct-2026 10:26",
-   "summary": "25075 KP AFP cases 2022-2026, 4184 in 2026 (onset to 2026-10-14, entered to 2026-10-20): adequacy 86.8%, notified <7d 80.4%, investigated <48h 93.3%, 88 zero-dose, 5 WPV1, 384 pending; lab 2026: 11298 specimens, 11066 results (to 2026-10-15), 7 PV1 / 1153 NPEV isolations, median turnaround 15.0d (30.9% within 14d)"
+   "stamp": "22-Oct-2026 14:23",
+   "summary": "25075 KP AFP cases 2022-2026, 4184 in 2026 (onset to 2026-10-14, entered to 2026-10-20): adequacy 86.8%, notified <7d 80.4%, investigated <48h 93.3%, 88 zero-dose, 5 WPV1, 384 pending; lab 2026: 11298 specimens, 11066 results (to 2026-10-15), 7 PV1 / 1153 NPEV isolations, median turnaround 15.0d (30.9% within 14d); month matrix 10 indicators x 37 districts x 5 years"
   },
   "can": {
    "at": "2026-10-14T11:30:33+05:00",
@@ -127,32 +127,46 @@
    "summary": "KP-Special-1-Jul 2026, 30 UCs in 2 districts (BANNU+WAZIR-S Lower), recall 13215/15102"
   },
   "inda": {
-   "at": "2026-10-17T10:55:10+05:00",
-   "chars": 122843,
-   "file_id": "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal\\cov_SNID Sept 2026.xls|1791347850|1938698",
-   "payload_sha1": "e0c14630a271a874",
+   "at": "2026-10-22T12:46:06+05:00",
+   "chars": 122875,
+   "file_id": "manual|inda.json",
+   "payload_sha1": "ae3e0edcb5ca7947",
    "source": {
-    "mtime": 1791347850.7513754,
-    "name": "cov_SNID Sept 2026.xls",
-    "path": "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal\\cov_SNID Sept 2026.xls",
-    "size": 1938698
+    "mtime": 1792653939.4231758,
+    "name": "inda.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\inda.json",
+    "size": 122875
    },
-   "stamp": "17-Oct-2026 10:52",
-   "summary": "1402 UCs, 37 districts, target 6,348,405, vaccinated 6,231,909, still missed 125,592"
+   "stamp": "22-Oct-2026 14:12",
+   "summary": "manual inject"
+  },
+  "mis": {
+   "at": "2026-10-22T12:46:04+05:00",
+   "chars": 327012,
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls|1792652219|10179",
+   "payload_sha1": "48f6f1f6e764589d",
+   "source": {
+    "mtime": 1792652219.1259816,
+    "name": "summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "size": 10179
+   },
+   "stamp": "22-Oct-2026 14:12",
+   "summary": "MIS 3,719 UC-campaign rows (Sept 1,402 / May 928 / Apr 1,389) from the newest readable export per campaign; Sept rows from the 22-Oct-2026 SNID Sept 2026 summary export"
   },
   "mism": {
    "at": "2026-10-12T13:46:32+05:00",
    "chars": 67,
-   "file_id": "manual|mism_test.json",
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls|1792652219|10179",
    "payload_sha1": "fc59cd1abfe3c8b1",
    "source": {
-    "mtime": 1791794751.7506225,
-    "name": "mism_test.json",
-    "path": "C:\\Users\\HD\\.qoder\\tmp\\mism_test.json",
-    "size": 68
+    "mtime": 1792652219.1259816,
+    "name": "summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "size": 10179
    },
-   "stamp": "12-Oct-2026 13:46",
-   "summary": "manual inject"
+   "stamp": "22-Oct-2026 14:12",
+   "summary": "MISM 3 campaign slots, newest first: SNID Sept-26, SNID May-26, NID Apr-26"
   },
   "mon": {
    "at": "2026-10-14T13:35:16+05:00",
@@ -279,14 +293,36 @@
    },
    "stamp": "19-Oct-2026 16:12",
    "summary": "1402 UCs, 37 districts (Afghan bordering 7, Core District 2, Endemic 7, High Risk 1, Rest of KP 20), 55 Afghan-bordering UCs, aliases: WAZIR-S, legacy AFG aliases: WAZIR-S 5"
+  },
+  "zd": {
+   "at": "2026-10-22T12:45:52+05:00",
+   "chars": 395112,
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls|1792652219|10179",
+   "payload_sha1": "6765db5230646152",
+   "source": {
+    "mtime": 1792652219.1259816,
+    "name": "summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls",
+    "size": 10179
+   },
+   "stamp": "22-Oct-2026 14:12",
+   "summary": "SNID Sept 2026 UC-wise summary coverage export, 22-Oct-2026 11:55 stamp; 1,402 report rows joined by UC code against the 1,417 tracked UCs (15 absent, reported null); 62,128 zero-dose children reported, 19,144 covered in that same report, 975 UCs with a covered figure, 321 explicit zeros, 427 reported with no coverage figure"
   }
  },
+ "last_push": {
+  "at": "2026-10-22T14:50:04+05:00",
+  "chars": 15164273,
+  "internal_md5": "10fea85e12419a7f68f69e366ca5fed5",
+  "master_md5": "7e6ae8b8355b35963eb8c5abd985a0de",
+  "note": "Surveillance tab: year and month-of-onset filter on the AFP KPI cards, district table, charts and CSV download (month matrix added to AFPD; +5,410 chars in all four builds). Timestamp refresh 22-Oct-2026 14:50 PKT",
+  "stamp": "22-Oct-2026 14:50"
+ },
  "last_run": {
-  "at": "2026-10-22T10:26:49+05:00",
+  "at": "2026-10-22T14:23:36+05:00",
   "datasets": [
    "afpd"
   ],
   "dry_run": false,
-  "stamp": "22-Oct-2026 10:26"
+  "stamp": "22-Oct-2026 14:23"
  }
 }

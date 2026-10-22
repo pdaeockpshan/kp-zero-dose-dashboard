@@ -36,7 +36,7 @@ ASOF_RE = re.compile(r'(20\d{6})T(\d{6})')
 # campaigns that also appear on the dashboard's ZD reported & covered page, with the
 # ZD row keys for this campaign's reported/covered (labels mirror the ZD tab).
 ZD_CAMPS = {'NID APR 26': ('rA', 'cA'), 'SNID MAY 2026': ('rM', 'cM'),
-            'SNID SEPT 2026': ('rS', None)}
+            'SNID SEPT 2026': ('rS', 'cS')}
 
 
 def norm_label(s):

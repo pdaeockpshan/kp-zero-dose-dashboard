@@ -326,7 +326,7 @@
     "~$*"
    ],
    "portal": "EOC AFP case database + polio lab database (manual DBF export)",
-   "note": "Two files per refresh: AFP.DBF is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB.DBF is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Both are dBase III files with fixed-width ASCII fields; the portal writes non-standard field type codes but every value is a string and dates are YYYYMMDD. Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it."
+   "note": "Two files per refresh: AFP.DBF is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB.DBF is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Both are dBase III files with fixed-width ASCII fields; the portal writes non-standard field type codes but every value is a string and dates are YYYYMMDD. Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it. Since 22-Oct-2026 the payload also carries mk (ten indicator keys) and mm (those ten per district, per year, per onset month), which is what the Surveillance tab year / month KPI filter reads; the extractor cross-checks every district-month column against dm, dy and the province y totals and aborts on any drift."
   },
   "neap": {
    "label": "Upcoming campaign pre-campaign readiness (NEAP district-wise status)",
@@ -389,16 +389,19 @@
    "const": "INDA",
    "extractor": "extract_inda.py",
    "roots": [
-    "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal"
+    "C:\\Users\\HD\\Downloads",
+    "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal",
+    "D:\\AMAZON DATA"
    ],
    "patterns": [
+    "summary_SNID Sept*.xls",
     "cov_SNID Sept*.xls"
    ],
    "exclude": [
     "~$*"
    ],
-   "portal": "EOC summary coverage report (portal > coverage > export UC-wise), saved by the legacy pipeline as cov_SNID Sept 2026.xls",
-   "note": "Fills the Sept-2026 gap in the compiled-indicators export: the data pack's Admin table gets SNID Sept 2026 from the same UC-wise coverage workbook as the Missed children tab. Only admin coverage/missed columns are available; MP target, same-day coverage, guest, HRMP mobile and school stay not reported. Drop the new coverage export into _portal and run --only inda --force."
+   "portal": "EOC summary coverage report (portal > coverage > export UC-wise): the direct export arrives as summary_<campaign>_<date>_<time>.xls with the table in the sibling <name>_files/sheet001.htm; the legacy pipeline's saved copy is cov_SNID Sept 2026.xls",
+   "note": "Fills the Sept-2026 gap in the compiled-indicators export: the data pack's Admin table gets SNID Sept 2026 from the same UC-wise coverage workbook as the Missed children tab. Only admin coverage/missed columns are available; MP target, same-day coverage, guest, HRMP mobile and school stay not reported, and the report's Zero Dose Covered column has no slot in INDIC's 21 admin keys (it feeds ZD and ADV instead). Keep a shell export together with its _files folder - covsept.py resolves the shell. Newest mtime wins, and the 22-Oct-2026 export genuinely revises the round (vaccinated 6,235,824, still missed 121,677, zero-dose covered 19,144). Drop the new export in Downloads and run --only inda."
   },
   "epm": {
    "label": "EPI month index (EMETA) with the 2024/2025 monthly exports",
@@ -492,6 +495,12 @@
    "const": [
     "ZD"
    ],
+   "extractor": "extract_zdcov.py",
+   "slots": {
+    "NID Apr 26": "A",
+    "SNID May 2026": "M",
+    "SNID Sept 2026": "S"
+   },
    "roots": [
     "D:\\AMAZON DATA"
    ],
@@ -499,7 +508,7 @@
     "*ZERO DOSE*COVERED*.xlsx"
    ],
    "portal": "IDIMS > zero dose reported/covered export, one per campaign, saved as _portal\\cov_<campaign>.xls in the legacy folder",
-   "howto": "Update D:\\AMAZON DATA\\ZERO DOSE REPORTED AND COVERED.xlsx and/or drop new cov_<campaign>.xls overlays into C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal, then rebuild and harvest (see SOURCES.md). ZD is NOT produced by the Comparison Report - do not confuse it with the zd entry above."
+   "howto": "Update D:\\AMAZON DATA\\ZERO DOSE REPORTED AND COVERED.xlsx and/or drop new cov_<campaign>.xls overlays into C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal, then rebuild and harvest (see SOURCES.md). ZD is NOT produced by the Comparison Report - do not confuse it with the zd entry above. Coverage-only refresh (adds a campaign's covered/pct/band to the UC table): run `python _refresh/extract_zdcov.py`, then `python _refresh/refresh.py inject --const ZD --from _refresh/out/zd.json`. It reads the same UC-wise coverage reports as the mism dataset (manual.mism.scans, newest export per campaign) and only touches the slot named S in `slots`, after proving that report's reported-ZD and household-target columns against const ZD row by row. April and May keep whatever the workbook already carried. Current source (22-Oct-2026): C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls with its _files folder - the campaign's own UC-wise summary coverage report, which carries both the Zero Routine reported count (rS) and the Zero Dose Covered count (cS/pS/bS), so the Sept covered figure belongs to Sept itself and the following round (SNID Nov-26) has not run yet."
   },
   "val": {
    "label": "ZD Validation (child-level app export)",
@@ -524,7 +533,8 @@
    "const": [
     "EPI",
     "EPIM",
-    "EMETA"
+    "EMETA",
+    "EPIYTD"
    ],
    "roots": [
     "D:\\AMAZON DATA",
@@ -534,7 +544,21 @@
     "Consolidated_Facility_Wise_Vaccination*.xls*"
    ],
    "portal": "IDIMS > Consolidated facility-wise vaccination report",
-   "howto": "EMETA/EPIM now refresh automatically (auto.epm + auto.epim). The UC-level EPI payload (const EPI, Jan-Sep 2026 YTD) is still rebuilt with _pipeline\\_epi_jansep_patch.py in the legacy folder and injected here until 2026 monthly exports exist."
+   "howto": "EMETA/EPIM refresh automatically (auto.epm + auto.epim) from the single-month exports and are never derived from a year-to-date file. The UC-level payload is rebuilt from the UC-wise export opened for the year-to-date period (Report Type = all_ucs): python _refresh/extract_epi_ytd.py --source \"<file>.xls\" --out _refresh/out/epi_ytd.json, then python _refresh/refresh.py inject --const EPI --from _refresh/out/epi_ytd.json and --const EPIYTD --from _refresh/out/epi_ytd.meta.json. The extractor refuses any UC code, name or district that differs from what is embedded, so the reviewed polio UC matching can never be silently re-made; rows with no district are dropped only when every value in them is zero."
+  },
+  "epidrop": {
+   "label": "Routine dropout report (district level)",
+   "const": [
+    "EPIDROP"
+   ],
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Dropouts_Report*.xls"
+   ],
+   "portal": "IDIMS > EPI dropouts report (district wise)",
+   "howto": "python _refresh/extract_epi_drop.py --source \"<file>.xls\" --out _refresh/out/epi_drop.json, then inject --const EPIDROP. Published dropout % per district for five dose pairs; the province Total row is kept as the report's own all-KP figure and is never averaged across districts. Reported rates differ from the dashboard's coverage-derived dropout columns (different arithmetic, sex-split cohorts) - both are shown side by side on the EPI coverage page."
   },
   "cq": {
    "label": "Campaign quality / intra-campaign operational indicators",
@@ -556,14 +580,42 @@
     "MIS",
     "MISM"
    ],
-   "roots": [
-    "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"
+   "extractor": "extract_mis.py",
+   "campaigns": [
+    "NID Apr 26",
+    "SNID May 2026",
+    "SNID Sept 2026"
    ],
-   "patterns": [
-    "cov_*.xls"
+   "scans": [
+    {
+     "roots": [
+      "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_portal"
+     ],
+     "patterns": [
+      "cov_*.xls"
+     ]
+    },
+    {
+     "roots": [
+      "C:\\Users\\HD\\Downloads"
+     ],
+     "patterns": [
+      "summary_NID Apr 26*.xls",
+      "summary_SNID May 2026*.xls",
+      "summary_SNID Sept 2026*.xls"
+     ]
+    },
+    {
+     "roots": [
+      "C:\\Users\\HD\\Downloads\\ZD_Dashboard\\_portal"
+     ],
+     "patterns": [
+      "cov_SNID Sept*.xls"
+     ]
+    }
    ],
-   "portal": "EOC dashboard > per-campaign coverage export (login required)",
-   "howto": "Save one coverage export per campaign as _portal\\cov_<campaign>.xls (the .xls is really an HTML table), then rebuild and harvest. Not derived from the val_*.csv validation exports - those feed the val entry."
+   "portal": "EOC dashboard > per-campaign coverage export (login required), UC-wise Summary report",
+   "howto": "Run `python _refresh/extract_mis.py`, then inject both payloads: `python _refresh/refresh.py inject --const MIS --from _refresh/out/mis.json` and `--const MISM --from _refresh/out/mism.json` (MIS/MISM stay separate payloads, so refresh.py run cannot drive them). For each tracked campaign the newest readable export wins: the saved _portal\\cov_<campaign>.xls copies and the direct summary_<campaign>_<date>_<time>.xls exports (keep its _files folder alongside) hold identical figures for Apr-26 and May-26, so a fresh Sept round export simply revises that campaign. Add a new round to `campaigns` and to the Downloads patterns when it is reported; the extractor aborts if a tracked campaign has no readable report. Not derived from the val_*.csv validation exports - those feed the val entry. Current sources (22-Oct-2026): Apr-26 and May-26 still from the saved _portal copies, Sept-26 from C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls - 3,719 rows in total (Sept 1,402, May 928, Apr 1,389)."
   },
   "surv": {
    "label": "Surveillance (AFP + district surveillance)",

@@ -34,6 +34,8 @@ Payload: {"src":..,"asof":..,"onset":..,"lsrc":..,"lcoll":..,"lres":..,
           "d":{district:[n,ad,n7,i48,zd]},
           "dy":{district:[[CK values] for each year in yrs]},
           "dm":{district:[[12 monthly case counts] for each year in yrs]},
+          "mk":[n,ad,n7,i48,zd,du,c1,cw,cp,c3],
+          "mm":{district:[[[12 counts per mk metric] for each year in yrs]]},
           "zm":{district:[[12 discarded],[12 pending],[12 confirmed]]},
           "lab":{"sm":[12],"rm":[12],"sp":..,"rs":..,"pv1":..,"npev":..,
                  "tt":..,"t14":..}}
@@ -41,7 +43,12 @@ CK: n,ad,n7,i48,zd,du,c1,cw,cp,c3,d1,d2,d3,zp,zc,zw,zi. The added dose
 groups are 1, 2 and 3+; zp/zc/zw are zero-dose pending/discarded/confirmed
 (CLASS 1 or 2), and zi requires zero doses and ADEQ == INADEQ. zi overlaps
 those classification groups. zm is zero-dose only, 2026 only; months are Jan-Dec.
-Legacy 2022 WAZIR-S is retained separately as WAZIR-S (undivided) in dy/dm.
+mm is the month-of-onset breakdown of the ten indicators the surveillance KPI
+cards compute (mk), per district and per year - it lets a year and month pick
+re-aggregate cases, stool adequacy, timeliness, pending and zero-dose for any
+month, which dm (cases only) and zm (2026 zero-dose only) cannot. Each mk cell
+is asserted against its dy year total and each district-year row against y.
+Legacy 2022 WAZIR-S is retained separately as WAZIR-S (undivided) in dy/dm/mm.
 Lab turnaround includes valid report >= collection pairs collected in 2026.
 """
 import argparse
@@ -62,6 +69,8 @@ CK = ['n', 'ad', 'n7', 'i48', 'zd', 'du', 'c1', 'cw', 'cp', 'c3',
       'd1', 'd2', 'd3', 'zp', 'zc', 'zw', 'zi']
 DK = ['n', 'ad', 'n7', 'i48', 'zd']
 ZK = ['zc', 'zp', 'zw']
+# month-of-onset breakdown: the indicators the surveillance KPI cards need for any year+month
+MK = ['n', 'ad', 'n7', 'i48', 'zd', 'du', 'c1', 'cw', 'cp', 'c3']
 RENAME = {'WAZIR-S LOWER': 'WAZIR-S Lower', 'WAZIR-S UPPER': 'WAZIR-S Upper'}
 UNDIVIDED = 'WAZIR-S (undivided)'
 
@@ -207,6 +216,7 @@ def build_case(path, repo):
     history_dists = dists + [UNDIVIDED]
     dy = {k: {yr: dict.fromkeys(CK, 0) for yr in YRS} for k in history_dists}
     dm = {k: {yr: [0] * 12 for yr in YRS} for k in history_dists}
+    mm = {k: {yr: [[0] * 12 for _ in MK] for yr in YRS} for k in history_dists}
     zm = {k: [[0] * 12 for _ in ZK] for k in dists}
     maxon = maxen = None
     skip = unknown = 0
@@ -241,6 +251,8 @@ def build_case(path, repo):
         mi = onset.month - 1
         mon[yr][mi] += inc['n']
         dm[k][yr][mi] += inc['n']
+        for xi, key in enumerate(MK):
+            mm[k][yr][xi][mi] += inc[key]
         if yr == 2026:
             for zi, key in enumerate(ZK):
                 zm[k][zi][mi] += inc[key]
@@ -269,6 +281,15 @@ def build_case(path, repo):
             validate_case_metrics(dy[k][yr], '%s %d' % (k, yr))
             if sum(dm[k][yr]) != dy[k][yr]['n']:
                 raise SystemExit('ERR afpd %s %d monthly total != cases' % (k, yr))
+            if mm[k][yr][0] != dm[k][yr]:
+                raise SystemExit('ERR afpd %s %d month matrix case row != dm' % (k, yr))
+            for xi, key in enumerate(MK):
+                if sum(mm[k][yr][xi]) != dy[k][yr][key]:
+                    raise SystemExit('ERR afpd %s %d monthly %s total != year %s' % (k, yr, key, key))
+        for xi, key in enumerate(MK):
+            if sum(sum(mm[k][yr][xi]) for k in history_dists) != y[yr][key]:
+                raise SystemExit('ERR afpd %d district monthly %s total != province %s'
+                                 % (yr, key, key))
     for zi, key in enumerate(ZK):
         if sum(sum(zm[k][zi]) for k in dists) != y[2026][key]:
             raise SystemExit('ERR afpd 2026 monthly %s total != year total' % key)
@@ -279,7 +300,7 @@ def build_case(path, repo):
         for mi in range(12):
             if sum(zm[k][zi][mi] for zi in range(len(ZK))) > dm[k][2026][mi]:
                 raise SystemExit('ERR afpd %s 2026 month %d zero-dose total > cases' % (k, mi + 1))
-    return y, mon[2026], d, dy, dm, zm, wpv, maxon, maxen, skip
+    return y, mon[2026], d, dy, dm, mm, zm, wpv, maxon, maxen, skip
 
 
 def build_lab(path):
@@ -344,7 +365,7 @@ def main():
     print('SRC afpd case %s' % afp)
     print('SRC afpd lab %s' % lab)
 
-    y, mon, d, dy, dm, zm, wpv, maxon, maxen, skip = build_case(afp, cfg['repo'])
+    y, mon, d, dy, dm, mm, zm, wpv, maxon, maxen, skip = build_case(afp, cfg['repo'])
     labd, maxc, maxr = build_lab(lab)
 
     afpd = {'src': os.path.basename(afp), 'asof': maxen.strftime('%d-%b-%Y'),
@@ -355,6 +376,7 @@ def main():
             'mon26': mon, 'd': {k: [d[k][x] for x in DK] for k in d},
             'dy': {k: [[dy[k][yr][x] for x in CK] for yr in YRS] for k in dy},
             'dm': {k: [dm[k][yr] for yr in YRS] for k in dm},
+            'mk': MK, 'mm': {k: [mm[k][yr] for yr in YRS] for k in mm},
             'zm': zm, 'lab': labd}
     js = srcutil.dumps(afpd)
     dest = a.out or os.path.join(srcutil.OUT, 'afpd.json')
@@ -364,13 +386,14 @@ def main():
     summary = ('%d KP AFP cases %d-%d, %d in 2026 (onset to %s, entered to %s): adequacy %s%%, '
                'notified <7d %s%%, investigated <48h %s%%, %d zero-dose, %d WPV1, %d pending; '
                'lab 2026: %d specimens, %d results (to %s), %d PV1 / %d NPEV isolations, '
-               'median turnaround %sd (%s%% within 14d)'
+               'median turnaround %sd (%s%% within 14d); month matrix %s indicators x '
+               '%s districts x %s years'
                % (y[2022]['n'] + y[2023]['n'] + y[2024]['n'] + y[2025]['n'] + y[2026]['n'],
                   YRS[0], YRS[-1], y26['n'], maxon, maxen,
                   pc(y26['ad'], y26['n']), pc(y26['n7'], y26['n']), pc(y26['i48'], y26['n']),
                   y26['zd'], y26['c1'], y26['cp'],
                   labd['sp'], labd['rs'], maxr, labd['pv1'], labd['npev'],
-                  labd['tt'], labd['t14']))
+                  labd['tt'], labd['t14'], len(MK), len(mm), len(YRS)))
     print('OK afpd %d %s' % (len(js), summary))
 
 
