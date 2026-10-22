@@ -310,12 +310,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-22T14:50:04+05:00",
-  "chars": 15164273,
-  "internal_md5": "10fea85e12419a7f68f69e366ca5fed5",
-  "master_md5": "7e6ae8b8355b35963eb8c5abd985a0de",
-  "note": "Surveillance tab: year and month-of-onset filter on the AFP KPI cards, district table, charts and CSV download (month matrix added to AFPD; +5,410 chars in all four builds). Timestamp refresh 22-Oct-2026 14:50 PKT",
-  "stamp": "22-Oct-2026 14:50"
+  "at": "2026-10-22T15:38:06+05:00",
+  "chars": 15164983,
+  "internal_md5": "63fe9416415b16d285699b0f37522abe",
+  "master_md5": "19a3279d1daffc7bca748d42d3acee43",
+  "note": "Labelling: SNID Sept-26 zero-dose covered figures are flagged as the round's own self-reported coverage, not yet reconciled or confirmed by the following round (ZD page hint, UC table caption, coverage chart caption, home KPI and the Summary insight; +710 chars). Timestamp refresh 22-Oct-2026 15:38 PKT",
+  "stamp": "22-Oct-2026 15:38"
  },
  "last_run": {
   "at": "2026-10-22T14:23:36+05:00",

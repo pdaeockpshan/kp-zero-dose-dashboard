@@ -56,6 +56,49 @@ def source_line(entry):
     return rec, '%s  (%s, %s)' % (rec['path'], srcutil.mtime_str(rec), size)
 
 
+def payload_would_change(ds, e, rec, head):
+    """Regenerate this payload into a throwaway file and compare it with the embedded one.
+
+    A file-id mismatch alone proves nothing: a year-to-date export can never feed the monthly
+    archive, and a dataset injected from out/*.json records that path instead of the export it
+    was built from, so both look stale for ever. Only a payload that actually differs is stale.
+    """
+    out_path = os.path.join(srcutil.OUT, 'probe_%s.json' % e['const'].lower())
+    try:
+        extract(ds, e, out_path, rec['path'])
+        fresh = srcutil.read_text(out_path).strip()
+        json.loads(fresh)
+    finally:
+        if os.path.exists(out_path):
+            os.remove(out_path)
+    return fresh != dashpatch.get_payload(head, e['const']).strip()
+
+
+def applied_after(last, rec):
+    """True when the recorded apply happened at or after this file was written.
+
+    A refresh driven from a generated out/<const>.json records that path, not the export behind
+    it, so its file id can never match a discovered file and the dataset would look stale for
+    ever. Wall-clock order is the honest cheap test for those.
+    """
+    at = (last or {}).get('at') or ''
+    try:
+        when = datetime.datetime.strptime(at[:16], '%Y-%m-%dT%H:%M')
+    except ValueError:
+        return False
+    return when >= datetime.datetime.fromtimestamp(rec['mtime'])
+
+
+def deep_verdict(ds, e, rec, head):
+    """Never let a probe failure masquerade as a verdict about the data."""
+    try:
+        changed = payload_would_change(ds, e, rec, head)
+    except Exception as ex:
+        why = (str(ex).strip().splitlines() or [ex.__class__.__name__])[-1]
+        return 'DEEP CHECK FAILED - %s' % why[:110]
+    return 'STALE - payload would change' if changed else 'up to date (newest export adds nothing)'
+
+
 def cmd_status(cfg, a):
     st = srcutil.load_state()
     now = pkt_now()
@@ -74,8 +117,12 @@ def cmd_status(cfg, a):
             verdict = 'NEVER APPLIED'
         elif last.get('file_id') == fid:
             verdict = 'up to date'
+        elif a.deep and rec:
+            verdict = deep_verdict(ds, e, rec, head)
+        elif rec and applied_after(last, rec):
+            verdict = 'up to date (applied after this export)'
         else:
-            verdict = 'STALE - newer export waiting'
+            verdict = 'NEWER FILE THAN LAST APPLY - run status --deep to check the payload'
         payload = dashpatch.get_payload(head, e['const'])
         rows.append((ds, e, rec, verdict))
         print('  %-4s %-8s %-46s %s' % (ds, e['const'], e['label'][:46], verdict))
@@ -96,9 +143,12 @@ def cmd_status(cfg, a):
             print('         newest : %s' % desc)
         print('         howto  : %s' % e.get('howto', '-'))
     print('')
-    stale = [r[0] for r in rows if r[3].startswith('STALE') or r[3] == 'NEVER APPLIED']
+    stale = [r[0] for r in rows if r[3].startswith(('STALE', 'NEWER FILE')) or r[3] == 'NEVER APPLIED']
     print('next: %s' % ('python _refresh/refresh.py run --only %s' % ','.join(stale) if stale
                          else 'all auto sources up to date - nothing to refresh'))
+    if any(r[3].startswith('NEWER FILE') for r in rows):
+        print('     python _refresh/refresh.py status --deep  regenerates those payloads and reports only '
+              'the ones that actually differ')
     if a.json:
         print(json.dumps({'auto': [{'id': r[0], 'verdict': r[3],
                                     'source': r[2]} for r in rows]}, default=str, indent=1))
@@ -418,6 +468,8 @@ def main():
 
     s = sub.add_parser('status', parents=[common], help='show every dataset, its newest source file and whether it is stale')
     s.add_argument('--json', action='store_true')
+    s.add_argument('--deep', action='store_true',
+                   help='for each file-id mismatch, regenerate the payload and report whether it actually differs (slow)')
 
     r = sub.add_parser('run', parents=[common], help='re-extract stale file-based datasets and swap them into all 4 variants')
     r.add_argument('--only', help='comma-separated dataset ids (default: all auto)')

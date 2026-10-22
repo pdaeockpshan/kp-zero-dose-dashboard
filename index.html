@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 22-Oct-2026 14:50</span>
+  <span class="hupd" id="hUpd">Updated 22-Oct-2026 15:38</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1157,7 +1157,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 
 <!-- ZD REPORTED & COVERED: OVERVIEW -->
 <section class="pane" id="p-zov">
-<div class="hint">Data: <b>ZERO DOSE REPORTED AND COVERED.xlsx</b> · NID Apr-26 (1,417 UCs, 36 districts), SNID May-26 (928 UCs, 23 districts), SNID Sept-26 (1,402 UCs) · all 37 districts. Coverage % = ZD covered ÷ ZD reported. <b>SNID Sept-26 coverage is now reported</b> (975 of 1,402 UCs gave figures), so coverage, gaps and ratings follow SNID Sept-26 as the latest campaign. UC trend labels (Persistent low, Improved, Declined) still compare NID April with SNID May, which is how they are computed.</div>
+<div class="hint">Data: <b>ZERO DOSE REPORTED AND COVERED.xlsx</b> · NID Apr-26 (1,417 UCs, 36 districts), SNID May-26 (928 UCs, 23 districts), SNID Sept-26 (1,402 UCs) · all 37 districts. Coverage % = ZD covered ÷ ZD reported. <b>SNID Sept-26 coverage is now reported</b> (975 of 1,402 UCs gave figures), so coverage, gaps and ratings follow SNID Sept-26 as the latest campaign. <b>Sept provenance:</b> those covered figures are SNID Sept-26's own UC-wise summary report, pulled 22-Oct-2026 — self-reported for the round, not yet reconciled or confirmed by the following round (SNID Nov-26 has not run). April and May are the reconciled workbook columns. UC trend labels (Persistent low, Improved, Declined) still compare NID April with SNID May, which is how they are computed.</div>
 <div class="kpis">
 <div class="card"><div class="kl">ZD reported by campaign</div><div class="kv" id="z1" style="font-size:21px">–</div><div class="ks" id="z1s"></div></div>
 <div class="card"><div class="kl">Coverage % · like-for-like UCs</div><div class="kv" id="z2">–</div><div class="ks" id="z2s"></div></div>
@@ -1176,7 +1176,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card">
 <div class="tblhdr"><h3 style="margin:0">All UCs: reported and covered, by campaign</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt" id="cntZAll"></span><button class="btn" id="btnZCSVall">Download (CSV)</button></div></div>
 <div class="scroll"><table id="tZAll"></table></div>
-<div class="cap">Click a column header to sort, or click a district to filter to it. Bands: Good 90–110% · Moderate 80–90% · Low 50–80% · Critical &lt;50% · Verify &gt;110% (more covered than reported; check the data). "–" = UC not in that campaign or coverage not reported. Bar Swat's Sept UCs are matched to their April Swat UCs by tehsil and UC name.</div>
+<div class="cap">Click a column header to sort, or click a district to filter to it. Bands: Good 90–110% · Moderate 80–90% · Low 50–80% · Critical &lt;50% · Verify &gt;110% (more covered than reported; check the data). "–" = UC not in that campaign or coverage not reported. Bar Swat's Sept UCs are matched to their April Swat UCs by tehsil and UC name. The Sept columns are SNID Sept-26's own reported coverage — a UC showing 0 covered against reported ZDs may simply not have recorded it, and these figures have not been re-checked by a later round.</div>
 </div>
 </section>
 
@@ -2704,7 +2704,7 @@ function renderZOv(){
    {type:'column',name:'Covered',color:C.prim,data:CPS.map(cp=>a['nc'+cp]?a['c'+cp]:null)},
    {type:'line',name:'Coverage %',yAxis:1,color:C.high,marker:{radius:5},tooltip:{valueSuffix:'%',valueDecimals:1},dataLabels:{...dl,format:'{y:.1f}%',style:{...dl.style,fontWeight:'600',color:C.high}},
     data:CPS.map(cp=>a['p'+cp]==null?null:+a['p'+cp].toFixed(1))}]});
- el('capz1').textContent=`Coverage % uses only UCs that reported coverage (${a.ncA} in April, ${a.ncM} in May${SCOV?`, ${a.ncS} in Sept`:''}). ${SCOV?`Sept coverage was reported by ${a.ncS} of ${a.nS} Sept UCs, so the Sept percentages rest on those.`:'Sept "covered" has not been reported yet, so Sept shows reported ZDs only.'} The May SNID covered fewer districts, so its total is lower.`;
+ el('capz1').textContent=`Coverage % uses only UCs that reported coverage (${a.ncA} in April, ${a.ncM} in May${SCOV?`, ${a.ncS} in Sept`:''}). ${SCOV?`Sept coverage was reported by ${a.ncS} of ${a.nS} Sept UCs, so the Sept percentages rest on those, and they are SNID Sept-26's own reported figures — not yet reconciled or confirmed by the following round.`:'Sept "covered" has not been reported yet, so Sept shows reported ZDs only.'} The May SNID covered fewer districts, so its total is lower.`;
 
  const G=groupBy(cur,L.key);
  const g3=G.filter(x=>x['g'+LCP]>0||x.gA>0).sort((x,y)=>y['g'+LCP]-x['g'+LCP]||y.gA-x.gA).slice(0,15);
@@ -3041,7 +3041,7 @@ function renderSummary(){
  // 1. reported & covered
  el('s1a').innerHTML=`${fmt(z.rA)}<small> → </small>${fmt(z.rM)}`+(ZSAME?'':`<small> → </small>${fmt(z.rS)}`);
  el('s1as').textContent=`Apr ${z.nA} · May ${z.nM}`+(ZSAME?'':` · Sept ${z.nS} UCs`);
- el('s1b').textContent=fmt(z['c'+LCP]); el('s1bs').textContent=`of ${fmt(z['rc'+LCP])} reported in ${CAMP[LCP]} UCs with coverage data`;
+ el('s1b').textContent=fmt(z['c'+LCP]); el('s1bs').textContent=`of ${fmt(z['rc'+LCP])} reported in ${CAMP[LCP]} UCs with coverage data${LCP==='S'?' · own report, not yet confirmed by a later round':''}`;
  el('s1c').innerHTML=SCOV?`${pc(z.lf3A)}<small> → </small>${pc(z.lf3S)}`:`${pc(z.lfA)}<small> → </small>${pc(z.lfM)}`; el('s1c').style.color=colCov(SCOV?z.lf3S:z.lfM);
  const dd=SCOV?((z.lf3A!=null&&z.lf3S!=null)?z.lf3S-z.lf3A:null):((z.lfA!=null&&z.lfM!=null)?z.lfM-z.lfA:null);
  el('s1cs').innerHTML=dd==null?'No UCs with coverage in all campaigns':`<span class="${dd>=0?'up':'dn'}">${dd>=0?'▲ +':'▼ '}${dd.toFixed(1)} pts</span> · ${SCOV?z.nL3:z.nL} UCs like-for-like`;
@@ -3145,7 +3145,7 @@ function renderSummary(){
  const Lr3=SCOV?{a:z.lf3A,b:z.lf3S,n:z.nL3,c:'all three',g:z.gS,cr:z.crS}:{a:z.lfA,b:z.lfM,n:z.nL,c:'both',g:z.gM,cr:z.crM};
  if(Lr3.a!=null&&Lr3.b!=null)I.push(`<b>① Coverage ${Lr3.b>=Lr3.a?'improved':'fell'} from ${pc(Lr3.a)} in NID April to ${pc(Lr3.b)} in ${SCOV?CAMP.S:CAMP.M}</b> across ${Lr3.n} UCs with coverage in ${Lr3.c}. ${fmt(Lr3.g)} children reported in ${SCOV?'Sept':'May'} were not covered${Lr3.cr?`, and ${Lr3.cr} UCs covered less than half`:''}.`);
  else if(zl.p!=null)I.push(`<b>① ZD coverage is ${pc(zl.p)}</b> (${zl.cp}); ${fmt(zl.g)} reported children were not covered.`);
- if(!ZSAME&&z.lsA)I.push(`<b>SNID Sept reported ${fmt(z.rS)} zero-dose children</b>; in the same UCs that is ${sgn((z.lsS/z.lsA-1)*100,0)}% vs NID April. ${SCOV?`Sept coverage was reported for ${z.ncS} of ${z.nS} of those UCs and came to ${pc(z.pS)}, leaving ${fmt(z.gS)} children uncovered.`:'Coverage for Sept has not been reported yet.'}`);
+ if(!ZSAME&&z.lsA)I.push(`<b>SNID Sept reported ${fmt(z.rS)} zero-dose children</b>; in the same UCs that is ${sgn((z.lsS/z.lsA-1)*100,0)}% vs NID April. ${SCOV?`Sept coverage was reported for ${z.ncS} of ${z.nS} of those UCs and came to ${pc(z.pS)} (the round's own report, not yet confirmed by the next round), leaving ${fmt(z.gS)} children uncovered.`:'Coverage for Sept has not been reported yet.'}`);
  if(dR.length){
   const gd={};dR.forEach(r=>{gd[r.d]=(gd[r.d]||0)+gapOf(r);});const top=Object.entries(gd).sort((a,b)=>b[1]-a[1])[0];
   I.push(`<b>② Linelist digitization is ${pc(dp)}</b> for SNID Sept 2026 (${fmt(dll)} of ${fmt(drep)} reported). ${fmt(dgap)} children are still to be entered and ${dz0.length} UCs have no entries`+(top&&top[1]&&!fDist.value?`; ${top[0]} has the largest backlog (${fmt(top[1])}).`:'.'));}

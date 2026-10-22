@@ -6,6 +6,7 @@ for a dataset, re-extract it to JSON, and swap that literal in **all four varian
 
 ```
 python _refresh/refresh.py status          # what is stale, and where the newest export is
+python _refresh/refresh.py status --deep   # regenerate every mismatching payload; report only the ones that really differ
 python _refresh/refresh.py run             # re-extract stale sources + swap + stamp + version note
 python _refresh/refresh.py run --dry-run   # same, but write nothing
 python _refresh/refresh.py publish         # commit + push + verify the Pages build
@@ -13,6 +14,18 @@ python _refresh/refresh.py run --publish   # both in one go
 ```
 
 Run from anywhere; paths are absolute. Python 3.12 + `openpyxl` is the only dependency.
+
+### Why `status` rarely says STALE outright
+
+Staleness is judged by comparing the newest discovered file's id with the id recorded at the last
+apply, and that comparison is wrong in two everyday situations: a year-to-date export can never feed
+the monthly archive datasets (`epm` / `epim`), and a dataset injected through
+`refresh.py inject` records `_refresh/out/<const>.json` rather than the export behind it, so its id
+never matches anything in Downloads. Both look permanently stale. `status` therefore says
+`NEWER FILE THAN LAST APPLY` and only `status --deep` - which regenerates the payload into a
+throwaway file and diffs it against the embedded literal - is allowed to call something
+`STALE - payload would change`. A dataset whose apply timestamp is at or after the newest export is
+reported as `up to date (applied after this export)` without extracting anything.
 
 ## The four variants
 
