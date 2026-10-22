@@ -886,7 +886,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 22-Oct-2026 09:29</span>
+  <span class="hupd" id="hUpd">Updated 22-Oct-2026 09:37</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -6911,14 +6911,15 @@ function msrmCollect(){
  const SC=dk&&SURVW.ind.r[dk]?{key:dk,name:DNAME(dk)+' district',ds:[dk]}
    :dv?{key:'DIV:'+dv,name:(dv==='DIKHAN'?'D.I.Khan':dv[0]+dv.slice(1).toLowerCase())+' division',ds:Object.keys(SURVW.ll.d).filter(x=>D2DV[x]===dv)}
    :{key:'KP',name:'KP (whole province)',ds:Object.keys(SURVW.ll.d)};
- return{SC,ind:SURVW.ind.r[SC.key],L:svwSum(SC.ds),MM:svwMon(SC),
+ const db=(typeof AFPD==='undefined'||!AFPD||!AFPD.d)?null:(()=>{const A=[0,0,0,0,0];SC.ds.forEach(d=>{const r=AFPD.d[d];if(r)r.forEach((v,i)=>A[i]+=v||0);});return{n:A[0],ad:A[1],zd:A[4],asof:AFPD.asof||'',ok:A[0]>0};})();
+ return{SC,db,ind:SURVW.ind.r[SC.key],L:svwSum(SC.ds),MM:svwMon(SC),
   zdD:SC.ds.map(d=>({d,z:SURVW.ll.d[d]&&SURVW.ll.d[d].zd?SURVW.ll.d[d].zd[3]:0})).filter(r=>r.z>0).sort((a,b)=>b.z-a.z),
   pen:SC.ds.map(d=>({d,p:SURVW.pen.d[d]})).filter(r=>r.p&&r.p.some(v=>v)),
   asof:SURVW.asof,llasof:SURVW.llasof,lastepid:SURVW.lastepid,
   date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})};}
 function msrmMsgs(X){
  const p1=v=>v==null?'\u2013':(Math.round(v*10)/10).toFixed(1),M=[],L=X.L,iv=(g,y)=>{const ys=X.ind.y[g]||[],i=ys.indexOf(y);return i<0?null:X.ind.v[g][i];};
- M.push(fmt(L.n[3])+' AFP cases detected in '+X.SC.name+' so far in 2026 ('+fmt(L.n[2])+' in 2025), including '+fmt(L.zd[3])+' zero-dose children and '+fmt(L.cp[3])+' still pending classification. Last case in the line list: '+X.lastepid+'.');
+ M.push(fmt(L.n[3])+' AFP cases detected in '+X.SC.name+' so far in 2026 ('+fmt(L.n[2])+' in 2025), including '+fmt(L.zd[3])+' zero-dose children and '+fmt(L.cp[3])+' still pending classification. Last case in the line list: '+X.lastepid+'.'+(X.db&&X.db.ok?' The master AFP case database is fresher: '+fmt(X.db.n)+' cases and '+fmt(X.db.zd)+' zero-dose children entered to '+X.db.asof+'.':''));
  const sa26=iv('sa',2026); if(sa26!=null)M.push('Stool adequacy '+p1(sa26)+'% in 2026 vs '+p1(iv('sa',2025))+'% in 2025'+(sa26>=90?' \u2014 above the 90% benchmark.':sa26>=80?' \u2014 short of the 90% benchmark; push sample collection and shipment.':' \u2014 below the 80% floor; this is the top surveillance risk.'));
  const n7=iv('n7',2026); if(n7!=null)M.push('Notification within 7 days '+p1(n7)+'% and investigation within 48 hours '+p1(iv('i48',2026))+'% in 2026 \u2014 field notification and case investigation timeliness.');
  const np26=iv('np',2026),np25=iv('np',2025); if(np26!=null&&np25!=null)M.push('NP-AFP rate '+p1(np26)+' in 2026 vs '+p1(np25)+' in 2025'+(np26>=np25?' \u2014 case search holding up.':' \u2014 reporting is thinning; strengthen active case search.'));
@@ -6953,11 +6954,12 @@ function renderMSRM(P,X){
   s.addText(X.SC.name,{x:0.8,y:1.95,w:11.7,h:0.9,fontFace:F,fontSize:40,bold:true,color:'FFFFFF'});
   s.addText('Weekly surveillance review \u00b7 data as of '+X.asof,{x:0.8,y:2.9,w:11.7,h:0.5,fontFace:F,fontSize:20,color:'D6E4F0'});
   s.addText('AFP line list up to '+X.llasof+' \u00b7 last case '+X.lastepid,{x:0.8,y:3.42,w:11.7,h:0.5,fontFace:F,fontSize:14,color:'B8CCE4'});
+  if(X.db&&X.db.ok)s.addText('Master AFP case database \u2014 '+n0(X.db.n)+' cases, '+n0(X.db.zd)+' zero-dose, '+p1(X.db.ad/X.db.n*100)+'% adequate \u00b7 entered to '+X.db.asof+' (fresher than the weekly log)',{x:0.8,y:3.95,w:11.7,h:0.4,fontFace:F,fontSize:13,color:'FBBF24'});
   kpis(s,[{l:'AFP cases 2026',v:n0(X.L.n[3])},{l:'NP-AFP rate 2026',v:p1(iv('np',2026))},{l:'Stool adequacy 2026',v:pq('sa'),vc:(iv('sa',2026)||0)>=90?GRN:AMB},{l:'Zero-dose AFP',v:n0(X.L.zd[3]),vc:RED},{l:'Pending classification',v:n0(X.L.cp[3]),vc:AMB}],4.5);
   s.addText('Prepared '+X.date+' \u00b7 KP Polio and Synergy Dashboard',{x:0.8,y:6.55,w:9,h:0.4,fontFace:F,fontSize:12,color:'D6E4F0'});}
  // 2 at a glance
  {const s=base('At a glance',X.SC.name+' \u00b7 WHO AFP surveillance indicators and the AFP line list, 2026 year to date');
-  kpis(s,[{l:'AFP cases 2026',v:n0(X.L.n[3]),s:fmt(X.L.n[2])+' in 2025'},{l:'Adequate stool',v:n0(X.L.ad[3]),s:pct(X.L.ad[3],X.L.n[3])+' of cases'},{l:'Zero-dose AFP',v:n0(X.L.zd[3]),vc:RED,s:'never received OPV'},{l:'Pending classification',v:n0(X.L.cp[3]),vc:AMB,s:'awaiting expert review'},{l:'Unknown dose history',v:n0(X.L.du[3]),s:'records incomplete'}],1.3);
+  kpis(s,[{l:'AFP cases 2026',v:n0(X.L.n[3]),s:fmt(X.L.n[2])+' in 2025'},{l:'Adequate stool',v:n0(X.L.ad[3]),s:pct(X.L.ad[3],X.L.n[3])+' of cases'},{l:'Zero-dose AFP',v:n0(X.L.zd[3]),vc:RED,s:'never received OPV'},{l:'Pending classification',v:n0(X.L.cp[3]),vc:AMB,s:'awaiting expert review'},{l:'Unknown dose history',v:n0(X.L.du[3]),s:'records incomplete'}].concat(X.db&&X.db.ok?[{l:'Master database',v:n0(X.db.n),s:'entered to '+X.db.asof,vc:NV}]:[]),1.3);
   s.addText('Key messages',{x:0.5,y:2.9,w:12.3,h:0.35,fontFace:F,fontSize:14,bold:true,color:TXT}); bullets(s,msrmMsgs(X),{x:0.5,y:3.3,w:12.3,h:3.5,fs:14});}
  // 3 indicators table
  {const s=base('AFP surveillance indicators 2022\u20132026','Weekly surveillance log \u00b7 '+X.SC.name+' \u00b7 for the three % targets: green \u2265 90, amber 80\u201390, red < 80');
