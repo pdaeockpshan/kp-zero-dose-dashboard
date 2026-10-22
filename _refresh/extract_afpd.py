@@ -13,9 +13,10 @@ Both are dBase III files: 32-byte header, 32-byte field descriptors, then
 fixed-width space-padded ASCII records (the portal writes non-standard field
 type codes, but every value is a string; dates are YYYYMMDD).
 
-PII: the case DB carries names and addresses. This extractor reads only dates,
-geography, dose history and lab-result codes, and writes district-level
-aggregates - the dashboard is a public GitHub Pages site.
+PII: the case DB carries names and addresses. The DBF reader decodes every
+field in memory; aggregation uses dates, geography, dose history and result
+codes. Only provincial and district/year/month aggregates are emitted, never
+patient, UC or EPID identifiers - the dashboard is a public GitHub Pages site.
 
 Result codes (asserted against the case DB's merged copy of the same results):
 1 = positive, 2 = negative, 7 = pending / not done. CLASS: 1 = WPV1,
@@ -28,17 +29,26 @@ DBF carries dates only, so the day boundary is approximate). The lab's
 for a small subset of typed specimens).
 
 Payload: {"src":..,"asof":..,"onset":..,"lsrc":..,"lcoll":..,"lres":..,
-          "yrs":[2022..2026],"k":[..],
-          "y":{year:[n,ad,n7,i48,zd,du,c1,cw,cp,c3]},
-          "mon26":[12],
+          "yrs":[2022..2026],"k":CK,"y":{year:[CK values]},
+          "mon26":[12 monthly case counts],
           "d":{district:[n,ad,n7,i48,zd]},
+          "dy":{district:[[CK values] for each year in yrs]},
+          "dm":{district:[[12 monthly case counts] for each year in yrs]},
+          "zm":{district:[[12 discarded],[12 pending],[12 confirmed]]},
           "lab":{"sm":[12],"rm":[12],"sp":..,"rs":..,"pv1":..,"npev":..,
                  "tt":..,"t14":..}}
+CK: n,ad,n7,i48,zd,du,c1,cw,cp,c3,d1,d2,d3,zp,zc,zw,zi. The added dose
+groups are 1, 2 and 3+; zp/zc/zw are zero-dose pending/discarded/confirmed
+(CLASS 1 or 2), and zi requires zero doses and ADEQ == INADEQ. zi overlaps
+those classification groups. zm is zero-dose only, 2026 only; months are Jan-Dec.
+Legacy 2022 WAZIR-S is retained separately as WAZIR-S (undivided) in dy/dm.
+Lab turnaround includes valid report >= collection pairs collected in 2026.
 """
 import argparse
 import datetime
 import json
 import os
+import statistics
 import struct
 import sys
 
@@ -48,9 +58,12 @@ import srcutil
 
 DS = 'afpd'
 YRS = [2022, 2023, 2024, 2025, 2026]
-CK = ['n', 'ad', 'n7', 'i48', 'zd', 'du', 'c1', 'cw', 'cp', 'c3']
+CK = ['n', 'ad', 'n7', 'i48', 'zd', 'du', 'c1', 'cw', 'cp', 'c3',
+      'd1', 'd2', 'd3', 'zp', 'zc', 'zw', 'zi']
 DK = ['n', 'ad', 'n7', 'i48', 'zd']
+ZK = ['zc', 'zp', 'zw']
 RENAME = {'WAZIR-S LOWER': 'WAZIR-S Lower', 'WAZIR-S UPPER': 'WAZIR-S Upper'}
+UNDIVIDED = 'WAZIR-S (undivided)'
 
 
 def dbf_records(path, need=('PROVINCE', 'YRONSET', 'DISTRICT', 'DONSET')):
@@ -122,7 +135,10 @@ def surv_scope(repo):
     j = s.find('\n', i)
     dists = list(json.loads(s[i + len('const SURV = '):j].rstrip().rstrip(';')).keys())
     rev = {nk(d): d for d in dists}
-    rev.update({'WAZIRSL': 'WAZIR-S Lower', 'WAZIRSU': 'WAZIR-S Upper'})
+    rev.update({nk(alias): target for alias, target in RENAME.items() if target in dists})
+    rev.update({alias: target for alias, target in
+                {'WAZIRSL': 'WAZIR-S Lower', 'WAZIRSU': 'WAZIR-S Upper'}.items()
+                if target in dists})
     return dists, (lambda s: rev.get(nk(s)))
 
 
@@ -141,14 +157,59 @@ def pick(entry, which, override=None):
     return best['path']
 
 
+def case_metrics(r, onset):
+    """Compute each case's increments once for all aggregate views."""
+    a = dict.fromkeys(CK, 0)
+    a['n'] = 1
+    notif, inves = pdate(r['DNOT']), pdate(r['DOI'])
+    a['n7'] = int(bool(onset and notif and 0 <= (notif - onset).days <= 7))
+    a['i48'] = int(bool(onset and notif and inves and 0 <= (inves - notif).days <= 2))
+    a['ad'] = int(r['ADEQ'] == 'ADEQ')
+    do = num(r['DOSES'])
+    if do is None:
+        a['du'] = 1
+    elif do == 0:
+        a['zd'] = 1
+    elif do == 1:
+        a['d1'] = 1
+    elif do == 2:
+        a['d2'] = 1
+    elif do >= 3:
+        a['d3'] = 1
+    else:
+        raise SystemExit('ERR afpd negative dose count')
+    cls = r['CLASS']
+    ck = 'c3' if cls == '3' else 'cw' if cls in ('1', '2') else 'cp'
+    a[ck] = 1
+    a['c1'] = int(cls == '1')
+    if a['zd']:
+        a[{'c3': 'zc', 'cw': 'zw', 'cp': 'zp'}[ck]] = 1
+        a['zi'] = int(r['ADEQ'] == 'INADEQ')
+    return a
+
+
+def validate_case_metrics(a, scope):
+    for keys, total in ((('zd', 'd1', 'd2', 'd3', 'du'), 'n'),
+                        (('cp', 'c3', 'cw'), 'n'), (('zp', 'zc', 'zw'), 'zd')):
+        if sum(a[k] for k in keys) != a[total]:
+            raise SystemExit('ERR afpd %s %s buckets != %s' % (scope, '/'.join(keys), total))
+    if any(not 0 <= a[k] <= a['n'] for k in CK):
+        raise SystemExit('ERR afpd %s metric outside case count' % scope)
+    if (a['c1'] > a['cw'] or a['zp'] > a['cp'] or a['zc'] > a['c3']
+            or a['zw'] > a['cw'] or a['zi'] > a['zd'] or a['zi'] > a['n'] - a['ad']):
+        raise SystemExit('ERR afpd %s inconsistent subset counts' % scope)
+
+
 def build_case(path, repo):
     dists, dkey = surv_scope(repo)
     y = {yr: dict.fromkeys(CK, 0) for yr in YRS}
-    mon = [0] * 12
-    d = {k: dict.fromkeys(DK, 0) for k in dists}
+    mon = {yr: [0] * 12 for yr in YRS}
+    history_dists = dists + [UNDIVIDED]
+    dy = {k: {yr: dict.fromkeys(CK, 0) for yr in YRS} for k in history_dists}
+    dm = {k: {yr: [0] * 12 for yr in YRS} for k in history_dists}
+    zm = {k: [[0] * 12 for _ in ZK] for k in dists}
     maxon = maxen = None
     skip = unknown = 0
-    wpv = {}
     for r in dbf_records(path):
         if r['PROVINCE'] != 'KP':
             skip += 1
@@ -161,70 +222,64 @@ def build_case(path, repo):
         if yr not in YRS:
             skip += 1
             continue
-        a = y[yr]
-        a['n'] += 1
+        k = UNDIVIDED if yr == 2022 and nk(r['DISTRICT']) == 'WAZIRS' else dkey(r['DISTRICT'])
+        if k is None:
+            unknown += 1
+            continue
         onset = pdate(r['DONSET'])
-        notif = pdate(r['DNOT'])
-        inves = pdate(r['DOI'])
-        if onset:
-            if maxon is None or onset > maxon:
-                maxon = onset
-            if notif and 0 <= (notif - onset).days <= 7:
-                a['n7'] += 1
-            if inves and notif and 0 <= (inves - notif).days <= 2:
-                a['i48'] += 1
-        if r['ADEQ'] == 'ADEQ':
-            a['ad'] += 1
-        do = num(r['DOSES'])
-        if do is None:
-            a['du'] += 1
-        elif do == 0:
-            a['zd'] += 1
-        cls = r['CLASS']
-        if cls == '3':
-            a['c3'] += 1
-        elif cls in ('1', '2'):
-            a['cw'] += 1
-            if cls == '1':
-                a['c1'] += 1
-        else:
-            a['cp'] += 1
+        if onset is None or onset.year != yr:
+            raise SystemExit('ERR afpd invalid or mismatched onset date in %d' % yr)
+        if maxon is None or onset > maxon:
+            maxon = onset
         en = pdate(r['DENTER'])
         if en and (maxen is None or en > maxen):
             maxen = en
+        inc = case_metrics(r, onset)
+        for a in (y[yr], dy[k][yr]):
+            for key in CK:
+                a[key] += inc[key]
+        mi = onset.month - 1
+        mon[yr][mi] += inc['n']
+        dm[k][yr][mi] += inc['n']
         if yr == 2026:
-            if onset:
-                mon[onset.month - 1] += 1
-            k = dkey(r['DISTRICT'])
-            if k is None:
-                unknown += 1
-                continue
-            row = d[k]
-            row['n'] += 1
-            if r['ADEQ'] == 'ADEQ':
-                row['ad'] += 1
-            if onset and notif and 0 <= (notif - onset).days <= 7:
-                row['n7'] += 1
-            if onset and notif and inves and 0 <= (inves - notif).days <= 2:
-                row['i48'] += 1
-            if do == 0:
-                row['zd'] += 1
-            if cls == '1':
-                wpv[k] = wpv.get(k, 0) + 1
+            for zi, key in enumerate(ZK):
+                zm[k][zi][mi] += inc[key]
+    if unknown:
+        raise SystemExit('ERR afpd %d rows with a district outside the SURV scope' % unknown)
     if maxon is None or maxen is None:
         raise SystemExit('ERR afpd no KP rows with onset/entry dates')
+    d = {k: {key: dy[k][2026][key] for key in DK} for k in dists}
+    wpv = {k: dy[k][2026]['c1'] for k in dists if dy[k][2026]['c1']}
     empty = [k for k in dists if d[k]['n'] == 0]
     if empty:
         raise SystemExit('ERR afpd no 2026 cases for %s' % empty)
-    if unknown:
-        raise SystemExit('ERR afpd %d rows with a district outside the SURV scope' % unknown)
-    if sum(mon) != sum(d[k]['n'] for k in dists) or sum(mon) != y[2026]['n']:
-        raise SystemExit('ERR afpd 2026 monthly %d != district %d != year %d'
-                         % (sum(mon), sum(d[k]['n'] for k in dists), y[2026]['n']))
     for yr in YRS:
         if y[yr]['n'] < 1000:
             raise SystemExit('ERR afpd only %d cases in %d' % (y[yr]['n'], yr))
-    return y, mon, d, wpv, maxon, maxen, skip
+        validate_case_metrics(y[yr], str(yr))
+        if sum(mon[yr]) != y[yr]['n']:
+            raise SystemExit('ERR afpd %d monthly total != year cases' % yr)
+        for key in CK:
+            if sum(dy[k][yr][key] for k in history_dists) != y[yr][key]:
+                raise SystemExit('ERR afpd %d district %s total != year total' % (yr, key))
+        for mi in range(12):
+            if sum(dm[k][yr][mi] for k in history_dists) != mon[yr][mi]:
+                raise SystemExit('ERR afpd %d month %d district total != year total' % (yr, mi + 1))
+        for k in history_dists:
+            validate_case_metrics(dy[k][yr], '%s %d' % (k, yr))
+            if sum(dm[k][yr]) != dy[k][yr]['n']:
+                raise SystemExit('ERR afpd %s %d monthly total != cases' % (k, yr))
+    for zi, key in enumerate(ZK):
+        if sum(sum(zm[k][zi]) for k in dists) != y[2026][key]:
+            raise SystemExit('ERR afpd 2026 monthly %s total != year total' % key)
+        for k in dists:
+            if sum(zm[k][zi]) != dy[k][2026][key]:
+                raise SystemExit('ERR afpd %s 2026 monthly %s total != cases' % (k, key))
+    for k in dists:
+        for mi in range(12):
+            if sum(zm[k][zi][mi] for zi in range(len(ZK))) > dm[k][2026][mi]:
+                raise SystemExit('ERR afpd %s 2026 month %d zero-dose total > cases' % (k, mi + 1))
+    return y, mon[2026], d, dy, dm, zm, wpv, maxon, maxen, skip
 
 
 def build_lab(path):
@@ -257,12 +312,11 @@ def build_lab(path):
         if (r['ENTERO1'] == '1' or r['ENTERO2'] == '1') and (c1 and c1.year == 2026 or c2 and c2.year == 2026):
             npev += 1
         for c, rr in ((c1, r1), (c2, r2)):
-            if c and rr and rr >= c:
+            if c and c.year == 2026 and rr and rr >= c:
                 tt.append((rr - c).days)
     if maxc is None or maxr is None:
         raise SystemExit('ERR afpd no 2026 lab specimens with collection/report dates')
-    tt.sort()
-    med = tt[len(tt) // 2] if tt else None
+    med = statistics.median(tt) if tt else None
     t14 = round(100.0 * sum(1 for x in tt if x <= 14) / len(tt), 1) if tt else None
     if sp < 5000:
         raise SystemExit('ERR afpd only %d specimens collected in 2026' % sp)
@@ -290,7 +344,7 @@ def main():
     print('SRC afpd case %s' % afp)
     print('SRC afpd lab %s' % lab)
 
-    y, mon, d, wpv, maxon, maxen, skip = build_case(afp, cfg['repo'])
+    y, mon, d, dy, dm, zm, wpv, maxon, maxen, skip = build_case(afp, cfg['repo'])
     labd, maxc, maxr = build_lab(lab)
 
     afpd = {'src': os.path.basename(afp), 'asof': maxen.strftime('%d-%b-%Y'),
@@ -299,7 +353,9 @@ def main():
             'yrs': YRS, 'k': CK,
             'y': {str(yr): [y[yr][k] for k in CK] for yr in YRS},
             'mon26': mon, 'd': {k: [d[k][x] for x in DK] for k in d},
-            'lab': labd}
+            'dy': {k: [[dy[k][yr][x] for x in CK] for yr in YRS] for k in dy},
+            'dm': {k: [dm[k][yr] for yr in YRS] for k in dm},
+            'zm': zm, 'lab': labd}
     js = srcutil.dumps(afpd)
     dest = a.out or os.path.join(srcutil.OUT, 'afpd.json')
     srcutil.write_text(dest, js)
@@ -308,7 +364,7 @@ def main():
     summary = ('%d KP AFP cases %d-%d, %d in 2026 (onset to %s, entered to %s): adequacy %s%%, '
                'notified <7d %s%%, investigated <48h %s%%, %d zero-dose, %d WPV1, %d pending; '
                'lab 2026: %d specimens, %d results (to %s), %d PV1 / %d NPEV isolations, '
-               'median turnaround %dd (%s%% within 14d)'
+               'median turnaround %sd (%s%% within 14d)'
                % (y[2022]['n'] + y[2023]['n'] + y[2024]['n'] + y[2025]['n'] + y[2026]['n'],
                   YRS[0], YRS[-1], y26['n'], maxon, maxen,
                   pc(y26['ad'], y26['n']), pc(y26['n7'], y26['n']), pc(y26['i48'], y26['n']),
