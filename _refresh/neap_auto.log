@@ -1,0 +1,138 @@
+2026-10-19 10:27:02 new NEAP file NEAP (35).xls is 271s old - waiting for the second export
+2026-10-19 12:57:01 new NEAP file NEAP (36).xls is 175s old - waiting for the second export
+2026-10-19 13:27:01 new NEAP export: NEAP (36).xls (19-Oct-2026 12:54, 35119 bytes) - refreshing
+2026-10-19 13:27:02 refresh: 1 to extract, 0 skipped
+2026-10-19 13:27:02 # extracting neap from NEAP (36).xls ...
+2026-10-19 13:27:02 Traceback (most recent call last):
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 293, in <module>
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     main()
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 263, in main
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     neap, summary = build(p, cfg['repo'])
+2026-10-19 13:27:02 
+2026-10-19 13:27:02                     ^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 178, in build
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     scope, camp = snd_scope(repo)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02                   ^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 75, in snd_scope
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     snd = json.loads(s[i + len('const SND = '):j].rstrip().rstrip(';'))
+2026-10-19 13:27:02 
+2026-10-19 13:27:02           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     return _default_decoder.decode(s)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 341, in decode
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     raise JSONDecodeError("Extra data", s, end)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02 json.decoder.JSONDecodeError: Extra data: line 1 column 37862 (char 37861)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02 Traceback (most recent call last):
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 466, in <module>
+2026-10-19 13:27:02     sys.exit(main())
+2026-10-19 13:27:02              ^^^^^^
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 456, in main
+2026-10-19 13:27:02     return cmd_run(cfg, a)
+2026-10-19 13:27:02            ^^^^^^^^^^^^^^^
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 168, in cmd_run
+2026-10-19 13:27:02     summary, _ = extract(ds, e, out_path, rec['path'])
+2026-10-19 13:27:02                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 123, in extract
+2026-10-19 13:27:02     raise RuntimeError('extractor %s failed (rc=%d):\n%s' % (entry['extractor'], rc, out))
+2026-10-19 13:27:02 RuntimeError: extractor extract_neap.py failed (rc=1):
+2026-10-19 13:27:02 Traceback (most recent call last):
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 293, in <module>
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     main()
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 263, in main
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     neap, summary = build(p, cfg['repo'])
+2026-10-19 13:27:02 
+2026-10-19 13:27:02                     ^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 178, in build
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     scope, camp = snd_scope(repo)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02                   ^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\extract_neap.py", line 75, in snd_scope
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     snd = json.loads(s[i + len('const SND = '):j].rstrip().rstrip(';'))
+2026-10-19 13:27:02 
+2026-10-19 13:27:02           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     return _default_decoder.decode(s)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-19 13:27:02 
+2026-10-19 13:27:02   File "C:\Users\HD\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 341, in decode
+2026-10-19 13:27:02 
+2026-10-19 13:27:02     raise JSONDecodeError("Extra data", s, end)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02 json.decoder.JSONDecodeError: Extra data: line 1 column 37862 (char 37861)
+2026-10-19 13:27:02 
+2026-10-19 13:27:02 
+2026-10-19 13:27:02 refresh exit=1
+2026-10-19 13:57:01 new NEAP export: NEAP (36).xls (19-Oct-2026 12:54, 35119 bytes) - refreshing
+2026-10-19 13:57:21 refresh: 1 to extract, 0 skipped
+2026-10-19 13:57:21 # extracting neap from NEAP (36).xls ...
+2026-10-19 13:57:21 SRC neap C:\Users\HD\Downloads\NEAP (36).xls
+2026-10-19 13:57:21 
+2026-10-19 13:57:21 OK neap 95523 SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 25 districts (best 100.0%), teams with a female member reported by 6; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 840, AIC training under way 616 (NEAP (35).xls)
+2026-10-19 13:57:21 
+2026-10-19 13:57:21   neap NEAP      95,523 chars  SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 25 districts (best 100.0%), teams with a female member reported by 6; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 840, AIC training under way 616 (NEAP (35).xls)
+2026-10-19 13:57:21   swap NEAP   in 4/4 variants
+2026-10-19 13:57:21 
+2026-10-19 13:57:21 variants:
+2026-10-19 13:57:21   index.html                                      +22 chars  NEAP 95501 -> 95523 chars; stamp 19-Oct-2026 13:26 -> 19-Oct-2026 13:57
+2026-10-19 13:57:21   preview.html                                    +22 chars  NEAP 95501 -> 95523 chars; stamp 19-Oct-2026 13:26 -> 19-Oct-2026 13:57
+2026-10-19 13:57:21   public/index.html                               +22 chars  NEAP 95501 -> 95523 chars; stamp 19-Oct-2026 13:26 -> 19-Oct-2026 13:57
+2026-10-19 13:57:21   Zero_Dose_Digitization_Dashboard.html           +22 chars  NEAP 95501 -> 95523 chars; stamp 19-Oct-2026 13:26 -> 19-Oct-2026 13:57
+2026-10-19 13:57:21 identical group md5: {'index.html': 'f1f84cada4530c9e650b771e877e8fea', 'preview.html': 'f1f84cada4530c9e650b771e877e8fea', 'public/index.html': 'f1f84cada4530c9e650b771e877e8fea'}
+2026-10-19 13:57:21 stamp: 19-Oct-2026 13:26 -> 19-Oct-2026 13:57
+2026-10-19 13:57:21 version note: Data refresh 19-Oct-2026 13:57 PKT: NEAP re-extracted from NEAP (36).xls (19-Oct-2026 12:54): SNID Nov-26, 27 districts, DPEC held on time 26, AIC training repo
+2026-10-19 13:57:21 
+2026-10-19 13:57:21 WROTE index.html (15,038,552 bytes)
+2026-10-19 13:57:21 WROTE preview.html (15,038,552 bytes)
+2026-10-19 13:57:21 WROTE public/index.html (15,038,552 bytes)
+2026-10-19 13:57:21 WROTE Zero_Dose_Digitization_Dashboard.html (15,240,472 bytes)
+2026-10-19 13:57:21 WROTE version.txt
+2026-10-19 13:57:21 WROTE public\version.txt
+2026-10-19 13:57:21 REFRESHED neap
+2026-10-19 13:57:21 publish: pending changes
+2026-10-19 13:57:21  M Zero_Dose_Digitization_Dashboard.html
+2026-10-19 13:57:21  M _refresh/state.json
+2026-10-19 13:57:21  M index.html
+2026-10-19 13:57:21  M preview.html
+2026-10-19 13:57:21  M public/index.html
+2026-10-19 13:57:21  M public/version.txt
+2026-10-19 13:57:21  M version.txt
+2026-10-19 13:57:21 ?? _refresh/neap_auto.lock
+2026-10-19 13:57:21 ?? _refresh/neap_auto.log
+2026-10-19 13:57:21 warning: in the working copy of '_refresh/state.json', LF will be replaced by CRLF the next time Git touches it
+2026-10-19 13:57:21 staged: Zero_Dose_Digitization_Dashboard.html _refresh/state.json index.html preview.html public/index.html public/version.txt version.txt 
+2026-10-19 13:57:21 [main 43c5013] Auto-refresh NEAP from EOC pre-campaign export
+2026-10-19 13:57:21  7 files changed, 22 insertions(+), 20 deletions(-)
+2026-10-19 13:57:21 To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-19 13:57:21    02edec3..43c5013  main -> main
+2026-10-19 13:57:21 push: To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-19 13:57:21    02edec3..43c5013  main -> main
+2026-10-19 13:57:21 verify: no stored GitHub credential found - check the push manually
+2026-10-19 13:57:21 refresh exit=0
