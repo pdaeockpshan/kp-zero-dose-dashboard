@@ -4,23 +4,30 @@ The monthly facility-wise exports are ~7.4 MB HTML-table files that take pandas
 tens of seconds each to parse, and several extractors need the same parse, so the
 per-district aggregates are cached under _refresh/cache/ keyed by srcutil.file_id
 (path + mtime + size). Extractors run sequentially inside refresh.py run, so a
-plain dict pickled to disk is safe.
+plain dict pickled to disk is safe. Cached month records carry the antigen-set
+version they were parsed with; entries from an older panel are dropped so the
+files are re-read and gain the new doses.
 """
 import os
 import pickle
 
+import epi_ag
 import srcutil
 
 CACHE = os.path.join(srcutil.HERE, 'cache')
 EPI_CACHE = os.path.join(CACHE, 'epi25mon.pkl')
+AGVER = ','.join(epi_ag.KEYS)
 
 
 def load():
     try:
         with open(EPI_CACHE, 'rb') as f:
-            return pickle.load(f)
+            cache = pickle.load(f)
     except (OSError, EOFError, ValueError):
         return {}
+    # skip markers (False / 'ERR: ...') stay; parsed months must match the current panel
+    return {k: v for k, v in cache.items()
+            if not isinstance(v, dict) or v.get('agv') == AGVER}
 
 
 def store(cache):
@@ -41,10 +48,7 @@ def read_consolidated(rec):
 
     import pandas as pd
 
-    AG = [('bcg', 'BCG Total'), ('opv0', 'OPV 0 Total'), ('p1', 'Pentavalent I Total'),
-          ('p3', 'Pentavalent III Total'), ('pcv3', 'PCV 10 III Total'), ('ipv1', 'IPV Total'),
-          ('ipv2', 'IPV II Total'), ('rota2', 'Rota II Total'), ('mr1', 'MR I Total'),
-          ('mr2', 'MR II Total'), ('fi', 'Fully Immunized Total')]
+    AG = epi_ag.AG  # (key, source column, label, target, core)
     KEEP = ('S No.', 'District', 'Tehsil', 'Union Council', 'Uncode', 'Distcode')
 
     with open(rec['path'], 'rb') as f:
@@ -63,17 +67,18 @@ def read_consolidated(rec):
         else:
             cols.append(' '.join(dict.fromkeys(str(x) for x in c if str(x) != 'nan')).strip())
     t.columns = cols
-    need = ['District', 'Target Newborns', 'Target Surviving Infants'] + [a[1] for a in AG]
+    need = ['District', 'Target Newborns', 'Target Surviving Infants'] + [a[1] for a in AG if a[4]]
     miss = [c for c in need if c not in t.columns]
     if miss:
         raise RuntimeError('monthly export %s is missing columns %s' % (rec['name'], miss))
+    agc = [(a[0], a[1]) for a in AG if a[1] in t.columns]
     # UC-wise exports carry Uncode (numeric per-UC rows, totals lack it); the
     # district-level 2024 exports instead carry Distcode.
     if 'Uncode' in t.columns:
         t = t[pd.to_numeric(t['Uncode'], errors='coerce').notna()].copy()
     elif 'Distcode' in t.columns:
         t = t[pd.to_numeric(t['Distcode'], errors='coerce').notna()].copy()
-    num = ['Target Newborns', 'Target Surviving Infants'] + [a[1] for a in AG]
+    num = ['Target Newborns', 'Target Surviving Infants'] + [c for _, c in agc]
     for c in num:
         t[c] = pd.to_numeric(t[c], errors='coerce').fillna(0)
     t['District'] = t['District'].astype(str).str.replace(r'\s+', ' ', regex=True).str.strip()
@@ -83,8 +88,8 @@ def read_consolidated(rec):
         if ed.strip().lower() in junk:
             continue
         out[ed] = {'n': int(g['Target Newborns'].sum()), 's': int(g['Target Surviving Infants'].sum()),
-                   **{a[0]: int(g[a[1]].sum()) for a in AG}}
-    return {'mo': mo, 'ed': out}
+                   **{k: int(g[c].sum()) for k, c in agc}}
+    return {'mo': mo, 'ed': out, 'agv': AGVER}
 
 
 def months(cache):

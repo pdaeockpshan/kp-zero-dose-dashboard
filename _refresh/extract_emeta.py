@@ -9,6 +9,9 @@ files pay the pandas parse cost.
 The months already embedded in index.html (2026) are kept verbatim; months parsed
 from the exports are added (a re-parse of the same month replaces that month's
 rows, newest file wins). Partial/reporting-rate flags stay on the 2026 months.
+The antigen panel published in `ag` (which is what the dashboard's coverage tiles
+and table columns render) always comes from the shared epi_ag spec, so adding a
+dose there extends every view without hand-editing the payload.
 
 Usage: python _refresh/extract_emeta.py [--out PATH]
 Prints: SRC epm <newest file> | OK epm <json chars> <summary> | ERR epm <reason>
@@ -22,6 +25,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _epicache
+import epi_ag
 import srcutil
 
 DS = 'epm'
@@ -113,6 +117,8 @@ def build(cfg):
     meta['from'] = months[0]['mo']
     meta['to'] = months[-1]['mo']
     meta['per'] = _per(months[0]['mo'], months[-1]['mo'])
+    # the tile/column panel is the shared spec, not whatever the previous build embedded
+    meta['ag'] = epi_ag.emeta_ag()
     partial = [m for m in months if m.get('pt')]
     meta['partial'] = partial[-1]['l'] if partial else meta.get('partial')
     n25 = sum(1 for m in months if m['mo'] < '2026')

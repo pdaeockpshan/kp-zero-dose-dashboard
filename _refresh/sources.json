@@ -309,7 +309,7 @@
     "District Wise Pendency"
    ],
    "portal": "EOC surveillance cell weekly updates log + provincial AFP line list (manual download)",
-   "note": "Two sources per refresh: the weekly log gives YTD and 2013-2026 yearly indicator histories per district plus division roll-ups, month-wise AFP detection 2019-2026 and the newest pendency snapshot; the line list gives case aggregates only (OPV dose buckets, stool adequacy, notification/investigation timeliness, classification) - no names or addresses are extracted. The `Indicators ` sheet name has a trailing space; its district rows sit above the Grand Total and division rows below it."
+   "note": "Two sources per refresh: the weekly log gives YTD and 2013-2026 yearly indicator histories per district plus division roll-ups, month-wise AFP detection 2019-2026 and the newest pendency snapshot; the line list gives case aggregates only (OPV dose buckets, stool adequacy, notification/investigation timeliness, classification) - no names or addresses are extracted. The `Indicators ` sheet name has a trailing space; its district rows sit above the Grand Total and division rows below it. `refresh.py run` passes the newest file of the whole entry, which can be either source, so the extractor routes `--source` by filename (`Surv. Weekly Updates Log*` -> weekly log, `LineList-*` -> line list) and discovers the other slot itself; `--ll` overrides the line list."
   },
   "afpd": {
    "label": "AFP case + lab database: EOC master AFP.DBF and AFPLAB.DBF exports (2026 case, timeliness, dose-history and lab-result aggregates)",
@@ -327,6 +327,25 @@
    ],
    "portal": "EOC AFP case database + polio lab database (manual DBF export)",
    "note": "Two files per refresh: AFP.DBF is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB.DBF is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Both are dBase III files with fixed-width ASCII fields; the portal writes non-standard field type codes but every value is a string and dates are YYYYMMDD. Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it. Since 22-Oct-2026 the payload also carries mk (ten indicator keys) and mm (those ten per district, per year, per onset month), which is what the Surveillance tab year / month KPI filter reads; the extractor cross-checks every district-month column against dm, dy and the province y totals and aborts on any drift."
+  },
+  "sops": {
+   "label": "Surveillance operations: active visits, IDIMS zero reporting, AFP pendency tracker, VPD weekly cases",
+   "const": "SOPS",
+   "extractor": "extract_sops.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "Active-visit (20??).xlsx",
+    "Zero Reporting IDIMS*.xlsx",
+    "Pendency Status on *.xlsx",
+    "Zero_Report_Cases_ONLY.xlsx"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "EOC surveillance cell workbooks: active-visit tracker, IDIMS zero-report export, weekly AFP pendency tracker, VPD Sumamy weekly case counts",
+   "note": "Four workbooks, one payload, four separate denominators that are never blended. Active-visit (2026).xlsx gives expected/done visits per district by frequency (weekly / fortnightly / monthly) and per month; Zero Reporting IDIMS-(2026).xlsx gives site-weeks expected, received and received in time (received can exceed expected where a site reports twice); Pendency Status on -21-Oct-2026.xlsx gives the stool / case-documentation / geolocation streams as weekly snapshot blocks; Zero_Report_Cases_ONLY.xlsx (Sumamy sheet) gives weekly AFP / measles / NNT case counts. Excluded on purpose: the pendency workbook's per-record validation sheets (officer names, designations, emails, EPIDs, child names) - only the three snapshot sheets are read, and only district labels plus counts reach the payload; tracker snapshots before Mar-2023, where the older blocks carry a previous-year tally or a gap count in a rate column; the per-district weekly VPD detail (province series only, to keep the payload small). AFP counts differ by source by design - VPD weekly AFP reports, the pendency tracker line list and the AFP.DBF master are three different populations and the captions say so instead of reconciling them. IDIMS zero-report timeliness and the weekly surveillance log's own zero-report percentage use different denominators and are shown side by side, never averaged. The extractor cross-checks each workbook against its own totals and aborts on drift."
   },
   "neap": {
    "label": "Upcoming campaign pre-campaign readiness (NEAP district-wise status)",
@@ -417,7 +436,7 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html (2026) are kept; parsed months are added. Run together with epim."
+   "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html (2026) are kept; parsed months are added. Run together with epim. The dose panel the EPI section reads (EMETA.ag) is regenerated from the shared spec _refresh/epi_ag.py; cached months carry that panel as an agv signature, so entries parsed under an older panel are skipped rather than trusted."
   },
   "epim": {
    "label": "EPI district-month coverage rows (EPIM) with 2024-2025",
@@ -433,7 +452,7 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Companion to epm (same parse cache). pre-2026 district rows are aggregated from the monthly exports (2025 UC-wise, 2024 district-level); the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract."
+   "note": "Companion to epm (same parse cache). pre-2026 district rows are aggregated from the monthly exports (2025 UC-wise, 2024 district-level); the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract. Pre-2026 rows carry the full 19-dose epi_ag panel; the embedded 2026 rows keep only the eleven core doses, because their single-month exports are no longer on disk."
   },
   "rca": {
    "label": "EPI-MIS rapid coverage assessments, visit-level (const ERCA)",
@@ -544,7 +563,7 @@
     "Consolidated_Facility_Wise_Vaccination*.xls*"
    ],
    "portal": "IDIMS > Consolidated facility-wise vaccination report",
-   "howto": "EMETA/EPIM refresh automatically (auto.epm + auto.epim) from the single-month exports and are never derived from a year-to-date file. The UC-level payload is rebuilt from the UC-wise export opened for the year-to-date period (Report Type = all_ucs): python _refresh/extract_epi_ytd.py --source \"<file>.xls\" --out _refresh/out/epi_ytd.json, then python _refresh/refresh.py inject --const EPI --from _refresh/out/epi_ytd.json and --const EPIYTD --from _refresh/out/epi_ytd.meta.json. The extractor refuses any UC code, name or district that differs from what is embedded, so the reviewed polio UC matching can never be silently re-made; rows with no district are dropped only when every value in them is zero."
+   "howto": "EMETA/EPIM refresh automatically (auto.epm + auto.epim) from the single-month exports and are never derived from a year-to-date file. The UC-level payload is rebuilt from the UC-wise export opened for the year-to-date period (Report Type = all_ucs): python _refresh/extract_epi_ytd.py --source \"<file>.xls\" --out _refresh/out/epi_ytd.json, then python _refresh/refresh.py inject --const EPI --from _refresh/out/epi_ytd.json and --const EPIYTD --from _refresh/out/epi_ytd.meta.json. The extractor refuses any UC code, name or district that differs from what is embedded, so the reviewed polio UC matching can never be silently re-made; rows with no district are dropped only when every value in them is zero. Rows carry the 19-dose panel from _refresh/epi_ag.py (the eleven flagged core are what the tables show; the UC CSV holds all 19): a dose the export does not carry is stored as missing and never defaults to last period's number or to 0%."
   },
   "epidrop": {
    "label": "Routine dropout report (district level)",
@@ -559,6 +578,23 @@
    ],
    "portal": "IDIMS > EPI dropouts report (district wise)",
    "howto": "python _refresh/extract_epi_drop.py --source \"<file>.xls\" --out _refresh/out/epi_drop.json, then inject --const EPIDROP. Published dropout % per district for five dose pairs; the province Total row is kept as the report's own all-KP figure and is never averaged across districts. Reported rates differ from the dashboard's coverage-derived dropout columns (different arithmetic, sex-split cohorts) - both are shown side by side on the EPI coverage page."
+  },
+  "kpgeo": {
+   "label": "KP district map geometry (const KPGEO)",
+   "const": [
+    "KPGEO"
+   ],
+   "extractor": "extract_kpgeo.py",
+   "roots": [
+    "D:\\AMAZON DATA",
+    "D:\\extra tasks\\KP UC Shapefile\\KP UC Shapefile"
+   ],
+   "patterns": [
+    "District Wise KP Shape File.shp",
+    "PK_Admin4-KP_UCs*.shp"
+   ],
+   "portal": "no portal - boundary shapefiles on disk (district geometry + the 23-Oct-2021 UC layer)",
+   "howto": "One-off build; re-run only if the boundary files are replaced. python _refresh/extract_kpgeo.py prints the labelling vote, --emit writes _refresh/out/kpgeo.json, then python _refresh/refresh.py inject --const KPGEO --from _refresh/out/kpgeo.json. The district file ships geometry with no .dbf, so its 37 polygons are named by a containment vote of the PK_Admin4-KP_UCs layer whose Ucode joins to the dashboard's own EPI UC rows (1,152 of 1,414 resolve): majority district per polygon, at least 5 dashboard-resolved UCs and 75% agreement, and the build aborts unless every one of the 37 dashboard districts is claimed exactly once (it does - including BAR SWAT vs SWAT and WAZIR-S Upper vs Lower, which the boundary file itself cannot tell apart). Rings are Douglas-Peucker simplified at 0.0025 deg with max-deviation and area-drift asserts, so a collapsed district fails the build. Geometry only - no people, no UC detail."
   },
   "cq": {
    "label": "Campaign quality / intra-campaign operational indicators",

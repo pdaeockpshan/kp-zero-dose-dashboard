@@ -215,11 +215,11 @@ def cmd_run(cfg, a):
     payloads = {}
     for ds, e, rec, last in todo:
         out_path = os.path.join(srcutil.OUT, e['const'].lower() + '.json')
-        summary, _ = extract(ds, e, out_path, rec['path'])
+        summary, raw = extract(ds, e, out_path, rec['path'])
         js = srcutil.read_text(out_path).strip()
         json.loads(js)
         payloads[ds] = {'const': e['const'], 'json': js, 'summary': summary,
-                        'rec': rec, 'path': out_path}
+                        'rec': rec, 'path': out_path, 'srcs': _src_names(ds, raw)}
         print('  %-4s %-6s %9s chars  %s' % (ds, e['const'], format(len(js), ','), summary))
 
     _, vs = dashpatch.load_variants(cfg)
@@ -292,6 +292,21 @@ def cmd_run(cfg, a):
     return 0
 
 
+def _src_names(ds, raw):
+    """Basenames of every file the extractor reported reading (`SRC <ds> <slot> <path>`).
+
+    Without this a multi-source dataset is credited in version.txt to whichever single
+    file happened to be newest on disk."""
+    names = []
+    for line in (raw or '').splitlines():
+        if line.startswith('SRC %s ' % ds):
+            parts = line.split(' ', 3)
+            base = os.path.basename(parts[3].strip()) if len(parts) == 4 else ''
+            if base and base not in names:
+                names.append(base)
+    return names
+
+
 def _state_entry(p, stamp):
     rec = p['rec']
     return {'source': {'path': rec['path'], 'name': os.path.basename(rec['path']),
@@ -307,7 +322,7 @@ def _auto_note(changed, payloads, new_stamp, old_stamp):
     for ds in changed:
         p = payloads[ds]
         parts.append('%s re-extracted from %s (%s): %s' % (
-            p['const'], os.path.basename(p['rec']['path']),
+            p['const'], ', '.join(p.get('srcs') or [os.path.basename(p['rec']['path'])]),
             srcutil.mtime_str(p['rec']), p['summary']))
     return 'Data refresh %s PKT: %s.%s' % (
         new_stamp, '; '.join(parts),

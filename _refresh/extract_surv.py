@@ -391,18 +391,27 @@ def build(weekly, ll, cfg, repo):
     return survw, summary
 
 
+WEEKLY_GLOB = 'Surv. Weekly Updates Log*.xlsx'
+LL_GLOB = 'LineList-*.xlsx'
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--source', help='weekly updates log (default: newest match)')
+    ap.add_argument('--source', help='accepted for refresh.py run; routed to a slot by filename')
     ap.add_argument('--ll', help='line list workbook (default: newest LineList-*)')
     ap.add_argument('--out')
     a = ap.parse_args()
     cfg = srcutil.load_sources()
     entry = cfg['auto'][DS]
-    weekly = a.source or (srcutil.newest(entry) or {}).get('path')
+    # refresh.py run passes the single newest file of the whole entry - one of the two
+    # patterns - so the basename decides which slot it fills, never the flag itself.
+    named = a.source if a.source and os.path.exists(a.source) else None
+    weekly = named if named and fnmatch.fnmatch(os.path.basename(named), WEEKLY_GLOB) else None
+    ll = a.ll or (named if named and fnmatch.fnmatch(os.path.basename(named), LL_GLOB) else None)
+    weekly = weekly or newest_like(entry, WEEKLY_GLOB)
+    ll = ll or newest_like(entry, LL_GLOB)
     if not weekly or not os.path.exists(weekly):
         raise SystemExit('ERR surv no weekly updates log found under %s' % entry['roots'])
-    ll = a.ll or newest_like(entry, 'LineList-*.xlsx')
     if not ll or not os.path.exists(ll):
         raise SystemExit('ERR surv no LineList-*.xlsx found under %s' % entry['roots'])
     print('SRC surv weekly %s' % weekly)

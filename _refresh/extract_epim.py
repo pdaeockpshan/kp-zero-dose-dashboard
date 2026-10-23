@@ -2,11 +2,12 @@
 
 Companion to extract_emeta.py: same discovery, same per-file cache. Rows for the
 pre-2026 months are aggregated per EPI district from the monthly exports (2025
-arrives UC-wise, 2024 as district-level summaries - the shared cache handles both);
-the months already embedded in index.html (2026) are kept verbatim (they were
-built from that year's exports, which are no longer on disk). The EPI district ->
-dashboard district(s) / division mapping is taken from the embedded EPIM rows;
-an export district that is not in that mapping aborts the extract.
+arrives UC-wise, 2024 as district-level summaries - the shared cache handles both)
+and carry the full epi_ag panel; the months already embedded in index.html (2026)
+are kept verbatim (they were built from that year's exports, of which only
+September is still on disk, so 2026 rows show the core doses only). The EPI
+district -> dashboard district(s) / division mapping is taken from the embedded
+EPIM rows; an export district that is not in that mapping aborts the extract.
 
 Usage: python _refresh/extract_epim.py [--out PATH]
 Prints: SRC epim <newest file> | OK epim <json chars> <summary> | ERR epim <reason>
@@ -18,10 +19,10 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _epicache
+import epi_ag
 import srcutil
 
 DS = 'epim'
-AG = ('bcg', 'opv0', 'p1', 'p3', 'pcv3', 'ipv1', 'ipv2', 'rota2', 'mr1', 'mr2', 'fi')
 
 
 def embedded_epim(repo):
@@ -60,7 +61,9 @@ def build(cfg):
             if rec_o is not None:
                 nnew += 1
         if isinstance(rec_o, dict) and rec_o['mo'] < '2026':
-            # 2026 months come from the embedded payload, not these files
+            # 2026 months come from the embedded payload, not these files (only one 2026
+            # single-month export is on file, and mixing it into that year's rows would put
+            # two extraction sources inside one month).
             by_mo.setdefault(rec_o['mo'], {}).update(rec_o['ed'])
     _epicache.store(cache)
     if not by_mo:
@@ -81,12 +84,14 @@ def build(cfg):
             ref = dmap[ed]
             rows.append({'mo': mo, 'ed': ed, 'ds': ref['ds'], 'dv': ref['dv'],
                          'n': v['n'], 's': v['s'],
-                         **{k: v[k] for k in AG}})
+                         **{k: v[k] for k in epi_ag.KEYS if k in v}})
             added += 1
     rows.sort(key=lambda r: (r['mo'], r['ed']))
     n25 = len({r['mo'] for r in rows if r['mo'] < '2026'})
-    summary = '%d rows: %d embedded 2026 + %d new (pre-2026: %d months x %d districts)' % (
-        len(rows), len(old), added, n25, len(dmap))
+    extk = {a[0] for a in epi_ag.EXT}
+    ext = len({k for r in rows for k in r if k in extk})
+    summary = '%d rows: %d embedded 2026 + %d new (pre-2026: %d months x %d districts), %d extra doses' % (
+        len(rows), len(old), added, n25, len(dmap), ext)
     return rows, summary
 
 
