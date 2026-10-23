@@ -100,3 +100,6 @@ Data refresh 23-Oct-2026 17:43 PKT: PCM re-extracted from POST CAMPAIGN MONITORI
 Data refresh 23-Oct-2026 17:46 PKT: PCM re-extracted from POST CAMPAIGN MONITORING SNID SEPT-26.xlsx (13-Oct-2026 10:55): 117 trend pts (88 campaigns), 72 LQAS campaigns, 85 with coverage (35 with advance-report chain), 9 datasets, 4080 UC rows. Timestamp refresh 23-Oct-2026 17:46 PKT.
 Pushed the hand-edited index.html master to preview / public / internal builds (+145 chars). Timestamp refresh 23-Oct-2026 18:18 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+296 chars). Timestamp refresh 23-Oct-2026 18:29 PKT
+ZD covered column replaced from ucneapreport261023053947.xls (23-Oct UC-wise zero-dose covered export): 39,176 covered against 62,128 recorded for SNID Sept-26, 1,402 UCs with a figure, 323 UCs above their recorded count.
+ADV rebuilt against the replaced ZD Sept covered column (ucneapreport261023053947.xls, 39,176 covered).
+Pushed the hand-edited index.html master to preview / public / internal builds (+2775 chars). Timestamp refresh 23-Oct-2026 19:25 PKT

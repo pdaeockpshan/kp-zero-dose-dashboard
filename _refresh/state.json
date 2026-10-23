@@ -1,18 +1,18 @@
 {
  "datasets": {
   "adv": {
-   "at": "2026-10-23T17:42:33+05:00",
-   "chars": 455728,
+   "at": "2026-10-23T18:58:45+05:00",
+   "chars": 454862,
    "file_id": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls|1791955631|10058",
-   "payload_sha1": "4d79c0917c351af5",
+   "payload_sha1": "fcdf1bb5db27e315",
    "source": {
     "mtime": 1791955631.3421476,
     "name": "advance_reports_20261014T044243011Z.xls",
     "path": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls",
     "size": 10058
    },
-   "stamp": "23-Oct-2026 17:42",
-   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,175,364"
+   "stamp": "23-Oct-2026 18:58",
+   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,190,488"
   },
   "afpd": {
    "at": "2026-10-22T14:23:36+05:00",
@@ -253,7 +253,7 @@
    "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
   },
   "pcm": {
-   "at": "2026-10-23T17:46:44+05:00",
+   "at": "2026-10-23T18:58:57+05:00",
    "chars": 467345,
    "file_id": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx|1791870942|60964",
    "payload_sha1": "6e96659a8f9fd98d",
@@ -263,7 +263,7 @@
     "path": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
     "size": 60964
    },
-   "stamp": "23-Oct-2026 17:46",
+   "stamp": "23-Oct-2026 18:58",
    "summary": "117 trend pts (88 campaigns), 72 LQAS campaigns, 85 with coverage (35 with advance-report chain), 9 datasets, 4080 UC rows"
   },
   "rca": {
@@ -337,34 +337,34 @@
    "summary": "1402 UCs, 37 districts (Afghan bordering 7, Core District 2, Endemic 7, High Risk 1, Rest of KP 20), 55 Afghan-bordering UCs, aliases: WAZIR-S, legacy AFG aliases: WAZIR-S 5"
   },
   "zd": {
-   "at": "2026-10-23T17:40:46+05:00",
-   "chars": 395236,
-   "file_id": "manual|zd.json",
-   "payload_sha1": "7bbdad643ff3a915",
+   "at": "2026-10-23T18:55:11+05:00",
+   "chars": 391484,
+   "file_id": "manual|zd_uc.json",
+   "payload_sha1": "954e76cf2db53bbb",
    "source": {
-    "mtime": 1792759222.1252642,
-    "name": "zd.json",
-    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\zd.json",
-    "size": 399334
+    "mtime": 1792763693.5993035,
+    "name": "zd_uc.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\zd_uc.json",
+    "size": 395610
    },
-   "stamp": "23-Oct-2026 17:40",
+   "stamp": "23-Oct-2026 18:55",
    "summary": "manual inject"
   }
  },
  "last_push": {
-  "at": "2026-10-23T18:29:25+05:00",
-  "chars": 15501009,
-  "internal_md5": "38b38afdff2265b8b7c80437fb96558d",
-  "master_md5": "63ceebf84b2f7bcb6e885048e674c5ae",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+296 chars). Timestamp refresh 23-Oct-2026 18:29 PKT",
-  "stamp": "23-Oct-2026 18:29"
+  "at": "2026-10-23T19:25:12+05:00",
+  "chars": 15499166,
+  "internal_md5": "65c237f219938d3a348e929a3345a7f0",
+  "master_md5": "216c53252ad3c747c5bc2655fcd4fbd1",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+2775 chars). Timestamp refresh 23-Oct-2026 19:25 PKT",
+  "stamp": "23-Oct-2026 19:25"
  },
  "last_run": {
-  "at": "2026-10-23T17:46:44+05:00",
+  "at": "2026-10-23T18:58:45+05:00",
   "datasets": [
-   "pcm"
+   "adv"
   ],
   "dry_run": false,
-  "stamp": "23-Oct-2026 17:46"
+  "stamp": "23-Oct-2026 18:58"
  }
 }
