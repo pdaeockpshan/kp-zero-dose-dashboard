@@ -912,7 +912,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 23-Oct-2026 19:25</span>
+  <span class="hupd" id="hUpd">Updated 23-Oct-2026 19:59</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1224,9 +1224,10 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card"><div id="cz6" class="ch"></div><div class="cap" id="capz6"></div></div>
 <div class="card"><div id="cz9" class="ch"></div><div class="cap" id="capz9"></div></div>
 </div>
+<div class="card" style="padding:11px 14px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="kl" style="font-weight:600">Compare two campaigns</span><div class="pills" id="zpair"></div><span class="cnt" id="zpairCnt"></span></div></div>
 <div class="grid2">
-<div class="card"><div id="cz7" class="ch"></div><div class="cap">Read across a row to see where UCs in each April band ended up in May. Cells to the right of the diagonal improved; cells to the left slipped.</div></div>
-<div class="card"><div id="cz8" class="ch"></div><div class="cap">Each dot is a UC. Dots above the diagonal improved. The bottom-left box (both below 80%) holds the persistent low UCs.</div></div>
+<div class="card"><div id="cz7" class="ch"></div><div class="cap" id="capz7"></div></div>
+<div class="card"><div id="cz8" class="ch"></div><div class="cap" id="capz8"></div></div>
 </div>
 <div class="card">
 <div class="tblhdr"><h3 style="margin:0">UCs by coverage trend (April → May)</h3><div class="pills" id="zpills"></div></div>
@@ -1440,7 +1441,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card"><div class="kl">EPI card issued</div><div class="kv" id="rv8">–</div><div class="ks" id="rv8s"></div></div><div class="card"><div class="kl">RCA visits by Govt monitors</div><div class="kv" id="rv9">–</div><div class="ks" id="rv9s"></div></div>
 </div>
 <div class="card" style="margin-bottom:16px">
-<div class="tblhdr"><h3 style="margin:0">KP district map</h3><div style="display:flex;gap:10px;align-items:center"><select class="kmsel" aria-label="Map measure"></select><span class="cnt" id="kmNote"></span><button class="btn" id="btnKMcsv">Download (CSV)</button></div></div>
+<div class="tblhdr"><h3 style="margin:0">KP district map</h3><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="kmsel" aria-label="Map measure"></select><span class="cnt" id="kmNote"></span><button class="btn" id="btnKMpptx" title="One PowerPoint slide with this map and the lowest districts">Slide (PPTX)</button><button class="btn" id="btnKMjpg">JPG</button><button class="btn" id="btnKMpng">PNG</button><button class="btn" id="btnKMcsv">CSV</button></div></div>
 <div id="kpm" class="ch"></div>
 <div class="cap" id="capkpm"></div>
 </div>
@@ -2668,6 +2669,9 @@ const ZT=['Persistent low','Declined','Improved','Consistently good','Verify dat
 const ZTCOL={'Persistent low':C.crit,'Declined':C.low,'Improved':C.high,'Consistently good':C.mod,'Verify data':C.over,'Not comparable':C.none};
 const ZTTAG={'Persistent low':'t-pers','Declined':'t-decl','Improved':'t-rec','Consistently good':'t-stab','Verify data':'t-over','Not comparable':'t-none'};
 const zbTag=b=>tag(ZBTAG[b]||'t-none',b), ztTag=t=>tag(ZTTAG[t],t);
+// the same 80% / 110% rule the stored April–May trend uses, applied to whichever campaign pair is on screen
+const zPairTr=(r,a,b)=>{const x=r['p'+a],y=r['p'+b];if(x==null||y==null)return 'Not comparable';
+ if(y>110)return 'Verify data';if(x<80&&y<80)return 'Persistent low';if(x>=80&&y>=80)return 'Consistently good';return y>x?'Improved':'Declined';};
 const fZT=el('fZT'); fill(fZT,ZT,'All trends');
 const CH={}; function HC(id,o){if(CH[id]){try{CH[id].destroy();}catch(e){}}
  // a key written by CKEY() describes the chart that is on screen now, so drop it with the chart it belongs to
@@ -2807,6 +2811,7 @@ function renderZOv(){
 el('btnZCSVall').onclick=()=>csvDownload('ZD_Reported_Covered_'+(fDist.value||'All_districts').replace(/\s+/g,'_')+'.csv',ZH,cur.map(zdRowCSV));
 
 // ---------- ZD CAMPAIGN TRENDS ----------
+let ZPAIR=null;
 function renderZCmp(){
  const base=ZD.filter(r=>matchZ(r,'zt')), L=lvlOf(), cnt=t=>base.filter(r=>r.tr===t).length;
  el('y1').textContent=cnt('Persistent low');el('y2').textContent=cnt('Declined');el('y3').textContent=cnt('Improved');el('y4').textContent=cnt('Consistently good');el('y5').textContent=cnt('Verify data');
@@ -2847,22 +2852,31 @@ function renderZCmp(){
  el('capz9').textContent=aa.lsA?`Overall ${sgn((aa.lsS/aa.lsA-1)*100,0)}% (${fmt(aa.lsA)} → ${fmt(aa.lsS)}). ${inc} of ${C9.length} ${L.pl} reported more ZDs in Sept than in April.`:'';
 
  const BO=['Critical (<50%)','Low (50–80%)','Moderate (80–90%)','Good (90–110%)','Verify (>110%)'], sh=b=>b.split(' (')[0];
- const hm=[];let m2=0;BO.forEach((ba,y)=>BO.forEach((bm,x)=>{const v=cur.filter(r=>r.bA===ba&&r.bM===bm).length;m2=Math.max(m2,v);hm.push([x,y,v]);}));
- HC('cz7',{chart:{type:'heatmap'},title:{text:'How UCs moved between coverage bands'},subtitle:{text:'Rows = April band · columns = May band · cell = number of UCs'},
-  xAxis:{categories:BO.map(sh),title:{text:'SNID May band'}},yAxis:{categories:BO.map(sh),title:{text:'NID April band'},reversed:true,gridLineWidth:0},
+ const PR=[['A','M'],['M','S'],['A','S']].filter(p=>p[1]!=='S'||SCOV);
+ if(!ZPAIR||!PR.some(p=>p[0]+p[1]===ZPAIR))ZPAIR=SCOV?'MS':'AM';
+ const [P1,P2]=ZPAIR.split(''), LN={A:'April',M:'May',S:'Sept'}, L1=LN[P1], L2=LN[P2];
+ el('zpair').innerHTML=PR.map(p=>`<button class="pill ${p[0]+p[1]===ZPAIR?'on':''}" data-p="${p[0]}${p[1]}">${esc(LN[p[0]]+' → '+LN[p[1]])} (${cur.filter(r=>zPairTr(r,p[0],p[1])!=='Not comparable').length})</button>`).join('');
+ el('zpair').querySelectorAll('.pill').forEach(b=>b.onclick=()=>{ZPAIR=b.dataset.p;render();});
+ el('zpairCnt').textContent=`${CAMP[P1]} vs ${CAMP[P2]} · UCs with a coverage figure in both`;
+ const hm=[];let m2=0;BO.forEach((bf,y)=>BO.forEach((bt,x)=>{const v=cur.filter(r=>r['b'+P1]===bf&&r['b'+P2]===bt).length;m2=Math.max(m2,v);hm.push([x,y,v]);}));
+ HC('cz7',{chart:{type:'heatmap'},title:{text:`How UCs moved between coverage bands, ${L1} → ${L2}`},subtitle:{text:`Rows = ${L1} band · columns = ${L2} band · cell = number of UCs`},
+  xAxis:{categories:BO.map(sh),title:{text:CAMP[P2]+' band'}},yAxis:{categories:BO.map(sh),title:{text:CAMP[P1]+' band'},reversed:true,gridLineWidth:0},
   colorAxis:{min:0,max:Math.max(m2,1),minColor:C.bg2,maxColor:C.prim},legend:{enabled:false},
-  tooltip:{formatter(){return `April <b>${BO[this.point.y]}</b> → May <b>${BO[this.point.x]}</b><br><b>${this.point.value}</b> UCs`;}},
+  tooltip:{formatter(){return `${L1} <b>${BO[this.point.y]}</b> → ${L2} <b>${BO[this.point.x]}</b><br><b>${this.point.value}</b> UCs`;}},
   series:[{name:'UCs',borderWidth:1,borderColor:C.bord,data:hm,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500'},formatter(){return this.point.value||'';}}}]});
  CKEY('cz7',[[C.bg2,'few UCs made that move'],[C.prim,'many - the busiest cell here holds '+Math.max(m2,1)+' UCs']]);
 
  const clip=v=>Math.min(v,150);
- HC('cz8',{chart:{type:'scatter',zooming:{type:'xy'}},title:{text:'April % vs May % coverage, per UC'},subtitle:{text:'Dashed lines at 80% · values above 150% drawn at 150% · drag to zoom'},
-  xAxis:{title:{text:'NID April coverage (%)'},min:0,max:150,gridLineWidth:1,gridLineColor:C.grid,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
-  yAxis:{title:{text:'SNID May coverage (%)'},min:0,max:150,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
-  tooltip:{useHTML:true,formatter(){const r=this.point.r;return `<b>${esc(r.u)}</b> (${r.c})<br>${esc(r.d)} › ${esc(r.t)}<br>April: ${fN(r.cA)}/${fN(r.rA)} = ${pc(r.pA)}<br>May: ${fN(r.cM)}/${fN(r.rM)} = ${pc(r.pM)}<br>${r.tr}`;}},
+ HC('cz8',{chart:{type:'scatter',zooming:{type:'xy'}},title:{text:`${L1} % vs ${L2} % coverage, per UC`},subtitle:{text:'Dashed lines at 80% · values above 150% drawn at 150% · drag to zoom'},
+  xAxis:{title:{text:CAMP[P1]+' coverage (%)'},min:0,max:150,gridLineWidth:1,gridLineColor:C.grid,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
+  yAxis:{title:{text:CAMP[P2]+' coverage (%)'},min:0,max:150,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
+  tooltip:{useHTML:true,formatter(){const r=this.point.r;return `<b>${esc(r.u)}</b> (${r.c})<br>${esc(r.d)} › ${esc(r.t)}<br>${L1}: ${fN(r['c'+P1])}/${fN(r['r'+P1])} = ${pc(r['p'+P1])}<br>${L2}: ${fN(r['c'+P2])}/${fN(r['r'+P2])} = ${pc(r['p'+P2])}<br>${zPairTr(r,P1,P2)}`;}},
   plotOptions:{scatter:{marker:{radius:4,symbol:'circle'},opacity:.8}},
   series:[{type:'line',name:'No change',data:[[0,0],[150,150]],color:C.mut,dashStyle:'ShortDot',marker:{enabled:false},enableMouseTracking:false,lineWidth:1},
-   ...ZT.filter(t=>t!=='Not comparable').map(t=>({name:t,color:ZTCOL[t],data:cur.filter(r=>r.tr===t).map(r=>({x:clip(r.pA),y:clip(r.pM),r}))})).filter(x=>x.data.length)]});
+   ...ZT.filter(t=>t!=='Not comparable').map(t=>({name:t,color:ZTCOL[t],data:cur.filter(r=>zPairTr(r,P1,P2)===t).map(r=>({x:clip(r['p'+P1]),y:clip(r['p'+P2]),r}))})).filter(x=>x.data.length)]});
+ const nc7=cur.filter(r=>zPairTr(r,P1,P2)==='Not comparable').length;
+ el('capz7').textContent=`Read across a row to see where UCs in each ${L1} band ended up in ${L2}. Cells to the right of the diagonal improved; cells to the left slipped. ${nc7} of ${cur.length} UC${nc7===1?'':'s'} ${nc7===1?'has':'have'} a coverage figure in only one of the two rounds and cannot be placed.`;
+ el('capz8').textContent=`Each dot is a UC, coloured by the ${L1} → ${L2} movement. Dots above the diagonal improved. The bottom-left box (both below 80%) holds the persistent low UCs.${P2==='S'?' Sept coverage is that round\'s own self-reported figure, not a later verification.':''}`;
 
  el('zpills').innerHTML=[['','All',base.length],...ZT.map(t=>[t,t,base.filter(r=>r.tr===t).length])].map(([v,l,n])=>`<button class="pill ${fZT.value===v?'on':''}" data-t="${esc(v)}">${esc(l)} (${n})</button>`).join('');
  el('zpills').querySelectorAll('.pill').forEach(b=>b.onclick=()=>{fZT.value=b.dataset.t;render();});
@@ -2886,7 +2900,7 @@ function grpCols(L){return [{k:'k',l:L.Lvl,f:x=>L.key==='d'?dz(x.k):esc(x.k)},zn
  {k:'vr',l:'Rating',f:x=>tag(x.vt,x.vl)}];}
 function renderZPerf(){
  const L=lvlOf(), G=groupBy(cur,L.key);
- el('zpC').innerHTML=[['A',CAMP.A],['M',CAMP.M],...(SCOV?[['S',CAMP.S],['K','Caseload view']]:[['S',CAMP.S+' (reported only)']]),['X','Comparative: April vs May']].map(([v,l])=>`<button class="pill ${ZPC===v?'on':''}" data-c="${v}">${esc(l)}</button>`).join('');
+ el('zpC').innerHTML=[['A',CAMP.A],['M',CAMP.M],...(SCOV?[['S',CAMP.S],['K','Caseload view']]:[['S',CAMP.S+' (reported only)']]),['X','Comparative: April vs May'],...(SCOV?[['Y','Comparative: May vs Sept']]:[])].map(([v,l])=>`<button class="pill ${ZPC===v?'on':''}" data-c="${v}">${esc(l)}</button>`).join('');
  el('zpC').querySelectorAll('.pill').forEach(b=>b.onclick=()=>{ZPC=b.dataset.c;delete SORT.tZGood;delete SORT.tZLow;delete SORT.tZGrp;renderZPerf();});
  const idx=(r,i)=>i+1;
  if(ZPC==='A'||ZPC==='M'||(ZPC==='S'&&SCOV)){
@@ -2940,36 +2954,37 @@ function renderZPerf(){
    cur.filter(r=>r.rS!=null&&r.rA!=null&&r.rS>r.rA).sort((x,y)=>(y.rS-y.rA)-(x.rS-x.rA)).slice(0,15),'dS',-1);
   drawTable('tZGrp',grpCols(L),G,'kS',-1);
  } else {
-  el('zpHint').innerHTML='<b>Comparative view</b> across the two campaigns with coverage data. <b>Consistently good</b> = 80%+ in both April and May. <b>Persistent low</b> = below 80% in both. Bubble size = Sept reported ZDs.';
-  const g1=G.filter(x=>x.pA!=null&&x.pM!=null), clip=v=>Math.min(v,150);
+  const X1=ZPC==='Y'?'M':'A', X2=ZPC==='Y'?'S':'M', DK=ZPC==='Y'?'dq':'dp', XL={A:'April',M:'May',S:'Sept'}, XA=XL[X1], XB=XL[X2];
+  el('zpHint').innerHTML=`<b>Comparative view</b>: <b>${esc(CAMP[X1])}</b> vs <b>${esc(CAMP[X2])}</b>. <b>Consistently good</b> = 80%+ in both. <b>Persistent low</b> = below 80% in both. Bubble size = Sept reported ZDs. Each round's coverage is its own reported figure, not re-checked by a later round.`;
+  const g1=G.filter(x=>x['p'+X1]!=null&&x['p'+X2]!=null), clip=v=>Math.min(v,150);
   el('czp1').style.height='460px';
-  HC('czp1',{chart:{type:'bubble',zooming:{type:'xy'}},title:{text:`${L.Lvl} coverage: April vs May`},subtitle:{text:'Top-right = good in both · bottom-left = persistent low · above the diagonal = improved'},
-   xAxis:{title:{text:'NID April coverage (%)'},min:0,max:150,gridLineWidth:1,gridLineColor:C.grid,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
-   yAxis:{title:{text:'SNID May coverage (%)'},min:0,max:150,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},legend:{enabled:false},
-   tooltip:{useHTML:true,formatter(){const x=this.point.g;return `<b>${esc(x.k)}</b><br>April ${pc(x.pA)} → May ${pc(x.pM)} (${sgn(x.dp)} pts)<br>Sept reported: ${fmt(x.rS)}<br>Persistent low UCs: ${x.pl}`;}},
+  HC('czp1',{chart:{type:'bubble',zooming:{type:'xy'}},title:{text:`${L.Lvl} coverage: ${XA} vs ${XB}`},subtitle:{text:'Top-right = good in both · bottom-left = persistent low · above the diagonal = improved'},
+   xAxis:{title:{text:CAMP[X1]+' coverage (%)'},min:0,max:150,gridLineWidth:1,gridLineColor:C.grid,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},
+   yAxis:{title:{text:CAMP[X2]+' coverage (%)'},min:0,max:150,plotLines:[{value:80,color:C.mut,dashStyle:'Dash',width:1}]},legend:{enabled:false},
+   tooltip:{useHTML:true,formatter(){const x=this.point.g;return `<b>${esc(x.k)}</b><br>${XA} ${pc(x['p'+X1])} → ${XB} ${pc(x['p'+X2])} (${sgn(x[DK])} pts)<br>Sept reported: ${fmt(x.rS)}<br>Persistent low UCs (Apr–May): ${x.pl}`;}},
    plotOptions:{bubble:{minSize:8,maxSize:46,opacity:.75,dataLabels:{enabled:true,format:'{point.name}',style:{color:C.sec,textOutline:'none',fontWeight:'400',fontSize:'10px'},allowOverlap:false}}},
    series:[{type:'line',data:[[0,0],[150,150]],color:C.mut,dashStyle:'ShortDot',marker:{enabled:false},enableMouseTracking:false,lineWidth:1},
-    {name:L.pl,data:g1.map(x=>({x:clip(x.pA),y:clip(x.pM),z:x.rS||1,name:x.k,g:x,color:colCov(x.pM)}))}]});
- CKEY('czp1',[[C.over,'May coverage over 110% - check the target'],[C.high,'90-110%'],[C.mod,'80-90%'],[C.low,'50-80%'],[C.crit,'under 50%'],[C.mut,'dotted line = April and May equal (no change)','line']]);
-  const q1=g1.filter(x=>x.pA>=80&&x.pM>=80).length, q3=g1.filter(x=>x.pA<80&&x.pM<80).length;
+    {name:L.pl,data:g1.map(x=>({x:clip(x['p'+X1]),y:clip(x['p'+X2]),z:x.rS||1,name:x.k,g:x,color:colCov(x['p'+X2])}))}]});
+ CKEY('czp1',[[C.over,XB+' coverage over 110% - check the target'],[C.high,'90-110%'],[C.mod,'80-90%'],[C.low,'50-80%'],[C.crit,'under 50%'],[C.mut,'dotted line = '+XA+' and '+XB+' equal (no change)','line']]);
+  const q1=g1.filter(x=>x['p'+X1]>=80&&x['p'+X2]>=80).length, q3=g1.filter(x=>x['p'+X1]<80&&x['p'+X2]<80).length;
   el('capzp1').textContent=g1.length?`${q1} ${L.pl} were at 80%+ in both campaigns; ${q3} were below 80% in both.`:'No coverage data in both campaigns for the current selection.';
-  const g2=g1.slice().sort((x,y)=>y.dp-x.dp);
+  const g2=g1.slice().sort((x,y)=>y[DK]-x[DK]);
   el('czp2').style.height=hFor(g2.length,20)+'px';
-  HC('czp2',{chart:{type:'bar'},title:{text:`Change in coverage, April → May, by ${L.lvl}`},subtitle:{text:'Percentage points · biggest gain at the top'},
+  HC('czp2',{chart:{type:'bar'},title:{text:`Change in coverage, ${XA} → ${XB}, by ${L.lvl}`},subtitle:{text:'Percentage points · biggest gain at the top'},
    xAxis:{categories:g2.map(x=>x.k)},yAxis:{title:{text:'Change (percentage points)'},plotLines:[{value:0,color:C.mut,width:1}]},legend:{enabled:false},
-   tooltip:{useHTML:true,formatter(){const x=g2[this.point.x];return `<b>${esc(x.k)}</b><br>${pc(x.pA)} → ${pc(x.pM)}<br><b>${sgn(x.dp)} pts</b>`;}},
-   plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:+.0f}'}}},series:[{name:'Change',data:g2.map(x=>({y:+x.dp.toFixed(1),color:x.dp>=0?C.high:C.crit}))}]});
- CKEY('czp2',[[C.high,'Coverage higher in May than April'],[C.crit,'Coverage lower in May']]);
-  const up=g2.filter(x=>x.dp>0).length; el('capzp2').textContent=g2.length?`${up} of ${g2.length} ${L.pl} improved. Large gains in districts that end above 110% (e.g. ${g2.filter(x=>x.pM>110).map(x=>x.k).slice(0,3).join(', ')||'none'}) point to data issues rather than real gains.`:'';
-  el('zgT').textContent='Top 15 consistently good UCs (80%+ in April and May)'; el('zlT').textContent='Top 15 persistent low UCs (below 80% in April and May)';
+   tooltip:{useHTML:true,formatter(){const x=g2[this.point.x];return `<b>${esc(x.k)}</b><br>${pc(x['p'+X1])} → ${pc(x['p'+X2])}<br><b>${sgn(x[DK])} pts</b>`;}},
+   plotOptions:{bar:{borderRadius:2,dataLabels:{...dl,format:'{y:+.0f}'}}},series:[{name:'Change',data:g2.map(x=>({y:+x[DK].toFixed(1),color:x[DK]>=0?C.high:C.crit}))}]});
+ CKEY('czp2',[[C.high,'Coverage higher in '+XB+' than '+XA],[C.crit,'Coverage lower in '+XB]]);
+  const up=g2.filter(x=>x[DK]>0).length; el('capzp2').textContent=g2.length?`${up} of ${g2.length} ${L.pl} improved. Large gains in districts that end above 110% (e.g. ${g2.filter(x=>x['p'+X2]>110).map(x=>x.k).slice(0,3).join(', ')||'none'}) point to data issues rather than real gains.`:'';
+  el('zgT').textContent=`Top 15 consistently good UCs (80%+ in ${XA} and ${XB})`; el('zlT').textContent=`Top 15 persistent low UCs (below 80% in ${XA} and ${XB})`;
   el('zgC').textContent='Ranked by combined reported ZDs, i.e. large caseloads covered well twice in a row.'; el('zlC').textContent='Ranked by children not covered across both campaigns. These UCs have a structural problem.';
-  drawTable('tZGood',[{k:'i',l:'#',ns:1,f:idx},{k:'u',l:'UC'},{k:'d',l:'District',f:r=>dz(r.d)},zn('pA','Apr %',r=>pcol(r.pA)),zn('pM','May %',r=>pcol(r.pM)),
-   zn('ram','Reported (Apr+May)',r=>fmt(r.rA+r.rM),r=>r.rA+r.rM),zn('rS','Sept rep.',r=>fN(r.rS))],
-   cur.filter(r=>r.tr==='Consistently good').sort((x,y)=>(y.rA+y.rM)-(x.rA+x.rM)).slice(0,15),'ram',-1);
-  drawTable('tZLow',[{k:'i',l:'#',ns:1,f:idx},{k:'u',l:'UC'},{k:'d',l:'District',f:r=>dz(r.d)},zn('pA','Apr %',r=>pcol(r.pA)),zn('pM','May %',r=>pcol(r.pM)),
-   zn('gg','Not covered (Apr+May)',r=>`<b class="dn">${gapZ(r,'A')+gapZ(r,'M')}</b>`,r=>gapZ(r,'A')+gapZ(r,'M')),zn('rS','Sept rep.',r=>fN(r.rS))],
-   cur.filter(r=>r.tr==='Persistent low').sort((x,y)=>(gapZ(y,'A')+gapZ(y,'M'))-(gapZ(x,'A')+gapZ(x,'M'))).slice(0,15),'gg',-1);
-  drawTable('tZGrp',grpCols(L),G,'dp',-1);
+  drawTable('tZGood',[{k:'i',l:'#',ns:1,f:idx},{k:'u',l:'UC'},{k:'d',l:'District',f:r=>dz(r.d)},zn('p'+X1,XA+' %',r=>pcol(r['p'+X1])),zn('p'+X2,XB+' %',r=>pcol(r['p'+X2])),
+   zn('ram',`Reported (${XA}+${XB})`,r=>fmt(r['r'+X1]+r['r'+X2]),r=>r['r'+X1]+r['r'+X2]),...(X2==='S'?[]:[zn('rS','Sept rep.',r=>fN(r.rS))])],
+   cur.filter(r=>zPairTr(r,X1,X2)==='Consistently good').sort((x,y)=>(y['r'+X1]+y['r'+X2])-(x['r'+X1]+x['r'+X2])).slice(0,15),'ram',-1);
+  drawTable('tZLow',[{k:'i',l:'#',ns:1,f:idx},{k:'u',l:'UC'},{k:'d',l:'District',f:r=>dz(r.d)},zn('p'+X1,XA+' %',r=>pcol(r['p'+X1])),zn('p'+X2,XB+' %',r=>pcol(r['p'+X2])),
+   zn('gg',`Not covered (${XA}+${XB})`,r=>`<b class="dn">${gapZ(r,X1)+gapZ(r,X2)}</b>`,r=>gapZ(r,X1)+gapZ(r,X2)),...(X2==='S'?[]:[zn('rS','Sept rep.',r=>fN(r.rS))])],
+   cur.filter(r=>zPairTr(r,X1,X2)==='Persistent low').sort((x,y)=>(gapZ(y,X1)+gapZ(y,X2))-(gapZ(x,X1)+gapZ(x,X2))).slice(0,15),'gg',-1);
+  drawTable('tZGrp',grpCols(L),G,DK,-1);
  }
  el('zgrpT').textContent=`${L.Lvl} comparison: all campaigns`;
 }
@@ -4536,6 +4551,85 @@ function renderERv(){
   el('btnKMcsv').onclick=()=>csvDownload('EPI_district_map_'+_slug()+'.csv',
    ['District','Division','Reported Penta-3 %','RCA-confirmed Penta-3 %','Gap (pts)','RCA visits','Children checked','BCG confirmed %','Supervisory visits','Site open %','Stockout seen %','Combined report'],
    Object.keys(V).sort().map(c=>{const g=V[c];return [DNAME(c),g.dv||'',X(g.rp3),X(g.rcp3),X(g.gap),g.v||0,g.kk||0,X(g.rb),g.sv||0,X(g.op),X(g.so),g.cmb?'yes':''];}));
+  // Downloading the map. The live <svg> is re-serialised with its own font stack before rasterising,
+  // because the page stylesheet never travels with a data URI and the labels would fall back to serif.
+  // Legend and caption are drawn from the same values the card shows, so the file explains the colours
+  // without the browser open.
+  const KM_T='KP district map \u00b7 '+mk[1],
+   KM_S='EPI \u00b7 '+(EM?emLab(EM):'2026 year-to-date')+' \u00b7 '+rk.length+' of '+KPGEO.polys+' districts with data'+
+    (fDist.value?' \u00b7 '+DNAME(fDist.value):(fDiv.value?' \u00b7 '+fDiv.value:'')),
+   KM_L=(mk[2]==='v'?[['up to '+fmt(mx),'#2563eb']]:KMB[mk[2]].map((b,i)=>[KML[mk[2]][i],b[1]])).concat([['no data','#f1f5f9']]),
+   KM_C=el('capkpm').textContent||'';
+  const kmShot=()=>{const svg=el('kpm').querySelector('svg'); if(!svg)return Promise.resolve(null);
+   const vb=(svg.getAttribute('viewBox')||'').split(/[\s,]+/).map(Number),c=svg.cloneNode(true);
+   c.removeAttribute('style');c.setAttribute('xmlns','http://www.w3.org/2000/svg');
+   c.setAttribute('width',String(vb[2]));c.setAttribute('height',String(vb[3]));
+   c.setAttribute('font-family','"Segoe UI",Arial,sans-serif');
+   const img=new Image();
+   return new Promise((res,rej)=>{img.onload=()=>res({img:img,w:vb[2],h:vb[3]});
+    img.onerror=()=>rej(new Error('map svg would not raster'));
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(c));});};
+  const kmWrap=(t,w)=>{const m=document.createElement('canvas').getContext('2d');
+   m.font='12px "Segoe UI",Arial,sans-serif';const out=[];let cur='';
+   String(t).split(/\s+/).forEach(v=>{const s=cur?cur+' '+v:v;
+    if(m.measureText(s).width>w&&cur){out.push(cur);cur=v;}else cur=s;});
+   if(cur)out.push(cur);return out;};
+  // {url,w,h} in CSS px. plain drops the baked-in title so a slide can carry its own editable text.
+  const kmImgURL=async(kind,plain)=>{const sh=await kmShot(); if(!sh)return null;
+   const S=2, W=660, TB=plain?0:56, LH=26, all=kmWrap(KM_C,W-32), ln=all.slice(0,4);
+   if(all.length>4)ln[3]=ln[3].replace(/\s*\S*$/,'')+'\u2026';
+   const CH=ln.length?ln.length*15+12:0, mh=Math.round((W-24)*sh.h/sh.w), H=TB+mh+LH+CH, ly=TB+mh+16;
+   const cv=document.createElement('canvas'); cv.width=W*S; cv.height=H*S;
+   const x=cv.getContext('2d'); x.scale(S,S); x.fillStyle='#ffffff'; x.fillRect(0,0,W,H);
+   if(!plain){x.fillStyle='#0f172a';x.font='bold 21px "Segoe UI",Arial,sans-serif';x.fillText(KM_T,16,28);
+    x.fillStyle='#475569';x.font='13px "Segoe UI",Arial,sans-serif';x.fillText(KM_S,16,47);}
+   x.drawImage(sh.img,(W-mh*sh.w/sh.h)/2,TB+2,mh*sh.w/sh.h,mh);
+   let lx=16; x.font='12.5px "Segoe UI",Arial,sans-serif';
+   KM_L.forEach(b=>{x.fillStyle=b[1];x.fillRect(lx,ly-9,11,11);
+    x.fillStyle='#374151';x.fillText(b[0],lx+15,ly);lx+=15+x.measureText(b[0]).width+16;});
+   if(ln.length){x.fillStyle='#64748b';x.font='12px "Segoe UI",Arial,sans-serif';
+    ln.forEach((t,i)=>x.fillText(t,16,ly+24+i*15));}
+   return {url:kind==='jpeg'?cv.toDataURL('image/jpeg',0.92):cv.toDataURL('image/png'),w:W,h:H};};
+  const kmFile=ext=>'EPI_district_map_'+mk[0]+'_'+_slug()+'_'+new Date().toISOString().slice(0,10)+ext;
+  const kmDl=(url,name)=>{const a=document.createElement('a');a.href=url;a.download=name;
+   document.body.appendChild(a);a.click();a.remove();};
+  [['btnKMjpg','jpeg','.jpg','JPG'],['btnKMpng','png','.png','PNG']].forEach(p=>{
+   const b=el(p[0]); b.disabled=!rk.length;
+   b.onclick=async()=>{b.disabled=true;
+    try{const o=await kmImgURL(p[1]);
+     if(!o)toast('The map is not on screen to download');
+     else{kmDl(o.url,kmFile(p[2]));toast(p[3]+' downloaded');}
+    }catch(e){console.error(e);toast('Could not create the '+p[3]);}
+    b.disabled=!rk.length;};});
+  {const b=el('btnKMpptx'); b.disabled=!rk.length;
+   b.onclick=async()=>{b.disabled=true;
+    try{await loadPptx(); const o=await kmImgURL('png',true);
+     if(!o){toast('The map is not on screen to download');b.disabled=false;return;}
+     const P=window.PptxGenJS, pptx=new P(), F='Segoe UI', nR=Math.min(12,rk.length), lst=rk.slice(0,nR);
+     pptx.layout='LAYOUT_WIDE'; pptx.title=KM_T; pptx.subject=KM_S;
+     const s=pptx.addSlide(); s.background={color:'FFFFFF'};
+     s.addShape(pptx.ShapeType.rect,{x:0,y:0,w:13.333,h:0.14,fill:{color:'1F497D'},line:{color:'1F497D'}});
+     s.addText(KM_T,{x:0.5,y:0.24,w:12.3,h:0.55,fontFace:F,fontSize:24,bold:true,color:'1F497D'});
+     s.addText(KM_S,{x:0.5,y:0.84,w:12.3,h:0.35,fontFace:F,fontSize:12,color:'6B7280'});
+     let ih=5.5, iw=ih*o.w/o.h; if(iw>5.1){iw=5.1;ih=iw*o.h/o.w;}
+     s.addImage({data:o.url,x:0.45,y:1.28,w:iw,h:ih});
+     const rx=0.45+iw+0.34, rw=12.43-iw-0.34,
+      hcell=(t,j)=>({text:t,options:{bold:true,color:'FFFFFF',fill:{color:'1F497D'},fontSize:10,align:j?'right':'left',valign:'middle'}}),
+      dcol=g2=>{const c=fill(g2);return c.charAt(0)==='#'&&c.length===7?c.slice(1).toUpperCase():'1F497D';},
+      rows=[[hcell('District',0),hcell(mk[1],1)]].concat(lst.map(c2=>{const g2=V[c2];
+       return [{text:DNAME(c2),options:{fontSize:10,valign:'middle'}},
+        {text:num(val(g2)),options:{fontSize:10,bold:true,align:'right',valign:'middle',color:dcol(g2)}}];}));
+     s.addTable(rows,{x:rx,y:1.28,w:rw,colW:[rw*0.6,rw*0.4],fontFace:F,
+      rowH:[0.32].concat(rows.slice(1).map(()=>0.26)),border:{type:'solid',pt:0.5,color:'E5E7EB'},
+      autoPage:false,margin:0.04});
+     s.addText(KM_C,{x:rx,y:1.42+0.32+nR*0.26,w:rw,h:Math.max(0.5,6.9-(1.42+0.32+nR*0.26)),
+      fontFace:F,fontSize:9.5,color:'374151',valign:'top'});
+     s.addShape(pptx.ShapeType.line,{x:0.5,y:7.0,w:12.33,h:0,line:{color:'E5E7EB',width:0.75}});
+     s.addText('KP Polio and Synergy dashboard \u00b7 '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+      {x:0.5,y:7.05,w:12.3,h:0.3,fontFace:F,fontSize:9,color:'6B7280'});
+     await saveDeck(pptx,kmFile('.pptx')); toast('Slide downloaded');
+    }catch(e){console.error(e);toast('Could not create the slide (needs internet for the PPTX library)');}
+    b.disabled=!rk.length;};}
  };
  if(ksel) ksel.onchange=kmDraw;
  kmDraw();
@@ -4748,7 +4842,7 @@ const HMDEF={cov:{l:'ZD children covered',ty:'cov',go:'zov'},dig:{l:'Linelist di
 const hmBand=(ty,p)=>{if(p==null)return 'n';const t=RT[ty];if(p>110)return 'o';return p>=t[0]?'g':p>=t[1]?'a':'r';};
 function hmData(m){
  const o={}, sel=Array.isArray(HMCamp[m])?HMCamp[m]:[];
- if(m==='cov'){const ks=sel.filter(k=>k==='A'||k==='M');
+ if(m==='cov'){const ks=sel.filter(k=>CPS.indexOf(k)>=0);
   groupBy(ZD,'d').forEach(x=>{let cov=0,rep=0,any=false;ks.forEach(k=>{if(x['p'+k]!=null){any=true;cov+=x['c'+k]||0;rep+=x['rc'+k]||0;}});
    const p=any&&rep?cov/rep*100:null, k0=ks[0];
    o[x.k]={p,s:!any?'No coverage reported':(ks.length>1?`${fmt(cov)} covered of ${fmt(rep)} reported · ${ks.length} campaigns combined`:`${fmt(x['c'+k0])} covered of ${fmt(x['rc'+k0])} reported · ${CAMP[k0]}`)};});}
@@ -4760,10 +4854,10 @@ function hmData(m){
  else {const a=EAGK[HMA]||EAG[0]; if(a)groupE(EPI,'d').forEach(x=>{o[x.k]={p:x['p_'+a.k],s:`${fmt(x[a.k])} doses of ${fmt(eTg(x,a))} ${a.t==='n'?'newborns':'surviving infants'} · ${EPER}`};});}
  return o;
 }
-function hmCampOpts(){if(HMM==='cov'){const o=[];if(ZD.some(r=>r.cA!=null))o.push(['A',CAMP.A]);if(ZD.some(r=>r.cM!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='dig'){const o=[['S',CAMP.S]];if(DATA.some(r=>r.rp!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='vac'){return VCAMP.map(c=>[c.l,c.l]);}return null;}
+function hmCampOpts(){if(HMM==='cov'){const o=[];if(ZD.some(r=>r.cA!=null))o.push(['A',CAMP.A]);if(ZD.some(r=>r.cM!=null))o.push(['M',CAMP.M]);if(SCOV)o.push(['S',CAMP.S]);return o;}if(HMM==='dig'){const o=[['S',CAMP.S]];if(DATA.some(r=>r.rp!=null))o.push(['M',CAMP.M]);return o;}if(HMM==='vac'){return VCAMP.map(c=>[c.l,c.l]);}return null;}
 function hmCampDefault(m){const o=hmCampOpts();if(!o||!o.length)return null;const cur=HMCamp[m];
  if(Array.isArray(cur)&&cur.length&&cur.every(k=>o.some(x=>x[0]===k)))return cur.slice();
- if(m==='cov')return [ZD.some(r=>r.cM!=null)?'M':'A'];if(m==='dig')return ['S'];if(m==='vac')return o.map(x=>x[0]);return [o[0][0]];}
+ if(m==='cov')return [o[o.length-1][0]];if(m==='dig')return ['S'];if(m==='vac')return o.map(x=>x[0]);return [o[0][0]];}
 function hmCampLabelText(k,o){if(!Array.isArray(k)||!k.length)return '–';const m=HMM;
  if(o&&o.length>1&&k.length===o.length)return 'Combined (all '+o.length+')';
  const names=k.map(x=>(m==='cov'||m==='dig')?(CAMP[x]||x):x);

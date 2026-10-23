@@ -110,3 +110,5 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 ZD covered column replaced from ucneapreport261023053947.xls (23-Oct UC-wise zero-dose covered export): 39,176 covered against 62,128 recorded for SNID Sept-26, 1,402 UCs with a figure, 323 UCs above their recorded count.
 ADV rebuilt against the replaced ZD Sept covered column (ucneapreport261023053947.xls, 39,176 covered).
 Pushed the hand-edited index.html master to preview / public / internal builds (+2775 chars). Timestamp refresh 23-Oct-2026 19:25 PKT
+Pushed the hand-edited index.html master to preview / public / internal builds (+6432 chars). Timestamp refresh 23-Oct-2026 19:44 PKT
+Pushed the hand-edited index.html master to preview / public / internal builds (+2313 chars). Timestamp refresh 23-Oct-2026 19:59 PKT
