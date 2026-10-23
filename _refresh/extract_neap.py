@@ -271,6 +271,7 @@ def main():
                 continue
             raise
         ucands = cands
+        uctr = None
         for rec2 in ucands:
             p2 = rec2['path']
             if not os.path.exists(p2):
@@ -278,12 +279,17 @@ def main():
             u, usum = build_uc(p2, cfg['repo'])
             if u:
                 neap['u'] = u
+                uctr = p2
                 summary += '; UC-wise: ' + usum + ' (' + u['src'] + ')'
                 break
         js = srcutil.dumps(neap)
         dest = a.out or os.path.join(srcutil.OUT, 'neap.json')
         srcutil.write_text(dest, js)
-        print('SRC neap %s' % p)
+        # refresh.py credits version.txt from these two slot lines, so a payload built from the
+        # district-wise and the UC-wise export never claims one file did all the work.
+        print('SRC neap district %s' % p)
+        if uctr:
+            print('SRC neap uc %s' % uctr)
         print('OK neap %d %s' % (len(js), summary))
         return
     raise SystemExit('ERR neap no NEAP readiness export among %d candidate files' % len(cands))

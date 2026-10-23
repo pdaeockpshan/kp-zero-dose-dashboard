@@ -156,11 +156,20 @@ def read(path):
         if not p or not os.path.exists(p):
             err = 'file not found: %s' % p
             continue
+        # the portal saves this report three ways: an HTML table named .xls (with the real table
+        # either inline or in the _files/sheet001.htm sidecar), and since 23-Oct-2026 a genuine
+        # .xlsx. Header rows come through as data in every form, so _labels() finds them.
         try:
             tables = pd.read_html(io.BytesIO(open(p, 'rb').read()))
         except Exception as ex:
-            err = 'cannot read %s: %s' % (os.path.basename(p), str(ex)[:120])
-            continue
+            if not re.search(r'\.xlsx?$', p, re.I):
+                err = 'cannot read %s: %s' % (os.path.basename(p), str(ex)[:120])
+                continue
+            try:
+                tables = [pd.read_excel(p, header=None)]
+            except Exception as ex2:
+                err = 'cannot read %s: %s' % (os.path.basename(p), str(ex2)[:120])
+                continue
         if tables:
             tbl, used = max(tables, key=len), p
             break

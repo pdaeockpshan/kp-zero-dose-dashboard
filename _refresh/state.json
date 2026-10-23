@@ -1,18 +1,18 @@
 {
  "datasets": {
   "adv": {
-   "at": "2026-10-22T12:48:23+05:00",
-   "chars": 455588,
-   "file_id": "manual|adv.json",
-   "payload_sha1": "e34ecc6981e0a321",
+   "at": "2026-10-23T17:42:33+05:00",
+   "chars": 455728,
+   "file_id": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls|1791955631|10058",
+   "payload_sha1": "4d79c0917c351af5",
    "source": {
-    "mtime": 1792655228.374387,
-    "name": "adv.json",
-    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\adv.json",
-    "size": 455588
+    "mtime": 1791955631.3421476,
+    "name": "advance_reports_20261014T044243011Z.xls",
+    "path": "D:\\AMAZON DATA\\advance_reports_20261014T044243011Z.xls",
+    "size": 10058
    },
-   "stamp": "22-Oct-2026 14:12",
-   "summary": "manual inject"
+   "stamp": "23-Oct-2026 17:42",
+   "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,175,364"
   },
   "afpd": {
    "at": "2026-10-22T14:23:36+05:00",
@@ -141,18 +141,18 @@
    "summary": "KP-Special-1-Jul 2026, 30 UCs in 2 districts (BANNU+WAZIR-S Lower), recall 13215/15102"
   },
   "inda": {
-   "at": "2026-10-22T12:46:06+05:00",
+   "at": "2026-10-23T17:41:24+05:00",
    "chars": 122875,
-   "file_id": "manual|inda.json",
-   "payload_sha1": "ae3e0edcb5ca7947",
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls|1792758413|1939012",
+   "payload_sha1": "9cde23568d7f0fe9",
    "source": {
-    "mtime": 1792653939.4231758,
-    "name": "inda.json",
-    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\inda.json",
-    "size": 122875
+    "mtime": 1792758413.4351127,
+    "name": "summary_SNID Sept 2026_2026-10-23_052653.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls",
+    "size": 1939012
    },
-   "stamp": "22-Oct-2026 14:12",
-   "summary": "manual inject"
+   "stamp": "23-Oct-2026 17:41",
+   "summary": "1402 UCs, 37 districts, target 6,348,405, vaccinated 6,235,824, still missed 121,677, ZD reported 62,128"
   },
   "mis": {
    "at": "2026-10-22T12:46:04+05:00",
@@ -169,18 +169,18 @@
    "summary": "MIS 3,719 UC-campaign rows (Sept 1,402 / May 928 / Apr 1,389) from the newest readable export per campaign; Sept rows from the 22-Oct-2026 SNID Sept 2026 summary export"
   },
   "mism": {
-   "at": "2026-10-12T13:46:32+05:00",
-   "chars": 67,
-   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls|1792652219|10179",
-   "payload_sha1": "fc59cd1abfe3c8b1",
+   "at": "2026-10-23T17:40:48+05:00",
+   "chars": 62,
+   "file_id": "manual|mism.json",
+   "payload_sha1": "269072723b5715cf",
    "source": {
-    "mtime": 1792652219.1259816,
-    "name": "summary_SNID Sept 2026_2026-10-22_115521.xls",
-    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls",
-    "size": 10179
+    "mtime": 1792759224.9104042,
+    "name": "mism.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\mism.json",
+    "size": 62
    },
-   "stamp": "22-Oct-2026 14:12",
-   "summary": "MISM 3 campaign slots, newest first: SNID Sept-26, SNID May-26, NID Apr-26"
+   "stamp": "23-Oct-2026 17:40",
+   "summary": "manual inject"
   },
   "mon": {
    "at": "2026-10-14T13:35:16+05:00",
@@ -211,18 +211,18 @@
    "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
-   "at": "2026-10-23T11:39:39+05:00",
-   "chars": 107891,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (44).xls|1792737353|1330846",
-   "payload_sha1": "e2c7f52ef0d29365",
+   "at": "2026-10-23T17:20:56+05:00",
+   "chars": 108383,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (46).xls|1792756669|1331357",
+   "payload_sha1": "db9abffbed5c5687",
    "source": {
-    "mtime": 1792737353.2152479,
-    "name": "NEAP (44).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (44).xls",
-    "size": 1330846
+    "mtime": 1792756669.995176,
+    "name": "NEAP (46).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (46).xls",
+    "size": 1331357
    },
-   "stamp": "23-Oct-2026 11:39",
-   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (44).xls)"
+   "stamp": "23-Oct-2026 17:19",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (46).xls)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -251,6 +251,20 @@
    },
    "stamp": "14-Oct-2026 13:01",
    "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
+  },
+  "pcm": {
+   "at": "2026-10-23T17:46:44+05:00",
+   "chars": 467345,
+   "file_id": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx|1791870942|60964",
+   "payload_sha1": "6e96659a8f9fd98d",
+   "source": {
+    "mtime": 1791870942.0931404,
+    "name": "PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
+    "path": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
+    "size": 60964
+   },
+   "stamp": "23-Oct-2026 17:46",
+   "summary": "117 trend pts (88 campaigns), 72 LQAS campaigns, 85 with coverage (35 with advance-report chain), 9 datasets, 4080 UC rows"
   },
   "rca": {
    "at": "2026-10-16T11:03:53+05:00",
@@ -323,34 +337,34 @@
    "summary": "1402 UCs, 37 districts (Afghan bordering 7, Core District 2, Endemic 7, High Risk 1, Rest of KP 20), 55 Afghan-bordering UCs, aliases: WAZIR-S, legacy AFG aliases: WAZIR-S 5"
   },
   "zd": {
-   "at": "2026-10-22T12:45:52+05:00",
-   "chars": 395112,
-   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls|1792652219|10179",
-   "payload_sha1": "6765db5230646152",
+   "at": "2026-10-23T17:40:46+05:00",
+   "chars": 395236,
+   "file_id": "manual|zd.json",
+   "payload_sha1": "7bbdad643ff3a915",
    "source": {
-    "mtime": 1792652219.1259816,
-    "name": "summary_SNID Sept 2026_2026-10-22_115521.xls",
-    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-22_115521.xls",
-    "size": 10179
+    "mtime": 1792759222.1252642,
+    "name": "zd.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\zd.json",
+    "size": 399334
    },
-   "stamp": "22-Oct-2026 14:12",
-   "summary": "SNID Sept 2026 UC-wise summary coverage export, 22-Oct-2026 11:55 stamp; 1,402 report rows joined by UC code against the 1,417 tracked UCs (15 absent, reported null); 62,128 zero-dose children reported, 19,144 covered in that same report, 975 UCs with a covered figure, 321 explicit zeros, 427 reported with no coverage figure"
+   "stamp": "23-Oct-2026 17:40",
+   "summary": "manual inject"
   }
  },
  "last_push": {
-  "at": "2026-10-23T16:28:34+05:00",
-  "chars": 15492483,
-  "internal_md5": "b72481cdf9b3148d0b9e534bd570f6d3",
-  "master_md5": "e2693f088bdf3952d47e0914a852d433",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+62744 chars). Timestamp refresh 23-Oct-2026 16:28 PKT",
-  "stamp": "23-Oct-2026 16:28"
+  "at": "2026-10-23T18:29:25+05:00",
+  "chars": 15501009,
+  "internal_md5": "38b38afdff2265b8b7c80437fb96558d",
+  "master_md5": "63ceebf84b2f7bcb6e885048e674c5ae",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+296 chars). Timestamp refresh 23-Oct-2026 18:29 PKT",
+  "stamp": "23-Oct-2026 18:29"
  },
  "last_run": {
-  "at": "2026-10-23T16:37:25+05:00",
+  "at": "2026-10-23T17:46:44+05:00",
   "datasets": [
-   "surv"
+   "pcm"
   ],
   "dry_run": false,
-  "stamp": "23-Oct-2026 16:37"
+  "stamp": "23-Oct-2026 17:46"
  }
 }

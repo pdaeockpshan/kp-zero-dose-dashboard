@@ -120,11 +120,19 @@ def zd_codes(repo):
     i = s.find('const ZD = ')
     if i < 0:
         raise SystemExit('ERR pcm const ZD not found in index.html')
-    zds = s[i:s.find('];', i)]
+    # parsed, not regexed: refresh.py rewrites this payload as compact JSON, and a pattern
+    # that expects `"d": "..."` spacing silently returns no rows (and no UC codes).
+    j = s.find('\n', i)
+    zds = json.loads(s[i + len('const ZD = '):j].rstrip().rstrip(';').replace('<\\/', '</'))
     out, byn = {}, collections.defaultdict(list)
-    for d, t, u, c in re.findall(r'"d": "([^"]+)", "t": "([^"]+)", "u": "([^"]+)", "c": "(\d+)"', zds):
+    for r in zds:
+        d, u, c = r.get('d'), r.get('u'), r.get('c')
+        if not (d and u and c):
+            continue
         out[(d, norm(u))] = c
         byn[norm(u)].append(c)
+    if not out:
+        raise SystemExit('ERR pcm const ZD has no district/UC/code rows')
     uniq = {k: v[0] for k, v in byn.items() if len(v) == 1}
     return out, uniq
 
