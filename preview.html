@@ -912,7 +912,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 23-Oct-2026 19:59</span>
+  <span class="hupd" id="hUpd">Updated 23-Oct-2026 20:15</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1217,8 +1217,8 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card"><div class="kl">Verify data</div><div class="kv" id="y5" style="color:var(--color-primary)">–</div><div class="ks">May covered &gt;110% of reported</div></div>
 </div>
 <div class="grid2">
-<div class="card"><div id="cz5" class="ch"></div><div class="cap">Each row shows a place's coverage in both campaigns, with the worst May coverage at the top. Read down the May column to find the gaps. Compare across a row to see the direction of change.</div></div>
-<div class="card"><div id="cz5b" class="ch"></div><div class="cap">Zero-dose burden, adjusted for size. Darker cells mean more zero-dose children per 1,000 households, so more follow-up workload.</div></div>
+<div class="card"><div id="cz5" class="ch"></div><div class="cap" id="capz5"></div></div>
+<div class="card"><div id="cz5b" class="ch"></div><div class="cap" id="capz5b"></div></div>
 </div>
 <div class="grid2">
 <div class="card"><div id="cz6" class="ch"></div><div class="cap" id="capz6"></div></div>
@@ -2662,6 +2662,8 @@ let tt;function toast(m){const x=el('toast');x.textContent=m;x.classList.add('sh
 const CAMP={A:'NID Apr-26',M:'SNID May-26',S:'SNID Sept-26'};
 const CS={A:'Apr',M:'May',S:'Sept'};
 const NC=ZSAME?2:3, CPS=['A','M','S'].slice(0,NC), CATS=[CAMP.A,CAMP.M,CAMP.S].slice(0,NC), SCOV=!ZSAME&&ZD.some(r=>r.cS!=null), LCP=SCOV?'S':'M', PPV=CPS[Math.max(0,CPS.indexOf(LCP)-1)];
+// short column headers for the campaign heatmaps - the full names stay in the tooltips, and a narrow card would otherwise rotate them into the title
+const CATSH=CATS.map(c=>c.replace('-26',''));
 const ZB=['Good (90–110%)','Moderate (80–90%)','Low (50–80%)','Critical (<50%)','Verify (>110%)','No ZDs reported'];
 const ZBCOL={'Good (90–110%)':C.high,'Moderate (80–90%)':C.mod,'Low (50–80%)':C.low,'Critical (<50%)':C.crit,'Verify (>110%)':C.over,'No ZDs reported':C.none};
 const ZBTAG={'Good (90–110%)':'t-high','Moderate (80–90%)':'t-mod','Low (50–80%)':'t-low','Critical (<50%)':'t-crit','Verify (>110%)':'t-over'};
@@ -2819,18 +2821,20 @@ function renderZCmp(){
  const cats=G.map(x=>x.k), H=hFor(cats.length,24)+'px';
  el('cz5').style.height=H; el('cz5b').style.height=H;
  const hm1=[];G.forEach((x,y)=>CPS.forEach((cp,i)=>hm1.push({x:i,y,value:x['p'+cp]==null?null:+x['p'+cp].toFixed(1)})));
- HC('cz5',{chart:{type:'heatmap',marginTop:60},title:{text:'Coverage % heatmap by '+L.lvl},subtitle:{text:'Worst '+CAMP[LCP]+' coverage at the top · grey = no coverage data'},
-  xAxis:{categories:CATS,opposite:true},yAxis:{categories:cats,title:{text:null},reversed:true,gridLineWidth:0},
+ HC('cz5',{chart:{type:'heatmap',marginTop:74},title:{text:'Coverage % heatmap by '+L.lvl},
+  xAxis:{categories:CATSH,opposite:true,labels:{autoRotation:false,style:{fontSize:'11px'}}},yAxis:{categories:cats,title:{text:null},reversed:true,gridLineWidth:0},
   colorAxis:{dataClasses:[{to:50,color:C.crit,name:'<50%'},{from:50,to:80,color:C.low,name:'50–80%'},{from:80,to:90,color:C.mod,name:'80–90%'},{from:90,to:110,color:C.high,name:'90–110%'},{from:110,color:C.over,name:'>110%'}]},
   legend:{align:'left',verticalAlign:'bottom'},
   tooltip:{formatter(){return `<b>${esc(cats[this.point.y])}</b><br>${CAMP[CPS[this.point.x]]}: <b>${this.point.value==null?'no data':this.point.value+'%'}</b>`;}},
   series:[{name:'Coverage %',borderWidth:1,borderColor:C.bg2,nullColor:C.grid,data:hm1,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500',fontSize:'10.5px'},formatter(){return this.point.value==null?'–':Math.round(this.point.value)+'%';}}}]});
+ el('capz5').textContent=`Each row is a ${L.lvl}, shown in every campaign it took part in, with the worst ${CAMP[LCP]} coverage at the top. Read down a column for the gaps, across a row for the direction of change. Grey = no coverage reported for that round.`;
  const hm2=[];let mx=0;G.forEach((x,y)=>CPS.forEach((cp,i)=>{const v=x['n'+cp]?+x['k'+cp].toFixed(1):null;if(v!=null)mx=Math.max(mx,v);hm2.push({x:i,y,value:v});}));
- HC('cz5b',{chart:{type:'heatmap',marginTop:60},title:{text:'Reported ZDs per 1,000 households'},subtitle:{text:'Same row order · darker = more ZDs per household'},
-  xAxis:{categories:CATS,opposite:true},yAxis:{categories:cats,title:{text:null},reversed:true,gridLineWidth:0},
+ HC('cz5b',{chart:{type:'heatmap',marginTop:74},title:{text:'Reported ZDs per 1,000 households'},
+  xAxis:{categories:CATSH,opposite:true,labels:{autoRotation:false,style:{fontSize:'11px'}}},yAxis:{categories:cats,title:{text:null},reversed:true,gridLineWidth:0},
   colorAxis:{min:0,max:Math.max(mx,1),minColor:C.bg2,maxColor:C.prim},legend:{align:'left',verticalAlign:'bottom'},
   tooltip:{formatter(){const x=G[this.point.y],cp=CPS[this.point.x];return `<b>${esc(x.k)}</b> · ${CAMP[cp]}<br>${this.point.value==null?'Not in campaign':`<b>${this.point.value}</b> per 1,000 HH<br>${fmt(x['r'+cp])} ZDs reported`}`;}},
   series:[{name:'ZD per 1,000 HH',borderWidth:1,borderColor:C.bg2,nullColor:C.grid,data:hm2,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500',fontSize:'10.5px'},formatter(){return this.point.value==null?'–':this.point.value.toFixed(1);}}}]});
+ el('capz5b').textContent='Zero-dose burden adjusted for size, in the same row order as the coverage heatmap. Darker cells mean more zero-dose children per 1,000 households, so more follow-up workload. Grey = that round did not report here.';
 
  const sk=(fDist.value&&!DSEL)?'t':fDiv.value?'d':'dv', sl=(fDist.value&&!DSEL)?'tehsil':fDiv.value?'district':'division';
  const SG=groupBy(cur,sk).sort((x,y)=>y.rS-x.rS).slice(0,12);
@@ -5928,13 +5932,13 @@ function renderC3(){
   .sort((a,b)=>{const x=a.vpS==null?1e9:a.vpS,y=b.vpS==null?1e9:b.vpS;return x-y;});
  el('c3g1').style.height=hFor(Gs.length,24)+'px';
  const hm=[]; Gs.forEach((g,y)=>CPS.forEach((k,x)=>hm.push({x,y,value:g['vp'+k]==null?null:+g['vp'+k].toFixed(1)})));
- HC('c3g1',{chart:{type:'heatmap',marginTop:60},title:{text:'Campaign coverage % by district'},subtitle:{text:'Worst '+CAMP.S+' coverage at the top · grey = district not in that campaign'},
-  xAxis:{categories:CATS,opposite:true},yAxis:{categories:Gs.map(g=>g.k),title:{text:null},reversed:true,gridLineWidth:0},
+ HC('c3g1',{chart:{type:'heatmap',marginTop:74},title:{text:'Campaign coverage % by district'},
+  xAxis:{categories:CATSH,opposite:true,labels:{autoRotation:false,style:{fontSize:'11px'}}},yAxis:{categories:Gs.map(g=>g.k),title:{text:null},reversed:true,gridLineWidth:0},
   colorAxis:{dataClasses:[{to:50,color:C.crit,name:'<50%'},{from:50,to:80,color:C.low,name:'50–80%'},{from:80,to:90,color:C.mod,name:'80–90%'},{from:90,to:110,color:C.high,name:'90–110%'},{from:110,color:C.over,name:'>110%'}]},
   legend:{align:'left',verticalAlign:'bottom'},
   tooltip:{formatter(){const g=Gs[this.point.y];return '<b>'+esc(g.k)+'</b><br>'+CATS[this.point.x]+': <b>'+(this.point.value==null?'no data':this.point.value+'%')+'</b>';}},
   series:[{name:'Coverage %',borderWidth:1,borderColor:C.bg2,nullColor:C.grid,data:hm,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500',fontSize:'10.5px'},formatter(){return this.point.value==null?'–':Math.round(this.point.value)+'%';}}}]});
- el('c3c1').textContent=CAMP.S+' coverage under 90% in '+Gs.filter(g=>g.vpS!=null&&g.vpS<90).length+' of '+Gs.length+' districts · lowest: '+(Gs.length&&Gs[0].vpS!=null?Gs[0].k+' '+pc(Gs[0].vpS):'–')+'.';
+ el('c3c1').textContent=CAMP.S+' coverage under 90% in '+Gs.filter(g=>g.vpS!=null&&g.vpS<90).length+' of '+Gs.length+' districts · lowest: '+(Gs.length&&Gs[0].vpS!=null?Gs[0].k+' '+pc(Gs[0].vpS):'–')+'. Rows run worst '+CAMP.S+' at the top; grey = that district did not take part in the campaign.';
  const rep=CPS.map(k=>S['r'+k]), cov=CPS.map(k=>S['cn'+k]?S['c'+k]:null), zpl=CPS.map(k=>{const v=zp(k);return v==null?null:+v.toFixed(1);});
  HC('c3g2',{chart:{type:'column'},title:{text:'Zero-dose children reported and covered'},subtitle:{text:'Bars = children · line = covered %'+(SCOV?'':' · '+CAMP.S+' covered not compiled yet')},
   xAxis:{categories:CATS},yAxis:[{title:{text:'Zero-dose children'}},{title:{text:'Covered %'},opposite:true,min:0,max:120,gridLineWidth:0,plotLines:[{value:90,color:C.high,dashStyle:'Dash',width:1.5,zIndex:5,label:{text:'90%',align:'right',style:{color:C.high}}}]}],tooltip:{shared:true},
