@@ -486,6 +486,22 @@
     "~$*"
    ],
    "note": "Every Supervisory_Checklist_Report*.xls is loaded (2026 arrives as two exports: fixed-site and outreach). Newest file wins per month x district x site type; per-file cache in _refresh/cache/esumon.pkl. Monitor names/CNICs/designations are never extracted (public site)."
+  },
+  "ptp": {
+   "label": "Permanent Transit Points coverage panel (const PTP)",
+   "const": "PTP",
+   "extractor": "extract_ptp.py",
+   "roots": [
+    "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles"
+   ],
+   "patterns": [
+    "PTP_Export_Coverage*.xls"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "IDIMS > PTP Panel (idims.eoc.gov.pk/ptpPanel.php?comp_id=2) > PTP Coverage export",
+   "note": "The export is tab-separated text with an .xls name, one row per post per reporting day. Aggregated to district x year and UC level. PostName and PostLocation are never extracted - they name fixed checkpoints and this is a public site. Coverage, Coverage_under5/above5, OPVGiven/Used/Returned, VacRecvd and aav_cards are held out of the payload: Coverage exceeds ExpChildrenDay in ~60% of rows yet is 120x the age-split columns, and OPVGiven reconciles to Used+Returned to within 0.005%, i.e. it is vaccine issued to the post, not doses administered. Nothing built on those columns is published until the report definition is confirmed. Row detail also carries no surveyor fields, unlike the nine *_combined_*.csv checklist exports in the same folder, which do (surveyor_name, designation, Surveyor Email, teams_valid_cnic, per-row latitude/longitude) and are not read into any payload."
   }
  },
  "manual": {
