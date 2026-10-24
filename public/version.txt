@@ -108,3 +108,6 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 Pushed the hand-edited index.html master to preview / public / internal builds (+419 chars). Timestamp refresh 23-Oct-2026 20:15 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+39993 chars). Timestamp refresh 23-Oct-2026 20:45 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+201530 chars). Timestamp refresh 24-Oct-2026 00:07 PKT
+Data refresh 24-Oct-2026 15:07 PKT: NEAP re-extracted from NEAP (47).xls, NEAP (48).xls (24-Oct-2026 14:59): SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (48).xls). Timestamp refresh 24-Oct-2026 15:07 PKT.
+Pushed the hand-edited index.html master to preview / public / internal builds (+9080 chars). Timestamp refresh 24-Oct-2026 15:39 PKT
+Data refresh 24-Oct-2026 15:39 PKT: MPQA re-extracted from Micro_Plan_Scoring__2026-10-24_03-00-11.xls (24-Oct-2026 15:00): SNID Nov-26, 27 districts, 276 of 381 planned UCs scored (72.4%) - 239 pass, 33 needs improvement, 4 serious issues.
