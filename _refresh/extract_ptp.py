@@ -9,7 +9,23 @@ Month cells (d[i][4]) carry the same column order as the year cells so the rende
 with one key list; their 'months' slot is always 1 because the cell IS one month. The section offers
 months only inside a chosen year, so no cross-year month figure is published: a post that reported in
 March 2024 and again in March 2025 is one post in each of those two cells, never one post for a
-"March" summed over the window.
+"March" summed over the window. UC rows carry the same two cell lists in u[i][7] and u[i][8], in the
+shorter uq column order, so the UC table can follow the period pick too.
+
+Post identity: the key is Site_ID, falling back to ID. From the 23-Oct-2026 export onwards ID is a
+per-report-row id (263,024 rows, 263,024 distinct IDs) and the post number moved to Site_ID (1,150
+of them); the older exports have no Site_ID column and their ID is exactly that post number - the
+20-Apr-2025 export's IDs 805 and 782 are the current export's Site_IDs 805 and 782, with the same
+UC codes and post names, so the two spellings share one key without splitting any post.
+
+District spelling: the same export also upper-cases two district units it used to write mixed case
+('WAZIR-S LOWER', 'WAZIR-S UPPER' against alias 'WAZIR-S Lower'). Aliases are therefore matched
+case-insensitively, but only where the lower-cased spelling resolves to one display district - 20,539
+rows hang on those two spellings, and an exact-match lookup silently drops them.
+
+no_of_refusals is summed, but it is non-zero only from reft onwards (2026 in the 24-Oct-2026 export;
+the column exists and is blank-or-zero before that). reft is published so the UI can show a dash
+rather than a false zero for the earlier years.
 
 Held out of the payload deliberately:
   PostName, PostLocation       - they name fixed checkpoints; a public GitHub Pages site is not
@@ -59,8 +75,10 @@ SUMCOLS = [('zd', 'ZeroDose'),
            ('cbu_in', 'CB_InUpto10'), ('cbu_out', 'CB_OutUpto10'),
            ('cbo_in', 'CB_InAbove10'), ('cbo_out', 'CB_OutAbove10'),
            ('nbv', 'new_born_vaccination'), ('teams', 'NoOfTeams'), ('sup', 'NoOfSupervisors'),
-           ('expd', 'ExpChildrenDay')]
+           ('expd', 'ExpChildrenDay'), ('ref', 'no_of_refusals')]
 K = ['rows', 'months', 'posts', 'ucs'] + [k for k, _ in SUMCOLS]
+# UC cells keep their own short order, exactly as they are built below: [posts, months, rows, zd, cbu].
+UQ = ['posts', 'months', 'rows', 'zd', 'cbu']
 
 # IDIMS keeps three district units broader than the dashboard's EPI split, so EPIM has no 1:1
 # alias for them. Display name and division are the EPI family each one belongs to.
@@ -100,16 +118,29 @@ def load_lookups(repo):
     epim = json.loads(dashpatch.get_payload(html, 'EPIM'))
     snd = json.loads(dashpatch.get_payload(html, 'SND'))
     ucpt = json.loads(dashpatch.get_payload(html, 'UCPT'))
-    return ptpgeo.district_aliases(epim), ptpgeo.uc_district(snd), set(ucpt)
+    aliases = dict(ptpgeo.district_aliases(epim))
+    aliases.update(FALLBACK)
+    # IDIMS re-cases district spellings between exports ('WAZIR-S Lower' then 'WAZIR-S LOWER'), and
+    # an exact-match lookup drops those rows silently - 20,539 of them in the 24-Oct-2026 export.
+    # Accept a spelling case-insensitively only where every case variant agrees on one district.
+    seen = defaultdict(set)
+    for k, v in aliases.items():
+        seen[k.lower()].add(v[0])
+    for k, v in list(aliases.items()):
+        low = k.lower()
+        if low != k and len(seen[low]) == 1:
+            aliases.setdefault(low, v)
+    return aliases, ptpgeo.uc_district(snd), set(ucpt)
 
 
 def resolve(d, aliases):
     """[display name, division] for an IDIMS district spelling, or None if it is unknown."""
-    return aliases.get(d) or FALLBACK.get(d)
+    return aliases.get(d) or aliases.get(d.lower())
 
 
 def collect(path, aliases, cut):
     zeros = dict.fromkeys([k for k, _ in SUMCOLS], 0.0)
+    uc0 = dict.fromkeys([k for k in UQ if k != 'posts'], 0.0)
     cells = defaultdict(lambda: dict(zeros))
     mcells = defaultdict(lambda: dict(zeros))
     posts_in = defaultdict(set)
@@ -117,7 +148,10 @@ def collect(path, aliases, cut):
     months_in = defaultdict(set)
     mposts_in = defaultdict(set)
     mucs_in = defaultdict(set)
+    uc_y = defaultdict(lambda: dict(uc0, p=set(), mo=set()))
+    uc_m = defaultdict(lambda: dict(uc0, p=set()))
     post = {}
+    refyears = set()
     dropped = Counter()
     total = 0
 
@@ -129,7 +163,7 @@ def collect(path, aliases, cut):
                 continue
             u = (r.get('Ucode') or '').strip()
             d = (r.get('District') or '').strip()
-            pid = (r.get('ID') or '').strip()
+            pid = (r.get('Site_ID') or '').strip() or (r.get('ID') or '').strip()
             dn = resolve(d, aliases)
             if not UC_RE.match(u) or not dn:
                 dropped['no UC code, or district not in dashboard aliases'] += 1
@@ -159,6 +193,20 @@ def collect(path, aliases, cut):
             ucs_in[key].add(u)
             mposts_in[mkey].add(pid)
             mucs_in[mkey].add(u)
+            cbu = vals['cbu_in'] + vals['cbu_out']
+            uy = uc_y[(u, y)]
+            uy['rows'] += 1
+            uy['zd'] += vals['zd']
+            uy['cbu'] += cbu
+            uy['p'].add(pid)
+            uy['mo'].add(m)
+            um = uc_m[(u, y * 100 + m)]
+            um['rows'] += 1
+            um['zd'] += vals['zd']
+            um['cbu'] += cbu
+            um['p'].add(pid)
+            if vals['ref'] > 0:
+                refyears.add(y)
 
             p = post.get(pid)
             if p is None:
@@ -172,7 +220,7 @@ def collect(path, aliases, cut):
             p['months'].add(ym)
             p['uc'].add(u)
             p['zd'] += vals['zd']
-            p['cbu'] += vals['cbu_in'] + vals['cbu_out']
+            p['cbu'] += cbu
             posts_in[key].add(pid)
             if ym >= p['last']:
                 p['last'] = ym
@@ -198,13 +246,14 @@ def collect(path, aliases, cut):
         p['stat'] = p['lstat'] or counter_mode(p['stats'])
         p['risk'] = p['lrisk'] or counter_mode(p['risks'])
     return (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-            post, dropped, total)
+            uc_y, uc_m, refyears, post, dropped, total)
 
 
 def build(path, repo):
     aliases, snd_uc, ucpt = load_lookups(repo)
+    last_cut = last_stamp(path)
     (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-     post, dropped, total) = collect(path, aliases, last_stamp(path))
+     uc_y, uc_m, refyears, post, dropped, total) = collect(path, aliases, last_cut)
     if not cells or not post:
         raise SystemExit('ERR ptp nothing parsed from %s - header or units changed' % path)
 
@@ -289,12 +338,47 @@ def build(path, repo):
     if split:
         raise SystemExit('ERR ptp UC codes reported under more than one district: %s' % split[:12])
     u = []
+    by_code_y = defaultdict(list)
+    by_code_m = defaultdict(list)
+    for (code, y) in uc_y:
+        by_code_y[code].append(y)
+    for (code, ym) in uc_m:
+        by_code_m[code].append(ym)
     for code, ps in by_uc.items():
-        u.append([code, didx[list({p['d'] for p in ps})[0]], len(ps),
+        dd = list({p['d'] for p in ps})[0]
+        yc = [[yidx[y], [len(uc_y[(code, y)]['p']), len(uc_y[(code, y)]['mo']),
+                         int(round(uc_y[(code, y)]['rows'])), int(round(uc_y[(code, y)]['zd'])),
+                         int(round(uc_y[(code, y)]['cbu']))]] for y in sorted(by_code_y[code])]
+        mc = [[yidx[ym // 100] * 12 + ym % 100 - 1,
+               [len(uc_m[(code, ym)]['p']), 1, int(round(uc_m[(code, ym)]['rows'])),
+                int(round(uc_m[(code, ym)]['zd'])), int(round(uc_m[(code, ym)]['cbu']))]]
+              for ym in sorted(by_code_m[code])]
+        u.append([code, didx[dd], len(ps),
                   len({m for p in ps for m in p['months']}),
                   int(round(sum(p['zd'] for p in ps))),
                   int(round(sum(p['cbu'] for p in ps))),
-                  1 if code in ucpt else 0])
+                  1 if code in ucpt else 0, yc, mc])
+    # the UC cells must add back to the district cells as well: every kept row has one UC, one
+    # year and one month, so the two totals closing on the same figure is what proves the joins.
+    uy_rows = sum(c[1][2] for r in u for c in r[7])
+    um_rows = sum(c[1][2] for r in u for c in r[8])
+    if uy_rows != kept or um_rows != kept:
+        raise SystemExit('ERR ptp UC cells do not add up to the kept rows: years %s months %s kept %s'
+                         % (uy_rows, um_rows, kept))
+    ubad = []
+    for r in u:
+        slots = defaultdict(list)
+        for c in r[8]:
+            slots[c[0] // 12].append(c)
+        ycell = {c[0]: c[1] for c in r[7]}
+        for yj, cs in slots.items():
+            yv = ycell.get(yj)
+            if yv is None or sum(c[1][2] for c in cs) != yv[2] or sum(c[1][3] for c in cs) != yv[3] \
+                    or len(cs) != yv[1] or max(c[1][0] for c in cs) > yv[0] \
+                    or len({c[0] for c in cs}) != len(cs):
+                ubad.append('%s year %s' % (r[0], years[yj] if yj < len(years) else yj))
+    if ubad:
+        raise SystemExit('ERR ptp UC month cells do not reconcile: %s' % ubad[:8])
     u.sort(key=lambda r: (-r[4], -r[5]))
 
     all_uc = set(by_uc)  # by_uc is the local UC index; the loop var above is a post
@@ -317,18 +401,30 @@ def build(path, repo):
         pd.append([[ct.get(x, 0) for x in types], [cs.get(x, 0) for x in stats],
                    [cr.get(x, 0) for x in risks]])
 
+    # month slots inside the reporting window that carry no report anywhere in KP - the source's own
+    # holes, published so the coverage grid can call them gaps instead of leaving them blank.
+    filing = defaultdict(set)
+    for (dd, ym) in mcells:
+        filing[ym].add(dd)
+    slots = [yy * 100 + mm for yy in years for mm in range(1, 13) if yy * 100 + mm <= last_cut]
+    gap = ['%d-%02d' % (s // 100, s % 100) for s in slots if s not in filing]
+
     pkt = dashpatch.pkt_stamp(datetime.datetime.fromtimestamp(os.path.getmtime(path), dashpatch.PKT))
     ptp = {'src': os.path.basename(path), 'asof': pkt.split(' ')[0], 'gen': dashpatch.pkt_stamp(),
            'prov': 'KP', 'win': '%d-%d' % (years[0], years[-1]),
-           'k': K, 'uk': ['code', 'd', 'posts', 'months', 'zd', 'cbu', 'onmap'],
+           'k': K, 'q': UQ, 'uk': ['code', 'd', 'posts', 'months', 'zd', 'cbu', 'onmap', 'yc', 'mc'],
+           'reft': min(refyears) if refyears else None,
            'yr': years, 'ds': dists, 'dr': [raw_of[x] for x in dists],
            'dv': [dv_of[x] for x in dists], 'ty': types, 'st': stats, 'rk': risks,
            'd': d, 'u': u, 'pd': pd, 'pdk': ['type', 'last status', 'last security risk'],
-           'n': n, 'drop': dict(dropped),
+           'n': n, 'drop': dict(dropped), 'gap': gap, 'gden': len(slots), 'last': last_cut,
            'hold': ['Coverage', 'Coverage_under5', 'Coverage_above5', 'OPVGiven', 'OPVUsed',
                     'OPVReturned', 'VacRecvd', 'aav_cards', 'PostName', 'PostLocation'],
-           'note': 'aggregated to district x year and UC; post names and locations excluded; '
-                   'summed columns count reports, not distinct children'}
+           'note': 'aggregated to district x year, district x month and UC x year/month; post names '
+                   'and locations excluded; summed columns count reports, not distinct children; '
+                   'posts keyed on Site_ID (ID before the Oct-2026 export); refusals only exist from '
+                   'reft onwards; UC cells follow q; gap lists month slots (yyyymm) up to last that '
+                   'carry no report anywhere in KP'}
     summary = ('%s rows read, %d kept, %d posts, %d UCs, %d districts, %d-%d, ZD found %s'
                % (format(total, ','), n['kept'], n['posts'], n['ucs'], len(dists),
                   years[0], years[-1], format(n['zd'], ',')))
@@ -351,6 +447,8 @@ def main():
     print('OK ptp %d %s' % (len(js), summary))
     if ptp['drop']:
         print('DROP ptp %s' % ptp['drop'])
+    print('GAP ptp %d of %d %s' % (len(ptp['gap']), ptp['gden'], ptp['gap']))
+    print('REF ptp refusals only from %s, total %s' % (ptp['reft'], format(ptp['n'].get('ref', 0), ',')))
 
 
 if __name__ == '__main__':
