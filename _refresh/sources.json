@@ -371,6 +371,22 @@
    },
    "note": "Fourteen readiness columns per district (DPEC in time, DC/DHO, must-members, UCMO, UC secretary, AICs trained, teams trained, microplans validated, members 18+, local / govt / female member, inaccessible areas). The portal re-saves the same file under a \" (n)\" counter and mixes two shapes: district-wise (~35 KB) and UC-wise (Province/District/Tehsil/UC before the same 14 indicators, emitted as `u`). Whatever the newest save is, the district payload is read from the newest district-wise file and `u` from the newest UC-wise file; older-shape neapreport*/allneapreport* exports are excluded by pattern. District names must match the SND scope or the extractor aborts. The sibling ucneapreport*.xls family (a one-column UC-wise ZERO DOSE COVERED table, first seen 23-Oct-2026) matches neither NEAP*.xls nor the neapreport* exclude because fnmatch anchors the name, and it is not readiness data either - it is the covered column the zero dose pages now use for SNID Sept-26, on the owner's designation; see manual.zdcov for the route and for how it diverges from that campaign's own summary report."
   },
+ "mpqa": {
+  "label": "Micro-plan quality assessment (MPQA) scoring summary",
+  "const": "MPQA",
+  "extractor": "extract_mpqa.py",
+  "roots": [
+   "C:\\Users\\HD\\Downloads"
+  ],
+  "patterns": [
+   "Micro_Plan_Scoring*.xls"
+  ],
+  "exclude": [
+   "~$*"
+  ],
+  "portal": "EOC dashboard > Campaign > Pre Campaign > Micro Plan Scoring > Export to Excel",
+  "note": "District-wise summary of the micro-plan quality assessment behind the upcoming round: UCs planned, UCs scored, and the scored UCs split into the portal's three bands (>=90 pass, 70-89 needs improvement, <70 serious issues). The export is an HTML table with three stacked header rows. Only the counts are kept and every percentage is recomputed from them; the extractor aborts if a bucket fails to add back to the assessed count, if assessed exceeds planned, if a recomputed value leaves the portal's printed percentage, or if a district is outside the SND scope. The file carries no campaign tag - the round label comes from the dashboard's own SND scope, the same way the NEAP payload takes it, and it is the date of the export that ties the table to this planning round. The portal re-saves the same table under a new timestamp, so one export can sit in Downloads twice (24-Oct-2026 has 02-59-57 and 03-00-11 byte-identical, md5 1f1d930f8e14c1a07ed4556791b11f39); the newest file that parses wins. Older files in this family are a different shape - 2024-10-09 is district-wise with per-checklist-item score columns, 2024-10-14 and 2025-12-12 are UC-wise - and are refused here rather than blended into this payload. Only 276 of the 381 planned UCs carry a score, so the pass rate describes scored plans only and never whole-plan quality."
+ },
   "nact": {
    "label": "SNID Nov-26 activity countdown calendar (planned timeline)",
    "const": "NACT",
