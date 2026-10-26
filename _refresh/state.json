@@ -197,18 +197,18 @@
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
   },
   "mpqa": {
-   "at": "2026-10-25T17:23:58+05:00",
-   "chars": 23586,
-   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-25_04-52-54.xls|1792929175|1392138",
-   "payload_sha1": "2e447e53254d2503",
+   "at": "2026-10-26T09:46:47+05:00",
+   "chars": 23593,
+   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-26_09-42-40.xls|1792989765|1393080",
+   "payload_sha1": "dd7a43ec4f312999",
    "source": {
-    "mtime": 1792929175.59734,
-    "name": "Micro_Plan_Scoring__2026-10-25_04-52-54.xls",
-    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-25_04-52-54.xls",
-    "size": 1392138
+    "mtime": 1792989765.4921358,
+    "name": "Micro_Plan_Scoring__2026-10-26_09-42-40.xls",
+    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-26_09-42-40.xls",
+    "size": 1393080
    },
-   "stamp": "25-Oct-2026 17:23",
-   "summary": "SNID Nov-26, 27 districts, 322 of 381 assigned UCs reported (84.5%) - 275 pass, 43 needs improvement, 4 serious issues, 59 still to report"
+   "stamp": "26-Oct-2026 09:46",
+   "summary": "SNID Nov-26, 27 districts, 326 of 381 assigned UCs reported (85.6%) - 278 pass, 44 needs improvement, 4 serious issues, 55 still to report"
   },
   "nact": {
    "at": "2026-10-16T14:27:06+05:00",
@@ -225,18 +225,18 @@
    "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
-   "at": "2026-10-25T17:23:58+05:00",
-   "chars": 108610,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (50).xls|1792929122|1331654",
-   "payload_sha1": "83352cd063eb38a5",
+   "at": "2026-10-26T09:46:47+05:00",
+   "chars": 108612,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (52).xls|1792989749|1331657",
+   "payload_sha1": "fa10d7746efb0ca8",
    "source": {
-    "mtime": 1792929122.8152459,
-    "name": "NEAP (50).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (50).xls",
-    "size": 1331654
+    "mtime": 1792989749.3214633,
+    "name": "NEAP (52).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (52).xls",
+    "size": 1331657
    },
-   "stamp": "25-Oct-2026 17:23",
-   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (50).xls)"
+   "stamp": "26-Oct-2026 09:46",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (52).xls)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -374,12 +374,12 @@
   "stamp": "25-Oct-2026 00:15"
  },
  "last_run": {
-  "at": "2026-10-25T17:23:58+05:00",
+  "at": "2026-10-26T09:46:47+05:00",
   "datasets": [
    "mpqa",
    "neap"
   ],
   "dry_run": false,
-  "stamp": "25-Oct-2026 17:23"
+  "stamp": "26-Oct-2026 09:46"
  }
 }
