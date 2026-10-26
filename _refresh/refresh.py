@@ -11,6 +11,12 @@ applied refresh, swaps the embedded JSON payload in all four dashboard variants,
 bumps the PKT timestamps, appends a version.txt note and (with --publish) commits,
 pushes and verifies the GitHub Pages build.
 
+`--publish` only commits what this script wrote. Every payload is one `const NAME = ...` line, so a
+run touches one line per dataset plus the visible `Updated ...` stamp chip; if a variant carries any
+other changed line, the publish is refused (exit 3) and the files stay on disk uncommitted - a
+scheduled refresh will not carry a hand-edited feature out under a data-refresh message.
+`--allow-pending` says you mean it.
+
 Login-gated portals (NEOC, IDIMS, EPI-MIS web) are never fetched by this script and no
 credentials are read, stored or prompted for. See SOURCES.md.
 """
@@ -395,12 +401,85 @@ def git(args, cwd, check=True, quiet=False):
     return p.returncode, out
 
 
+def payload_line_re(cfg):
+    """A matcher for the only lines this route writes into the variants: the payload consts.
+
+    Every embedded dataset is one physical `const NAME = {...};` line, so a refresh touches exactly
+    one line per dataset and nothing else. Anything else that differs in a variant came from a
+    patch module or a hand edit, and a scheduled refresh must not commit that under its own
+    message. Sources are read out of sources.json, never hardcoded, so a new dataset cannot widen
+    what the guard waves through by accident.
+    """
+    names = set()
+    for group in ('auto', 'manual'):
+        for e in (cfg.get(group) or {}).values():
+            const = e.get('const')
+            if isinstance(const, str):
+                const = [const]
+            for n in const or ():
+                if not re.fullmatch('[A-Za-z_$][A-Za-z0-9_$]*', n):
+                    raise SystemExit('sources.json const %r is not a plain identifier' % n)
+                names.add(n)
+    if not names:
+        raise SystemExit('sources.json lists no payload consts - cannot tell what this route wrote')
+    return re.compile('^ *(?:const|let|var) (?:%s)(?![A-Za-z0-9_$]) *=' % '|'.join(sorted(names)))
+
+
+def pending_foreign(cfg, allowed):
+    """Per variant, the working-tree lines this route did not write - added and removed.
+
+    Line level, not path level: the variant HTML *is* this route's own output, so a feature edit and
+    a payload swap land in the same file and a path allowlist proves nothing. Two shapes belong to
+    the route: a line declaring one of the payload consts from sources.json, and a line carrying a
+    visible stamp chip, which is what set_stamp moves. Both sides of the diff are read because a
+    feature that only deletes lines has nothing added to give itself away.
+    """
+    chip = re.compile('[Uu]pdated ' + dashpatch.STAMP_RE)
+    out = {}
+    for rel in cfg['variants']:
+        rc, diff = git(['diff', '--unified=0', 'HEAD', '--', rel], cfg['repo'], quiet=True)
+        if rc != 0:
+            raise SystemExit('publish guard: git diff failed for %s' % rel)
+        bad = []
+        for ln in diff.split('\n'):
+            sign = ln[:1]
+            if sign not in ('+', '-') or ln.startswith('+++') or ln.startswith('---'):
+                continue
+            txt = ln[1:].rstrip('\r')
+            if allowed.match(txt) or chip.search(txt):
+                continue
+            bad.append((sign, txt))
+        if bad:
+            out[rel] = bad
+    return out
+
+
 def publish(cfg, a, changed, stamp):
     repo = cfg['repo']
     rc, out = git(['status', '--porcelain'], repo, quiet=True)
     if not out.strip():
         print('publish: working tree clean, nothing to commit')
         return 0
+    # the guard reads four 17 MB diffs, so it only runs when a variant is actually dirty - with the
+    # variants untouched there are no site bytes left for this commit to carry
+    rc, vdirty = git(['status', '--porcelain', '--'] + list(cfg['variants']), repo, quiet=True)
+    foreign = pending_foreign(cfg, payload_line_re(cfg)) if vdirty.strip() else {}
+    total = sum(len(v) for v in foreign.values())
+    if foreign and not getattr(a, 'allow_pending', False):
+        print('publish refused: %d line(s) in the variants are not lines this route wrote' % total)
+        for rel, lines in sorted(foreign.items()):
+            added = sum(1 for sign, _ in lines if sign == '+')
+            print('  %s  +%d / -%d line(s)' % (rel, added, len(lines) - added))
+            for sign, ln in lines[:4]:
+                print('    %s %s%s' % (sign, ln[:160], ' ...' if len(ln) > 160 else ''))
+            if len(lines) > 4:
+                print('    ... %d more' % (len(lines) - 4))
+        print('Nothing was staged or pushed - the refreshed payload is still on disk. Land that '
+              'work as its own commit first, or re-run with --allow-pending to publish both.')
+        return 3
+    if foreign:
+        print('publish: --allow-pending, carrying %d line(s) this route did not write in %s' % (
+            total, ', '.join(sorted(foreign))))
     print('publish: pending changes')
     sys.stdout.write(out)
     paths = [v.replace('/', os.sep) for v in cfg['variants']]
@@ -409,6 +488,10 @@ def publish(cfg, a, changed, stamp):
     git(['add', '--'] + [p for p in paths if os.path.exists(os.path.join(repo, p))], repo)
     rc, staged = git(['diff', '--cached', '--name-only'], repo, quiet=True)
     print('staged: %s' % staged.replace('\n', ' '))
+    if not staged.strip():
+        print('publish: nothing this route writes has changed - the dirty files are tooling only, '
+              'so there is nothing to commit. Commit those yourself, or leave them.')
+        return 0
     msg = a.message or 'Refresh dashboard data (%s)' % ', '.join(changed)
     git(['commit', '-m', msg], repo)
     rc, out = git(['push'], repo, check=False)
@@ -495,6 +578,8 @@ def main():
     r.add_argument('--note', help='version.txt note (default: auto-generated)')
     r.add_argument('--publish', action='store_true', help='commit, push and verify Pages after writing')
     r.add_argument('--message', help='commit message for --publish')
+    r.add_argument('--allow-pending', action='store_true',
+                   help='with --publish, also commit variant edits this route did not write')
 
     i = sub.add_parser('inject', parents=[common], help='swap one payload from a JSON file (manual datasets)')
     i.add_argument('--const', required=True, help='embedded const name, e.g. ZD, EPI, CQ')
@@ -505,10 +590,13 @@ def main():
     i.add_argument('--note')
     i.add_argument('--publish', action='store_true')
     i.add_argument('--message')
+    i.add_argument('--allow-pending', action='store_true')
 
-    p = sub.add_parser('publish', parents=[common], help='commit + push the current working tree and verify the Pages build')
+    p = sub.add_parser('publish', parents=[common],
+                       help='commit + push the refreshed payloads and verify the Pages build')
     p.add_argument('--message')
     p.add_argument('--changed', default='dashboard data')
+    p.add_argument('--allow-pending', action='store_true')
 
     a = ap.parse_args()
     cfg = srcutil.load_sources()

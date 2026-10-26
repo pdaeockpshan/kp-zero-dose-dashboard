@@ -166,9 +166,11 @@ requiring a byte-exact match, and assert the result contains no names before wri
   size aborts the run (catches truncated or empty exports). `--force` overrides.
 * **No-op detection**: if the regenerated JSON is byte-identical to what is embedded,
   nothing is written and the timestamps are left alone (`NO_CHANGE`).
-* **Stamps**: the hero `Updated …` chip and the header `Last updated …` stamp are both set
-  to the current PKT time (must occur exactly twice per variant), and one line is appended
-  to `version.txt` and `public/version.txt`. `--no-stamp` skips both.
+* **Stamps**: the hero `Updated …` chip and, when the variant carries one, the header
+  `Last updated …` stamp are set to the current PKT time, and one line is appended to
+  `version.txt` and `public/version.txt`. `--no-stamp` skips both. Only a prefixed
+  occurrence moves, because the extractors write their own build time (`gen`) into the
+  payloads in the same format - a blind replace re-dated datasets the run never touched.
 * **Provenance**: `_refresh/state.json` records, per dataset, the source path/mtime/size,
   the payload SHA-1, its char count, the summary line and the stamp applied. `status`
   compares against it to decide what is stale.
@@ -178,6 +180,18 @@ requiring a byte-exact match, and assert the result contains no names before wri
   (raw or LF-normalised - the huge HTML blobs are stored byte-for-byte and keep CRLF
   even with `autocrlf`). The GitHub token comes from
   `git credential fill`, is piped into curl over stdin, and is never printed.
+* **Publish carries only its own work.** The staged-files rule is not enough: the variant
+  HTML *is* this route's output, so a feature edit and a payload swap land in the same file
+  and a path allowlist cannot tell them apart. So before staging, `publish` diffs every
+  variant against `HEAD` line by line, both added and removed, and refuses (exit 3, nothing
+  staged, files left on disk) unless each changed line is one of the payload `const …`
+  declarations listed in `sources.json` or carries a visible `Updated …` stamp chip. The
+  26-Oct-2026 scheduled NEAP run is what this catches: it committed 310 added lines into all
+  four variants, 4 of them payload consts and 1 the stamp, the other 305 an unfinished PTP
+  feature published under a data-refresh message. `--allow-pending` says you mean it and names
+  the count; use it when the pending work is deliberate and already reviewed. The guard only
+  runs when a variant is actually dirty, and a publish with nothing of its own to commit says
+  so instead of trying an empty commit.
 
 ## Adding a dataset
 

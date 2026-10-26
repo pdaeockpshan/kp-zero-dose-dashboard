@@ -8,6 +8,13 @@ both the district-wise and UC-wise exports have landed), it runs:
 
     _refresh/refresh.py run --only neap --publish
 
+`refresh.py publish` carries only the lines this route writes - the payload `const` lines and the
+stamp - and refuses (exit 3, nothing committed) when a variant also carries site edits of its own,
+which is how the 26-Oct-2026 run published unfinished work. Then the reason and the offending lines
+are in neap_auto.log, the refreshed payload waits on disk uncommitted, and `state.json` already
+records the export as applied, so this watcher will not offer it again: the next publish - a human
+commit of the pending site work, or the next export that lands cleanly - is what carries it.
+
 Install (current user, every 30 minutes, only while logged on):
     schtasks /Create /TN "KP Dashboard NEAP auto-refresh" ^
       /TR "\"<pythonw.exe>\" \"<repo>\\_refresh\\neap_auto.py\"" /SC MINUTE /MO 30 /IT /F
