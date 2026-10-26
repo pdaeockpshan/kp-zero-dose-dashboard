@@ -225,18 +225,18 @@
    "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
-   "at": "2026-10-26T09:46:47+05:00",
-   "chars": 108612,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (52).xls|1792989749|1331657",
-   "payload_sha1": "fa10d7746efb0ca8",
+   "at": "2026-10-26T19:57:04+05:00",
+   "chars": 109281,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (54).xls|1793025497|1332880",
+   "payload_sha1": "9430e1f104bc0f71",
    "source": {
-    "mtime": 1792989749.3214633,
-    "name": "NEAP (52).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (52).xls",
-    "size": 1331657
+    "mtime": 1793025497.28698,
+    "name": "NEAP (54).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (54).xls",
+    "size": 1332880
    },
-   "stamp": "26-Oct-2026 09:46",
-   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (52).xls)"
+   "stamp": "26-Oct-2026 19:57",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 994 (NEAP (54).xls)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -280,6 +280,20 @@
    "stamp": "23-Oct-2026 18:58",
    "summary": "117 trend pts (88 campaigns), 72 LQAS campaigns, 85 with coverage (35 with advance-report chain), 9 datasets, 4080 UC rows"
   },
+  "ptp": {
+   "at": "2026-10-26T15:54:45+05:00",
+   "chars": 955410,
+   "file_id": "C:\\Users\\HD\\Downloads\\PTP_Export_Coverage (1).xls|1792847404|62383198",
+   "payload_sha1": "a44dd7a86b5c2b59",
+   "source": {
+    "mtime": 1792847404.1258488,
+    "name": "PTP_Export_Coverage (1).xls",
+    "path": "C:\\Users\\HD\\Downloads\\PTP_Export_Coverage (1).xls",
+    "size": 62383198
+   },
+   "stamp": "26-Oct-2026 15:54",
+   "summary": "263,027 rows read, 262779 kept, 1149 posts, 461 UCs, 37 districts, 2016-2026, ZD found 460,228"
+  },
   "rca": {
    "at": "2026-10-16T11:03:53+05:00",
    "chars": 279044,
@@ -321,6 +335,20 @@
    },
    "stamp": "23-Oct-2026 16:28",
    "summary": "13107/14247 active visits 92.0% across 36 districts; 41 zero-report rows wk1-41 91218/91259 received (100.0%) 99.2% in time; pendency to 21-Oct-2026 stool 91.2% (3687/4044), case validation 2.9%, geolocation 99.6%; VPD 2026 wk1-41 2461 AFP / 16258 measles / 93 NNT"
+  },
+  "sta": {
+   "at": "2026-10-26T15:15:26+05:00",
+   "chars": 93228,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx|1790585353|932904",
+   "payload_sha1": "8128437f57a06b48",
+   "source": {
+    "mtime": 1790585353.0,
+    "name": "Search Team Monitoring Check LIst.twbx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx",
+    "size": 932904
+   },
+   "stamp": "26-Oct-2026 15:15",
+   "summary": "sact 2023-09..2026-09->26,225 smon 2023-09..2026-09->10,843"
   },
   "surv": {
    "at": "2026-10-23T16:37:25+05:00",
@@ -374,12 +402,11 @@
   "stamp": "26-Oct-2026 14:43"
  },
  "last_run": {
-  "at": "2026-10-26T09:46:47+05:00",
+  "at": "2026-10-26T19:57:04+05:00",
   "datasets": [
-   "mpqa",
    "neap"
   ],
   "dry_run": false,
-  "stamp": "26-Oct-2026 09:46"
+  "stamp": "26-Oct-2026 19:57"
  }
 }
