@@ -134,10 +134,25 @@ def get_stamp(v):
 
 
 def set_stamp(v, new, old=None):
+    """Move the visible stamps and nothing else.
+
+    A blind replace of the bare "26-Oct-2026 15:15" used to be fine until the extractors began
+    writing their own build time into the payloads they emit (STA.gen, MPQA.gen). Those strings share
+    the format, so a run that stamped the header also re-dated datasets it had not regenerated: the
+    payload would claim to have been built in the minute the header was bumped. Only a prefixed
+    occurrence is a visible stamp, so only a prefixed occurrence may move, and the leftovers are
+    counted rather than assumed.
+    """
     old = old or get_stamp(v)
-    n = v.text.count(old)
-    v.require(n in (1, 2), 'stamp %s occurs %d times (expected 1 or 2)' % (old, n))
-    v.text = v.text.replace(old, new)
+    text = v.text
+    hit = 0
+    for prefix in ('Last updated ', 'Updated '):
+        text, n = re.subn(re.escape(prefix + old), prefix + new, text)
+        hit += n
+    v.require(hit in (1, 2), 'expected 1 or 2 visible %s stamps, replaced %d' % (old, hit))
+    v.require(text.count(old) == v.text.count(old) - hit,
+              'stamp %s did not move cleanly' % old)
+    v.text = text
     v.changes.append('stamp %s -> %s' % (old, new))
     return old
 

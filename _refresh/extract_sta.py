@@ -178,8 +178,10 @@ for _m, _l in PAIRL.items():
 for _m, _l in SOLOL.items():
     ML[_m] = _l
 
-# The antigen ladder: district x year only, so the month picker cannot narrow it. Published as
-# target / covered / voided rows; the column is dropped whole if it fails the two tests in the header.
+# The antigen ladder: district x year with the same cut per month, so the period picker narrows it.
+# Published as target / covered / voided rows; the column is dropped whole if it fails the two tests
+# in the header, and a withheld column is dropped from both books, so a month never shows a number the
+# year refuses.
 LADDER = [('zero_dose', 'Zero-dose children'), ('new_born', 'New-born (0-28 days)'),
           ('bcg', 'BCG'), ('opv_0', 'OPV 0 birth dose'), ('opv_1', 'OPV 1'), ('opv_2', 'OPV 2'),
           ('opv_3', 'OPV 3'), ('penta_1', 'Pentavalent 1'), ('penta_2', 'Pentavalent 2'),
@@ -354,13 +356,18 @@ def solo(r, col, dq, why):
 
 def collect(form, rows, alias, years):
     """One form's keepable rows into district x year and district x month cells, the ladder, the
-    checklist items and the team/UC books. Every key is a const PTP district code."""
+    checklist items and the team/UC books, each at both grains. Every key is a const PTP district
+    code. The row void rule fires before either book is written, so the month split is the same sum
+    cut finer rather than a second measure - checks() proves the months add back to the years."""
     z = lambda: [0] * len(MEAS)  # noqa: E731
     cells, mcells = collections.defaultdict(z), collections.defaultdict(z)
     lad = collections.defaultdict(lambda: [[0, 0, 0, 0] for _ in LKEY])
+    ladM = collections.defaultdict(lambda: [[0, 0, 0, 0] for _ in LKEY])
     itc = collections.defaultdict(lambda: [[0, 0, 0] for _ in IKEY])
+    itcM = collections.defaultdict(lambda: [[0, 0, 0] for _ in IKEY])
     tsets, usets, keys = collections.defaultdict(set), collections.defaultdict(set), \
         collections.defaultdict(set)
+    kM = collections.defaultdict(set)
     dq, kept = collections.Counter(), 0
     for r in rows:
         kept += 1
@@ -393,26 +400,36 @@ def collect(form, rows, alias, years):
             for ag in LKEY:
                 st, t, c = pair(r, ('target_' + ag, 'coverage_' + ag), dq, 'ladder ' + ag)
                 cell = lad[(dc, yi)][LIDX[ag]]
+                mcell = ladM[(dc, slot)][LIDX[ag]]
                 if st != 'blank':
                     cell[0] += 1
+                    mcell[0] += 1
                 if st == 'ok':
                     cell[1] += t
                     cell[2] += c
+                    mcell[1] += t
+                    mcell[2] += c
                 elif st == 'void':
                     cell[3] += 1
+                    mcell[3] += 1
         else:
             for col in IKEY:
                 cell = itc[(dc, yi)][IIDX[col]]
+                mcell = itcM[(dc, slot)][IIDX[col]]
                 s = str(r.get(col) or '').strip()
                 if s == '1':
                     cell[0] += 1
+                    mcell[0] += 1
                 elif s == '0':
                     cell[1] += 1
+                    mcell[1] += 1
                 elif s:
                     cell[2] += 1
+                    mcell[2] += 1
                     dq['%s answers something other than yes or no' % col] += 1
                 else:
                     cell[2] += 1
+                    mcell[2] += 1
         uc = str(r.get('uc_name') or '').strip()
         if uc:
             usets[dc].add(uc)
@@ -420,13 +437,15 @@ def collect(form, rows, alias, years):
         if tc:
             tsets[dc].add(tc)
             keys[dc].add((tc, ym))
+            kM[(dc, slot)].add(tc)
         for key, book in (((dc, yi), cells), ((dc, slot), mcells)):
             c = book[key]
             for i in range(len(MEAS)):
                 c[i] += v[i]
     yms = sorted({k[1] for k in mcells})
-    return dict(cells=cells, mcells=mcells, lad=dict(lad), itc=dict(itc), tsets=tsets, usets=usets,
-                keys=keys, kept=kept, dq=dq,
+    return dict(cells=cells, mcells=mcells, lad=dict(lad), ladM=dict(ladM), itc=dict(itc),
+                itcM=dict(itcM), tsets=tsets, usets=usets,
+                keys=keys, kM=dict(kM), kept=kept, dq=dq,
                 districts=len({k[0] for k in cells}),
                 teams=sum(len(s) for s in tsets.values()),
                 ucs=sum(len(s) for s in usets.values()),
@@ -591,6 +610,12 @@ def main():
             if ag in LADDER_VOID or not any(cells[x]):
                 continue
             lad.append([didx[dn], j, x] + cells[x])
+    alm = []
+    for (dn, slot), cells in sorted(per['sact']['ladM'].items()):
+        for x, ag in enumerate(LKEY):
+            if ag in LADDER_VOID or not any(cells[x]):
+                continue
+            alm.append([didx[dn], slot, x] + cells[x])
 
     # an item no row ever answered is not a measure; it is a blank form field
     ans = collections.Counter()
@@ -605,6 +630,12 @@ def main():
             if col not in dropi or not any(cells[x]):
                 continue
             itc.append([didx[dn], j, x] + cells[x])
+    itm = []
+    for (dn, slot), cells in sorted(per['smon']['itcM'].items()):
+        for x, col in enumerate(IKEY):
+            if col not in dropi or not any(cells[x]):
+                continue
+            itm.append([didx[dn], slot, x] + cells[x])
 
     ev = []
     for dn in dists:
@@ -619,6 +650,14 @@ def main():
         ka, kb = per['sact']['keys'].get(dn, set()), per['smon']['keys'].get(dn, set())
         if ka or kb:
             lnk.append([didx[dn], len(ka), len(kb), len(ka & kb)])
+    # one month of these is a distinct-team count, because the month is already fixed by the key
+    lnkm = []
+    for dn in dists:
+        for slot in sorted({k[1] for k in per['sact']['kM'] if k[0] == dn}
+                           | {k[1] for k in per['smon']['kM'] if k[0] == dn}):
+            ka = per['sact']['kM'].get((dn, slot), set())
+            kb = per['smon']['kM'].get((dn, slot), set())
+            lnkm.append([didx[dn], slot, len(ka), len(kb), len(ka & kb)])
 
     spans, gaps, firsts, lasts = {}, {}, {}, {}
     for f in FORMS:
@@ -638,6 +677,7 @@ def main():
 
     # the EPI register, summed over the months both sources cover
     ed = collections.defaultdict(lambda: [0, 0, 0, 0])  # opv3, bcg, months, rows
+    edM = collections.defaultdict(lambda: [0, 0])       # opv3, bcg for one month
     for r in epim:
         ym = mkey(r.get('mo'))
         if ym is None or not (EPI_FROM <= ym <= EPI_TO):
@@ -647,14 +687,19 @@ def main():
         g[1] += r.get('bcg') or 0
         g[2] += 1
         g[3] += 1
+        gm = edM[(r.get('ed'), ym)]
+        gm[0] += r.get('opv3') or 0
+        gm[1] += r.get('bcg') or 0
     if EPI_FROM // 100 not in years or EPI_TO // 100 not in years:
         raise SystemExit('ERR sta const PTP has no year for the EPI comparison window')
-    tri, emons = [], set()
+    tri, trim, emons = [], [], set()
+    zv = [0] * len(MEAS)
     for dn in dists:
         e = ed.get(dn)
         if not e:
             continue
         v = [0] * len(MEAS)
+        bym = {}
         for (cd, slot), c in per['sact']['mcells'].items():
             if cd != dn:
                 continue
@@ -662,8 +707,15 @@ def main():
             if EPI_FROM <= ym <= EPI_TO:
                 v = [x + y for x, y in zip(v, c)]
                 emons.add(ym)
+                bym[ym] = c
         if any(v):
             tri.append([didx[dn], e[0], e[1], v[IDX['o3C']], v[IDX['zdC']], v[IDX['actR']]])
+            for ym in sorted(set(bym) | {m for (d2, m) in edM if d2 == dn}):
+                slot = years.index(ym // 100) * 12 + ym % 100 - 1
+                c = bym.get(ym, zv)
+                gm = edM.get((dn, ym), [0, 0])
+                trim.append([didx[dn], slot, gm[0], gm[1],
+                             c[IDX['o3C']], c[IDX['zdC']], c[IDX['actR']]])
     emons = sorted(emons)
 
     n = {}
@@ -693,7 +745,7 @@ def main():
         n['items'][col] = t
     n['link'] = [sum(r[1] for r in lnk), sum(r[2] for r in lnk), sum(r[3] for r in lnk)]
 
-    checks(per, rows, lad, itc, ev, lnk, tri, years, ptp, n, dists, srcs, never)
+    checks(per, rows, lad, alm, itc, itm, ev, lnk, lnkm, tri, trim, years, ptp, n, dists, srcs, never)
     out = {'gen': dashpatch.pkt_stamp(),
            'asof': '28-Sep-2026 (both workbook pulls)',
            'src': {f: srcs[f]['wb'] for f in FORMS},
@@ -723,7 +775,8 @@ def main():
                       'teams': n[f]['teams'], 'ucs': n[f]['ucs']} for f in FORMS],
            'spans': spans, 'first': firsts, 'last': lasts, 'gap': gaps,
            'ds': dists, 'dv': [ptp['dv'][didx[x]] for x in dists],
-           'd': rows, 'al': lad, 'it': itc, 'ev': ev, 'lnk': lnk, 'tri': tri, 'n': n,
+           'd': rows, 'al': lad, 'alM': alm, 'it': itc, 'itM': itm, 'ev': ev,
+           'lnk': lnk, 'lnkM': lnkm, 'tri': tri, 'triM': trim, 'n': n,
            'hold': ['the reporter names, the address they sign with, the entry and update ids, and the '
                     'vaccinator, monitor and focal-person name columns',
                     'position coordinates and their accuracy (a public site)',
@@ -733,8 +786,6 @@ def main():
                     'mr_*, td, new_born, ipv_booster): blank in all 26,806 activity rows',
                     'un_recorded_<antigen>_coverage - a third number that reconciles with the pair in '
                     'none of the rows checked',
-                    'the antigen ladder by month: a target for a month the team did not work is what '
-                    'the row void rule exists to catch, so the ladder is district x year only',
                     '; '.join('%s: %s - %s covered against %s target, %s of %s rows that recorded it '
                               'contradicted themselves'
                               % (a, w[0], format(w[2], ','), format(w[1], ','), w[3], w[4])
@@ -802,7 +853,7 @@ def sweep(obj, ptp):
     """The cell arrays must be pure numbers, the district list must be the one the dashboard already
     publishes, and no withheld field name may reach a published string. Checked on the data, not on
     hold: naming what is refused is the point of that list."""
-    for part in ('d', 'al', 'it', 'ev', 'lnk', 'tri'):
+    for part in ('d', 'al', 'alM', 'it', 'itM', 'ev', 'lnk', 'lnkM', 'tri', 'triM'):
         s = json.dumps(obj[part])
         if not re.fullmatch(r'[\[\],:\s\-0-9]+', s):
             raise SystemExit('ERR sta the %s arrays hold something other than numbers' % part)
@@ -828,8 +879,29 @@ def sweep(obj, ptp):
         raise SystemExit('ERR sta the row-accounting block mentions %s' % ', '.join(hit) or '@')
 
 
-def checks(per, rows, lad, itc, ev, lnk, tri, years, ptp, n, dists, srcs, never):
+def checks(per, rows, lad, alm, itc, itm, ev, lnk, lnkm, tri, trim, years, ptp, n, dists, srcs, never):
     """Abort rather than publish a payload whose cells do not add back."""
+    def roll(what, cols, ys, ms):
+        """A district x year cell has to be the sum of that district's month cells in that year: the
+        period picker narrows these grids by reading the month book, so the finer cut is checked
+        against the coarser one rather than assumed to agree with it."""
+        seen = {(r[0], r[1], r[2]) for r in ys}
+        acc = collections.defaultdict(list)
+        for r in ms:
+            j = r[1] // 12
+            if not 0 <= j < len(years):
+                raise SystemExit('ERR sta %s month slot %s falls outside the panel window'
+                                 % (what, r[1]))
+            if (r[0], j, r[2]) not in seen:
+                raise SystemExit('ERR sta %s %s %s has month cells in %s with no year cell behind them'
+                                 % (what, ptp['ds'][r[0]], cols[r[2]], years[j]))
+            acc[(r[0], j, r[2])].append(r[3:])
+        for r in ys:
+            g = acc.get((r[0], r[1], r[2]), [])
+            sm = [sum(c[i] for c in g) for i in range(len(r) - 3)]
+            if sm != list(r[3:]):
+                raise SystemExit('ERR sta %s %s %s year %s reads %s but its month cells add to %s'
+                                 % (what, ptp['ds'][r[0]], cols[r[2]], years[r[1]], list(r[3:]), sm))
     for f in FORMS:
         r = per[f]
         rs = sum(c[IDX[RKEY[f]]] for c in r['cells'].values())
@@ -887,6 +959,8 @@ def checks(per, rows, lad, itc, ev, lnk, tri, years, ptp, n, dists, srcs, never)
     for x, ag in enumerate(LKEY):
         if ag not in LADDER_VOID and al[x] != n['ladder'][ag]:
             raise SystemExit('ERR sta ladder %s published cells do not add back to the totals' % ag)
+    roll('ladder', LKEY, lad, alm)
+    roll('checklist item', IKEY, itc, itm)
     for e in ev:
         for i, k in enumerate(EK):
             f = k[:-2]
@@ -898,11 +972,38 @@ def checks(per, rows, lad, itc, ev, lnk, tri, years, ptp, n, dists, srcs, never)
             raise SystemExit('ERR sta %s team-month link counts do not bound' % ptp['ds'][r[0]])
     if sum(r[1] for r in lnk) != n['link'][0] or sum(r[3] for r in lnk) != n['link'][2]:
         raise SystemExit('ERR sta the team-month link does not add back to its district rows')
+    lm = collections.defaultdict(lambda: [0, 0, 0])
+    for r in lnkm:
+        if not 0 <= r[1] // 12 < len(years):
+            raise SystemExit('ERR sta team-month month slot %s falls outside the panel window' % r[1])
+        for i in range(3):
+            lm[r[0]][i] += r[2 + i]
+    if {r[0] for r in lnkm} != {r[0] for r in lnk}:
+        raise SystemExit('ERR sta the team-month months list a different district set than the '
+                         'whole-window block')
+    for r in lnk:
+        if lm[r[0]] != list(r[1:]):
+            raise SystemExit('ERR sta %s team-months add over the months to %s, not to the '
+                             'whole-window %s' % (ptp['ds'][r[0]], lm[r[0]], list(r[1:])))
     for r in tri:
         if r[3] > r[1]:
             raise SystemExit('ERR sta %s search-team OPV-3 covered %s exceeds the whole EPI register '
                              'of %s - the comparison is being read the wrong way round'
                              % (ptp['ds'][r[0]], r[3], r[1]))
+    tm = collections.defaultdict(lambda: [0] * 5)
+    for r in trim:
+        if not 0 <= r[1] // 12 < len(years):
+            raise SystemExit('ERR sta EPI comparison month slot %s falls outside the panel window'
+                             % r[1])
+        for i in range(5):
+            tm[r[0]][i] += r[2 + i]
+    if {r[0] for r in trim} != {r[0] for r in tri}:
+        raise SystemExit('ERR sta the EPI comparison months list a different district set than the '
+                         'window block')
+    for r in tri:
+        if tm[r[0]] != list(r[1:]):
+            raise SystemExit('ERR sta %s EPI comparison months add to %s, not to the window %s'
+                             % (ptp['ds'][r[0]], tm[r[0]], list(r[1:])))
     for dn in dists:
         if dn not in set(ptp['ds']):
             raise SystemExit('ERR sta a district outside const PTP reached the payload')

@@ -218,6 +218,10 @@ def collect(path, aliases, cut):
     refyears = set()
     # one cell per (district, class value, year) for each class axis, in MK order
     cells_c = {out: defaultdict(lambda: [0.0] * len(MK)) for _, _, _, out in CLASSES}
+    # and the same cells cut by month, so the period picker narrows the class axes the way it
+    # already narrows the district ledger. This is the year book read finer, never a second measure:
+    # build() refuses to publish it unless every month cell adds back to its year cell.
+    cells_cm = {out: defaultdict(lambda: [0.0] * len(MK)) for _, _, _, out in CLASSES}
     dropped = Counter()
     total = 0
 
@@ -260,10 +264,15 @@ def collect(path, aliases, cut):
                 if not cv or cv == 'NULL':
                     cv = UNSTATED
                 cc = cells_c[ckey][(dn[0], cv, y)]
+                cm = cells_cm[ckey][(dn[0], cv, y * 100 + m)]
                 cc[0] += 1
                 cc[1] += vals['cov']
                 cc[2] += vals['used']
                 cc[3] += vals['zd']
+                cm[0] += 1
+                cm[1] += vals['cov']
+                cm[2] += vals['used']
+                cm[3] += vals['zd']
             months_in[key].add(m)
             ucs_in[key].add(u)
             mposts_in[mkey].add(pid)
@@ -321,14 +330,14 @@ def collect(path, aliases, cut):
         p['stat'] = p['lstat'] or counter_mode(p['stats'])
         p['risk'] = p['lrisk'] or counter_mode(p['risks'])
     return (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-            uc_y, uc_m, refyears, post, dropped, total, cells_c)
+            uc_y, uc_m, refyears, post, dropped, total, cells_c, cells_cm)
 
 
 def build(path, repo):
     aliases, snd_uc, ucpt = load_lookups(repo)
     last_cut = last_stamp(path)
     (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-     uc_y, uc_m, refyears, post, dropped, total, cells_c) = collect(path, aliases, last_cut)
+     uc_y, uc_m, refyears, post, dropped, total, cells_c, cells_cm) = collect(path, aliases, last_cut)
     if not cells or not post:
         raise SystemExit('ERR ptp nothing parsed from %s - header or units changed' % path)
 
@@ -523,6 +532,31 @@ def build(path, repo):
         cls[ckey] = [[didx[dd], ci[cv], yidx[yy], [int(round(x[i])) for i in range(len(MK))]]
                      for (dd, cv, yy), x in sorted(cells_c[ckey].items(),
                                                    key=lambda r: (r[0][0], r[0][2], r[0][1]))]
+        # the month book on the same axis, keyed by the same slot the district month cells use. It is
+        # published only if it rolls up to the year book cell for cell: the class table can then be
+        # narrowed by the period picker without ever showing a month total the year view denies.
+        cls[ckey + 'M'] = [[didx[dd], ci[cv], yidx[ym // 100] * 12 + ym % 100 - 1,
+                            [int(round(x[i])) for i in range(len(MK))]]
+                           for (dd, cv, ym), x in sorted(cells_cm[ckey].items(),
+                                                         key=lambda r: (r[0][0], r[0][2], r[0][1]))]
+        if sum(x[0] for x in cells_cm[ckey].values()) != kept:
+            raise SystemExit('ERR ptp %s (%s) month class rows %s do not close on kept %s'
+                             % (aid, col, sum(x[0] for x in cells_cm[ckey].values()), kept))
+        rolled = defaultdict(list)
+        for (dd, cv, ym), x in cells_cm[ckey].items():
+            rolled[(dd, cv, ym // 100)].append(x)
+        for (dd, cv, yy), x in cells_c[ckey].items():
+            got = rolled.get((dd, cv, yy))
+            if got is None:
+                raise SystemExit('ERR ptp %s (%s) class cell %s / %s / %d has year figures and no '
+                                 'month cell behind them' % (aid, col, dd, cv, yy))
+            # tolerance, not equality: the months are summed in first-seen order, which is file order
+            # rather than date order, so the float additions are not in the same sequence as the
+            # year cell's own. This is the same rule the district month reconciliation above uses.
+            sm = [sum(c[i] for c in got) for i in range(len(MK))]
+            if any(abs(sm[i] - x[i]) > 1e-6 for i in range(len(MK))):
+                raise SystemExit('ERR ptp %s (%s) class cell %s / %s / %d reads %s but its months add '
+                                 'to %s' % (aid, col, dd, cv, yy, x, sm))
 
     cor, unmapped = [], []
     for dd in dists:
@@ -564,6 +598,7 @@ def build(path, repo):
                                 'of that file'},
            'cty': cls['cty'], 'td': cls['td'], 'cdur': cls['cdur'], 'dd': cls['dd'],
            'cag': cls['cag'], 'ad': cls['ad'],
+           'tdM': cls['tdM'], 'ddM': cls['ddM'], 'adM': cls['adM'],
            'hold': ['Coverage_under5', 'Coverage_above5', 'VacRecvd', 'aav_cards',
                     'PostName', 'PostLocation', 'HealthFacility', 'Remarks'],
            'note': 'aggregated to district x year, district x month and UC x year/month; post names, '
@@ -574,7 +609,9 @@ def build(path, repo):
                    'the Coverage/OPV family the owner workbook defines (cdef) and are only '
                    'meaningful from covy - cw carries the per-year [cov, used, wastage %] that shows '
                    'why; td/dd/ad are district x class x year cells in mk order, classing the '
-                   'reporting row not the post; cor is each district\'s corridor as the owner '
+                   'reporting row not the post; tdM/ddM/adM are those same cells cut by month at the '
+                   'slot the district month cells use, and the build refuses them unless each month '
+                   'set adds back to its year cell; cor is each district\'s corridor as the owner '
                    'classifies it, corx names any district the map does not cover'}
     summary = ('%s rows read, %d kept, %d posts, %d UCs, %d districts, %d-%d, ZD found %s'
                % (format(total, ','), n['kept'], n['posts'], n['ucs'], len(dists),
@@ -605,9 +642,10 @@ def main():
              100.0 * (1.0 - ptp['n']['cov'] / ptp['n']['used'])))
     print('CWASTE ptp %s' % ' '.join('%s %s' % (y, 'n/a' if x[2] is None else '%+.2f%%' % x[2])
                                      for y, x in sorted(ptp['cw'].items())))
-    print('CLS ptp %d type cells (%d types), %d duration cells (%d), %d age cells (%d)'
+    print('CLS ptp %d type cells (%d types), %d duration cells (%d), %d age cells (%d); month grain '
+          '%d / %d / %d'
           % (len(ptp['td']), len(ptp['cty']), len(ptp['dd']), len(ptp['cdur']),
-             len(ptp['ad']), len(ptp['cag'])))
+             len(ptp['ad']), len(ptp['cag']), len(ptp['tdM']), len(ptp['ddM']), len(ptp['adM'])))
     print('CORR ptp %s' % ', '.join('%s x%d' % (c, ptp['cor'].count(c))
                                     for c in sorted(set(ptp['cor']))))
     if ptp['corx']:
