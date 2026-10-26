@@ -28,12 +28,40 @@ the column exists and is blank-or-zero before that). reft is published so the UI
 rather than a false zero for the earlier years.
 
 Held out of the payload deliberately:
-  PostName, PostLocation       - they name fixed checkpoints; a public GitHub Pages site is not
-                                 where they belong
-  Coverage, Coverage_under5, Coverage_above5,
-  OPVGiven, OPVUsed, OPVReturned, VacRecvd, aav_cards
-                               - their units do not reconcile (see SOURCES.md), so nothing built
-                                 on them is published until the report definition is confirmed
+  PostName, PostLocation, HealthFacility, Remarks
+                               - they name fixed checkpoints, staff and free text; a public GitHub
+                                 Pages site is not where they belong
+  Coverage_under5, Coverage_above5
+                               - the owner's workbook defines the same family without them, and the
+                                 columns are filled for at most 7.1% of Coverage in any year
+                                 (0.0% for 2016-2022), so they carry no measure
+  VacRecvd, aav_cards          - populated 2021-2025 then blank/6 rows in 2026: a column the panel
+                                 stopped filling, and a published zero would read as "no vaccine
+                                 received"
+
+Coverage, OPVUsed, OPVGiven and OPVReturned ARE published now, from covy (2022) onwards only. The
+owner's own workbook (PTP-STP Coverage and Compliance.twbx, "Joint Database/3. HRMP") supplies the
+definition: Wastage % = 1-(SUM([Coverage])/SUM([OPVUsed]) * 1), so Coverage counts children covered
+and OPVUsed counts doses actually used, and OPVGiven = OPVUsed + OPVReturned (true in 261,710 of
+that file's 261,923 rows). Nothing in this repo invents the ratio.
+
+It is published from 2022 because it does not reconcile before it, and the failure is not an age-mix
+artefact - the 0-5Years rows, which are 89-98% of every year, give the same answer as all rows:
+wastage of -570.6% (2016), -360.7, -424.0, -169.8, -63.3, -18.8 (2021), then +2.7 (2022), +6.6,
++6.9, +7.2, +8.4 (2026). A Coverage above OPVUsed is arithmetically impossible under that
+definition, so the earlier years are published but dashed, and cwaste carries the year table that
+shows why. The cross-check that licenses the whole family: KP 2026 wastage is +7.40% on this export
+(24-Oct pull) against +7.38% on the owner's workbook (06-Oct pull).
+
+Do not divide anything by expd. Summed Coverage over summed ExpChildrenDay is 1.58 all-time and 0.63
+in 2026, so the panel's "expected child-days" is not a population denominator however the column
+reads. ExpChildrenDay is published as the panel's own exposure figure and never as a denominator.
+
+The three class cuts (ty/dur/age) classify the reporting ROW as the row states it, which is why each
+one closes on the province total. That is different from pd, which attributes a POST to its
+most-often-seen type over ten years: a post that changed type is in one pd bucket and in two class
+cells. PostDuration values are the operational strategies the section is asked about - Seasonal,
+Permanent, Temporary, EID-RAMAZAN, the six TTP Ring strategy belts, VRC/Holding Centers.
 
 Every summed column adds one row per post per reporting day, so ZeroDose and the cross-border
 columns are counts of reports, not of distinct children - a child found at a post twice in a week
@@ -71,14 +99,50 @@ DS = 'ptp'
 UC_RE = re.compile(r'\d{8}$')
 
 # Summed here from these source columns; 'rows'/'months'/'posts'/'ucs' are counted, not summed.
+# The last four are the Coverage/OPV family the owner's workbook defines; they are in every cell so
+# the period filter works on them too, but covy says from which year the UI may print them.
 SUMCOLS = [('zd', 'ZeroDose'),
            ('cbu_in', 'CB_InUpto10'), ('cbu_out', 'CB_OutUpto10'),
            ('cbo_in', 'CB_InAbove10'), ('cbo_out', 'CB_OutAbove10'),
            ('nbv', 'new_born_vaccination'), ('teams', 'NoOfTeams'), ('sup', 'NoOfSupervisors'),
-           ('expd', 'ExpChildrenDay'), ('ref', 'no_of_refusals')]
+           ('expd', 'ExpChildrenDay'), ('ref', 'no_of_refusals'),
+           ('cov', 'Coverage'), ('used', 'OPVUsed'), ('given', 'OPVGiven'), ('ret', 'OPVReturned')]
 K = ['rows', 'months', 'posts', 'ucs'] + [k for k, _ in SUMCOLS]
 # UC cells keep their own short order, exactly as they are built below: [posts, months, rows, zd, cbu].
 UQ = ['posts', 'months', 'rows', 'zd', 'cbu']
+# First year the Coverage/OPV family reconciles - see the module docstring for the year table.
+COVY = 2022
+# Measures carried on a class cell. The class of the ROW, not of the post: see the docstring.
+MK = ['rows', 'cov', 'used', 'zd']
+# axis id, source column, payload key for its value list, payload key for its cells
+CLASSES = [('ty', 'PostType', 'cty', 'td'),
+           ('dur', 'PostDuration', 'cdur', 'dd'),
+           ('age', 'AgeGroup', 'cag', 'ad')]
+UNSTATED = 'Not stated'
+
+# district (IDIMS spelling) -> corridor, exactly as the owner classifies it in
+# PTP-STP Coverage and Compliance.twbx. Constant per district in that file - no district carries two.
+# The Hazara divisions are blank there, which is a statement about the corridor programme, not a
+# missing value, so they publish as "Not on a corridor". A spelling not in this map publishes as
+# Not stated and is named on the refresh log, so a renamed district unit cannot quietly vanish.
+CORRIDOR = {'BANNU': 'Central Corridor', 'DIKHAN': 'Central Corridor', 'KOHAT': 'Central Corridor',
+            'KURRAM': 'Central Corridor', 'HANGU': 'Central Corridor', 'KARAK': 'Central Corridor',
+            'ORAKZAI': 'Central Corridor', 'TANK': 'Central Corridor', 'LAKKIMRWT': 'Central Corridor',
+            'WAZIR-N': 'Central Corridor', 'WAZIR-S': 'Central Corridor',
+            'WAZIR-S LOWER': 'Central Corridor', 'WAZIR-S UPPER': 'Central Corridor',
+            'BAJOUR': 'Northern Corridor', 'CHARSADA': 'Northern Corridor',
+            'CHITRAL': 'Northern Corridor', 'CHITRALLOWER': 'Northern Corridor',
+            'CHITRALUPPER': 'Northern Corridor', 'DIRLOWER': 'Northern Corridor',
+            'DIRUPPER': 'Northern Corridor', 'KHYBER': 'Northern Corridor',
+            'MALAKAND': 'Northern Corridor', 'MARDAN': 'Northern Corridor',
+            'MOHMAND': 'Northern Corridor', 'NOWSHERA': 'Northern Corridor',
+            'PESHAWAR': 'Northern Corridor', 'SWABI': 'Northern Corridor', 'SWAT': 'Northern Corridor',
+            'ABOTABAD': '', 'BATAGRAM': '', 'BUNER': '', 'HARIPUR': '', 'KOHISTANLOWER': '',
+            'KOHISTANUPPER': '', 'MANSEHRA': '', 'SHANGLA': '', 'TORGHAR': ''}
+NOT_ON = 'Not on a corridor'
+# IDIMS re-cases district spellings between exports and the dashboard's own split of South
+# Waziristan is written mixed case, so the corridor lookup goes through an upper-cased index.
+CORR_UP = {k.upper(): v for k, v in CORRIDOR.items()}
 
 # IDIMS keeps three district units broader than the dashboard's EPI split, so EPIM has no 1:1
 # alias for them. Display name and division are the EPI family each one belongs to.
@@ -152,6 +216,8 @@ def collect(path, aliases, cut):
     uc_m = defaultdict(lambda: dict(uc0, p=set()))
     post = {}
     refyears = set()
+    # one cell per (district, class value, year) for each class axis, in MK order
+    cells_c = {out: defaultdict(lambda: [0.0] * len(MK)) for _, _, _, out in CLASSES}
     dropped = Counter()
     total = 0
 
@@ -189,6 +255,15 @@ def collect(path, aliases, cut):
             for k, v in vals.items():
                 cells[key][k] += v
                 mcells[mkey][k] += v
+            for aid, col, vkey, ckey in CLASSES:
+                cv = (r.get(col) or '').strip()
+                if not cv or cv == 'NULL':
+                    cv = UNSTATED
+                cc = cells_c[ckey][(dn[0], cv, y)]
+                cc[0] += 1
+                cc[1] += vals['cov']
+                cc[2] += vals['used']
+                cc[3] += vals['zd']
             months_in[key].add(m)
             ucs_in[key].add(u)
             mposts_in[mkey].add(pid)
@@ -246,14 +321,14 @@ def collect(path, aliases, cut):
         p['stat'] = p['lstat'] or counter_mode(p['stats'])
         p['risk'] = p['lrisk'] or counter_mode(p['risks'])
     return (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-            uc_y, uc_m, refyears, post, dropped, total)
+            uc_y, uc_m, refyears, post, dropped, total, cells_c)
 
 
 def build(path, repo):
     aliases, snd_uc, ucpt = load_lookups(repo)
     last_cut = last_stamp(path)
     (cells, mcells, posts_in, ucs_in, months_in, mposts_in, mucs_in,
-     uc_y, uc_m, refyears, post, dropped, total) = collect(path, aliases, last_cut)
+     uc_y, uc_m, refyears, post, dropped, total, cells_c) = collect(path, aliases, last_cut)
     if not cells or not post:
         raise SystemExit('ERR ptp nothing parsed from %s - header or units changed' % path)
 
@@ -409,6 +484,67 @@ def build(path, repo):
     slots = [yy * 100 + mm for yy in years for mm in range(1, 13) if yy * 100 + mm <= last_cut]
     gap = ['%d-%02d' % (s // 100, s % 100) for s in slots if s not in filing]
 
+    # ---- the Coverage/OPV family the owner's workbook defines ----
+    # Wastage by year is published as the reason for the covy cut, not as a footnote to it.
+    # Local names here must not reuse u or vals: u is the UC roster and vals() builds a cell.
+    cov_year = {}
+    for (dd, yy), c in cells.items():
+        e = cov_year.setdefault(yy, [0.0, 0.0])
+        e[0] += c['cov']
+        e[1] += c['used']
+    cwaste = {}
+    for yy in sorted(cov_year):
+        cy, cu = cov_year[yy]
+        cwaste[str(yy)] = [int(round(cy)), int(round(cu)),
+                           round(100.0 * (1.0 - cy / cu), 2) if cu else None]
+    if not sum(x[0] + x[1] for x in cwaste.values()):
+        raise SystemExit('ERR ptp Coverage and OPVUsed are both empty - the export changed shape '
+                         'and the family cannot be published')
+    if cwaste.get(str(COVY)) is None or not (cwaste[str(COVY)][2] or 0) > 0:
+        raise SystemExit('ERR ptp wastage in %d is %s, so the Coverage/OPV family no longer '
+                         'reconciles from the published first year - re-check the workbook '
+                         'definition before publishing it' % (COVY, cwaste.get(str(COVY))))
+
+    cls = {}
+    for aid, col, vkey, ckey in CLASSES:
+        names = sorted({k[1] for k in cells_c[ckey]})
+        # every kept row carries one class value for each axis, so a class axis closing on the
+        # province totals is what proves no row was bucketed twice or dropped
+        s_r = sum(x[0] for x in cells_c[ckey].values())
+        s_c = sum(x[1] for x in cells_c[ckey].values())
+        if s_r != kept:
+            raise SystemExit('ERR ptp %s (%s) class rows %s do not close on kept %s'
+                             % (aid, col, s_r, kept))
+        if abs(s_c - sum(c['cov'] for c in cells.values())) > 1e-6:
+            raise SystemExit('ERR ptp %s (%s) class coverage %s against province coverage %s'
+                             % (aid, col, s_c, sum(c['cov'] for c in cells.values())))
+        ci = {v: i for i, v in enumerate(names)}
+        cls[vkey] = names
+        cls[ckey] = [[didx[dd], ci[cv], yidx[yy], [int(round(x[i])) for i in range(len(MK))]]
+                     for (dd, cv, yy), x in sorted(cells_c[ckey].items(),
+                                                   key=lambda r: (r[0][0], r[0][2], r[0][1]))]
+
+    cor, unmapped = [], []
+    for dd in dists:
+        raw = raw_of[dd]
+        hit = CORRIDOR.get(raw, CORRIDOR.get(dd))
+        if hit is None:
+            hit = CORR_UP.get(raw.upper(), CORR_UP.get(dd.upper()))
+        if hit is None:
+            cor.append(UNSTATED)
+            unmapped.append(raw)
+        else:
+            cor.append(hit or NOT_ON)
+
+    # the guard that catches a rebound u: a payload whose roster collapsed to a number would still
+    # pass every reconciliation above, because those all ran before it.
+    if not isinstance(u, list) or len(u) != n['ucs'] or any(len(r) != 9 for r in u):
+        raise SystemExit('ERR ptp UC roster lost: %s against n.ucs %s'
+                         % (str(type(u).__name__) if not isinstance(u, list) else len(u), n['ucs']))
+    if len(cls['cty']) < 2 or len(cls['cdur']) < 2:
+        raise SystemExit('ERR ptp class axes collapsed: %s types, %s durations'
+                         % (len(cls['cty']), len(cls['cdur'])))
+
     pkt = dashpatch.pkt_stamp(datetime.datetime.fromtimestamp(os.path.getmtime(path), dashpatch.PKT))
     ptp = {'src': os.path.basename(path), 'asof': pkt.split(' ')[0], 'gen': dashpatch.pkt_stamp(),
            'prov': 'KP', 'win': '%d-%d' % (years[0], years[-1]),
@@ -418,13 +554,28 @@ def build(path, repo):
            'dv': [dv_of[x] for x in dists], 'ty': types, 'st': stats, 'rk': risks,
            'd': d, 'u': u, 'pd': pd, 'pdk': ['type', 'last status', 'last security risk'],
            'n': n, 'drop': dict(dropped), 'gap': gap, 'gden': len(slots), 'last': last_cut,
-           'hold': ['Coverage', 'Coverage_under5', 'Coverage_above5', 'OPVGiven', 'OPVUsed',
-                    'OPVReturned', 'VacRecvd', 'aav_cards', 'PostName', 'PostLocation'],
-           'note': 'aggregated to district x year, district x month and UC x year/month; post names '
-                   'and locations excluded; summed columns count reports, not distinct children; '
-                   'posts keyed on Site_ID (ID before the Oct-2026 export); refusals only exist from '
-                   'reft onwards; UC cells follow q; gap lists month slots (yyyymm) up to last that '
-                   'carry no report anywhere in KP'}
+           # the Coverage/OPV family, its first publishable year and the year table that proves it
+           'covy': COVY, 'cw': cwaste, 'mk': MK, 'cor': cor, 'corx': unmapped,
+           'cdef': {'src': 'PTP-STP Coverage and Compliance.twbx (Joint Database/3. HRMP)',
+                    'waste': '1-(SUM([Coverage])/SUM([OPVUsed]))',
+                    'factor': '100/(100-(Wastage %*100))',
+                    'bands': 'Wastage % <=0 Negative, 0-10 Acceptable Range, >10 High Wastage',
+                    'identity': 'OPVGiven = OPVUsed + OPVReturned, true in 261,710 of 261,923 rows '
+                                'of that file'},
+           'cty': cls['cty'], 'td': cls['td'], 'cdur': cls['cdur'], 'dd': cls['dd'],
+           'cag': cls['cag'], 'ad': cls['ad'],
+           'hold': ['Coverage_under5', 'Coverage_above5', 'VacRecvd', 'aav_cards',
+                    'PostName', 'PostLocation', 'HealthFacility', 'Remarks'],
+           'note': 'aggregated to district x year, district x month and UC x year/month; post names, '
+                   'locations, facilities and remarks excluded; summed columns count reports, not '
+                   'distinct children; posts keyed on Site_ID (ID before the Oct-2026 export); '
+                   'refusals only exist from reft onwards; UC cells follow q; gap lists month slots '
+                   '(yyyymm) up to last that carry no report anywhere in KP; cov/used/given/ret are '
+                   'the Coverage/OPV family the owner workbook defines (cdef) and are only '
+                   'meaningful from covy - cw carries the per-year [cov, used, wastage %] that shows '
+                   'why; td/dd/ad are district x class x year cells in mk order, classing the '
+                   'reporting row not the post; cor is each district\'s corridor as the owner '
+                   'classifies it, corx names any district the map does not cover'}
     summary = ('%s rows read, %d kept, %d posts, %d UCs, %d districts, %d-%d, ZD found %s'
                % (format(total, ','), n['kept'], n['posts'], n['ucs'], len(dists),
                   years[0], years[-1], format(n['zd'], ',')))
@@ -449,6 +600,19 @@ def main():
         print('DROP ptp %s' % ptp['drop'])
     print('GAP ptp %d of %d %s' % (len(ptp['gap']), ptp['gden'], ptp['gap']))
     print('REF ptp refusals only from %s, total %s' % (ptp['reft'], format(ptp['n'].get('ref', 0), ',')))
+    print('COV ptp published from %s: cov %s used %s, wastage %.2f%%'
+          % (ptp['covy'], format(ptp['n']['cov'], ','), format(ptp['n']['used'], ','),
+             100.0 * (1.0 - ptp['n']['cov'] / ptp['n']['used'])))
+    print('CWASTE ptp %s' % ' '.join('%s %s' % (y, 'n/a' if x[2] is None else '%+.2f%%' % x[2])
+                                     for y, x in sorted(ptp['cw'].items())))
+    print('CLS ptp %d type cells (%d types), %d duration cells (%d), %d age cells (%d)'
+          % (len(ptp['td']), len(ptp['cty']), len(ptp['dd']), len(ptp['cdur']),
+             len(ptp['ad']), len(ptp['cag'])))
+    print('CORR ptp %s' % ', '.join('%s x%d' % (c, ptp['cor'].count(c))
+                                    for c in sorted(set(ptp['cor']))))
+    if ptp['corx']:
+        print('WARN ptp corridor map does not cover: %s - they publish as %s'
+              % (ptp['corx'], UNSTATED))
 
 
 if __name__ == '__main__':
