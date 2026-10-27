@@ -971,7 +971,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 27-Oct-2026 14:20</span>
+  <span class="hupd" id="hUpd">Updated 27-Oct-2026 14:57</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2131,7 +2131,8 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <section class="pane" id="p-hrat">
 <div class="hint" id="hratHint"></div>
 <div class="cqbar"><b>Compiled after</b><select class="hrc" id="fHRC" aria-label="Campaign"></select><select class="hrc" id="fHRY" aria-label="Year"></select><select class="hrc" id="fHRM" aria-label="Month"></select><span class="cnt" id="hratNote"></span></div>
-<div class="cqbar"><b>Card</b><button class="btn" id="btnHRTBlank" title="The card with the UC roster prefilled in columns A-D and every score cell empty, one worksheet plus a Read-me">Download blank template (Excel)</button><label class="btn" id="hrtFileL" title="An .xlsx of this card, or the CSV of the same columns. The 33 input columns are read back; the 39 score columns in the file are compared with the formulas here and any disagreement is reported">Upload filled sheet<input type="file" id="hrtFile" accept=".xlsx,.xls,.csv" style="display:none"></label><button class="btn" id="btnHRX" title="Every council on this sheet, with all 39 computed columns written as live Excel formulas">Download filled sheet (Excel)</button><button class="btn" id="btnHRTSeed" title="Fill the grid with the councils the dashboard holds for the districts picked in the grid's own division and district boxes">Seed councils in view</button><button class="btn" id="btnHRTRow" title="Append one empty council row">Add one council</button><button class="btn" id="btnHRTCLEAR" title="Empty this period in this browser - a file you already downloaded is untouched">Clear this period</button><span class="cnt" id="hrtUcnt"></span></div>
+<div class="cqbar"><b>Card</b><button class="btn" id="btnHRTBlank" title="The card with the UC roster prefilled in columns A-D and every score cell empty, one worksheet plus a Read-me">Download blank template (Excel)</button><label class="btn" id="hrtFileL" title="An .xlsx of this card, or the CSV of the same columns. The 33 input columns are read back; the 39 score columns in the file are compared with the formulas here and any disagreement is reported">Upload filled sheet<input type="file" id="hrtFile" accept=".xlsx,.xls,.csv" style="display:none"></label><button class="btn" id="btnHRX" title="Every council on this sheet, with all 39 computed columns written as live Excel formulas">Download filled sheet (Excel)</button><button class="btn" id="btnHRTSeed" title="Fill the grid with the councils the dashboard holds for the districts picked in the grid's own division and district boxes">Seed councils in view</button><button class="btn" id="btnHRTRow" title="Append one empty council row">Add one council</button><button class="btn" id="btnHRTCLEAR" title="Empty this period in this browser - a file you already downloaded is untouched">Clear this period</button><button class="btn" id="btnHRTCLEARALL" title="Remove every HRA sheet this browser has saved, for all periods - files you already downloaded are untouched">Clear all periods</button><span class="cnt" id="hrtUcnt"></span></div>
+<div id="hratImp" style="display:none;margin:0 0 10px;padding:9px 12px;border-radius:6px;font-size:12.5px;line-height:1.55"></div>
 <div class="card" id="hratRule"></div>
 <div class="kpis">
 <div class="card"><div class="kl">Councils in view</div><div class="kv" id="hk1">&ndash;</div><div class="ks" id="hk1s"></div></div>
@@ -11992,6 +11993,59 @@ function hrtLoad(){
  hrtRows=d.rows.map(r=>{const o=hrtBlankRow();
   HRTIN.forEach(c=>{if(r&&r[c.L]!==undefined)o[c.L]=r[c.L];});return o;});
  return hrtRows.length?'kept':'none';}
+function hrtCodeK(v){return String(v==null?'':v).replace(/\s+/g,' ').trim().toUpperCase();}
+// A period's sheet accumulates the divisions. An upload replaces the districts its file covers and
+// leaves every other district alone, so Mardan followed by Malakand-II leaves both on one sheet, and a
+// corrected division file lands over that division only. A UC code repeated inside the file keeps its
+// first row; a code the sheet already holds is replaced, never added twice.
+function hrtMerge(out){
+ const nd={},nc={},dn=[],uniq=[];
+ let dup=0;
+ out.forEach(o=>{const d=hrtCodeK(o.B);
+  if(d&&!nd[d]){nd[d]=1;const t=String(o.B==null?'':o.B).replace(/\s+/g,' ').trim();if(t)dn.push(t);}
+  const k=hrtCodeK(o.D);
+  if(k){if(nc[k]){dup++;return;}nc[k]=1;}
+  uniq.push(o);});
+ const was=hrtRows.length;
+ const kept=hrtRows.filter(r=>{const d=hrtCodeK(r.B);if(d&&nd[d])return false;
+  const k=hrtCodeK(r.D);return !(k&&nc[k]);});
+ hrtRows=kept.concat(uniq);
+ return {dropped:was-kept.length,dup:dup,districts:dn};}
+function hrtDivs(){const o=[];
+ hrtRows.forEach(r=>{const k=String(r.A==null?'':r.A).trim();if(k&&o.indexOf(k)<0)o.push(k);});
+ return o;}
+function hrtNote(){
+ const dv=hrtDivs();
+ el('hratNote').innerHTML=esc(HRT_P().join(' \u00b7 '))+' \u00b7 '+fmt(hrtRows.length)+' councils'
+  +(dv.length>1?' across '+dv.length+' divisions':'')+' \u00b7 '
+  +'file name <b>'+esc(hrtTitle())+'.xlsx</b>';}
+function hrtMergeNote(mg){
+ const dv=hrtDivs();
+ return 'The period now holds '+fmt(hrtRows.length)+' councils from '+dv.length+' division'
+  +(dv.length===1?'':'s')+(dv.length?' ('+dv.join(', ')+')':'')+'.'
+  +(mg.dropped?' It replaced '+fmt(mg.dropped)+' row(s) already held for '
+    +(mg.districts.length>3?mg.districts.length+' districts':mg.districts.join(', '))+'.':'')
+  +(mg.dup?' '+fmt(mg.dup)+' duplicate row(s) in the file were ignored.':'');}
+function hrtImpBox(kind,html){
+ const b=el('hratImp');if(!b)return;
+ if(!html){b.style.display='none';b.innerHTML='';return;}
+ const c=kind==='err'?['#b91c1c','#fef2f2']:kind==='warn'?['#b45309','#fffbeb']:['#15803d','#f0fdf4'];
+ b.style.display='block';b.style.borderLeft='4px solid '+c[0];b.style.background=c[1];
+ b.innerHTML=html;}
+function hrtCheckRows(rows){
+ let tx=0,of=0;const tc=[],oc=[];
+ rows.forEach(r=>{HRTIN.forEach(c=>{const v=r[c.L];if(v===null||v===undefined)return;
+  const o=(c.o||[]).filter(Boolean);
+  if(!o.length&&(c.k==='pct'||c.k==='rate'||c.k==='cnt')&&typeof v==='string'){
+   tx++;if(tc.indexOf(c.L)<0)tc.push(c.L);}
+  if(o.length&&!o.some(x=>HRTN(x)===HRTN(String(v)))){
+   of++;if(oc.indexOf(c.L)<0)oc.push(c.L);}});});
+ const iss=[];
+ if(tx)iss.push(fmt(tx)+' cell(s) in a number or percent column hold text ('
+  +tc.slice(0,6).join(', ')+(tc.length>6?' \u2026':'')+')');
+ if(of)iss.push(fmt(of)+' cell(s) hold a value their dropdown does not list ('
+  +oc.slice(0,6).join(', ')+(oc.length>6?' \u2026':'')+')');
+ return iss;}
 function hrtLogAdd(m){hrtLog.unshift(m);hrtLog=hrtLog.slice(0,10);
  if(el('hrtLog'))el('hrtLog').innerHTML=hrtLog.map(x=>'<div>&middot; '+esc(x)+'</div>').join('');}
 function hrtRoster(view){
@@ -12144,7 +12198,10 @@ function renderHRT(){
   +HRAT.band.labels[2]+' between \u2014 <b>a high percentage is a safe council</b>, the opposite '
   +'direction to the combined UC risk score on the Cross-cutting pages. The two are never blended.'
   +' <b>Nothing here is uploaded:</b> this site is public, so the sheet lives in this browser only, '
-  +'under the year, month and campaign above, and travels as the file you download. The card\u2019s '
+  +'under the year, month and campaign above, and travels as the file you download. One division at a '
+  +'time: an upload replaces the districts its file covers and leaves every other district on the '
+  +'sheet alone, so one period compiles every division and the download carries them all. Duplicate '
+  +'rows are ignored, and anything that needs correcting is reported above the grid. The card\u2019s '
   +'Remarks column is not on this grid and not in the dashboard payload.';
  el('hratCap').textContent='One row is one union council; the 33 white cells are the only place a figure '
   +'is entered and the grey ones are the card\u2019s own formulas. A cell left empty earns nothing, '
@@ -12155,8 +12212,7 @@ function renderHRT(){
  el('btnHRThide').textContent=hrtHide?'Show the computed columns':'Hide the computed columns';
  hrtRule();hrtPaint(V);
  hrvRender();
- el('hratNote').innerHTML=esc(HRT_P().join(' \u00b7 '))+' \u00b7 '+fmt(hrtRows.length)+' councils \u00b7 '
-  +'file name <b>'+esc(hrtTitle())+'.xlsx</b>';}
+ hrtNote();}
 // HRA AT A GLANCE (1/3): payload roll-ups, hint and the render hook.
 // Read by patch_hrdv_ui.py and inserted into the master ahead of hrtWire(). Nothing here writes to
 // the compiled card: the figures come from const HRA, the dashboard payload.
@@ -12841,24 +12897,33 @@ function hrtWire(){
     +' in this browser? A file you already downloaded is untouched.'))return;
    hrtRows=[];try{localStorage.removeItem(HRTKEY(hrtSlug()));}catch(e){}
    hrtRefresh();toast('This period is empty now');};
+  el('btnHRTCLEARALL').onclick=()=>{
+   const ks=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
+    if(k&&k.indexOf(HRTKEY(''))===0)ks.push(k);}}catch(e){}
+   if(!ks.length){toast('This browser holds no saved HRA sheet');return;}
+   if(!window.confirm('Remove the HRA sheets this browser saved for '+ks.length+' period'
+    +(ks.length===1?'':'s')+' ('+ks.map(k=>k.slice(HRTKEY('').length)).join(', ')
+    +')? A file you already downloaded is untouched.'))return;
+   ks.forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+   hrtRefresh();toast('Removed every saved HRA sheet from this browser');};
   el('hrtFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(f)hrtImport(f);
    e.target.value='';};}}
 function hrtRefresh(){
  hrtWire();
+ hrtImpBox('');
  const st=hrtLoad();
  hrtPage=0;hrtScope();
  hrtLogAdd(st==='kept'?'Loaded the sheet this browser saved for this period.'
   :'This period is empty in this browser.');
  hrtPaint(hrtVals());
- el('hratNote').innerHTML=esc(HRT_P().join(' \u00b7 '))+' \u00b7 '+fmt(hrtRows.length)+' councils \u00b7 '
-  +'file name <b>'+esc(hrtTitle())+'.xlsx</b>';}
+ hrtNote();}
 function hrtCsv(txt){
  const out=[],row=[];let s='',q=false;
  for(let i=0;i<txt.length;i++){const ch=txt.charAt(i);
   if(q){if(ch==='"'){if(txt.charAt(i+1)==='"'){s+='"';i++;}else q=false;}else s+=ch;continue;}
   if(ch==='"'){q=true;continue;}
   if(ch===','){row.push(s);s='';continue;}
-  if(ch==='\n'){row.push(s);out.push(row);row.length=0;s='';continue;}
+  if(ch==='\n'){row.push(s);out.push(row.slice());row.length=0;s='';continue;}
   if(ch==='\r')continue;
   s+=ch;}
  if(s!==''||row.length){row.push(s);out.push(row);}
@@ -12905,8 +12970,10 @@ function hrtFromSheet(ws,fname){
  if(best<Math.max(20,HRAT.n*0.4)){
   hrtLogAdd(fname+': no header row of this card was found (best match '+best+' of '+HRAT.n
    +' columns over the first 8 rows), so nothing was imported.');
-  hrtRefresh();return;}
- const M=hrtSheetMap(ws,hdr),out=[],pairs=[],odd={},txt={},conv={},seen={};
+  hrtRefresh();
+  hrtImpBox('err','<b>Nothing imported</b> '+esc(fname)+' \u2014 no header row of this card was found (best match '+best+' of '+HRAT.n+' columns over the first 8 rows). Download the blank template and fill it, or check that the row holding Division / District / UC Name / UC Code is intact.');
+  return;}
+ const M=hrtSheetMap(ws,hdr),out=[],pairs=[],odd={},txt={},conv={},seen={},skipR=[],dupeR=[];
  let skipped=0,dupe=0;
  for(let r=hdr+1;r<=ws.rowCount;r++){
   const row=ws.getRow(r),o=hrtBlankRow();let any=false;
@@ -12920,17 +12987,23 @@ function hrtFromSheet(ws,fname){
    if(c.k==='pct'&&typeof v==='number'&&v>1)conv[c.L]=(conv[c.L]||0)+1;
    if((c.k==='pct'||c.k==='rate'||c.k==='cnt')&&typeof o[c.L]==='string')
     (txt[c.L]=txt[c.L]||[]).push(r);});
-  if(!any||(!o.D&&!o.C)){skipped++;continue;}
-  if(o.D){const k=String(o.D);if(seen[k])dupe++;else seen[k]=1;}
+  if(!any||(!o.D&&!o.C)){skipped++;if(skipR.length<8)skipR.push(r);continue;}
+  const ck=hrtCodeK(o.D);
+  if(ck){if(seen[ck]){dupe++;if(dupeR.length<8)dupeR.push(r);continue;}seen[ck]=1;}
   out.push(o);pairs.push({r:r,o:o});}
- hrtRows=out;
- const V=hrtVals(),bad=[];
+ if(!out.length){
+  hrtLogAdd(fname+': the card was found but it holds no council row (every row was blank or carried neither a UC code nor a UC name), so nothing was imported.');
+  hrtRefresh();
+  hrtImpBox('err','<b>Nothing imported</b> '+esc(fname)+' \u2014 no row under the header carries a UC code or a UC name.');
+  return;}
+ const mg=hrtMerge(out);
+ const V=hrtVals(),bad=[],pos=new Map(hrtRows.map((r,i)=>[r,i]));
  bad.push(M.orderOK?'the header row matched '+best+' of '+HRAT.n+' columns in the template order'
   :'the header row did not sit in the template order: '+M.moved.length+' column(s) were found by '
     +'their printed header text instead of by position ('+M.moved.slice(0,8).join(', ')
     +(M.moved.length>8?' \u2026':'')+')');
- if(skipped)bad.push(fmt(skipped)+' row(s) carried neither a UC code nor a UC name and were skipped');
- if(dupe)bad.push(fmt(dupe)+' row(s) repeat a UC code already on the sheet');
+ if(skipped)bad.push(fmt(skipped)+' row(s) carried neither a UC code nor a UC name and were ignored'+(skipR.length?' (rows '+skipR.join(', ')+(skipped>skipR.length?' \u2026':'')+')':''));
+ if(dupe)bad.push(fmt(dupe)+' row(s) repeated a UC code already in this file and were ignored'+(dupeR.length?' (rows '+dupeR.join(', ')+(dupe>dupeR.length?' \u2026':'')+')':''));
  const tn=Object.keys(txt).reduce((s,k)=>s+txt[k].length,0);
  if(tn)bad.push(fmt(tn)+' cell(s) in a number or percent column hold text ('
   +Object.keys(txt).slice(0,6).map(k=>k+' x'+txt[k].length).join(', ')
@@ -12947,7 +13020,8 @@ function hrtFromSheet(ws,fname){
   +'them at face value (a 0% cell holding 87 shows 8,700%), so its score cells over those answers '
   +'differ from the figures here');
  const diff=[];
- pairs.forEach((p,i)=>{
+ pairs.forEach(p=>{
+  const i=pos.get(p.o);if(i===undefined)return;
   const row=ws.getRow(p.r);
   HRTFX.forEach(c=>{
    if(diff.length>=6||c.L===HRTL.rank)return;
@@ -12962,14 +13036,39 @@ function hrtFromSheet(ws,fname){
   +'cells typed in it ('+diff.join('; ')+'). The download writes the formula over the cells as this '
   +'page holds them, so Excel will show these figures; the two restated rules (the Rank range and the '
   +'NPEV threshold) are on the note above.');
- hrtLogAdd('Imported '+fmt(out.length)+' councils from '+fname+'. '+bad.join(' \u00b7 '));
- hrtPage=0;hrtStore();hrtScope();hrtPaint(V);}
+ hrtLogAdd('Imported '+fmt(out.length)+' councils from '+fname+'. '+hrtMergeNote(mg)+' '
+  +bad.join(' \u00b7 '));
+ const iss=[];
+ if(skipped)iss.push(fmt(skipped)+' row(s) ignored with no UC code or UC name');
+ if(dupe)iss.push(fmt(dupe)+' duplicate row(s) ignored');
+ if(tn)iss.push(fmt(tn)+' cell(s) hold text in a number or percent column');
+ if(on)iss.push(fmt(on)+' cell(s) hold a value their dropdown does not list');
+ if(cn)iss.push(fmt(cn)+' cell(s) in percent columns are stored as whole numbers ('
+  +Object.keys(conv).join(', ')+') and were read as percents');
+ if(diff.length)iss.push('the file\u2019s computed columns disagree with this card\u2019s formulas');
+ hrtImpBox(iss.length?'warn':'ok','<b>'+(iss.length?'Imported with issues':'Imported')+'</b> '
+  +esc(fname)+' \u00b7 '+fmt(out.length)+' councils read. '+esc(hrtMergeNote(mg))
+  +(iss.length?'<br><b>Check before this sheet is read to anyone:</b> '+esc(iss.join('; '))
+   +'. Full detail is in the import log below.':''));
+ el('hrtDiv').value='';el('hrtDist').value='';
+ hrtPage=0;hrtStore();hrtScope();hrtPaint(V);hrtNote();}
 function hrtImport(file){
  const csv=/\.csv$/i.test(file.name);
  const take=rows=>{if(!rows){hrtLogAdd(file.name+': no header row of this card was found in the CSV, so '
-   +'nothing was imported.');hrtRefresh();return;}
-  hrtRows=rows;hrtPage=0;hrtStore();hrtScope();hrtPaint(hrtVals());
-  toast('Imported '+fmt(rows.length)+' councils');};
+   +'nothing was imported.');hrtRefresh();
+   hrtImpBox('err','<b>Nothing imported</b> '+esc(file.name)+' \u2014 no header row of this card was found in the CSV. In Excel use Save as \u2192 Excel Workbook, or check the header row.');
+   return;}
+  const iss=hrtCheckRows(rows),mg=hrtMerge(rows);
+  hrtLogAdd('Imported '+fmt(rows.length)+' councils from '+file.name+'. '+hrtMergeNote(mg)+' '
+   +(iss.length?iss.join(' \u00b7 '):''));
+  hrtImpBox(iss.length?'warn':'ok','<b>'+(iss.length?'Imported with issues':'Imported')+'</b> '
+   +esc(file.name)+' \u00b7 '+fmt(rows.length)+' councils read. '+esc(hrtMergeNote(mg))
+   +(iss.length?'<br><b>Check before this sheet is read to anyone:</b> '+esc(iss.join('; '))
+    +'. Full detail is in the import log below.':''));
+  el('hrtDiv').value='';el('hrtDist').value='';
+  hrtPage=0;hrtStore();hrtScope();hrtPaint(hrtVals());hrtNote();
+  toast('Imported '+fmt(rows.length)+' councils \u2014 the period now holds '
+   +fmt(hrtRows.length));};
  if(csv){const fr=new FileReader();
   fr.onload=()=>take(hrtCsvRows(hrtCsv(String(fr.result||''))));
   fr.onerror=()=>toast('The file could not be read');
