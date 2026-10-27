@@ -139,3 +139,4 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 HRA tab: the notes now open in a compact popover instead of a full-width block; a campaign/period source picker drives the at-a-glance band, curve, indicators, district map, table and CSV; the coverage card states how many of the 1,418 register councils are received and how many awaited for the selected division or district; and deleting compiled rows is owner-only. Timestamp refresh 27-Oct-2026 16:15 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+65069 chars). Timestamp refresh 27-Oct-2026 17:44 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+0 chars). Timestamp refresh 27-Oct-2026 17:53 PKT
+Pushed the hand-edited index.html master to preview / public / internal builds (+5156 chars). Timestamp refresh 27-Oct-2026 18:06 PKT

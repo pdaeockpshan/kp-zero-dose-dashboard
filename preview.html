@@ -1023,7 +1023,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 27-Oct-2026 17:53</span>
+  <span class="hupd" id="hUpd">Updated 27-Oct-2026 18:06</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2273,6 +2273,11 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="hint" id="hratHint"></div>
 <div class="cqbar"><b>Compiled after</b><select class="hrc" id="fHRC" aria-label="Campaign"></select><select class="hrc" id="fHRY" aria-label="Year"></select><select class="hrc" id="fHRM" aria-label="Month"></select><span class="cnt" id="hratNote"></span></div>
 <div class="cqbar"><b>Card</b><button class="btn" id="btnHRTBlank" title="The card with the UC roster prefilled in columns A-D and every score cell empty, one worksheet plus a Read-me">Download blank template (Excel)</button><label class="btn" id="hrtFileL" title="An .xlsx of this card, or the CSV of the same columns. The 33 input columns are read back; the 39 score columns in the file are compared with the formulas here and any disagreement is reported">Upload filled sheet<input type="file" id="hrtFile" accept=".xlsx,.xls,.csv" style="display:none"></label><button class="btn" id="btnHRX" title="Every council on this sheet, with all 39 computed columns written as live Excel formulas">Download filled sheet (Excel)</button><button class="btn" id="btnHRTSeed" title="Fill the grid with the councils the dashboard holds for the districts picked in the grid's own division and district boxes">Seed councils in view</button><button class="btn" id="btnHRTRow" title="Append one empty council row">Add one council</button><button class="btn" id="btnHRTCLEAR" title="Empty this period in this browser - a file you already downloaded is untouched">Clear this period</button><button class="btn" id="btnHRTCLEARALL" title="Remove every HRA sheet this browser has saved, for all periods - files you already downloaded are untouched">Clear all periods</button><button class="btn" id="btnHRTOWN" title="Only the owner can delete compiled rows; unlock with the owner key">Owner mode</button><span class="cnt" id="hrtUcnt"></span></div>
+<div class="card" id="hratDel" style="display:none;margin:0 0 14px;padding:10px 12px;border-left:4px solid #b91c1c">
+<div class="tblhdr" style="margin-bottom:6px"><h3 style="margin:0">Delete compiled rows &middot; owner only</h3><span class="cnt" id="hrtDelPer"></span><span style="flex:1"></span><span class="cnt" id="hrtDelCnt"></span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select class="hrc" id="hrtDelDiv" aria-label="Division to delete"></select><select class="hrc" id="hrtDelDist" aria-label="District to delete"></select><button class="btn" id="btnHRTDEL2" disabled title="Remove the councils of the division or district picked here from this period. The rest of the period and any file you already downloaded are untouched">Delete the selected rows</button></div>
+<div class="cap" id="hrtDelNote" style="margin-top:6px"></div>
+</div>
 <div id="hratImp" style="display:none;margin:0 0 10px;padding:9px 12px;border-radius:6px;font-size:12.5px;line-height:1.55"></div>
 
 <div class="card" id="hratCov" style="margin-bottom:14px">
@@ -2293,7 +2298,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">High Risk</div><div class="kv" id="hk5" style="color:#b91c1c">&ndash;</div><div class="ks" id="hk5s"></div></div>
 <div class="card"><div class="kl">Scored off an empty cell</div><div class="kv" id="hk6">&ndash;</div><div class="ks" id="hk6s"></div></div>
 </div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">The card, in the template&rsquo;s own column order</h3><select class="hrc" id="hrtDiv" aria-label="Division shown"></select><select class="hrc" id="hrtDist" aria-label="District shown"></select><button class="btn" id="btnHRTDEL" disabled title="Remove the councils of the division or district picked in the two filters beside this button; the rest of the period and any file you already downloaded are untouched">Delete the rows in the filter</button><span style="flex:1"></span><button class="btn" id="btnHRThide">Hide the computed columns</button></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">The card, in the template&rsquo;s own column order</h3><select class="hrc" id="hrtDiv" aria-label="Division shown"></select><select class="hrc" id="hrtDist" aria-label="District shown"></select><button class="btn" id="btnHRTDEL" disabled style="display:none" title="Remove the councils of the division or district picked in the two filters beside this button; the rest of the period and any file you already downloaded are untouched">Delete the rows in the filter</button><span style="flex:1"></span><button class="btn" id="btnHRThide">Hide the computed columns</button></div>
 <div class="cap" id="hratCap"></div>
 <div class="hrwrap" id="hrtWrap"><table class="hrgrid" id="tHRT"></table></div>
 <div class="cqbar"><span class="cnt" id="hrtPager"></span><span class="cnt" id="hrtPageNote"></span></div></div>
@@ -12098,6 +12103,69 @@ function hrtPeriods(){
  return out.sort((a,b)=>(b.y*100+(b.m||0))-(a.y*100+(a.m||0)));}
 // one evaluator per rows array: a fresh arrays means an import or a period change, an edited cell is
 // the same array mutated in place, which compute() reads on the next call.
+// ---------- owner delete mode: its own division / district pair ----------
+// The owner asked, 27-Oct-2026: "There should be division/district selection mode in owner mode for
+// deletion". The reading filters used to double as the delete scope; this panel keeps a separate pair
+// so choosing where to read never decides what to remove. It is shown only while the owner key is
+// unlocked, and it only ever offers divisions and districts the period actually holds.
+function hrtPerLbl(){
+ const C=el('fHRC'),Y=el('fHRY'),M=el('fHRM'),
+  t=C&&C.options[C.selectedIndex]?C.options[C.selectedIndex].text:'',
+  m=M&&M.value?HRTMO[+M.value-1]:'',
+  l=String(t).toLowerCase();
+ if(t&&m&&l.indexOf(m.toLowerCase())>=0&&l.indexOf(Y.value)>=0)return t;
+ return (t?t+' \u00b7 ':'')+(m?m+' ':'')+(Y?Y.value:'');}
+function hrtDelPick(){
+ const dv=el('hrtDelDiv').value,dd=el('hrtDelDist').value,out=[];
+ hrtRows.forEach(function(r,i){
+  const a=String(r.A==null?'':r.A).trim(),b=String(r.B==null?'':r.B).trim();
+  if(dv&&a!==dv)return;
+  if(dd&&b!==dd)return;
+  out.push(i);});
+ return {dv:dv,dd:dd,idx:out,n:out.length,label:dd?dd:(dv?dv+' division':'')};}
+function hrtDelFill(){
+ const dv=el('hrtDelDiv'),dd=el('hrtDelDist');if(!dv||!dd)return;
+ const k0=dv.value,k1=dd.value,D={},B={};
+ hrtRows.forEach(function(r){const a=String(r.A==null?'':r.A).trim();if(a)D[a]=1;});
+ dv.innerHTML='<option value="">All divisions</option>'+Object.keys(D).sort()
+  .map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>';}).join('');
+ dv.value=D[k0]?k0:'';
+ const ds=dv.value;
+ hrtRows.forEach(function(r){const b=String(r.B==null?'':r.B).trim();
+  if(b&&(!ds||String(r.A==null?'':r.A).trim()===ds))B[b]=1;});
+ dd.innerHTML='<option value="">All districts'+(ds?' in '+esc(ds):'')+'</option>'+Object.keys(B).sort()
+  .map(function(x){return '<option value="'+esc(x)+'">'+esc(x)+'</option>';}).join('');
+ dd.value=B[k1]?k1:'';
+ hrtDelCount();}
+function hrtDelCount(){
+ const dv=el('hrtDelDiv'),dd=el('hrtDelDist'),b=el('btnHRTDEL2'),n=el('hrtDelNote');
+ if(!dv||!dd||!b)return;
+ const S=hrtDelPick(),on=!!_hraOwn;
+ b.disabled=!(on&&S.n&&(S.dv||S.dd));
+ const per=el('hrtDelPer');if(per)per.textContent=hrtPerLbl()+' \u00b7 '+fmt(hrtRows.length)+' rows';
+ const cnt=el('hrtDelCnt');
+ if(cnt)cnt.textContent=(S.dv||S.dd)?(fmt(S.n)+' of '+fmt(hrtRows.length)+' rows'):'Pick a division or district';
+ if(n)n.textContent=!on?'Unlock Owner mode to delete.'
+  :!hrtRows.length?'This period holds no rows in this browser.'
+  :(S.dv||S.dd)?('This removes '+fmt(S.n)+' row'+(S.n===1?'':'s')+' for '+S.label+' from '
+    +hrtPerLbl()+', and keeps every other district. A file you already downloaded is untouched.')
+  :'Pick a division, or a division and a district. Only the sheet in this browser is changed.';}
+function hrtDelSel(){
+ if(!_hraOwn){toast('Owner only - unlock with the Owner mode button');return;}
+ const S=hrtDelPick();
+ if(!S.dv&&!S.dd){toast('Pick a division or a district to delete');return;}
+ if(!S.n){toast('Nothing on this sheet matches that selection');return;}
+ if(!window.confirm('Remove '+fmt(S.n)+' council row(s) for '+S.label+' from '+hrtPerLbl()
+  +'? Every other district on the sheet stays, and a file you already downloaded is untouched.'))return;
+ const drop={};S.idx.forEach(function(i){drop[i]=1;});
+ hrtRows=hrtRows.filter(function(r,i){return !drop[i];});
+ hrtPage=0;hrtStore();hrtScope();
+ hrtPaint(hrtVals());hrtNote();_HRVD=null;hrvRender();
+ hrtLogAdd('Deleted '+fmt(S.n)+' council row(s) for '+S.label+'. The period now holds '
+  +fmt(hrtRows.length)+'.');
+ hrtImpBox('ok','<b>Deleted</b> '+fmt(S.n)+' council row(s) for '+esc(S.label)+'. The period now '
+  +'holds '+fmt(hrtRows.length)+'.');
+ toast('Removed '+fmt(S.n)+' council'+(S.n===1?'':'s'));}
 function hrtMk(){if(!_HRTC||_HRTC.rows!==hrtRows)_HRTC={rows:hrtRows,mk:hratMake(HRAT,hrtRows)};
  return _HRTC.mk;}
 function hrtVals(){
@@ -12258,7 +12326,8 @@ function hrtScope(){
  dd.innerHTML='<option value="">All districts</option>'+Object.keys(B).sort()
   .map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
  dd.value=B[k1]?k1:'';
- const bd=el('btnHRTDEL');if(bd)bd.disabled=!(_hraOwn&&(dv.value||dd.value));}
+ const bd=el('btnHRTDEL');if(bd)bd.disabled=!(_hraOwn&&(dv.value||dd.value));
+ if(typeof hrtDelFill==='function')hrtDelFill();}
 function hrtView(){
  const dv=el('hrtDiv').value,dd=el('hrtDist').value,out=[];
  hrtRows.forEach((r,i)=>{if(dv&&String(r.A||'')!==dv)return;if(dd&&String(r.B||'')!==dd)return;
@@ -12459,7 +12528,9 @@ function hraOwnUI(){
    const dv=el('hrtDiv'),dd=el('hrtDist');
    x.disabled=!(on&&dv&&dd&&(dv.value||dd.value));
   }else x.disabled=!on;
-  x.title=on?x.dataset.bt:'Owner only - unlock with the Owner mode button';});}
+  x.title=on?x.dataset.bt:'Owner only - unlock with the Owner mode button';});
+ const p=el('hratDel');if(p)p.style.display=on?'block':'none';
+ if(typeof hrtDelFill==='function')hrtDelFill();}
 function hraOwnAsk(fn){
  if(_hraOwn){if(fn)fn();return;}
  const k=window.prompt('Owner key\n\nOnly the owner of this dashboard may delete compiled rows. '
@@ -13339,7 +13410,11 @@ function hrtWire(){
   el('btnHRTOWN').onclick=()=>{if(_hraOwn){_hraOwn=false;hraOwnUI();toast('Owner mode off');return;}
    hraOwnAsk(null);};
   el('btnHRTcov').onclick=hrtCovCSV;
-  el('hrvPer').onchange=()=>hrvRender();}
+  el('hrvPer').onchange=()=>hrvRender();
+  if(el('hrtDelDiv'))el('hrtDelDiv').onchange=function(){
+   if(el('hrtDelDist'))el('hrtDelDist').value='';hrtDelFill();};
+  if(el('hrtDelDist'))el('hrtDelDist').onchange=hrtDelCount;
+  if(el('btnHRTDEL2'))el('btnHRTDEL2').onclick=hrtDelSel;}
  hraOwnUI();}
 function hrtRefresh(){
  hrtWire();
