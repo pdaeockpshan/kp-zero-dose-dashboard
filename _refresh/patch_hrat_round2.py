@@ -63,8 +63,8 @@ HELPERS = crlf(r"""
 // controls dead on every browser that has not been given the owner key. It is a gate, not encryption -
 // anyone who can open this file can read that browser's copy - so the key is compared against a digest
 // and is never written to the page or to storage.
-var HRA_OWN_SHA='829187022aaa519462abd95ffa80ce6bdc96fb82cbda11e11c8507dff5560e16',
- HRA_OWN_FNV='e53499fc',_hraOwn=false;
+var HRA_OWN_SHA='14cd718bc89e2bbc1ff1c00d0cf784bc6f89439bc36abfb7b398095fabeed68e',
+ HRA_OWN_FNV='9633108c',_hraOwn=false;
 function hraFNV(s){var h=0x811c9dc5;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),0x01000193)>>>0;}
  return ('0000000'+h.toString(16)).slice(-8);}
 function hraKeyOK(k){
