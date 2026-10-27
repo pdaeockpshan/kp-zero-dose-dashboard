@@ -1,0 +1,18 @@
+ <div class="mdpcalc" id="mdpCalc"></div>
+ <div class="mdpacts"><button class="btn" type="button" id="btnMDPSave">Save this report</button><button class="btn" type="button" id="btnMDPreset">Reset to saved</button><span class="sp"></span><span class="ro" id="mdpOwnLbl">Delete controls need the owner key</span><button class="btn" type="button" id="btnMDPown">Owner mode</button><button class="btn" type="button" id="btnMDPdel" title="Delete the saved report for the district and day in this form">Delete district-day</button><button class="btn" type="button" id="btnMDPclear" title="Delete every saved report for the scope and day in the bar">Clear scope × day</button></div>
+</form>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Collect the reports — template, import and workbook</h3></div>
+<div class="mdpwa">The dashboard is a static file, so it cannot accept a web upload. Collect the <b>39-column sheet</b> the districts already fill by e-mail or WhatsApp, then import the returns here; each sheet is merged by <b>district + campaign day</b> and the later time of update wins. The form above is the online capture for anyone using this dashboard. Sheets are held in <b>this browser only</b>.</div>
+<div class="cqbar" style="margin-top:10px">
+ <span class="cnt">Template for</span><select id="mdpTplDay" aria-label="Template day"></select>
+ <button class="btn" id="btnMDPtpl">Download template (xlsx)</button>
+ <span style="flex:1"></span>
+ <span class="cnt">Import returns</span><input type="file" id="mdpFile" accept=".xlsx,.xlsm,.csv" multiple>
+</div>
+<div class="cap">The template keeps the 39 columns and the district sheet's row-4 header. Column F (last team deployed, team number, AIC names) and the free-text remarks are left out on purpose — no person's name is collected or stored. Awaited and the deployment % are written as formulas in the template and recomputed on import.</div>
+<div id="mdpLog"></div>
+</div>
+</section>

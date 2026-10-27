@@ -1,0 +1,17 @@
+.mdpheat{width:100%;border-collapse:separate;border-spacing:2px;font-size:11px}
+.mdpheat th{font:600 10px var(--font-sans);color:#475569;text-align:center;padding:3px 2px;background:#f8fafc;border-radius:4px;white-space:nowrap}
+.mdpheat th.rh{text-align:left;padding-left:6px}
+.mdpheat td{text-align:center;font:600 10.5px var(--font-mono);padding:4px 2px;border-radius:4px;color:#fff;min-width:34px}
+.mdpheat td.na{background:#f1f5f9;color:#94a3b8}
+.mdpheat td.rh{text-align:left;font:600 11px var(--font-sans);background:none;color:var(--color-text);white-space:nowrap;padding-left:6px}
+.mdpheat tr:hover td.rh{color:#0f766e}
+#mdpMap svg{display:block;max-width:100%;height:auto}
+.mdpleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--color-text-secondary);margin-top:8px}
+.mdpleg span{display:inline-flex;align-items:center;gap:5px}
+.mdpleg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+#mdpForm{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 12px;align-items:end}
+#mdpForm .fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+#mdpForm label{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--color-text-secondary)}
+#mdpForm input,#mdpForm select{font:13px var(--font-sans);padding:6px 8px;border:1px solid var(--color-border);border-radius:8px;background:#fff;color:var(--color-text);width:100%;box-sizing:border-box}
+#mdpForm input[type=number]{font-family:var(--font-mono);text-align:right}
+#mdpForm input:focus,#mdpForm select:focus{outline:2px solid #0d9488;border-color:#0d9488}

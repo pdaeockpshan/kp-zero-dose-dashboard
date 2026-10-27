@@ -1,0 +1,13 @@
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Enter a district report — <span id="mdpFormLbl">Day 1</span></h3><span class="cnt" id="mdpFormCnt"></span></div>
+<div class="hint" style="margin-bottom:8px">One report per district per campaign day. <b>Planned</b> is the day's team plan, <b>deployed</b> the teams actually in the field at the time of this update; awaited and the deployment % are computed. A report timed after <b>12:00</b> is marked late. Saving again for the same district and day replaces that day's report.</div>
+<form id="mdpForm" autocomplete="off" onsubmit="return false">
+ <div class="fld"><label for="mdpFDist">District</label><select id="mdpFDist"></select></div>
+ <div class="fld"><label for="mdpFDay">Campaign day</label><select id="mdpFDay"></select></div>
+ <div class="fld"><label for="mdpAt">Time of update</label><input type="time" id="mdpAt"></div>
+ <div class="fld"><label for="mdpUCP">UCs planned</label><input type="number" id="mdpUCP" min="0" step="1"></div>
+ <div class="fld"><label for="mdpUCR">UCs reported</label><input type="number" id="mdpUCR" min="0" step="1"></div>
+ <div class="fld"><label for="mdpInc">Security incidents</label><input type="number" id="mdpInc" min="0" step="1"></div>
+ <div class="fld"><label for="mdpRsn">Main reason for any shortfall</label><select id="mdpRsn"><option value="">Not recorded</option><option value="SEC">Security incident</option><option value="NET">Network / connectivity</option><option value="BOY">Boycott / access refusal</option><option value="TRA">Transport / access</option><option value="OTH">Other</option></select></div>
+ <div class="fld"><label for="mdpTTM">TTM awaited</label><input type="number" id="mdpTTM" min="0" step="1"></div>
+ <div id="mdpTeams"></div>

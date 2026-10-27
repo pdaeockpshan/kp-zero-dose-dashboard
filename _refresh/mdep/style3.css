@@ -1,0 +1,18 @@
+#mdpTeams{grid-column:1/-1;display:grid;grid-template-columns:minmax(150px,1fr) 84px 84px 70px;gap:6px 10px;align-items:center;border-top:1px solid var(--color-border-light);padding-top:8px;margin-top:2px}
+#mdpTeams .h{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);font-weight:700;text-align:right}
+#mdpTeams .nm{font-size:12px;font-weight:600}
+#mdpTeams input{text-align:right;font-family:var(--font-mono);font-size:13px;padding:5px 7px;border:1px solid var(--color-border);border-radius:7px;background:#fff;width:100%;box-sizing:border-box}
+#mdpTeams input:focus{outline:2px solid #0d9488;border-color:#0d9488}
+#mdpTeams .aw{font:600 11.5px var(--font-mono);text-align:right;color:#94a3b8}
+#mdpTeams .aw.hot{color:#b91c1c}
+.mdpcalc{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:7px 10px;font-size:12px;color:#0f766e}
+.mdpcalc b{font:700 15px var(--font-mono)}
+.mdpacts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mdpacts .sp{flex:1}
+.mdpacts .ro{font-size:11px;color:var(--color-text-muted)}
+#mdpLog{font:11.5px/1.5 var(--font-mono);max-height:170px;overflow:auto;background:#f8fafc;border:1px solid var(--color-border-light);border-radius:8px;padding:7px 9px;white-space:pre-wrap;margin-top:8px}
+#mdpLog:empty{display:none}
+.mdpwa{border:1px dashed #99f6e4;background:#f0fdfa;border-radius:8px;padding:8px 10px;font-size:12px;color:#0f766e;line-height:1.5;margin-top:8px}
+.mdpwa b{color:#115e59}
+#mdpFile{font:12px var(--font-sans);padding:5px 7px;border:1px solid var(--color-border);border-radius:8px;background:#fff;max-width:100%}
+@media print{#mdpSheet{border:0;padding:0;margin:0;border-radius:0}#mdpSheet h2{font-size:15px}}

@@ -545,7 +545,58 @@ body.home .hdr, body.home .content .topbar{display:none}
 .fipvtags .btn{margin-left:auto}
 .fnew{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;background:#ccfbf1;color:#0f766e;white-space:nowrap}
 .fexist{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:#f1f5f9;color:#475569;white-space:nowrap}
-.tab[data-tab="er"],#p-er{--tc:#be123c}
+.tab[data-tab="mdep"],#p-mdep{--tc:#0d9488}
+#mdpCamp{max-width:320px}
+#mdpDays button{font:600 12px var(--font-sans);padding:5px 11px;border-radius:16px;border:1px solid var(--color-border);background:#fff;cursor:pointer;color:var(--color-text-secondary)}
+#mdpDays button.on{background:#0d9488;border-color:#0d9488;color:#fff}
+#mdpDays button small{display:block;font-weight:400;font-size:9.5px;opacity:.85}
+.mdpdm{font:600 11px var(--font-mono);padding:2px 8px;border-radius:999px;background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4;white-space:nowrap}
+.mdpdm.late{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+.mdpdm.off{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+#mdpSheet{background:#fff;border:1px solid var(--color-border);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+#mdpSheet .shhd{border-bottom-color:#0d9488}
+#mdpSheet h2{font-size:17px;margin:2px 0 3px;color:#115e59}
+#mdpSheet h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:#115e59;margin:0 0 5px}
+#mdpSheet .shk1{border-left-color:#0d9488}
+#mdpSheet .shtbl tr.tot td{background:#f0fdfa;border-top-color:#0d9488}
+#mdpSheet .shtbl tr:hover td{background:#f8fafc}
+
+.mdpheat{width:100%;border-collapse:separate;border-spacing:2px;font-size:11px}
+.mdpheat th{font:600 10px var(--font-sans);color:#475569;text-align:center;padding:3px 2px;background:#f8fafc;border-radius:4px;white-space:nowrap}
+.mdpheat th.rh{text-align:left;padding-left:6px}
+.mdpheat td{text-align:center;font:600 10.5px var(--font-mono);padding:4px 2px;border-radius:4px;color:#fff;min-width:34px}
+.mdpheat td.na{background:#f1f5f9;color:#94a3b8}
+.mdpheat td.rh{text-align:left;font:600 11px var(--font-sans);background:none;color:var(--color-text);white-space:nowrap;padding-left:6px}
+.mdpheat tr:hover td.rh{color:#0f766e}
+#mdpMap svg{display:block;max-width:100%;height:auto}
+.mdpleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--color-text-secondary);margin-top:8px}
+.mdpleg span{display:inline-flex;align-items:center;gap:5px}
+.mdpleg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+#mdpForm{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 12px;align-items:end}
+#mdpForm .fld{display:flex;flex-direction:column;gap:3px;min-width:0}
+#mdpForm label{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--color-text-secondary)}
+#mdpForm input,#mdpForm select{font:13px var(--font-sans);padding:6px 8px;border:1px solid var(--color-border);border-radius:8px;background:#fff;color:var(--color-text);width:100%;box-sizing:border-box}
+#mdpForm input[type=number]{font-family:var(--font-mono);text-align:right}
+#mdpForm input:focus,#mdpForm select:focus{outline:2px solid #0d9488;border-color:#0d9488}
+
+#mdpTeams{grid-column:1/-1;display:grid;grid-template-columns:minmax(150px,1fr) 84px 84px 70px;gap:6px 10px;align-items:center;border-top:1px solid var(--color-border-light);padding-top:8px;margin-top:2px}
+#mdpTeams .h{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);font-weight:700;text-align:right}
+#mdpTeams .nm{font-size:12px;font-weight:600}
+#mdpTeams input{text-align:right;font-family:var(--font-mono);font-size:13px;padding:5px 7px;border:1px solid var(--color-border);border-radius:7px;background:#fff;width:100%;box-sizing:border-box}
+#mdpTeams input:focus{outline:2px solid #0d9488;border-color:#0d9488}
+#mdpTeams .aw{font:600 11.5px var(--font-mono);text-align:right;color:#94a3b8}
+#mdpTeams .aw.hot{color:#b91c1c}
+.mdpcalc{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:7px 10px;font-size:12px;color:#0f766e}
+.mdpcalc b{font:700 15px var(--font-mono)}
+.mdpacts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mdpacts .sp{flex:1}
+.mdpacts .ro{font-size:11px;color:var(--color-text-muted)}
+#mdpLog{font:11.5px/1.5 var(--font-mono);max-height:170px;overflow:auto;background:#f8fafc;border:1px solid var(--color-border-light);border-radius:8px;padding:7px 9px;white-space:pre-wrap;margin-top:8px}
+#mdpLog:empty{display:none}
+.mdpwa{border:1px dashed #99f6e4;background:#f0fdfa;border-radius:8px;padding:8px 10px;font-size:12px;color:#0f766e;line-height:1.5;margin-top:8px}
+.mdpwa b{color:#115e59}
+#mdpFile{font:12px var(--font-sans);padding:5px 7px;border:1px solid var(--color-border);border-radius:8px;background:#fff;max-width:100%}
+@media print{#mdpSheet{border:0;padding:0;margin:0;border-radius:0}#mdpSheet h2{font-size:15px}}
 /* ---------- SNID launch popup: countdown + schematic scope map ---------- */
 .snpop{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:80;padding:14px}
 .snpop.on{display:flex}
@@ -906,6 +957,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <button class="tab" data-tab="ch"><span class="tl">Campaign history</span><span class="badge" id="bCH">2017–26</span></button>
    <button class="tab" data-tab="sn"><span class="tl">SNID Nov-26 scope</span><span class="badge" id="bSN">4.81M</span></button>
    <button class="tab" data-tab="fipv"><span class="tl">fIPV Peshawar &amp; Khyber</span><span class="badge" id="bFI">1.18M target</span></button>
+   <button class="tab" data-tab="mdep"><span class="tl">Morning deployment</span><span class="badge" id="bMD">Day 1</span></button>
    <button class="tab" data-tab="er"><span class="tl">Evening review</span><span class="badge" id="bER">Day 1</span></button>
   </div>
   <div class="ngrp hs"><div class="nhd">Surveillance</div>
@@ -971,7 +1023,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 27-Oct-2026 16:15</span>
+  <span class="hupd" id="hUpd">Updated 27-Oct-2026 17:44</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2016,9 +2068,98 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div id="er2" class="ch"></div><div class="cap" id="caper2"></div></div>
 </div>
 </section>
+<!-- ================= SNID NOV-26: MORNING TEAM DEPLOYMENT ================= -->
+<section class="pane" id="p-mdep">
+<div class="cqbar noprint"><b>Morning deployment</b><span class="cnt">Campaign</span><select class="hrc" id="mdpCamp" aria-label="Campaign"></select><span class="erdaybar" id="mdpDays"></span><span class="cnt">Division</span><select id="mdpDiv" aria-label="Division"></select><span class="cnt">District</span><select id="mdpDist" aria-label="District"></select><span class="cnt" id="mdpCnt"></span><span style="flex:1"></span><button class="btn" id="btnMDPprint">Print one-pager</button><button class="btn" id="btnMDPcsv">District CSV</button><button class="btn" id="btnMDPx">Workbook (xlsx)</button></div>
+<div class="hint noprint" id="mdpHint"></div>
+
+<div id="mdpSheet">
+ <div class="shhd">
+  <div><div class="shk">Government of Khyber Pakhtunkhwa · Emergency Operations Centre · Polio Eradication Programme</div>
+  <h2 id="mdpTitle">Morning Team Deployment</h2>
+  <div class="shsub" id="mdpSub"></div></div>
+  <div class="shstamp" id="mdpStamp"></div>
+ </div>
+ <div class="shkpis" id="mdpSheetKpis"></div>
+ <div class="shgrid">
+  <div><h3>Division roll-up</h3><table class="shtbl" id="tMDPDiv"></table></div>
+  <div><h3>Where deployment is short</h3><div id="mdpBn"></div></div>
+ </div>
+ <h3>District detail — <span id="mdpDayLbl2">Day 1</span></h3>
+ <table class="shtbl" id="tMDPSum"></table>
+ <div class="shft"><span id="mdpFtL">Prepared by: EOC KP · Polio Eradication Programme</span><span>Reviewed by: ______________________</span><span id="mdpFtD"></span></div>
+</div>
+
+<div class="kpis noprint">
+ <div class="card"><div class="kl">Field-team deployment</div><div class="kv" id="mdpK1">–</div><div class="ks" id="mdpK1s"></div></div>
+ <div class="card"><div class="kl">Teams deployed</div><div class="kv" id="mdpK2">–</div><div class="ks" id="mdpK2s"></div></div>
+ <div class="card"><div class="kl">UCs reported</div><div class="kv" id="mdpK3">–</div><div class="ks" id="mdpK3s"></div></div>
+ <div class="card"><div class="kl">Reports received</div><div class="kv" id="mdpK4">–</div><div class="ks" id="mdpK4s"></div></div>
+ <div class="card"><div class="kl">Teams awaited</div><div class="kv" id="mdpK5">–</div><div class="ks" id="mdpK5s"></div></div>
+ <div class="card"><div class="kl">Security incidents</div><div class="kv" id="mdpK6">–</div><div class="ks" id="mdpK6s"></div></div>
+</div>
+
+<div class="grid2 noprint">
+ <div class="card"><div id="mdp1" class="ch"></div><div class="cap" id="capmdp1"></div></div>
+ <div class="card"><div id="mdp2" class="ch"></div><div class="cap" id="capmdp2"></div></div>
+ <div class="card"><div id="mdp3" class="ch"></div><div class="cap" id="capmdp3"></div></div>
+ <div class="card"><div id="mdp4" class="ch"></div><div class="cap" id="capmdp4"></div></div>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Deployment by team type and district</h3><span class="cnt" id="mdpHcnt"></span></div>
+<div class="scroll" style="max-height:520px"><div id="mdpHeat"></div></div>
+<div class="cap" id="capmdpH"></div>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">District board</h3><span class="cnt" id="mdpDayLbl"></span><span style="flex:1"></span><span class="cnt" id="mdpCnt2"></span></div>
+<div class="scroll" style="max-height:560px"><table id="tMDP"></table></div>
+<div class="cap" id="capMDP"></div>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Schematic deployment map</h3><span class="cnt" id="mdpMcnt"></span></div>
+<div id="mdpMap"></div>
+<div class="mdpleg" id="mdpMapLeg"></div>
+<div class="cap">Schematic district map of KP — not to scale. Colour is the field-team deployment % for the day in view; hover a district for its numbers.</div>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Enter a district report — <span id="mdpFormLbl">Day 1</span></h3><span class="cnt" id="mdpFormCnt"></span></div>
+<div class="hint" style="margin-bottom:8px">One report per district per campaign day. <b>Planned</b> is the day's team plan, <b>deployed</b> the teams actually in the field at the time of this update; awaited and the deployment % are computed. A report timed after <b>12:00</b> is marked late. Saving again for the same district and day replaces that day's report.</div>
+<form id="mdpForm" autocomplete="off" onsubmit="return false">
+ <div class="fld"><label for="mdpFDist">District</label><select id="mdpFDist"></select></div>
+ <div class="fld"><label for="mdpFDay">Campaign day</label><select id="mdpFDay"></select></div>
+ <div class="fld"><label for="mdpAt">Time of update</label><input type="time" id="mdpAt"></div>
+ <div class="fld"><label for="mdpUCP">UCs planned</label><input type="number" id="mdpUCP" min="0" step="1"></div>
+ <div class="fld"><label for="mdpUCR">UCs reported</label><input type="number" id="mdpUCR" min="0" step="1"></div>
+ <div class="fld"><label for="mdpInc">Security incidents</label><input type="number" id="mdpInc" min="0" step="1"></div>
+ <div class="fld"><label for="mdpRsn">Main reason for any shortfall</label><select id="mdpRsn"><option value="">Not recorded</option><option value="SEC">Security incident</option><option value="NET">Network / connectivity</option><option value="BOY">Boycott / access refusal</option><option value="TRA">Transport / access</option><option value="OTH">Other</option></select></div>
+ <div class="fld"><label for="mdpTTM">TTM awaited</label><input type="number" id="mdpTTM" min="0" step="1"></div>
+ <div id="mdpTeams"></div>
+
+ <div class="mdpcalc" id="mdpCalc"></div>
+ <div class="mdpacts"><button class="btn" type="button" id="btnMDPSave">Save this report</button><button class="btn" type="button" id="btnMDPreset">Reset to saved</button><span class="sp"></span><span class="ro" id="mdpOwnLbl">Delete controls need the owner key</span><button class="btn" type="button" id="btnMDPown">Owner mode</button><button class="btn" type="button" id="btnMDPdel" title="Delete the saved report for the district and day in this form">Delete district-day</button><button class="btn" type="button" id="btnMDPclear" title="Delete every saved report for the scope and day in the bar">Clear scope × day</button></div>
+</form>
+</div>
+
+<div class="card noprint">
+<div class="tblhdr"><h3 style="margin:0">Collect the reports — template, import and workbook</h3></div>
+<div class="mdpwa">The dashboard is a static file, so it cannot accept a web upload. Collect the <b>39-column sheet</b> the districts already fill by e-mail or WhatsApp, then import the returns here; each sheet is merged by <b>district + campaign day</b> and the later time of update wins. The form above is the online capture for anyone using this dashboard. Sheets are held in <b>this browser only</b>.</div>
+<div class="cqbar" style="margin-top:10px">
+ <span class="cnt">Template for</span><select id="mdpTplDay" aria-label="Template day"></select>
+ <button class="btn" id="btnMDPtpl">Download template (xlsx)</button>
+ <span style="flex:1"></span>
+ <span class="cnt">Import returns</span><input type="file" id="mdpFile" accept=".xlsx,.xlsm,.csv" multiple>
+</div>
+<div class="cap">The template keeps the 39 columns and the district sheet's row-4 header. Column F (last team deployed, team number, AIC names) and the free-text remarks are left out on purpose — no person's name is collected or stored. Awaited and the deployment % are written as formulas in the template and recomputed on import.</div>
+<div id="mdpLog"></div>
+</div>
+</section>
 <!-- ================= HUB: Campaigns ================= -->
 <section class="pane hubpane" id="p-hcamp">
-<div class="hubhd"><div><h2>Campaigns</h2><p>Pre-campaign readiness, intra-campaign monitoring and post-campaign results for one campaign, with each district classed as <b>good, average, poor or needs focus</b> and a cross-check of where the sources disagree. Tables follow the division / district filter.</p><div class="hubchips"><button data-hl="hrd">High-risk district focus</button><button data-hl="hrat">HRA compilation</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="cpost">Post-campaign analysis</button><button data-hl="mis">Missed children & refusals</button><button data-hl="present">▶ Post-campaign review presentation</button></div></div></div>
+<div class="hubhd"><div><h2>Campaigns</h2><p>Pre-campaign readiness, intra-campaign monitoring and post-campaign results for one campaign, with each district classed as <b>good, average, poor or needs focus</b> and a cross-check of where the sources disagree. Tables follow the division / district filter.</p><div class="hubchips"><button data-hl="hrd">High-risk district focus</button><button data-hl="hrat">HRA compilation</button><button data-hl="cpre">Pre-campaign</button><button data-hl="cicm">Intra-campaign ops</button><button data-hl="mdep">Morning deployment</button><button data-hl="cpost">Post-campaign analysis</button><button data-hl="mis">Missed children & refusals</button><button data-hl="present">▶ Post-campaign review presentation</button></div></div></div>
 <div class="cqbar"><b>Campaign</b><select class="cqsel" aria-label="Campaign"></select><span class="cnt cqnote"></span></div>
 <div class="kpis"><div class="card"><div class="kl">Pre-campaign readiness</div><div class="kv" id="hc1">–</div><div class="ks" id="hc1s"></div></div><div class="card"><div class="kl">ICM recall coverage</div><div class="kv" id="hc2">–</div><div class="ks" id="hc2s"></div></div><div class="card"><div class="kl">LQAS lots passed</div><div class="kv" id="hc3">–</div><div class="ks" id="hc3s"></div></div><div class="card"><div class="kl">Children still missed</div><div class="kv" id="hc4" style="color:#c2410c">–</div><div class="ks" id="hc4s"></div></div><div class="card"><div class="kl">Children still refusing</div><div class="kv" id="hc5" style="color:#b91c1c">–</div><div class="ks" id="hc5s"></div></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">District performance in this campaign</h3><span style="flex:1"></span><button class="btn" id="btnPerfCSV">Download (CSV)</button><button class="btn pri" id="btnPCR2">▶ Post-campaign review (PPTX)</button></div>
@@ -2704,20 +2845,21 @@ let cur=[], TAB='overview';
 // ---------- generic sortable table ----------
 const SORT={};
 const cmpv=(x,y)=>{const nx=(x==null||x===''),ny=(y==null||y==='');if(nx&&ny)return 0;if(nx)return -1;if(ny)return 1;return typeof x==='string'?x.localeCompare(y):x-y;};
-function drawTable(id,cols,rows,defK,defD){
+function drawTable(id,cols,rows,defK,defD,empty){
  const st=SORT[id]||(SORT[id]={k:defK,d:defD});
  const col=cols.find(c=>c.k===st.k)||cols[0], sv=col.sv||(r=>r[col.k]);
  const rs=rows.slice().sort((a,b)=>cmpv(sv(a),sv(b))*st.d);
  const t=el(id);
  t.innerHTML='<thead><tr>'+cols.map(c=>`<th class="${c.n?'n':''}${c.ns?' ns':''}" data-k="${c.k}"${c.tt?' title="'+esc(c.tt)+'"':''}>${c.l}${st.k===c.k&&!c.ns?(st.d>0?' ▲':' ▼'):''}</th>`).join('')+'</tr></thead><tbody>'+
-  (rs.length?rs.map((r,i)=>'<tr>'+cols.map(c=>`<td class="${c.n?'n':''}${c.cls?' '+c.cls:''}">${c.f?c.f(r,i):(r[c.k]==null?'':esc(r[c.k]))}</td>`).join('')+'</tr>').join(''):`<tr><td colspan="${cols.length}" class="empty">No UCs match the current filters</td></tr>`)+'</tbody>';
- t.querySelectorAll('th').forEach(th=>{const c=cols.find(x=>x.k===th.dataset.k);if(!c||c.ns)return;th.onclick=()=>{if(st.k===c.k)st.d*=-1;else{st.k=c.k;st.d=c.n?-1:1;}drawTable(id,cols,rows,defK,defD);};});
+  (rs.length?rs.map((r,i)=>'<tr>'+cols.map(c=>`<td class="${c.n?'n':''}${c.cls?' '+c.cls:''}">${c.f?c.f(r,i):(r[c.k]==null?'':esc(r[c.k]))}</td>`).join('')+'</tr>').join(''):`<tr><td colspan="${cols.length}" class="empty">${empty||'No UCs match the current filters'}</td></tr>`)+'</tbody>';
+ t.querySelectorAll('th').forEach(th=>{const c=cols.find(x=>x.k===th.dataset.k);if(!c||c.ns)return;th.onclick=()=>{if(st.k===c.k)st.d*=-1;else{st.k=c.k;st.d=c.n?-1:1;}drawTable(id,cols,rows,defK,defD,empty);};});
  bindNoteLinks(t); if(typeof bindZ==='function')bindZ(t);
 }
 function bindNoteLinks(root){root.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>openNote(b.dataset.note));}
 
 // ---------- top bar ----------
 function renderBar(){
+ if(TAB==='mdep'){renderMDPBar();return;}
  el('shown').innerHTML=TAB==='fipv'?`fIPV overlay · Peshawar &amp; Khyber · ${FIPV.tot.uc} UCs · ${fmt(FIPV.tot.fipv)} children aged 4 months–10 years · starts 26-Oct-2026`:MODE==='e'?`Showing <b>${fmt(cur.length)}</b> of ${fmt(EPI.length)} EPI-MIS UCs · ${esc(EM?emLab(EM):EPER)}${EM?' · month view (UC tables YTD)':''}`:MODE==='v'?`Showing <b>${cur.length}</b> of ${VAL.length} UC-campaign rows · ${fmt(S_(cur,r=>r.n))} children validated`:MODE==='s'?`Overview · ${cur.length} of ${ZD.length} UCs (ZD Reported &amp; Covered) · ${DATA.filter(matchG).length} digitization UCs · ${fmt(S_(VAL.filter(matchG),r=>r.n))} children validated`:`Showing <b>${cur.length}</b> of ${(ZTAB?ZD:DATA).length} UCs`+(ZTAB?' · 37 districts · NID Apr-26 / SNID May-26 / SNID Sept-26':' · SNID Sept 2026 linelist');
  const chips=[];
  const add=(sel,label)=>{if(sel.value)chips.push(`<span class="chip">${label}: ${esc(sel.options[sel.selectedIndex].text)}<button title="Clear" data-clr="${sel.id}">×</button></span>`);};
@@ -5948,7 +6090,7 @@ function kxUpdate(){
 }
 
 // ---------- tabs & wiring ----------
-const TABS=['home','summary','export','present','zov','zcmp','zperf','adv','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','erv','afp','risk','watch','crit','surv','mis','ch','sn','fipv','er','act','hcamp','hrd','hrat','c3','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why','ptp'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu','erv'], DTABS=['overview','compare','followup','notes'];
+const TABS=['home','summary','export','present','zov','zcmp','zperf','adv','zins','overview','compare','followup','notes','vsum','vfu','eov','efu','erv','afp','risk','watch','crit','surv','mis','ch','sn','fipv','mdep','er','act','hcamp','hrd','hrat','c3','cpre','cicm','cpost','hsurv','hzd','hepi','hx','gap','why','ptp'], ZTABS=['zov','zcmp','zperf','zins'], VTABS=['vsum','vfu'], ETABS=['eov','efu','erv'], DTABS=['overview','compare','followup','notes'];
 var C3SUB='a';
 function renderC3Half(){(C3SUB==='b'?renderPCM:renderC3)();}
 function c3Show(s){
@@ -5982,7 +6124,7 @@ function setTab(t){
 function render(){
  cur=MODE==='z'?ZD.filter(r=>matchZ(r)):MODE==='v'?VAL.filter(r=>matchV(r)):MODE==='e'?EPI.filter(matchE):MODE==='s'?ZD.filter(matchG):DATA.filter(r=>match(r));
  renderBar(); updateBadges(); afpBadge(); riskBadge(); watchBadge(); critBadge(); svBadge(); misBadge(); c3Badge(); hrdBadge(); hrtBadge(); pcmBadge(); atBadge(); ptBadge();
- ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,ch:renderCH,adv:renderADV,sn:renderSN,fipv:renderFIPV,er:renderER,act:renderAct,hcamp:renderHCamp,c3:renderC3Half,hrd:renderHRD,hrat:renderHRT,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,closed:renderClosed,ptp:renderPTP,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU,erv:renderERv})[TAB]();
+ ({home:renderHome,afp:renderAFP,risk:renderRisk,watch:renderWatch,crit:renderCrit,surv:renderSurv,mis:renderMis,ch:renderCH,adv:renderADV,sn:renderSN,fipv:renderFIPV,mdep:renderMDEP,er:renderER,act:renderAct,hcamp:renderHCamp,c3:renderC3Half,hrd:renderHRD,hrat:renderHRT,cpre:renderCPre,cicm:renderCICM,cpost:renderCPost,hsurv:renderHSurv,hzd:renderHZD,hepi:renderHEPI,hx:renderHX,gap:renderGap,why:renderWhy,closed:renderClosed,ptp:renderPTP,summary:renderSummary,export:renderExport,present:renderPresent,overview:renderOverview,compare:renderCmp,followup:renderFU,notes:renderNotes,zov:renderZOv,zcmp:renderZCmp,zperf:renderZPerf,zins:renderZIns,vsum:renderVSum,vfu:renderVFU,eov:renderEOv,efu:renderEFU,erv:renderERv})[TAB]();
  kxUpdate();
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
@@ -15763,6 +15905,862 @@ function ntPass(){
   x.after(b);
  });
 }
+// ---------- Morning team deployment: campaigns, storage and the day model ----------
+// The owner asked, 27-Oct-2026: "for every campaign we collect morning team deployment reports from
+// districts in scope ... Morning reports from field comes in intervals like it starts from 8 Am and
+// may go to 2 pm till completion due to different reasons like network issues, security incidents,
+// boycotts etc." Then: "Normally campaign days are 3 + 2 (3 days of active campaign and 2 days for
+// catchup activities and for peshawar and khyber its 5 active days and 2 catchup days and than there
+// can be extended catchup request by districts so we would be needing all those days and there should
+// be option for selection of campaigns ... along with names of the campaign."
+// One row per district per campaign day, typed in here or imported from the 39-column sheet the
+// districts already fill. Column F and the free-text remarks are never read or written because they
+// carry AIC / UCMO names. Reports stay in this browser, one storage key per campaign.
+const MDP_OLDKEY='kpMDP.SNIDNOV26.v1';
+const mdpStoreKey=c=>'kpMDP.'+c+'.v2';
+const MDP_MAXD=12;                          // open past 7: extended catch-up is asked for per district
+const mdpActD=n=>/^(PESHAWAR|KHYBER)$/.test(n)?5:3;
+const mdpBaseD=n=>mdpActD(n)+2;             // 3+2 for most districts, 5+2 for Peshawar & Khyber
+const mdpPhase=(n,d)=>d<=mdpActD(n)?'active':d<=mdpBaseD(n)?'catch-up':'extended catch-up';
+const MDP_CAMPS=[{k:'NOV-26',l:SND.n,st:SND.st,src:SND.src,cur:1}]
+ .concat(((typeof CQ!=='undefined'&&CQ&&CQ.camps)||[]).filter(c=>c.l!==SND.n)
+  .map(c=>({k:c.v,l:c.l,st:'',src:'the districts that campaign\u2019s own record carries'})));
+let MDC='NOV-26',MDR={},MDD=0;
+const mdpCampLbl=k=>{k=k||MDC;const c=MDP_CAMPS.find(x=>x.k===k);return c?c.l:String(k);};
+const mdpStart=()=>{const c=MDP_CAMPS.find(x=>x.k===MDC);return (c&&c.st)||'';};
+const mdpSrcLbl=()=>{const c=MDP_CAMPS.find(x=>x.k===MDC);return (c&&c.src)||'campaign register';};
+function mdpCampRows(c){
+ try{const d=JSON.parse(localStorage.getItem(mdpStoreKey(c))||'null');
+  return d&&d.r&&typeof d.r==='object'?d.r:{};}catch(e){return {};}}
+function mdpSave(){
+ try{localStorage.setItem(mdpStoreKey(MDC),JSON.stringify({c:MDC,l:mdpCampLbl(MDC),r:MDR}));}
+ catch(e){toast('Browser storage is full - download the workbook before clearing it');}}
+function mdpLoadCamp(c){
+ MDC=c;MDR=mdpCampRows(c);let mig=0;
+ if(c==='NOV-26'&&!Object.keys(MDR).length){
+  try{const o=JSON.parse(localStorage.getItem(MDP_OLDKEY)||'null');
+   if(o&&o.c===SND.n&&o.r&&typeof o.r==='object'){MDR=o.r;mig=1;}}catch(e){}
+ }
+ for(const k of Object.keys(MDR)){const r=MDR[k];
+  if(!r||!Array.isArray(r.p)||r.p.length!==9||!Array.isArray(r.d)||r.d.length!==9
+   ||!(r.day>=1)||!(r.day<=MDP_MAXD)||typeof r.n!=='string')delete MDR[k];}
+ if(mig){mdpSave();try{localStorage.removeItem(MDP_OLDKEY);}catch(e){}}
+ return MDR;
+}
+const MDP_TYPES=[
+ ['mobile','Mobile teams','# Mobile teams'],
+ ['inf','Influencers','# of Influencers'],
+ ['fixed','Fixed teams','# Fixed teams'],
+ ['transit','Transit teams','# Transit teams'],
+ ['roam','Roaming teams','# Roaming teams'],
+ ['aic','AIC teams','# AICs'],
+ ['upec','UPEC chairmen','# UPEC chairmen'],
+ ['dcf','DCF teams','# DCF'],
+ ['sec','Security','# Security']
+];
+const MDP_FIELD=[0,2,3,4];
+const MDP_H=['DIVISION','District','Campaign start date','Campaign day','Time of update',
+ 'Time of last team deployed with details, UC, Team #, AIC name etc(This information needs to be entered for those districts where deployment is late )',
+ "# of UC's Planned","# of UC's reported"]
+ .concat(...MDP_TYPES.map(t=>[t[2]+' planned',t[2]+' deployed']))
+ .concat(['# of Security incidents','REMARKS',"# of UC's Awaited"],
+  MDP_TYPES.slice(0,7).map(t=>t[1]+' awaited'),['# TTM awaited','# Security awaited','Team Deployment %']);
+const MDP_RSN={SEC:'Security incident',NET:'Network / connectivity',BOY:'Boycott / access refusal',TRA:'Transport / access',OTH:'Other'};
+const MDP_ST={good:['st-on','On plan'],watch:['st-watch','Watch'],low:['st-behind','Short'],crit:['st-behind','Critical'],no:['st-no','No report']};
+const MDP_COL={good:'#15803d',watch:'#d97706',low:'#ea580c',crit:'#b91c1c',no:'#94a3b8'};
+const mdpKey=(d,n)=>n+'|'+d;
+const mdpGet=(d,n)=>MDR[mdpKey(d,n)]||null;
+const mdpVal=id=>{const x=el(id);return x?x.value:'';};
+const mdpPad=n=>(n<10?'0':'')+n;
+const mdpNow=()=>{const d=new Date();return mdpPad(d.getHours())+':'+mdpPad(d.getMinutes());};
+const mdpMin=t=>{const m=/^(\d{1,2}):(\d{2})/.exec(String(t||''));return m?(+m[1])*60+(+m[2]):null;};
+const mdpLate=r=>!!(r&&r.at&&mdpMin(r.at)>720);
+const mdpDayDate=d=>{const st=mdpStart();if(!st)return '';
+ const p=String(st).split('-'),t=new Date(Date.UTC(+p[0],(+p[1]||1)-1,+p[2]||1));
+ t.setUTCDate(t.getUTCDate()+(d-1));const z=n=>(n<10?'0':'')+n;
+ const iso=t.getUTCFullYear()+'-'+z(t.getUTCMonth()+1)+'-'+z(t.getUTCDate());
+ try{return erDateLbl(iso);}catch(e){return iso;}};
+const mdpDayTag=d=>'Day '+d+(mdpDayDate(d)?' · '+mdpDayDate(d):'');
+mdpLoadCamp('NOV-26');
+
+function mdpCalc(r){
+ const p=r.p||[],d=r.d||[];
+ const aw=MDP_TYPES.map((t,i)=>Math.max(0,(p[i]||0)-(d[i]||0)));
+ const fp=MDP_FIELD.reduce((a,i)=>a+(p[i]||0),0),fd=MDP_FIELD.reduce((a,i)=>a+(d[i]||0),0);
+ const ucAw=Math.max(0,(r.ucp||0)-(r.ucr||0));
+ const pct=fp?fd/fp*100:null;
+ return {aw,awTot:aw.reduce((a,b)=>a+b,0),fp,fd,pct,ucAw};
+}
+const mdpStat=p=>p==null?'no':(p>=95?'good':p>=85?'watch':p>=70?'low':'crit');
+let _MDSV=null,_MDSK='',_MDDV=null;
+function mdpDv(n){
+ if(!_MDDV){const m={};if(typeof KPGEO!=='undefined')(KPGEO.d||[]).forEach(p=>{m[p.c]=p.v;});_MDDV=m;}
+ return _MDDV[n]||(typeof D2DV!=='undefined'&&D2DV[n])||'Other';
+}
+// The register the tab measures against. Nov-26 uses the live campaign scope; a past campaign uses
+// the districts its own record carries, plus any district a stored report names. It is never swapped
+// for another campaign's scope, so a coverage total is always read against the register it names.
+function mdpScope(){
+ if(_MDSK!==MDC||!_MDSV){
+  let v=[];
+  if(MDC==='NOV-26')v=SNDALL.map(o=>({n:o.n,dv:o.dv,cat:o.cat,uc:o.uc}));
+  else{
+   const P=(typeof CQ!=='undefined'&&CQ&&CQ.pre&&CQ.pre[MDC])||{},seen={};
+   const add=n=>{if(!n||seen[n])return;seen[n]=1;v.push({n:n,dv:mdpDv(n),cat:'',uc:0});};
+   Object.keys(P).forEach(k=>add(mdpDist(k)));
+   Object.keys(MDR).forEach(k=>{const r=MDR[k];if(r&&r.n)add(r.n);});
+  }
+  _MDSK=MDC;_MDSV=v;
+ }
+ return _MDSV.map(o=>Object.assign({},o,{dy:mdpLastDay(o.n)}));
+}
+function mdpLastDay(n){
+ let m=mdpBaseD(n);
+ for(let d=MDP_MAXD;d>mdpBaseD(n);d--){if(mdpGet(d,n)){m=d;break;}}
+ return m;
+}
+function mdpBase(){const dv=mdpVal('mdpDiv'),dd=mdpVal('mdpDist');
+ return mdpScope().filter(o=>(!dv||o.dv===dv)&&(!dd||o.n===dd));}
+// A day picked in the form (an extended catch-up nobody has reported yet) must survive the day bar,
+// otherwise the form snaps back to the last day anyone reported.
+function mdpMaxD(){let m=MDD>0?MDD:0;mdpBase().forEach(o=>{if(o.dy>m)m=o.dy;});return m||7;}
+function mdpLbl(R){const dv=mdpVal('mdpDiv'),dd=mdpVal('mdpDist');
+ if(dd)return 'district '+esc(DNAME(dd));
+ if(dv)return 'division '+esc(dv)+' ('+R.length+' districts)';
+ return 'KP — all '+R.length+' districts in this campaign\u2019s register';}
+function mdpDayLbl(){if(!MDD)return 'All reported days';
+ const dd=mdpVal('mdpDist');
+ return 'Day '+MDD+(dd?' · '+mdpPhase(dd,MDD):'');}
+function mdpTodayDay(n){
+ const st=mdpStart();if(!st)return 1;
+ const p=String(st).split('-'),s=Date.UTC(+p[0],(+p[1]||1)-1,+p[2]||1),t=new Date(),
+  n0=Date.UTC(t.getFullYear(),t.getMonth(),t.getDate());
+ const d=Math.floor((n0-s)/864e5)+1,m=n?mdpLastDay(n):7;
+ return d<1?1:d>m?m:d;}
+function mdpLastPlan(n){for(let d=mdpLastDay(n);d>=1;d--){const r=mdpGet(d,n);if(r)return r.p.slice();}return null;}
+function mdpRows(){
+ const R=[];
+ for(const o of mdpBase()){
+  const dy=o.dy;
+  if(MDD&&MDD>dy)continue;
+  const days=MDD?[MDD]:[...Array(dy)].map((_,i)=>i+1),got=[];
+  days.forEach(d=>{const r=mdpGet(d,o.n);if(r)got.push(r);});
+  const p=MDP_TYPES.map(()=>0),dd=MDP_TYPES.map(()=>0);
+  // teams add up over the days reported; UCs belong to a day, so the latest report carries them
+  let ucp=o.uc||0,ucRep=0,ucr=0,inc=0,ttm=0,at='',last=0;
+  got.forEach(r=>{for(let i=0;i<9;i++){p[i]+=r.p[i]||0;dd[i]+=r.d[i]||0;}
+   inc+=r.inc||0;ttm+=r.ttm||0;
+   if((r.ucp||0)>ucRep)ucRep=r.ucp||0;
+   if(r.day>=last){last=r.day;at=r.at||'';ucr=r.ucr||0;}});
+  if(!ucp)ucp=ucRep;
+  const row={n:o.n,dv:o.dv,cat:o.cat,uc:o.uc,dy:dy,reps:got.length,last:last,at:at,
+   ucp:ucp,ucr:ucr,p:p,d:dd,inc:inc,ttm:ttm,rsn:got.length?(got[got.length-1].rsn||''):'',rep:got.length>0};
+  Object.assign(row,mdpCalc(row));
+  row.st=row.rep?mdpStat(row.pct):'no';
+  R.push(row);
+ }
+ return R;
+}
+function mdpTot(R){
+ const t={n:R.length,rep:0,ucp:0,ucr:0,fp:0,fd:0,aw:0,inc:0,late:0,no:0,good:0,watch:0,low:0,crit:0};
+ for(const o of R){
+  if(o.rep){t.rep++;t.fp+=o.fp;t.fd+=o.fd;t.aw+=o.awTot;t.inc+=o.inc;t.late+=mdpLate(o)?1:0;}
+  t.ucp+=o.ucp;t.ucr+=o.ucr;
+  if(o.st==='no')t.no++;else t[o.st]++;
+ }
+ t.pct=t.fp?t.fd/t.fp*100:null;
+ return t;
+}
+
+function mdpFillScope(){
+ const dv=el('mdpDiv'),dd=el('mdpDist'),fd=el('mdpFDist');if(!dv||!dd)return;
+ const cur=dv.value,curD=dd.value,S=mdpScope();
+ const dvs=[...new Set(S.map(o=>o.dv))].sort();
+ dv.innerHTML='<option value="">All divisions</option>'+dvs.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+ dv.value=dvs.indexOf(cur)>=0?cur:'';
+ const list=mdpBase();
+ dd.innerHTML='<option value="">All districts</option>'+list.map(o=>'<option value="'+esc(o.n)+'">'+esc(DNAME(o.n))+'</option>').join('');
+ dd.value=list.some(o=>o.n===curD)?curD:'';
+ if(fd){
+  const keep=fd.value,g={};S.forEach(o=>{(g[o.dv]=g[o.dv]||[]).push(o.n);});
+  fd.innerHTML=Object.keys(g).sort().map(k=>'<optgroup label="'+esc(k)+'">'
+   +g[k].map(n=>'<option value="'+esc(n)+'">'+esc(DNAME(n))+'</option>').join('')+'</optgroup>').join('');
+  fd.value=S.some(o=>o.n===keep)?keep:(S[0]?S[0].n:'');
+ }
+}
+function mdpChipSub(d){
+ const dd=mdpVal('mdpDist');if(dd)return mdpPhase(dd,d);
+ if(d<=3)return 'active · all';
+ if(d<=5)return 'catch-up · all';
+ if(d<=7)return 'Peshawar &amp; Khyber';
+ return 'extended';
+}
+function mdpDaysPaint(){
+ const bar=el('mdpDays');if(!bar)return;
+ const M=mdpMaxD();
+ if(MDD>M)MDD=M;if(MDD<0)MDD=0;
+ let h='<button type="button" data-d="0"'+(MDD===0?' class="on"':'')+'>All days<small>reported</small></button>';
+ for(let d=1;d<=M;d++)h+='<button type="button" data-d="'+d+'"'+(MDD===d?' class="on"':'')
+  +'>Day '+d+'<small>'+mdpChipSub(d)+'</small></button>';
+ bar.innerHTML=h;
+ bar.querySelectorAll('button').forEach(b=>b.onclick=()=>{MDD=+b.dataset.d;renderMDEP();renderMDPBar();});
+}
+function mdpNorm(s){return String(s==null?'':s).toUpperCase().replace(/[^A-Z0-9]/g,'');}
+let _MDIX=null;
+function mdpDix(){
+ if(_MDIX)return _MDIX;const m={};
+ const add=(k,v)=>{k=mdpNorm(k);if(k&&!m[k])m[k]=v;};
+ SNDALL.forEach(o=>{add(o.n,o.n);add(DNAME(o.n),o.n);});
+ if(typeof KPGEO!=='undefined')(KPGEO.d||[]).forEach(p=>{add(p.c,p.c);add(DNAME(p.c),p.c);});
+ [['DIKHAN','DIKHAN'],['DOTIKHAN','DIKHAN'],['LAKKIMARWAT','LAKKIMRWT'],['LAKKIMARWAT','LAKKIMRWT'],
+  ['KOHISTANUPPER','KOHISTANUPPER'],['KOHISTANLOWER','KOHISTANLOWER'],['KOLAIPALAS','KOLAIPALAS'],
+  ['TORGHAR','TORGHAR'],['DIRLOWER','DIRLOWER'],['DIRUPPER','DIRUPPER'],
+  ['CHITRALUPPER','CHITRALUPPER'],['CHITRALLOWER','CHITRALLOWER'],
+  ['WAZIRISTANSOUTHUPPER','WAZIR-S Upper'],['WAZIRISTANSOUTHLOWER','WAZIR-S Lower'],
+  ['WAZIRISTANNORTH','WAZIR-N'],['BARSWAT','BAR SWAT'],['SWAT','SWAT']].forEach(x=>add(x[0],x[1]));
+ return _MDIX=m;
+}
+function mdpDist(s){
+ const k=mdpNorm(s);if(!k)return null;const m=mdpDix();
+ if(m[k])return m[k];
+ const k2=k.replace(/^DISTRICT/,'');if(m[k2])return m[k2];
+ const hit=Object.keys(m).filter(x=>x.length>=5&&(x.indexOf(k2)===0||k2.indexOf(x)===0));
+ const u=[...new Set(hit.map(x=>m[x]))];
+ return u.length===1?u[0]:null;
+}
+
+function mdpNumV(v){
+ if(typeof v==='number')return isFinite(v)?v:0;
+ const s=String(v==null?'':v).replace(/[^0-9.\-]/g,'');const n=parseFloat(s);
+ return isFinite(n)?n:0;
+}
+function mdpTimeV(v){
+ if(v instanceof Date)return mdpPad(v.getHours())+':'+mdpPad(v.getMinutes());
+ if(typeof v==='number'&&v>=0&&v<1){const m=Math.round(v*1440);return mdpPad(Math.floor(m/60)%24)+':'+mdpPad(m%60);}
+ const s=String(v==null?'':v).trim();
+ const m=/^(\d{1,2})[:.](\d{2})(?::\d{2})?\s*(AM|PM)?$/i.exec(s);
+ if(!m)return '';
+ let h=+m[1];const mi=+m[2],ap=(m[3]||'').toUpperCase();
+ if(ap==='PM'&&h<12)h+=12;if(ap==='AM'&&h===12)h=0;
+ if(h>23||mi>59)return '';
+ return mdpPad(h)+':'+mdpPad(mi);
+}
+function mdpRsnCode(v){
+ const u=String(v==null?'':v).toUpperCase();
+ const m=/^\s*(SEC|NET|BOY|TRA|OTH)/.exec(u);if(m)return m[1];
+ if(/SECURITY/.test(u))return 'SEC';
+ if(/NETWORK|CONNECTIV|SIGNAL/.test(u))return 'NET';
+ if(/BOYCOTT|REFUS/.test(u))return 'BOY';
+ if(/TRANSPORT|ROAD|WEATHER|FLOOD/.test(u))return 'TRA';
+ return u.trim()?'OTH':'';
+}
+
+function mdpRsnTop(R){
+ const c={};R.forEach(o=>{if(o.rep&&o.rsn)c[o.rsn]=(c[o.rsn]||0)+1;});
+ const e=Object.entries(c).sort((a,b)=>b[1]-a[1])[0];
+ return e?('Main reason: '+esc(MDP_RSN[e[0]]||e[0])+' · '+e[1]+' district'+(e[1]===1?'':'s')):'No reason recorded';
+}
+function mdpKpis(R,T){
+ const p=T.pct;
+ el('mdpK1').textContent=p==null?'–':p.toFixed(1)+'%';
+ el('mdpK1').style.color=p==null?C.mut:MDP_COL[mdpStat(p)];
+ el('mdpK1s').textContent='mobile + fixed + transit + roaming · deployed ÷ planned';
+ el('mdpK2').textContent=fmt(T.fd);
+ el('mdpK2s').textContent='of '+fmt(T.fp)+' planned by the reporting districts';
+ el('mdpK3').textContent=fmt(T.ucr);
+ el('mdpK3s').textContent='of '+fmt(T.ucp)+' UCs in this scope';
+ el('mdpK4').textContent=T.rep+' / '+R.length;
+ el('mdpK4s').textContent=T.late+' after 12:00 · '+T.no+' with no report';
+ el('mdpK5').textContent=fmt(T.aw);
+ el('mdpK5s').textContent='teams planned but not yet deployed';
+ el('mdpK6').textContent=fmt(T.inc);
+ el('mdpK6s').textContent=mdpRsnTop(R);
+}
+function mdpCharts(R,T){
+ const sub=mdpDayLbl()+' · '+mdpLbl(R);
+ const G={};
+ R.forEach(o=>{if(!o.rep)return;const g=G[o.dv]||(G[o.dv]={dv:o.dv,fp:0,fd:0,aw:0,n:0});
+  g.fp+=o.fp;g.fd+=o.fd;g.aw+=o.awTot;g.n++;});
+ const gs=Object.keys(G).sort().map(k=>G[k]).filter(g=>g.fp>0).map(g=>({...g,pct:g.fd/g.fp*100})).sort((a,b)=>a.pct-b.pct);
+ HC('mdp1',{chart:{type:'bar'},title:{text:'Deployment % by division'},subtitle:{text:sub+' · field teams'},
+  xAxis:{categories:gs.map(g=>g.dv)},yAxis:{title:{text:'% deployed'},max:Math.max(105,...gs.map(g=>g.pct)),plotLines:[{value:95,color:C.high,dashStyle:'Dash',width:2,zIndex:4,label:{text:'95%',style:{color:C.high}}}]},
+  legend:{enabled:false},
+  tooltip:{pointFormatter:function(){const g=gs[this.index];return '<b>'+esc(g.dv)+'</b><br>'+esc(g.fd.toLocaleString())+' of '+esc(g.fp.toLocaleString())+' teams ('+g.pct.toFixed(1)+'%)<br>'+g.n+' districts in the division total';}},
+  plotOptions:{bar:{borderRadius:3,dataLabels:{enabled:true,format:'{y:.1f}%',style:{color:C.sec,textOutline:'none',fontWeight:'400'}}}},
+  series:[{name:'Deployment %',data:gs.map(g=>({y:Math.round(g.pct*10)/10,color:MDP_COL[mdpStat(g.pct)]}))}]});
+ el('capmdp1').textContent=gs.length?('Weighted across reporting districts of each division · '+mdpDayLbl().toLowerCase()):'No division has a report yet.';
+ const P=MDP_TYPES.map(()=>0),D=MDP_TYPES.map(()=>0);
+ R.forEach(o=>{if(!o.rep)return;for(let i=0;i<9;i++){P[i]+=o.p[i]||0;D[i]+=o.d[i]||0;}});
+ HC('mdp2',{chart:{type:'column'},title:{text:'Planned vs deployed by team type'},subtitle:{text:sub},
+  xAxis:{categories:MDP_TYPES.map(t=>t[1]),labels:{rotation:-35,style:{fontSize:'9px'}}},
+  yAxis:{title:{text:'Teams'}},legend:{enabled:true},
+  tooltip:{shared:true},
+  plotOptions:{column:{borderRadius:2,dataLabels:{enabled:true,style:{fontSize:'9px',color:C.sec,textOutline:'none'}}}},
+  series:[{name:'Planned',color:'#94a3b8',data:P},{name:'Deployed',color:'#0d9488',data:D}]});
+ el('capmdp2').textContent='Team-days summed over the reporting districts for '+mdpDayLbl().toLowerCase()+'. Awaited = planned − deployed.';
+}
+
+function mdpTrendD(){
+ const cats=[],pct=[],rep=[],sc=[],M=mdpMaxD();
+ for(let d=1;d<=M;d++){
+  const base=mdpBase().filter(o=>o.dy>=d);
+  let fp=0,fd=0,n=0;
+  base.forEach(o=>{const r=mdpGet(d,o.n);if(r){const c=mdpCalc(r);fp+=c.fp;fd+=c.fd;n++;}});
+  cats.push('Day '+d);pct.push(fp?Math.round(fd/fp*1000)/10:null);rep.push(n);sc.push(base.length);
+ }
+ return {cats,pct,rep,sc};
+}
+function mdpCharts2(R,T){
+ const tr=mdpTrendD();
+ HC('mdp3',{chart:{zoomType:'x'},title:{text:'Deployment pace and reports received by campaign day'},subtitle:{text:mdpLbl(R)+' · reports are stored day by day'},
+  xAxis:{categories:tr.cats},
+  yAxis:[{title:{text:'Districts reporting'},min:0},{title:{text:'% deployed'},opposite:true,min:0,max:105,plotLines:[{value:95,color:C.high,dashStyle:'Dash',width:1.5,zIndex:3,label:{text:'95%',style:{color:C.high,fontSize:'9px'}}}]}],
+  tooltip:{shared:true},
+  plotOptions:{column:{borderRadius:3,color:'#99f6e4',borderColor:'#0d9488',borderWidth:1,dataLabels:{enabled:true,style:{fontSize:'9px',color:C.sec,textOutline:'none'}}}},
+  series:[{type:'column',name:'Districts reporting',data:tr.rep,yAxis:0},
+   {type:'spline',name:'Deployment %',data:tr.pct,yAxis:1,color:'#0d9488',marker:{radius:3},connectNulls:false}]});
+ el('capmdp3').innerHTML='Days 1-3 are the active round for every district and days 4-5 its catch-up; '
+  +'Peshawar and Khyber run 5 active days and catch up on days 6-7. A day after that is extended '
+  +'catch-up asked for by the district, so only the districts that asked appear. A day with no report shows a gap in the line.';
+ const A=R.filter(o=>o.rep&&o.awTot>0).sort((a,b)=>b.awTot-a.awTot).slice(0,12);
+ HC('mdp4',{chart:{type:'bar',height:Math.max(320,A.length*26+110)},title:{text:'Teams awaited by district'},subtitle:{text:mdpDayLbl()+' · planned − deployed'},
+  xAxis:{categories:A.map(o=>DNAME(o.n)),labels:{style:{fontSize:'10px'}}},
+  yAxis:{title:{text:'Teams awaited'}},legend:{enabled:false},
+  tooltip:{pointFormatter:function(){const o=A[this.index];return '<b>'+esc(DNAME(o.n))+'</b><br>'+o.awTot+' teams awaited<br>'+esc(o.fd.toLocaleString())+' of '+esc(o.fp.toLocaleString())+' deployed ('+(o.pct==null?'–':o.pct.toFixed(1)+'%')+')<br>'+(o.rsn?(esc(MDP_RSN[o.rsn]||o.rsn)):'no reason recorded');}},
+  plotOptions:{bar:{borderRadius:2,dataLabels:{enabled:true,style:{color:C.sec,textOutline:'none',fontWeight:'400'}}}},
+  series:[{name:'Awaited',data:A.map(o=>({y:o.awTot,color:MDP_COL[o.st]}))}]});
+ el('capmdp4').textContent=A.length?'Largest shortfalls first. Districts with no report are not shown here — they are listed on the one-pager and the board.':'No awaited teams in the reports received so far.';
+}
+
+function mdpHeat(R){
+ const box=el('mdpHeat');if(!box)return;
+ const cols=MDP_TYPES.map(t=>t[1]);
+ let h='<table class="mdpheat"><thead><tr><th class="rh">District</th>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'<th>UCs</th><th>Field</th></tr></thead><tbody>';
+ R.slice().sort((a,b)=>String(a.dv).localeCompare(String(b.dv))||String(a.n).localeCompare(String(b.n))).forEach(o=>{
+  h+='<tr><td class="rh">'+esc(DNAME(o.n))+'</td>';
+  for(let i=0;i<9;i++){
+   const p=o.p[i]||0,d=o.d[i]||0;
+   if(!o.rep||!p){h+='<td class="na" title="'+esc(cols[i])+': no plan or no report">·</td>';continue;}
+   const pc=d/p*100;
+   h+='<td style="background:'+MDP_COL[mdpStat(pc)]+'" title="'+esc(cols[i])+' · '+fmt(d)+' of '+fmt(p)+' ('+pc.toFixed(1)+'%)">'+Math.round(pc)+'</td>';
+  }
+  const up=o.ucp?o.ucr/o.ucp*100:null;
+  h+='<td '+(up==null?'class="na"':'style="background:'+MDP_COL[mdpStat(up)]+'"')+' title="UCs reported: '+fmt(o.ucr)+' of '+fmt(o.ucp)+'">'+(up==null?'·':Math.round(up))+'</td>';
+  h+='<td '+(o.pct==null?'class="na"':'style="background:'+MDP_COL[o.st]+'"')+' title="Field teams: '+fmt(o.fd)+' of '+fmt(o.fp)+'">'+(o.pct==null?'·':Math.round(o.pct))+'</td></tr>';
+ });
+ h+='</tbody></table>';
+ box.innerHTML=h;
+ el('mdpHcnt').textContent=R.length+' districts · '+cols.length+' team types';
+ el('capmdpH').innerHTML='Deployed ÷ planned for each team type in '+esc(mdpDayLbl().toLowerCase())+'; <b>Field</b> is the four field-team types behind the headline %. Grey means no plan or no report.';
+}
+function mdpTable(R){
+ drawTable('tMDP',[
+  {k:'n',l:'District',f:o=>'<b>'+esc(DNAME(o.n))+'</b>'},
+  {k:'dv',l:'Division',f:o=>esc(o.dv)},
+  {k:'last',l:'Last report',n:1,f:o=>o.rep?('D'+o.last+(o.at?' · '+o.at+(mdpLate(o)?' ⚠':''):'')):'–',sv:o=>o.rep?o.last*10000+(mdpMin(o.at)||0):null},
+  {k:'ucr',l:'UCs rep / planned',n:1,f:o=>fmt(o.ucr)+' / '+fmt(o.ucp),sv:o=>o.ucp?o.ucr/o.ucp:null},
+  {k:'fd',l:'Teams deployed / planned',n:1,f:o=>o.rep?fmt(o.fd)+' / '+fmt(o.fp):'–',sv:o=>o.fp?o.fd/o.fp:null},
+  {k:'pct',l:'Deployment %',n:1,f:o=>o.pct==null?'–':'<b style="color:'+MDP_COL[o.st]+'">'+o.pct.toFixed(1)+'%</b>',sv:o=>o.pct},
+  {k:'aw',l:'Awaited',n:1,f:o=>o.rep?fmt(o.awTot):'–',sv:o=>o.rep?o.awTot:null},
+  {k:'inc',l:'Incidents',n:1,f:o=>o.rep?fmt(o.inc):'–'},
+  {k:'rsn',l:'Reason',f:o=>o.rsn?esc(MDP_RSN[o.rsn]||o.rsn):''},
+  {k:'st',l:'Status',f:o=>'<span class="st '+MDP_ST[o.st][0]+'">'+MDP_ST[o.st][1]+'</span>'}
+ ],R,'pct',1,'No district is in scope for this day in the current filter');
+ el('mdpDayLbl').textContent=mdpDayLbl();
+ el('mdpCnt2').textContent=R.length+' districts · '+mdpLbl(R);
+ el('capMDP').innerHTML='Click a column to sort. A district with no report keeps its plan from the scope but shows <b>–</b> for deployment; reports timed after 12:00 carry ⚠.';
+}
+
+function mdpMap(R){
+ const box=el('mdpMap');if(!box)return;
+ const IN={};R.forEach(o=>{IN[o.n]=o;});
+ const REG={};mdpScope().forEach(o=>{REG[o.n]=1;});
+ const CW=34,CH=21,G=2,W=7,H=10;let b='';
+ Object.keys(SNPOS).forEach(n=>{
+  const c=SNPOS[n][0],r=SNPOS[n][1],ab=SNPOS[n][2],o=IN[n];
+  const x=c*(CW+G)+G,y=r*(CH+G)+G;
+  const inReg=!!REG[n];
+  const f=o?(o.rep?MDP_COL[o.st]:MDP_COL.no):(inReg?'#e2e8f0':'#eef2f7');
+  const tip=o?esc(DNAME(n))+(o.rep?(' — '+(o.pct==null?'no field teams planned':o.pct.toFixed(1)+'% deployed')+' · '+fmt(o.fd)+' of '+fmt(o.fp)+' teams · '+o.reps+' day(s) reported'):' — in the register, no report'):esc(n)+(inReg?' — in the register, no report':' — not in this campaign');
+  b+='<g><title>'+tip+'</title><rect x="'+x+'" y="'+y+'" width="'+CW+'" height="'+CH+'" rx="3" fill="'+f+'" stroke="rgba(255,255,255,.9)"/><text x="'+(x+CW/2)+'" y="'+(y+CH/2+2.5)+'" text-anchor="middle" font-size="7" fill="'+(o?'#fff':'#94a3b8')+'">'+esc(ab)+'</text></g>';
+ });
+ box.innerHTML='<svg viewBox="0 0 '+(W*(CW+G)+G)+' '+(H*(CH+G)+G)+'" role="img" aria-label="Schematic map of Khyber Pakhtunkhwa coloured by morning team deployment" style="font-family:var(--font-mono)">'+b+'</svg>';
+ el('mdpMapLeg').innerHTML=['good','watch','low','crit','no'].map(k=>'<span><i style="background:'+MDP_COL[k]+'"></i>'+MDP_ST[k][1]+'</span>').join('')+'<span><i style="background:#eef2f7;border:1px solid #cbd5e1"></i>Not in this campaign</span>';
+ el('mdpMcnt').textContent=R.filter(o=>o.rep).length+' of '+R.length+' districts reporting';
+}
+
+const mdpStTag=s=>'<span class="st '+MDP_ST[s][0]+'">'+MDP_ST[s][1]+'</span>';
+function mdpBn(R,T){
+ const sec=(t,items)=>items.length?'<div class="bnsec"><b>'+t+'</b><ul>'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>':'';
+ const no=R.filter(o=>!o.rep),out=[];
+ out.push(sec('No report for '+mdpDayLbl().toLowerCase()+' — '+no.length+' district'+(no.length===1?'':'s'),
+  no.slice(0,8).map(o=>'<b>'+esc(DNAME(o.n))+'</b> · '+fmt(o.uc)+' UCs planned')));
+ const cr=R.filter(o=>o.rep&&(o.st==='crit'||o.st==='low')).sort((a,b)=>(a.pct||0)-(b.pct||0));
+ out.push(sec('Under 85% of the field plan — '+cr.length+' district'+(cr.length===1?'':'s'),
+  cr.slice(0,8).map(o=>'<b>'+esc(DNAME(o.n))+'</b> · '+o.pct.toFixed(0)+'% · '+fmt(o.awTot)+' teams awaited'+(o.rsn?' · '+esc(MDP_RSN[o.rsn]||o.rsn):''))));
+ const inc=R.filter(o=>o.rep&&o.inc>0).sort((a,b)=>b.inc-a.inc);
+ out.push(sec('Security incidents — '+fmt(T.inc)+' in view',inc.slice(0,6).map(o=>'<b>'+esc(DNAME(o.n))+'</b> · '+fmt(o.inc))));
+ const late=R.filter(o=>mdpLate(o)).sort((a,b)=>(mdpMin(b.at)||0)-(mdpMin(a.at)||0));
+ out.push(sec('Reports after 12:00 — '+late.length,late.slice(0,6).map(o=>'<b>'+esc(DNAME(o.n))+'</b> · '+esc(o.at))));
+ const uca=R.filter(o=>o.rep&&o.ucAw>0).sort((a,b)=>b.ucAw-a.ucAw);
+ out.push(sec('UCs awaited — '+fmt(T.ucp-T.ucr)+' in the register',uca.slice(0,6).map(o=>'<b>'+esc(DNAME(o.n))+'</b> · '+fmt(o.ucr)+' of '+fmt(o.ucp)+' reported ('+fmt(o.ucAw)+' awaited)')));
+ const j=out.join('');
+ return j||'<div class="bnnone">No reports yet — enter a district report below, or import the district sheets, and this block fills itself.</div>';
+}
+
+function mdpSheetDraw(R,T){
+ const dd=mdpVal('mdpDist');
+ const dl=MDD?(mdpDayTag(MDD)+(dd?' · '+mdpPhase(dd,MDD):'')):'All reported days';
+ el('mdpTitle').textContent=mdpCampLbl()+' — Morning Team Deployment';
+ el('mdpSub').innerHTML='<b>'+esc(dl)+'</b> · '+mdpLbl(R);
+ el('mdpStamp').innerHTML='Reports received: '+T.rep+' of '+R.length+' districts<br>Generated '+nowLbl();
+ el('mdpFtL').textContent='Prepared by: EOC KP · Polio Eradication Programme · scope source: '+mdpSrcLbl();
+ el('mdpFtD').textContent=MDD?mdpDayTag(MDD):'All reported days';
+ const k=(i,v,s)=>'<div class="shk1"><i>'+i+'</i><b>'+v+'</b><s>'+(s||'')+'</s></div>';
+ el('mdpSheetKpis').innerHTML=
+  k('Field deployment',T.pct==null?'–':T.pct.toFixed(1)+'%','mobile + fixed + transit + roaming')+
+  k('Teams deployed',fmt(T.fd),'of '+fmt(T.fp)+' planned')+
+  k('UCs reported',fmt(T.ucr),'of '+fmt(T.ucp)+' in the register')+
+  k('Reports received',T.rep+' / '+R.length,T.late+' after 12:00 · '+T.no+' none')+
+  k('Teams awaited',fmt(T.aw),'planned, not yet deployed')+
+  k('Security incidents',fmt(T.inc),mdpDayLbl())+
+  k('Districts on plan',String(T.good),T.watch+' watch · '+T.low+' short · '+T.crit+' critical')+
+  k('Divisions',String(new Set(R.map(o=>o.dv)).size),mdpLbl(R));
+ const G={};
+ R.forEach(o=>{const g=G[o.dv]||(G[o.dv]={dv:o.dv,n:0,rep:0,fp:0,fd:0,aw:0,ucp:0,ucr:0,inc:0});
+  g.n++;g.ucp+=o.ucp;g.ucr+=o.ucr;
+  if(o.rep){g.rep++;g.fp+=o.fp;g.fd+=o.fd;g.aw+=o.awTot;g.inc+=o.inc;}});
+ const gs=Object.keys(G).sort().map(x=>G[x]);
+ el('tMDPDiv').innerHTML=erTbl(['Division','Dist','Rep','Teams','Dep %','UCs','Awaited','Inc.'],
+  gs.map(g=>[esc(g.dv),String(g.n),String(g.rep),nfmt(g.fd)+' / '+nfmt(g.fp),(g.fp?pfmt(g.fd/g.fp*100):'–'),nfmt(g.ucr)+' / '+nfmt(g.ucp),nfmt(g.aw),nfmt(g.inc)]),
+  ['Campaign total',String(T.n),String(T.rep),nfmt(T.fd)+' / '+nfmt(T.fp),pfmt(T.pct),nfmt(T.ucr)+' / '+nfmt(T.ucp),nfmt(T.aw),nfmt(T.inc)]);
+ const rs=R.slice().sort((a,b)=>(a.pct==null?-1:a.pct)-(b.pct==null?-1:b.pct));
+ el('tMDPSum').innerHTML=erTbl(['District','Div','Last','UCs','Teams','Dep %','Awaited','Inc.','Reason','Status'],
+  rs.map(o=>[esc(DNAME(o.n)),esc(o.dv),o.rep?('D'+o.last+(o.at?' '+o.at:'')):'–',nfmt(o.ucr)+'/'+nfmt(o.ucp),o.rep?(nfmt(o.fd)+'/'+nfmt(o.fp)):'–',(o.pct==null?'–':pfmt(o.pct)),(o.rep?nfmt(o.awTot):'–'),(o.rep?nfmt(o.inc):'–'),esc(o.rsn?(MDP_RSN[o.rsn]||o.rsn):''),mdpStTag(o.st)]),
+  ['Campaign total',String(T.n)+(T.n===1?' district':' districts'),mdpDayLbl(),nfmt(T.ucr)+'/'+nfmt(T.ucp),nfmt(T.fd)+'/'+nfmt(T.fp),pfmt(T.pct),nfmt(T.aw),nfmt(T.inc),'',T.good+' on plan']);
+ el('mdpBn').innerHTML=mdpBn(R,T);
+ el('mdpDayLbl2').textContent=mdpDayLbl();
+}
+
+function mdpBindTeams(){
+ const w=el('mdpTeams');if(!w||w._b)return;w._b=1;
+ w.innerHTML='<div></div><div class="h">Planned</div><div class="h">Deployed</div><div class="h">Awaited</div>'+
+  MDP_TYPES.map((t,i)=>'<div class="nm">'+esc(t[1])+'</div><input id="mdpP'+i+'" type="number" min="0" step="1" aria-label="'+esc(t[1])+' planned"><input id="mdpD'+i+'" type="number" min="0" step="1" aria-label="'+esc(t[1])+' deployed"><div class="aw" id="mdpA'+i+'">0</div>').join('');
+}
+function mdpFormSync(){
+ const fd=el('mdpFDist'),ds=el('mdpFDay');if(!fd||!ds)return;
+ if(!fd.value){const S=mdpScope();if(S[0])fd.value=S[0].n;}
+ const n=fd.value,base=n?mdpBaseD(n):5;
+ if(ds._n!==n){
+  const prev=+ds.value||1;
+  ds.innerHTML=[...Array(MDP_MAXD)].map((_,i)=>{const d=i+1;
+   return '<option value="'+d+'">Day '+d+' · '+mdpPhase(n||'',d)+'</option>';}).join('');
+  ds._n=n;
+  ds.value=String(prev>=1&&prev<=MDP_MAXD?prev:1);
+ }
+ if(MDD>=1&&MDD<=MDP_MAXD)ds.value=String(MDD);
+ const d=+ds.value||1,r=n?mdpGet(d,n):null,sc=n?(mdpScope().find(o=>o.n===n)||{}):{};
+ const lp=r?r.p:mdpLastPlan(n);
+ el('mdpAt').value=r?(r.at||''):mdpNow();
+ el('mdpUCP').value=r?r.ucp:(sc.uc||0);
+ el('mdpUCR').value=r?r.ucr:'';
+ el('mdpInc').value=r?(r.inc||0):0;
+ el('mdpTTM').value=r?(r.ttm||0):0;
+ el('mdpRsn').value=r?(r.rsn||''):'';
+ MDP_TYPES.forEach((t,i)=>{el('mdpP'+i).value=lp?(lp[i]||0):0;el('mdpD'+i).value=r?(r.d[i]||0):0;});
+ el('mdpFormLbl').textContent=n?('Day '+d+' · '+DNAME(n)+(r?' · saved report':' · new report')):'No district';
+ el('mdpFormCnt').textContent=n?(base+' days · '+mdpActD(n)+' active + 2 catch-up'+(d>base?' · extended catch-up':'')):'';
+ mdpFormCalc();
+}
+function mdpFormCalc(){
+ const g=id=>Math.max(0,Math.round(+el(id).value||0));
+ const p=MDP_TYPES.map((t,i)=>g('mdpP'+i)),d=MDP_TYPES.map((t,i)=>g('mdpD'+i));
+ const c=mdpCalc({p:p,d:d,ucp:g('mdpUCP'),ucr:g('mdpUCR')});
+ MDP_TYPES.forEach((t,i)=>{const a=el('mdpA'+i);if(!a)return;a.textContent=c.aw[i];a.classList.toggle('hot',c.aw[i]>0);});
+ const pct=c.pct,late=mdpLate({at:el('mdpAt').value});
+ el('mdpCalc').innerHTML='<span>Field deployment <b style="color:'+(pct==null?C.mut:MDP_COL[mdpStat(pct)])+'">'+(pct==null?'–':pct.toFixed(1)+'%')+'</b></span>'+
+  '<span>Awaited <b>'+fmt(c.awTot)+'</b> teams</span><span>UCs awaited <b>'+fmt(c.ucAw)+'</b></span>'+
+  '<span class="mdpdm'+(late?' late':'')+'">'+(el('mdpAt').value?(late?'After 12:00 · late':'On time'):'time not set')+'</span>';
+}
+function mdpReadForm(){
+ const fd=el('mdpFDist'),n=fd?fd.value:'',g=id=>Math.max(0,Math.round(+el(id).value||0));
+ return {n:n,day:+el('mdpFDay').value||1,at:el('mdpAt').value||'',ucp:g('mdpUCP'),ucr:g('mdpUCR'),
+  p:MDP_TYPES.map((t,i)=>g('mdpP'+i)),d:MDP_TYPES.map((t,i)=>g('mdpD'+i)),
+  ttm:g('mdpTTM'),inc:g('mdpInc'),rsn:el('mdpRsn').value||'',ts:new Date().toISOString()};
+}
+function mdpSaveForm(){
+ const r=mdpReadForm();
+ if(!r.n){toast('Pick a district first');return;}
+ if(r.day<1||r.day>MDP_MAXD){toast('Pick a campaign day');return;}
+ if(!r.at)r.at=mdpNow();
+ MDR[mdpKey(r.day,r.n)]=r;mdpSave();renderMDEP();renderMDPBar();
+ toast('Saved '+DNAME(r.n)+' · day '+r.day+(r.day>mdpBaseD(r.n)?' · extended catch-up':'')+(mdpLate(r)?' · after 12:00':''));
+}
+
+function mdpOwnUI(){
+ const on=!!_hraOwn,b=el('btnMDPown');
+ if(b){b.textContent=on?'Owner mode: on':'Owner mode';b.classList.toggle('on',on);}
+ ['btnMDPdel','btnMDPclear'].forEach(id=>{const x=el(id);if(!x)return;
+  if(!x.dataset.bt)x.dataset.bt=x.title||'';
+  x.disabled=!on;x.title=on?x.dataset.bt:'Owner only - unlock with the Owner mode button';});
+ const l=el('mdpOwnLbl');if(l)l.textContent=on?'Owner mode is on for this visit':'Delete controls need the owner key';
+}
+function mdpOwnAsk(fn){if(_hraOwn){if(fn)fn();return;}hraOwnAsk(function(){mdpOwnUI();if(fn)fn();});}
+function mdpDelOne(){mdpOwnAsk(function(){
+ const n=el('mdpFDist').value,d=+el('mdpFDay').value||1;
+ if(!mdpGet(d,n)){toast('No saved report for that district-day');return;}
+ if(!window.confirm('Delete the saved morning report for '+(DNAME(n)||n)+', day '+d+'?\n\nA file you already downloaded is untouched.'))return;
+ delete MDR[mdpKey(d,n)];mdpSave();renderMDEP();renderMDPBar();toast('Deleted day '+d);
+});}
+function mdpClearScope(){mdpOwnAsk(function(){
+ const dv=mdpVal('mdpDiv'),dd=mdpVal('mdpDist'),scope=dd?(DNAME(dd)||dd):(dv?('division '+dv):'KP');
+ const set={};mdpBase().forEach(o=>{set[o.n]=1;});
+ const keys=[];
+ Object.keys(MDR).forEach(k=>{const r=MDR[k];
+  if(r&&set[r.n]&&(!MDD||r.day===MDD))keys.push(k);});
+ if(!keys.length){toast('No saved reports in this scope');return;}
+ if(!window.confirm('Delete '+keys.length+' saved morning report'+(keys.length===1?'':'s')+' for '
+  +(MDD?('day '+MDD):'all days')+' in '+scope+'?\n\nFiles you already downloaded are untouched.'))return;
+ keys.forEach(k=>{delete MDR[k];});mdpSave();renderMDEP();renderMDPBar();toast('Deleted '+keys.length+' report'+(keys.length===1?'':'s'));
+});}
+
+function mdpCell(v){
+ if(v==null)return '';
+ if(v instanceof Date)return v;
+ if(typeof v==='object'){
+  if(v.result!=null)return v.result;
+  if(v.text!=null)return v.text;
+  if(Array.isArray(v.richText))return v.richText.map(t=>t.text||'').join('');
+  return '';
+ }
+ return v;
+}
+function mdpHeadIdx(H){
+ const N=H.map(mdpNorm),ix={};
+ N.forEach((k,j)=>{
+  if(/^DIVISION/.test(k))ix.div=j;
+  if(/^DISTRICT/.test(k)||k==='DIST')ix.dist=j;
+  if(/CAMPAIGNDAY/.test(k)||k==='DAY')ix.day=j;
+  if(/^TIMEOF/.test(k))ix.at=j;
+  if(/UC.*PLANNED/.test(k))ix.ucp=j;
+  if(/UC.*REPORTED/.test(k))ix.ucr=j;
+  if(/SECURITYINCIDENT/.test(k)||/^INCIDENTS?$/.test(k))ix.inc=j;
+  if(/^REMARK/.test(k)||/^REASON/.test(k))ix.rsn=j;
+  if(/TTM/.test(k)&&/AWAIT/.test(k))ix.ttm=j;
+ });
+ const TOK={mobile:'MOBILE',inf:'INFLUENC',fixed:'FIXED',transit:'TRANSIT',roam:'ROAM',aic:'AIC',upec:'UPEC',dcf:'DCF',sec:'SECURITY'};
+ MDP_TYPES.forEach((t,i)=>{
+  const tok=TOK[t[0]];
+  N.forEach((k,j)=>{
+   if(k.indexOf(tok)<0)return;
+   if(/DEPLOY|REPORTED|ACTUAL/.test(k)){if(ix['d'+i]==null)ix['d'+i]=j;return;}
+   if(/PLANN|TARGET|REQUIRED|SANCTION/.test(k)){if(ix['p'+i]==null)ix['p'+i]=j;}
+  });
+ });
+ return ix;
+}
+function mdpFromGrid(grid,file){
+ let hi=-1,ix=null;
+ for(let i=0;i<Math.min(12,grid.length);i++){
+  const t=mdpHeadIdx((grid[i]||[]).map(mdpCell));
+  if(t.dist!=null&&t.day!=null){hi=i;ix=t;break;}
+ }
+ if(hi<0)return {ok:0,bad:0,msg:'no header row with District and Campaign day in the first 12 rows'};
+ let ok=0,bad=0,older=0,out=0;
+ for(let i=hi+1;i<grid.length;i++){
+  const row=grid[i]||[],ds=mdpCell(row[ix.dist]);
+  const dstr=String(ds==null?'':ds).trim();
+  if(!dstr||/^total|^grand/i.test(dstr))continue;
+  const n=mdpDist(ds);
+  if(!n){bad++;continue;}
+  let day=Math.round(mdpNumV(row[ix.day]));
+  if(!day)day=MDD||1;
+  if(day<1||day>MDP_MAXD){out++;continue;}
+  const at=ix.at!=null?mdpTimeV(row[ix.at]):'';
+  const r={n:n,day:day,at:at||'',ucp:ix.ucp!=null?Math.round(mdpNumV(row[ix.ucp])):0,
+   ucr:ix.ucr!=null?Math.round(mdpNumV(row[ix.ucr])):0,
+   p:MDP_TYPES.map((t,k)=>ix['p'+k]!=null?Math.round(mdpNumV(row[ix['p'+k]])):0),
+   d:MDP_TYPES.map((t,k)=>ix['d'+k]!=null?Math.round(mdpNumV(row[ix['d'+k]])):0),
+   ttm:ix.ttm!=null?Math.round(mdpNumV(row[ix.ttm])):0,
+   inc:ix.inc!=null?Math.round(mdpNumV(row[ix.inc])):0,
+   rsn:ix.rsn!=null?mdpRsnCode(mdpCell(row[ix.rsn])):'',ts:new Date().toISOString()};
+  if(!r.ucp){const sc=mdpScope().find(o=>o.n===n);r.ucp=sc?sc.uc:0;}
+  const old=MDR[mdpKey(day,n)];
+  if(old&&old.at&&r.at&&mdpMin(old.at)>mdpMin(r.at)){older++;continue;}
+  MDR[mdpKey(day,n)]=r;ok++;
+ }
+ return {ok:ok,bad:bad,older:older,out:out};
+}
+async function mdpGrid(f){
+ if(/\.csv$/i.test(f.name))return hrtCsv(await f.text());
+ const X=await xlLib(),wb=new X.Workbook();await wb.xlsx.load(await f.arrayBuffer());
+ const ws=wb.worksheets[0],g=[];
+ ws.eachRow({includeEmpty:false},row=>{const a=[];row.eachCell({includeEmpty:true},c=>{a[c.col-1]=c.value;});g.push(a);});
+ return g;
+}
+
+function mdpLogPaint(lines){
+ const box=el('mdpLog');if(!box||!lines.length)return;
+ box.textContent=lines.map(x=>'· '+x).join('\n')+(box.textContent?'\n'+box.textContent:'');
+}
+async function mdpImportFiles(fl){
+ const log=[];let ok=0,bad=0,older=0,out=0;
+ for(const f of fl){
+  try{
+   const res=mdpFromGrid(await mdpGrid(f),f.name);
+   ok+=res.ok||0;bad+=res.bad||0;older+=res.older||0;out+=res.out||0;
+   log.push(f.name+' — '+(res.msg?res.msg:((res.ok||0)+' merged'+(res.bad?' · '+res.bad+' unknown district':'')+(res.out?' · '+res.out+' outside days 1-'+MDP_MAXD:'')+(res.older?' · '+res.older+' older than the saved copy':''))));
+  }catch(e){log.push(f.name+' — could not read ('+((e&&e.message)||'unknown')+')');}
+ }
+ if(ok){mdpSave();renderMDEP();renderMDPBar();}
+ mdpLogPaint(log);
+ toast(ok?('Imported '+ok+' district-day report'+(ok===1?'':'s')+' into '+mdpCampLbl()):'No report was imported');
+}
+function mdpCsv(){
+ const R=mdpRows();
+ csvRaw(mdpCampLbl().replace(/\s+/g,'_')+'_morning_deployment_'+(MDD?('day'+MDD):'all')+'.csv',
+  ['Campaign','District','Division','Category','Campaign days','Reports saved','Last report','UCs reported','UCs planned','UCs awaited','Teams deployed','Teams planned','Field deployment %','Teams awaited','Security incidents','Reason','Status'],
+  R.map(o=>[mdpCampLbl(),DNAME(o.n),o.dv,o.cat,o.dy,o.reps,o.rep?('D'+o.last+' '+o.at):'',o.ucr,o.ucp,o.ucAw,o.fd,o.fp,o.pct==null?'':o.pct.toFixed(1),o.awTot,o.inc,o.rsn?(MDP_RSN[o.rsn]||o.rsn):'',MDP_ST[o.st][1]]));
+}
+
+const MDP_TEAL='FF0D9488';
+function mdpCol(n){return n<=26?String.fromCharCode(64+n):'A'+String.fromCharCode(38+n);}
+function mdpTimeNum(t){const m=mdpMin(t);return m==null?null:m/1440;}
+function mdpHead39(ws,title,sub,note){
+ ws.mergeCells(1,1,1,39);const t=ws.getCell(1,1);t.value=title;
+ t.font={bold:true,size:14,color:{argb:'FF115E59'}};t.alignment={vertical:'middle'};ws.getRow(1).height=24;
+ ws.mergeCells(2,1,2,39);const s=ws.getCell(2,1);s.value=sub;s.font={size:11,color:{argb:'FF334155'}};
+ ws.mergeCells(3,1,3,39);const n=ws.getCell(3,1);n.value=note;n.font={size:9.5,italic:true,color:{argb:'FF64748B'}};
+ const hr=ws.getRow(4);hr.values=MDP_H;hr.height=54;
+ hr.alignment={vertical:'middle',horizontal:'left',wrapText:true};
+ hr.font={bold:true,size:9,color:{argb:'FFFFFFFF'}};
+ hr.eachCell(c=>{c.fill={type:'pattern',pattern:'solid',fgColor:{argb:MDP_TEAL}};c.border={bottom:{style:'thin',color:{argb:'FF0F766E'}}};});
+ ws.views=[{state:'frozen',ySplit:4}];
+ const W=[12,18,12,9,9,50,9,9];for(let i=0;i<18;i++)W.push(9);W.push(10,12);for(let i=0;i<10;i++)W.push(11);W.push(10);
+ W.forEach((w,j)=>{ws.getColumn(j+1).width=w;});
+}
+function mdpRows39(ws,rows){
+ rows.forEach(v=>{const rr=ws.addRow(v);
+  rr.getCell(5).numFmt='h:mm AM/PM';
+  for(let j=7;j<=26;j++)rr.getCell(j).numFmt='#,##0';
+  for(let j=29;j<=38;j++)rr.getCell(j).numFmt='#,##0';
+  rr.getCell(39).numFmt='0.0%';});
+ ws.autoFilter={from:{row:4,column:1},to:{row:Math.max(4,ws.rowCount),column:39}};
+}
+function mdpStoredRows(){
+ // every saved day for the scope, so the returned workbook is the full record, not one day's slice
+ const out=[];
+ mdpBase().forEach(o=>{const dy=o.dy;
+  for(let d=1;d<=dy;d++){const r=mdpGet(d,o.n);if(r)out.push({r:r,o:o});}});
+ return out.sort((a,b)=>String(a.o.dv).localeCompare(String(b.o.dv))||String(a.r.n).localeCompare(String(b.r.n))||a.r.day-b.r.day);
+}
+function mdpVals(r,o){
+ const c=mdpCalc(r),aw=c.aw,v=[o.dv,DNAME(o.n),mdpStart(),r.day,mdpTimeNum(r.at),'',r.ucp||0,r.ucr||0];
+ for(let i=0;i<9;i++){v.push(r.p[i]||0);v.push(r.d[i]||0);}
+ v.push(r.inc||0,r.rsn?(r.rsn+' — '+(MDP_RSN[r.rsn]||'')):'');
+ v.push(c.ucAw,aw[0],aw[1],aw[2],aw[3],aw[4],aw[5],aw[6],r.ttm||0,aw[8]);
+ v.push(c.pct==null?'':Math.round(c.pct*10)/1000);
+ return v;
+}
+function mdpGot(wb,file){
+ return wb.xlsx.writeBuffer().then(buf=>{const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  a.download=file;document.body.appendChild(a);a.click();a.remove();toast('Excel downloaded');return true;});
+}
+
+function mdpPlain(R){
+ const dv=mdpVal('mdpDiv'),dd=mdpVal('mdpDist');
+ if(dd)return 'district '+DNAME(dd);
+ if(dv)return 'division '+dv+' ('+R.length+' districts)';
+ return 'KP — all '+R.length+' districts in the '+mdpCampLbl()+' register';
+}
+function mdpShtTbl(ws,head,rows){
+ const hr=ws.addRow(head);hr.height=30;
+ hr.font={bold:true,size:9,color:{argb:'FFFFFFFF'}};
+ hr.alignment={wrapText:true,vertical:'middle'};
+ hr.eachCell(c=>{c.fill={type:'pattern',pattern:'solid',fgColor:{argb:MDP_TEAL}};});
+ rows.forEach(r=>ws.addRow(r));
+ ws.views=[{state:'frozen',ySplit:1}];
+ head.forEach((h,i)=>{ws.getColumn(i+1).width=Math.max(11,Math.min(46,String(h).length+4));});
+}
+async function mdpExportBoard(){
+ try{
+  const X=await xlLib(),wb=new X.Workbook(),R=mdpRows(),T=mdpTot(R),S=mdpStoredRows();
+  const day=MDD?mdpDayTag(MDD):'All reported days';
+  const plain=mdpPlain(R);
+  const ws=wb.addWorksheet('Morning report');
+  mdpHead39(ws,mdpCampLbl()+' — morning team deployment',day+' · '+plain,
+   'Every saved district-day report in the current filter — '+S.length+' row'+(S.length===1?'':'s')+'. Column F and the free-text remarks are not collected; REMARKS carries the reason code only.');
+  mdpRows39(ws,S.map(x=>mdpVals(x.r,x.o)));
+  const d1=wb.addWorksheet('District summary');
+  mdpShtTbl(d1,['District','Division','Category','Campaign days','Reports saved','Last report','UCs reported','UCs planned','UCs awaited','Teams deployed','Teams planned','Deployment %','Teams awaited','Incidents','Reason','Status'],
+   R.map(o=>[DNAME(o.n),o.dv,o.cat,o.dy,o.reps,o.rep?('D'+o.last+(o.at?' '+o.at:'')):'',o.ucr,o.ucp,o.ucAw,o.fd,o.fp,o.pct==null?'':Math.round(o.pct*10)/1000,o.rep?o.awTot:'',o.rep?o.inc:'',o.rsn?(MDP_RSN[o.rsn]||o.rsn):'',MDP_ST[o.st][1]]));
+  d1.getColumn(12).numFmt='0.0%';
+  const G={};
+  R.forEach(o=>{const g=G[o.dv]||(G[o.dv]={dv:o.dv,n:0,rep:0,ucp:0,ucr:0,fp:0,fd:0,aw:0,inc:0});
+   g.n++;g.ucp+=o.ucp;g.ucr+=o.ucr;
+   if(o.rep){g.rep++;g.fp+=o.fp;g.fd+=o.fd;g.aw+=o.awTot;g.inc+=o.inc;}});
+  const gs=Object.keys(G).sort().map(k=>G[k]);
+  const d2=wb.addWorksheet('Division summary');
+  mdpShtTbl(d2,['Division','Districts','Reported','Teams deployed','Teams planned','Deployment %','UCs reported','UCs planned','Teams awaited','Incidents'],
+   gs.map(g=>[g.dv,g.n,g.rep,g.fd,g.fp,g.fp?Math.round(g.fd/g.fp*1000)/1000:'',g.ucr,g.ucp,g.aw,g.inc]));
+  d2.addRow(['TOTAL — '+plain,T.n,T.rep,T.fd,T.fp,T.pct==null?'':Math.round(T.pct*10)/1000,T.ucr,T.ucp,T.aw,T.inc]).font={bold:true};
+  d2.getColumn(6).numFmt='0.0%';
+  const d3=wb.addWorksheet('Read me');
+  d3.getColumn(1).width=118;
+  mdpReadMe().forEach((t,i)=>{const r=d3.addRow([t]);
+   r.alignment={wrapText:true,vertical:'top'};
+   r.font=i===0?{bold:true,size:12,color:{argb:'FF115E59'}}:{size:10};});
+  return await mdpGot(wb,mdpCampLbl().replace(/\s+/g,'_')+'_morning_deployment_'+(MDD?'day'+MDD:'all')+'.xlsx');
+ }catch(e){console.error('mdp workbook',e);toast('The workbook could not be built: '+((e&&e.message)||'unknown error'));}
+}
+
+async function mdpExportTpl(){
+ try{
+  const X=await xlLib(),wb=new X.Workbook(),ws=wb.addWorksheet('Morning report');
+  const d=Math.min(MDP_MAXD,Math.max(1,+mdpVal('mdpTplDay')||1));
+  const sc=mdpBase().filter(o=>d<=mdpBaseD(o.n)||!!mdpGet(d,o.n))
+   .sort((a,b)=>String(a.dv).localeCompare(String(b.dv))||String(a.n).localeCompare(String(b.n)));
+  if(!sc.length){
+   toast('No district is in the '+mdpCampLbl()+' register for day '+d
+    +(d>7?' — an extended catch-up day needs the district to ask for it first':''));
+   return false;
+  }
+  const ph=d<=3?'active campaign day · every district'
+   :d<=5?'day '+d+' · every district (Peshawar and Khyber are still active)'
+   :d<=7?'catch-up day · Peshawar and Khyber':'extended catch-up · only the districts that asked for it';
+  mdpHead39(ws,mdpCampLbl()+' — morning team deployment return, day '+d,
+   'Day '+d+' · '+ph+(mdpDayDate(d)?' · '+mdpDayDate(d):'')
+    +(mdpStart()?' · campaign start '+mdpStart():' · campaign start date not recorded'),
+   'One row per district. Fill time of update, UCs reported, deployed teams, incidents and the reason; planned teams are pre-filled from the last saved report where one exists. Awaited and the deployment % are formulas — leave them alone.');
+  sc.forEach(o=>{
+   const sv=mdpGet(d,o.n),lp=(sv&&sv.p)||mdpLastPlan(o.n)||[];
+   const v=[o.dv,DNAME(o.n),mdpStart(),d,null,'',sv?sv.ucp:o.uc,sv?sv.ucr:null];
+   for(let i=0;i<9;i++){v.push(lp[i]||0);v.push(sv?(sv.d[i]||0):null);}
+   v.push(0,'');
+   for(let i=0;i<11;i++)v.push(null);
+   const r=ws.addRow(v),R=r.number;
+   const f=(c,x)=>{r.getCell(c).value={formula:x};};
+   f(29,'MAX(0,G'+R+'-H'+R+')');
+   f(30,'MAX(0,I'+R+'-J'+R+')');
+   f(31,'MAX(0,K'+R+'-L'+R+')');
+   f(32,'MAX(0,M'+R+'-N'+R+')');
+   f(33,'MAX(0,O'+R+'-P'+R+')');
+   f(34,'MAX(0,Q'+R+'-R'+R+')');
+   f(35,'MAX(0,S'+R+'-T'+R+')');
+   f(36,'MAX(0,U'+R+'-V'+R+')');
+   f(38,'MAX(0,Y'+R+'-Z'+R+')');
+   f(39,'IFERROR((J'+R+'+N'+R+'+P'+R+'+R'+R+')/(I'+R+'+K'+R+'+M'+R+'+O'+R+'),"")');
+  });
+  for(let i=5;i<=ws.rowCount;i++){
+   const rr=ws.getRow(i);
+   rr.getCell(5).numFmt='h:mm AM/PM';
+   for(let j=7;j<=26;j++)rr.getCell(j).numFmt='#,##0';
+   for(let j=29;j<=38;j++)rr.getCell(j).numFmt='#,##0';
+   rr.getCell(39).numFmt='0.0%';
+  }
+  ws.autoFilter={from:{row:4,column:1},to:{row:Math.max(4,ws.rowCount),column:39}};
+  const d2=wb.addWorksheet('How to fill');
+  d2.getColumn(1).width=118;
+  mdpReadMe().forEach((t,i)=>{const r=d2.addRow([t]);
+   r.alignment={wrapText:true,vertical:'top'};
+   r.font=i===0?{bold:true,size:12,color:{argb:'FF115E59'}}:{size:10};});
+  return await mdpGot(wb,mdpCampLbl().replace(/\s+/g,'_')+'_morning_return_day'+d+'.xlsx');
+ }catch(e){console.error('mdp template',e);toast('The template could not be built: '+((e&&e.message)||'unknown error'));}
+}
+
+function mdpReadMe(){
+ const st=mdpStart();
+ return [
+ 'Morning team deployment — what this workbook holds',
+ 'Campaign: '+mdpCampLbl()+(st?' · start '+st:' · start date not recorded for this campaign')+'. The tab keeps one set of reports per campaign; this workbook carries the campaign selected in the tab, never a blend of two.',
+ 'Purpose. One morning report per district per campaign day, from the time teams start moving (about 08:00) until the last team is out, which can run to 14:00 because of network, security, boycott or access problems. The dashboard shows what has been reported, what is still awaited and where the plan is not being met.',
+ 'Campaign days. Every district runs 3 active days + 2 catch-up days = 5. Peshawar and Khyber run 5 active days + 2 catch-up days = 7. A district can ask for extended catch-up; those days follow its last catch-up day and only the districts that asked appear on them.',
+ 'Sheet "Morning report" — the saved district-day reports in the current campaign and division / district filter, in the 39 columns the districts already use. The campaign start date and the day number are written on every row.',
+ 'Sheet "District summary" — one row per district for the day in view: reports saved, UCs reported, teams deployed against plan, teams awaited, incidents, reason and status.',
+ 'Sheet "Division summary" — the same measures rolled up to division. The last row is the total for the current filter, labelled with that filter (the campaign register when no filter is set), so a subset is never read as the province.',
+ 'Collecting a return. Pick the campaign first, then download the template for a day and send it to the district; import the returned sheet here. Import merges by district + campaign day: when two files carry the same district-day the later time of update wins, and rows outside days 1-'+MDP_MAXD+' are skipped.',
+ 'Awaited counts and the team deployment % are recomputed on import; the sheet values are not trusted. Deployment % = (mobile + fixed + transit + roaming deployed) ÷ (the same four planned).',
+ 'Privacy. Column F (last team deployed, team number, AIC names) and the free-text remarks are never collected or stored, and no name, e-mail or phone number is read from an imported sheet. This dashboard is a public page — keep names out of it.',
+ 'Storage. Reports typed in the dashboard or imported stay in this browser only (localStorage), under a key for the selected campaign; they are not sent anywhere. Download the workbook to share them. Clearing browser data removes them.',
+ 'Status bands: on plan 95% and above · watch 85-95% · short 70-85% · critical below 70%. A district with no report shows as no report, not as zero deployment.'
+ ];
+}
+
+function mdpCampN(c){return c===MDC?Object.keys(MDR).length:Object.keys(mdpCampRows(c)).length;}
+function mdpFillCamp(){
+ const s=el('mdpCamp');if(!s)return;
+ s.innerHTML=MDP_CAMPS.map(c=>{const n=mdpCampN(c.k);
+  return '<option value="'+esc(c.k)+'">'+esc(c.l)+(c.cur?' · current':'')+' · '
+   +(n?fmt(n)+' report'+(n===1?'':'s'):'no reports yet')+'</option>';}).join('');
+ s.value=MDC;
+}
+function mdpCampGo(c){
+ if(!c||c===MDC)return;
+ mdpSave();
+ mdpLoadCamp(c);
+ MDD=0;
+ mdpFillScope();renderMDPBar();renderMDEP();
+ toast('Viewing '+mdpCampLbl(c));
+}
+function renderMDPBar(){
+ if(!el('mdpSheet'))return;
+ mdpFillCamp();mdpFillScope();mdpDaysPaint();mdpOwnUI();
+ const R=mdpRows(),N=R.length+(R.length===1?' district':' districts');
+ el('mdpCnt').textContent=N;
+ el('shown').innerHTML='Morning deployment · '+esc(mdpCampLbl())+' · <b>'+esc(mdpDayLbl())
+  +'</b> · '+esc(mdpPlain(R))+' · reports stay in this browser';
+ el('mdpHint').innerHTML='<b>'+N+'</b> in the '+esc(mdpCampLbl())+' register for '
+  +esc(mdpDayLbl().toLowerCase())+'. Every district reports <b>3 active + 2 catch-up = 5</b> days; '
+  +'Peshawar and Khyber <b>5 + 2 = 7</b>. Days after that are extended catch-up asked for by a district, '
+  +'so the day list stays open to day '+MDP_MAXD+'. '
+  +(MDC!=='NOV-26'?'This is a past campaign: its register is the district list that campaign\u2019s own '
+   +'record carries, and only reports stored in this browser are shown. ':'')
+  +'Type a report below or import the 39-column district sheet. Nothing leaves this browser unless you '
+  +'download the workbook.';
+ const b=el('bMD');if(b)b.textContent=MDD?('Day '+MDD):'All days';
+}
+function renderMDEP(){
+ if(!el('mdpSheet'))return;
+ try{
+  mdpDaysPaint();
+  const R=mdpRows(),T=mdpTot(R);
+  mdpKpis(R,T);mdpCharts(R,T);mdpCharts2(R,T);mdpHeat(R);mdpTable(R);mdpMap(R);mdpSheetDraw(R,T);
+  mdpDaysPaint();mdpOwnUI();mdpFormSync();
+  const td=el('mdpTplDay');if(td&&MDD)td.value=String(MDD);
+ }catch(e){console.error('mdep render',e);}
+}
+function mdpBind(){
+ if(window._mdpBound)return;window._mdpBound=1;
+ mdpBindTeams();
+ const on=(id,ev,fn)=>{const x=el(id);if(x)x[ev]=fn;};
+ on('mdpCamp','onchange',()=>mdpCampGo(el('mdpCamp').value));
+ on('mdpDiv','onchange',()=>{mdpFillScope();renderMDEP();renderMDPBar();});
+ on('mdpDist','onchange',()=>{renderMDEP();renderMDPBar();});
+ on('btnMDPprint','onclick',()=>window.print());
+ on('btnMDPcsv','onclick',mdpCsv);
+ on('btnMDPx','onclick',()=>mdpExportBoard());
+ on('btnMDPSave','onclick',mdpSaveForm);
+ on('btnMDPreset','onclick',mdpFormSync);
+ on('btnMDPown','onclick',()=>mdpOwnAsk(null));
+ on('btnMDPdel','onclick',mdpDelOne);
+ on('btnMDPclear','onclick',mdpClearScope);
+ on('btnMDPtpl','onclick',()=>mdpExportTpl());
+ on('mdpFDist','onchange',mdpFormSync);
+ on('mdpFDay','onchange',()=>{MDD=+el('mdpFDay').value||1;renderMDEP();renderMDPBar();});
+ const fm=el('mdpForm');
+ if(fm)fm.querySelectorAll('input,select').forEach(x=>{
+  if(x.id!=='mdpFDist'&&x.id!=='mdpFDay')x.addEventListener('input',mdpFormCalc);});
+ const fl=el('mdpFile');
+ if(fl)fl.onchange=e=>{const fs=[...e.target.files];e.target.value='';if(fs.length)mdpImportFiles(fs);};
+ const td=el('mdpTplDay');
+ if(td&&!td.options.length){
+  td.innerHTML=[...Array(MDP_MAXD)].map((_,i)=>{const d=i+1;
+   return '<option value="'+d+'">Day '+d+(d<=5?'':' · '+(d<=7?'Peshawar and Khyber':'extended'))+'</option>';}).join('');
+  td.value=String(MDD||1);}
+ mdpFillCamp();mdpFillScope();mdpFormSync();mdpOwnUI();
+}
+mdpBind();
 {const _rdN=render; render=function(){_rdN(); try{ntPass();}catch(e){}};}
 document.addEventListener("click",ev=>{const t=ev.target;
  if(t&&t.closest&&(t.closest(".ntbtn")||t.closest(".ntpop")))return; ntClose();},true);

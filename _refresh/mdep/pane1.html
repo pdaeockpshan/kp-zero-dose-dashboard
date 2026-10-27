@@ -1,0 +1,21 @@
+<!-- ================= SNID NOV-26: MORNING TEAM DEPLOYMENT ================= -->
+<section class="pane" id="p-mdep">
+<div class="cqbar noprint"><b>Morning deployment</b><span class="cnt">Campaign</span><select class="hrc" id="mdpCamp" aria-label="Campaign"></select><span class="erdaybar" id="mdpDays"></span><span class="cnt">Division</span><select id="mdpDiv" aria-label="Division"></select><span class="cnt">District</span><select id="mdpDist" aria-label="District"></select><span class="cnt" id="mdpCnt"></span><span style="flex:1"></span><button class="btn" id="btnMDPprint">Print one-pager</button><button class="btn" id="btnMDPcsv">District CSV</button><button class="btn" id="btnMDPx">Workbook (xlsx)</button></div>
+<div class="hint noprint" id="mdpHint"></div>
+
+<div id="mdpSheet">
+ <div class="shhd">
+  <div><div class="shk">Government of Khyber Pakhtunkhwa · Emergency Operations Centre · Polio Eradication Programme</div>
+  <h2 id="mdpTitle">Morning Team Deployment</h2>
+  <div class="shsub" id="mdpSub"></div></div>
+  <div class="shstamp" id="mdpStamp"></div>
+ </div>
+ <div class="shkpis" id="mdpSheetKpis"></div>
+ <div class="shgrid">
+  <div><h3>Division roll-up</h3><table class="shtbl" id="tMDPDiv"></table></div>
+  <div><h3>Where deployment is short</h3><div id="mdpBn"></div></div>
+ </div>
+ <h3>District detail — <span id="mdpDayLbl2">Day 1</span></h3>
+ <table class="shtbl" id="tMDPSum"></table>
+ <div class="shft"><span id="mdpFtL">Prepared by: EOC KP · Polio Eradication Programme</span><span>Reviewed by: ______________________</span><span id="mdpFtD"></span></div>
+</div>
