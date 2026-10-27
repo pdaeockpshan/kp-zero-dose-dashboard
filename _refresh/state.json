@@ -126,6 +126,20 @@
    "stamp": "17-Oct-2026 11:37",
    "summary": "78 UCs (Peshawar 48, Khyber 30), fIPV target 1,184,376, HH 534,888, school 245,869, 26 new / 52 existing"
   },
+  "hra": {
+   "at": "2026-10-27T09:54:30+05:00",
+   "chars": 146975,
+   "file_id": "C:\\Users\\HD\\Downloads\\HRA UC Level for September 2026 (Mardan Division).xlsx|1793026178|92944",
+   "payload_sha1": "4e3070351607212e",
+   "source": {
+    "mtime": 1793026178.3159776,
+    "name": "HRA UC Level for September 2026 (Mardan Division).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\HRA UC Level for September 2026 (Mardan Division).xlsx",
+    "size": 92944
+   },
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "1418 UCs, 36 districts, 2 vintages (2026-10-26: 132, 2026-03-26: 1286), 1389 codes matched to const ZD (97.95%) - 916 Low / 414 Medium / 88 High Risk"
+  },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
    "chars": 2982,
@@ -140,8 +154,36 @@
    "stamp": "12-Oct-2026 12:58",
    "summary": "KP-Special-1-Jul 2026, 30 UCs in 2 districts (BANNU+WAZIR-S Lower), recall 13215/15102"
   },
+  "icmq": {
+   "at": "2026-10-27T09:54:12+05:00",
+   "chars": 216190,
+   "file_id": "C:\\Users\\HD\\Downloads\\INTRA CAMPAIGN AIC VISITED 2 campaigns.csv|1791971262|96875",
+   "payload_sha1": "49d0a80326390b68",
+   "source": {
+    "mtime": 1791971262.3052268,
+    "name": "INTRA CAMPAIGN AIC VISITED 2 campaigns.csv",
+    "path": "C:\\Users\\HD\\Downloads\\INTRA CAMPAIGN AIC VISITED 2 campaigns.csv",
+    "size": 96875
+   },
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "58 campaigns (56 with team monitoring, 53 with AIC), 32,452 team UC rows, 28,966 AIC UC rows, 27 tm + 18 aic indicators, 2,424 impossible cells excluded, 71 empty columns reported as not asked"
+  },
+  "ind": {
+   "at": "2026-10-27T09:54:12+05:00",
+   "chars": 3958931,
+   "file_id": "C:\\Users\\HD\\Downloads\\Indicators to be included in dashboard as record.csv|1792043433|19159617",
+   "payload_sha1": "5ad4d91753f40390",
+   "source": {
+    "mtime": 1792043433.050186,
+    "name": "Indicators to be included in dashboard as record.csv",
+    "path": "C:\\Users\\HD\\Downloads\\Indicators to be included in dashboard as record.csv",
+    "size": 19159617
+   },
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "85 campaigns 2017-2026, 37 districts, 1873 UCs, 75792 rows; UC detail for 12 campaigns (12065 Admin UC rows)"
+  },
   "inda": {
-   "at": "2026-10-23T17:41:24+05:00",
+   "at": "2026-10-27T10:16:50+05:00",
    "chars": 122875,
    "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls|1792758413|1939012",
    "payload_sha1": "9cde23568d7f0fe9",
@@ -151,7 +193,7 @@
     "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls",
     "size": 1939012
    },
-   "stamp": "23-Oct-2026 17:41",
+   "stamp": "27-Oct-2026 09:47",
    "summary": "1402 UCs, 37 districts, target 6,348,405, vaccinated 6,235,824, still missed 121,677, ZD reported 62,128"
   },
   "mis": {
@@ -197,18 +239,32 @@
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
   },
   "mpqa": {
-   "at": "2026-10-26T09:46:47+05:00",
-   "chars": 23593,
-   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-26_09-42-40.xls|1792989765|1393080",
-   "payload_sha1": "dd7a43ec4f312999",
+   "at": "2026-10-27T09:36:29+05:00",
+   "chars": 23622,
+   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-27_09-31-32.xls|1793075495|1401316",
+   "payload_sha1": "9887a30eb70a378f",
    "source": {
-    "mtime": 1792989765.4921358,
-    "name": "Micro_Plan_Scoring__2026-10-26_09-42-40.xls",
-    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-26_09-42-40.xls",
-    "size": 1393080
+    "mtime": 1793075495.0862002,
+    "name": "Micro_Plan_Scoring__2026-10-27_09-31-32.xls",
+    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-27_09-31-32.xls",
+    "size": 1401316
    },
-   "stamp": "26-Oct-2026 09:46",
-   "summary": "SNID Nov-26, 27 districts, 326 of 381 assigned UCs reported (85.6%) - 278 pass, 44 needs improvement, 4 serious issues, 55 still to report"
+   "stamp": "27-Oct-2026 09:36",
+   "summary": "SNID Nov-26, 27 districts, 361 of 381 assigned UCs reported (94.8%) - 308 pass, 49 needs improvement, 4 serious issues, 20 still to report"
+  },
+  "mtm": {
+   "at": "2026-10-27T09:54:30+05:00",
+   "chars": 28135,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles\\Special_Biker_Teams__Coverage-178_combined_2025-04-21_10-04-35.csv|1745211489|3821687",
+   "payload_sha1": "0457175645db7f7d",
+   "source": {
+    "mtime": 1745211489.0,
+    "name": "Special_Biker_Teams__Coverage-178_combined_2025-04-21_10-04-35.csv",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles\\Special_Biker_Teams__Coverage-178_combined_2025-04-21_10-04-35.csv",
+    "size": 3821687
+   },
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "map 2024-08..2025-04->114,894 nomad 2022-09..2025-04->16,365 nomon 2022-10..2025-04->4,718 sact 2023-09..2025-04->14,720 smon 2023-09..2025-04->5,992 biker 2024-10..2025-04->6,246"
   },
   "nact": {
    "at": "2026-10-16T14:27:06+05:00",
@@ -225,18 +281,18 @@
    "summary": "28 activities, 30 bars, 2026-10-05..2026-11-16, campaign 2026-11-02 (bOPV)"
   },
   "neap": {
-   "at": "2026-10-26T19:57:04+05:00",
-   "chars": 109281,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (54).xls|1793025497|1332880",
-   "payload_sha1": "9430e1f104bc0f71",
+   "at": "2026-10-27T09:36:29+05:00",
+   "chars": 109393,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (56).xls|1793075483|1333025",
+   "payload_sha1": "b09f89c54fc905e5",
    "source": {
-    "mtime": 1793025497.28698,
-    "name": "NEAP (54).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (54).xls",
-    "size": 1332880
+    "mtime": 1793075483.6454885,
+    "name": "NEAP (56).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (56).xls",
+    "size": 1333025
    },
-   "stamp": "26-Oct-2026 19:57",
-   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 994 (NEAP (54).xls)"
+   "stamp": "27-Oct-2026 09:36",
+   "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 994 (NEAP (56).xls)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -294,6 +350,20 @@
    "stamp": "26-Oct-2026 15:54",
    "summary": "263,027 rows read, 262779 kept, 1149 posts, 461 UCs, 37 districts, 2016-2026, ZD found 460,228"
   },
+  "ptpm": {
+   "at": "2026-10-27T09:54:30+05:00",
+   "chars": 36715,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles\\PTPs-STPs_Monitoring_Checklist-176_combined_2025-04-21_10-04-27.csv|1745211482|5624784",
+   "payload_sha1": "19f4eef57b0b8419",
+   "source": {
+    "mtime": 1745211482.0,
+    "name": "PTPs-STPs_Monitoring_Checklist-176_combined_2025-04-21_10-04-27.csv",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles\\PTPs-STPs_Monitoring_Checklist-176_combined_2025-04-21_10-04-27.csv",
+    "size": 5624784
+   },
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "mon 2024-08..2025-04->15,099 spot 2021-11..2025-04->20,212 log 2021-11..2025-04->8,120"
+  },
   "rca": {
    "at": "2026-10-16T11:03:53+05:00",
    "chars": 279044,
@@ -337,18 +407,18 @@
    "summary": "13107/14247 active visits 92.0% across 36 districts; 41 zero-report rows wk1-41 91218/91259 received (100.0%) 99.2% in time; pendency to 21-Oct-2026 stool 91.2% (3687/4044), case validation 2.9%, geolocation 99.6%; VPD 2026 wk1-41 2461 AFP / 16258 measles / 93 NNT"
   },
   "sta": {
-   "at": "2026-10-26T15:15:26+05:00",
-   "chars": 93228,
-   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx|1790585353|932904",
-   "payload_sha1": "8128437f57a06b48",
+   "at": "2026-10-27T09:47:23+05:00",
+   "chars": 94367,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx|1793014326|940814",
+   "payload_sha1": "fc1e1dea49fb30d6",
    "source": {
-    "mtime": 1790585353.0,
+    "mtime": 1793014326.0,
     "name": "Search Team Monitoring Check LIst.twbx",
     "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx",
-    "size": 932904
+    "size": 940814
    },
-   "stamp": "26-Oct-2026 15:15",
-   "summary": "sact 2023-09..2026-09->26,225 smon 2023-09..2026-09->10,843"
+   "stamp": "27-Oct-2026 09:47",
+   "summary": "sact 2023-09..2026-10->26,698 smon 2023-09..2026-10->11,001"
   },
   "surv": {
    "at": "2026-10-23T16:37:25+05:00",
@@ -394,19 +464,21 @@
   }
  },
  "last_push": {
-  "at": "2026-10-27T03:00:22+05:00",
-  "chars": 17156279,
-  "internal_md5": "430b2e854b8ed848cf94f359f08c9cb6",
-  "master_md5": "6e8524ba777209a0488343735b4b5ef1",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+178514 chars). Timestamp refresh 27-Oct-2026 03:00 PKT",
-  "stamp": "27-Oct-2026 03:00"
+  "at": "2026-10-27T14:20:25+05:00",
+  "chars": 17269628,
+  "internal_md5": "cb41ec407472f8ff78dd1fe8db33805f",
+  "master_md5": "e25e01a5c3687f1424b8f44fc630c2c1",
+  "note": "HRA: the compiled card as a PPTX findings report, plus the sheet's visuals. Timestamp refresh 27-Oct-2026 14:20 PKT",
+  "stamp": "27-Oct-2026 14:20"
  },
  "last_run": {
-  "at": "2026-10-26T19:57:04+05:00",
+  "at": "2026-10-27T09:54:30+05:00",
   "datasets": [
-   "neap"
+   "hra",
+   "ptpm",
+   "mtm"
   ],
   "dry_run": false,
-  "stamp": "26-Oct-2026 19:57"
+  "stamp": "27-Oct-2026 09:47"
  }
 }
