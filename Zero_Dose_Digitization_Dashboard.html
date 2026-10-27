@@ -971,7 +971,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 27-Oct-2026 14:57</span>
+  <span class="hupd" id="hUpd">Updated 27-Oct-2026 16:15</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2131,9 +2131,19 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <section class="pane" id="p-hrat">
 <div class="hint" id="hratHint"></div>
 <div class="cqbar"><b>Compiled after</b><select class="hrc" id="fHRC" aria-label="Campaign"></select><select class="hrc" id="fHRY" aria-label="Year"></select><select class="hrc" id="fHRM" aria-label="Month"></select><span class="cnt" id="hratNote"></span></div>
-<div class="cqbar"><b>Card</b><button class="btn" id="btnHRTBlank" title="The card with the UC roster prefilled in columns A-D and every score cell empty, one worksheet plus a Read-me">Download blank template (Excel)</button><label class="btn" id="hrtFileL" title="An .xlsx of this card, or the CSV of the same columns. The 33 input columns are read back; the 39 score columns in the file are compared with the formulas here and any disagreement is reported">Upload filled sheet<input type="file" id="hrtFile" accept=".xlsx,.xls,.csv" style="display:none"></label><button class="btn" id="btnHRX" title="Every council on this sheet, with all 39 computed columns written as live Excel formulas">Download filled sheet (Excel)</button><button class="btn" id="btnHRTSeed" title="Fill the grid with the councils the dashboard holds for the districts picked in the grid's own division and district boxes">Seed councils in view</button><button class="btn" id="btnHRTRow" title="Append one empty council row">Add one council</button><button class="btn" id="btnHRTCLEAR" title="Empty this period in this browser - a file you already downloaded is untouched">Clear this period</button><button class="btn" id="btnHRTCLEARALL" title="Remove every HRA sheet this browser has saved, for all periods - files you already downloaded are untouched">Clear all periods</button><span class="cnt" id="hrtUcnt"></span></div>
+<div class="cqbar"><b>Card</b><button class="btn" id="btnHRTBlank" title="The card with the UC roster prefilled in columns A-D and every score cell empty, one worksheet plus a Read-me">Download blank template (Excel)</button><label class="btn" id="hrtFileL" title="An .xlsx of this card, or the CSV of the same columns. The 33 input columns are read back; the 39 score columns in the file are compared with the formulas here and any disagreement is reported">Upload filled sheet<input type="file" id="hrtFile" accept=".xlsx,.xls,.csv" style="display:none"></label><button class="btn" id="btnHRX" title="Every council on this sheet, with all 39 computed columns written as live Excel formulas">Download filled sheet (Excel)</button><button class="btn" id="btnHRTSeed" title="Fill the grid with the councils the dashboard holds for the districts picked in the grid's own division and district boxes">Seed councils in view</button><button class="btn" id="btnHRTRow" title="Append one empty council row">Add one council</button><button class="btn" id="btnHRTCLEAR" title="Empty this period in this browser - a file you already downloaded is untouched">Clear this period</button><button class="btn" id="btnHRTCLEARALL" title="Remove every HRA sheet this browser has saved, for all periods - files you already downloaded are untouched">Clear all periods</button><button class="btn" id="btnHRTOWN" title="Only the owner can delete compiled rows; unlock with the owner key">Owner mode</button><span class="cnt" id="hrtUcnt"></span></div>
 <div id="hratImp" style="display:none;margin:0 0 10px;padding:9px 12px;border-radius:6px;font-size:12.5px;line-height:1.55"></div>
-<div class="card" id="hratRule"></div>
+
+<div class="card" id="hratCov" style="margin-bottom:14px">
+<div class="tblhdr" style="margin-bottom:6px"><h3 style="margin:0">Upload coverage for this period</h3>
+<span style="flex:1"></span>
+<button class="btn" id="btnHRTcov" title="Register, received and awaited councils for every division and district on this period's sheet">Coverage (CSV)</button></div>
+<div class="cnt" id="hratCovNote" style="display:block;margin:0 0 8px"></div><div id="hratCovK" style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;margin:2px 0 10px"></div>
+<div style="overflow:auto;max-height:300px"><table class="shtbl" id="hratCovT"></table></div>
+</div>
+<div class="card" id="hratRule" style="padding:8px 12px"></div>
+<div id="hratRuleSrc" style="display:none"></div>
+
 <div class="kpis">
 <div class="card"><div class="kl">Councils in view</div><div class="kv" id="hk1">&ndash;</div><div class="ks" id="hk1s"></div></div>
 <div class="card"><div class="kl">Every indicator answered</div><div class="kv" id="hk2">&ndash;</div><div class="ks" id="hk2s"></div></div>
@@ -2142,22 +2152,23 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div class="card"><div class="kl">High Risk</div><div class="kv" id="hk5" style="color:#b91c1c">&ndash;</div><div class="ks" id="hk5s"></div></div>
 <div class="card"><div class="kl">Scored off an empty cell</div><div class="kv" id="hk6">&ndash;</div><div class="ks" id="hk6s"></div></div>
 </div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">The card, in the template&rsquo;s own column order</h3><select class="hrc" id="hrtDiv" aria-label="Division shown"></select><select class="hrc" id="hrtDist" aria-label="District shown"></select><span style="flex:1"></span><button class="btn" id="btnHRThide">Hide the computed columns</button></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">The card, in the template&rsquo;s own column order</h3><select class="hrc" id="hrtDiv" aria-label="Division shown"></select><select class="hrc" id="hrtDist" aria-label="District shown"></select><button class="btn" id="btnHRTDEL" disabled title="Remove the councils of the division or district picked in the two filters beside this button; the rest of the period and any file you already downloaded are untouched">Delete the rows in the filter</button><span style="flex:1"></span><button class="btn" id="btnHRThide">Hide the computed columns</button></div>
 <div class="cap" id="hratCap"></div>
 <div class="hrwrap" id="hrtWrap"><table class="hrgrid" id="tHRT"></table></div>
 <div class="cqbar"><span class="cnt" id="hrtPager"></span><span class="cnt" id="hrtPageNote"></span></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">What the last import read</h3></div><div class="cap" id="hrtLog"></div></div>
 <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:26px 0 10px;border-top:1px solid var(--color-border);padding-top:16px">
 <h2 style="margin:0;font-size:17px;font-weight:600">HRA at a glance</h2>
-<span style="font-size:12px;color:var(--color-text-secondary)">The province&rsquo;s HRA sheets as they stand &mdash; read from the dashboard payload, not from the sheet compiled above</span>
+<select class="hrc" id="hrvPer" aria-label="Campaign or month the HRA charts read" style="max-width:320px"></select>
+<span id="hrvSrc" style="font-size:12px;color:var(--color-text-secondary)"></span>
 </div>
 <div class="hint" id="hrvHint"></div>
 <div class="grid2">
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Risk band by division</h3></div><div id="hrv1"></div><div class="cap" id="chrv1"></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">Council scores against the card&rsquo;s thresholds</h3></div><div id="hrv2"></div><div class="cap" id="chrv2"></div></div>
 </div>
-<div class="card" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Where the card takes its points off</h3><span style="font-size:12px;color:var(--color-text-secondary)">Marks earned as a share of the marks the card charges, all 1,418 councils</span></div><div id="hrv3"></div><div class="cap" id="chrv3"></div></div>
-<div class="card"><div class="tblhdr"><h3 style="margin:0">HRA risk by district</h3><select class="hrc" id="hrvMK" aria-label="District measure"><option value="hi">High-Risk council share</option><option value="mean">District score</option></select><span style="flex:1"></span><button class="btn" id="btnHRVcsv" title="Division, district, council counts by band, High-Risk share, marks earned and the marks charged, one row per district">District roll-up (CSV)</button></div><div id="hrvMNote" class="cap" style="margin:0 0 8px"></div><div id="hrvMap" style="max-width:620px;margin:0 auto"></div><div class="cap" id="chrvMap"></div></div>
+<div class="card" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Where the card takes its points off</h3><span id="hrv3cap" style="font-size:12px;color:var(--color-text-secondary)"></span></div><div id="hrv3"></div><div class="cap" id="chrv3"></div></div>
+<div class="card"><div class="tblhdr"><h3 style="margin:0">HRA risk by district</h3><select class="hrc" id="hrvMK" aria-label="District measure"><option value="hi">High-Risk council share</option><option value="mean">District score</option></select><span style="flex:1"></span><button class="btn" id="btnHRVcsv" title="Division, district, council counts by band, High-Risk share, marks earned and the marks charged, one row per district">District roll-up (CSV)</button></div><div id="hrvMNote" class="cap" style="margin:0 0 8px"></div><div id="hrvMap" style="max-width:620px;margin:0 auto"></div><div class="cap" id="chrvMap"></div><div class="cap" style="margin:12px 0 6px"><b>District roll-up on screen</b> &mdash; the same rows the CSV carries, under the same division / district filter.</div><div style="overflow:auto;max-height:440px"><table class="shtbl" id="hrvTbl"></table></div></div>
 <div class="card" style="margin-top:16px"><div class="tblhdr"><h3 style="margin:0">Findings and recommendations</h3><button class="btn" id="btnHRVrep" title="A short PowerPoint deck built from the sheet compiled above and the division / district filter on it">Download the report (.pptx)</button></div><div class="cap" id="hrvRepSub" style="margin:0 0 8px"></div><div id="hrvRep"></div><div class="cap" id="hrvRepFoot">Read from the cells on this sheet only, and from the filter above it. A high percentage is a safe council &mdash; the card&rsquo;s own axis, not the combined UC risk score.</div></div>
 </section>
 
@@ -12018,7 +12029,8 @@ function hrtNote(){
  const dv=hrtDivs();
  el('hratNote').innerHTML=esc(HRT_P().join(' \u00b7 '))+' \u00b7 '+fmt(hrtRows.length)+' councils'
   +(dv.length>1?' across '+dv.length+' divisions':'')+' \u00b7 '
-  +'file name <b>'+esc(hrtTitle())+'.xlsx</b>';}
+  +'file name <b>'+esc(hrtTitle())+'.xlsx</b>';
+ if(typeof hrtCov==='function')hrtCov();}
 function hrtMergeNote(mg){
  const dv=hrtDivs();
  return 'The period now holds '+fmt(hrtRows.length)+' councils from '+dv.length+' division'
@@ -12032,6 +12044,28 @@ function hrtImpBox(kind,html){
  const c=kind==='err'?['#b91c1c','#fef2f2']:kind==='warn'?['#b45309','#fffbeb']:['#15803d','#f0fdf4'];
  b.style.display='block';b.style.borderLeft='4px solid '+c[0];b.style.background=c[1];
  b.innerHTML=html;}
+function hrtDelScope(){
+ const dv=el('hrtDiv')?el('hrtDiv').value:'',dd=el('hrtDist')?el('hrtDist').value:'';
+ if(!dv&&!dd)return null;
+ const idx=hrtView();
+ return {dv:dv,dd:dd,n:idx.length,idx:idx,
+  label:dd?dd:(dv+' division')};}
+function hrtDel(){
+ const S=hrtDelScope();
+ if(!S){toast('Pick a division or a district in the filters first');return;}
+ if(!S.n){toast('Nothing on this sheet matches that filter');return;}
+ if(!window.confirm('Remove '+fmt(S.n)+' council row(s) for '+S.label+' from this period? Every '
+  +'other district on the sheet stays, and a file you already downloaded is untouched.'))return;
+ const drop={};S.idx.forEach(function(i){drop[i]=1;});
+ hrtRows=hrtRows.filter(function(r,i){return !drop[i];});
+ hrtPage=0;hrtStore();hrtScope();
+ hrtPaint(hrtVals());hrtNote();_HRVD=null;hrvRender();
+ hrtLogAdd('Deleted '+fmt(S.n)+' council row(s) for '+S.label+'. The period now holds '
+  +fmt(hrtRows.length)+'.');
+ hrtImpBox('ok','<b>Deleted</b> '+fmt(S.n)+' council row(s) for '+esc(S.label)+'. The period now '
+  +'holds '+fmt(hrtRows.length)+' from '+hrtDivs().length+' division'
+  +(hrtDivs().length===1?'':'s')+'.');
+ toast('Removed '+fmt(S.n)+' council'+(S.n===1?'':'s'));}
 function hrtCheckRows(rows){
  let tx=0,of=0;const tc=[],oc=[];
  rows.forEach(r=>{HRTIN.forEach(c=>{const v=r[c.L];if(v===null||v===undefined)return;
@@ -12069,14 +12103,20 @@ function hrtShow(c,v){
  if(f.indexOf('%')>=0){const m=/0\.(0+)/.exec(f),dg=m?m[1].length:0;
   return (v*100).toFixed(dg)+'%';}
  return String(Math.round(v*1e6)/1e6);}
+// One scope for the tab: the card and the at-a-glance section read the same two selects. The
+// district list follows the division, and Delete is only live while one of the two names a scope.
 function hrtScope(){
  const dv=el('hrtDiv'),dd=el('hrtDist'),k0=dv.value,k1=dd.value,D={},B={};
- hrtRows.forEach(r=>{if(r.A)D[r.A]=1;if(r.B)B[r.B]=1;});
+ hrtRows.forEach(r=>{if(r.A)D[r.A]=1;});
  dv.innerHTML='<option value="">All divisions</option>'+Object.keys(D).sort()
   .map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+ dv.value=D[k0]?k0:'';
+ const ds=dv.value;
+ hrtRows.forEach(r=>{if(r.B&&(!ds||String(r.A||'')===ds))B[r.B]=1;});
  dd.innerHTML='<option value="">All districts</option>'+Object.keys(B).sort()
   .map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
- dv.value=D[k0]?k0:'';dd.value=B[k1]?k1:'';}
+ dd.value=B[k1]?k1:'';
+ const bd=el('btnHRTDEL');if(bd)bd.disabled=!(_hraOwn&&(dv.value||dd.value));}
 function hrtView(){
  const dv=el('hrtDiv').value,dd=el('hrtDist').value,out=[];
  hrtRows.forEach((r,i)=>{if(dv&&String(r.A||'')!==dv)return;if(dd&&String(r.B||'')!==dd)return;
@@ -12176,12 +12216,20 @@ function hrtBadge(){const b=el('bHRT');if(!b)return;
  const x=el('hrtUcnt');
  if(x)x.textContent=hrtRows.length?'this sheet is stored in this browser only':'';}
 function hrtRule(){
- el('hratRule').innerHTML='<div class="tblhdr"><h3 style="margin:0">Where the card as printed and '
-  +'the card as compiled disagree \u2014 and what this sheet does about each</h3></div><ul class="hrul">'
-  +(HRAT.warn||[]).map(w=>'<li><b>'+w.col+(w.raw?' reads '+esc(w.raw):'')+'</b>'
-   +(w.to&&w.to!=='the rows on the sheet'?' \u2192 <code>'+esc(w.to)+'</code>':'')
-   +'<div>'+esc(w.why)+'</div></li>').join('')
-  +'</ul>';}
+ const w=HRAT.warn||[];
+ el('hratRuleSrc').innerHTML='<ul class="hrul">'+w.map(function(x){
+  return '<li><b>'+x.col+(x.raw?' reads '+esc(x.raw):'')+'</b>'
+   +(x.to&&x.to!=='the rows on the sheet'?' \u2192 <code>'+esc(x.to)+'</code>':'')
+   +'<div>'+esc(x.why)+'</div></li>';}).join('')+'</ul>';
+ el('hratRule').innerHTML='<div class="tblhdr" style="margin:0"><h3 style="margin:0">Notes on how this '
+  +'card is read</h3><span class="cnt">'+w.length+' rule'+(w.length===1?'':'s')
+  +' this sheet reads differently</span><span style="flex:1"></span>'
+  +'<button type="button" class="btn ntbtn" id="btnHRTRULE" aria-expanded="false" '
+  +'style="margin:0">Read the notes</button></div>';
+ const b=el('btnHRTRULE');
+ b.onclick=function(){
+  if(b.classList.contains('on')){ntClose();return;}
+  ntOpen(b,el('hratRuleSrc'));};}
 function renderHRT(){
  hrtWire();
  const st=hrtLoad(),V=hrtVals();
@@ -12241,10 +12289,182 @@ function hrvBlk(n){const s=String(n).toLowerCase();
 function hrvDates(mask){const out=[];(HRA.v||[]).forEach(function(d,i){if(mask&(1<<i))out.push(d);});
  return out;}
 
+
+// ---------- HRA round 2: owner lock, campaign / month source, upload coverage ----------
+// The owner asked, 27-Oct-2026: "nobody else can delete data except me or anyone using the dashboard
+// link cant delete any data only I had that option". The sheet lives in this browser (localStorage), so
+// a delete only ever touches the copy in front of the visitor; this lock still keeps the delete
+// controls dead on every browser that has not been given the owner key. It is a gate, not encryption -
+// anyone who can open this file can read that browser's copy - so the key is compared against a digest
+// and is never written to the page or to storage.
+var HRA_OWN_SHA='829187022aaa519462abd95ffa80ce6bdc96fb82cbda11e11c8507dff5560e16',
+ HRA_OWN_FNV='e53499fc',_hraOwn=false;
+function hraFNV(s){var h=0x811c9dc5;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),0x01000193)>>>0;}
+ return ('0000000'+h.toString(16)).slice(-8);}
+function hraKeyOK(k){
+ if(window.crypto&&crypto.subtle&&window.TextEncoder){
+  return crypto.subtle.digest('SHA-256',new TextEncoder().encode(k)).then(function(b){
+   var a=new Uint8Array(b),x='';for(var i=0;i<a.length;i++)x+=('0'+a[i].toString(16)).slice(-2);
+   return x===HRA_OWN_SHA;});}
+ return Promise.resolve(hraFNV(k)===HRA_OWN_FNV);}
+function hraOwnUI(){
+ const on=!!_hraOwn,b=el('btnHRTOWN');
+ if(b){b.textContent=on?'Owner mode: on':'Owner mode';b.classList.toggle('on',on);}
+ ['btnHRTSeed','btnHRTCLEAR','btnHRTCLEARALL','btnHRTDEL'].forEach(function(id){
+  const x=el(id);if(!x)return;
+  if(!x.dataset.bt)x.dataset.bt=x.title||'';
+  if(id==='btnHRTDEL'){
+   const dv=el('hrtDiv'),dd=el('hrtDist');
+   x.disabled=!(on&&dv&&dd&&(dv.value||dd.value));
+  }else x.disabled=!on;
+  x.title=on?x.dataset.bt:'Owner only - unlock with the Owner mode button';});}
+function hraOwnAsk(fn){
+ if(_hraOwn){if(fn)fn();return;}
+ const k=window.prompt('Owner key\n\nOnly the owner of this dashboard may delete compiled rows. '
+  +'Enter the key to unlock the delete buttons for this visit.');
+ if(k==null)return;
+ hraKeyOK(k).then(function(ok){
+  if(!ok){toast('That is not the owner key');return;}
+  _hraOwn=true;hraOwnUI();toast('Owner mode on for this visit');
+  if(fn)fn();});}
+function hrvDk(s){return HRTN(s).replace(/ /g,'');}
+let _HRVDIX=null,_HRVREG=null;
+function hrvDix(){if(_HRVDIX)return _HRVDIX;const m={};
+ (HRA.d||[]).forEach(function(c,i){m[hrvDk(c)]=i;m[hrvDk(DNAME(c))]=i;});
+ return _HRVDIX=m;}
+// The register the coverage panel measures: the councils the HRA payload itself holds, with the
+// division the dashboard files each district under. It is not the ZD / missed-children register - the
+// two differ by a few councils and this tab never mixes them.
+function hrvReg(){
+ if(_HRVREG)return _HRVREG;
+ const D=(typeof HRA!=='undefined'&&HRA.d)||[],kg={};
+ (typeof KPGEO!=='undefined'?KPGEO.d:[]).forEach(function(p){kg[p.c]=p.v;});
+ const dvOf=function(c){const k=kg[c]||(typeof D2DV!=='undefined'?(D2DV[c]||null):null)||'Other';
+  return HRV_DV[k]||k;};
+ const R={n:0,byDist:{},byCode:{},byName:{},dvOf:dvOf};
+ ((typeof HRA!=='undefined'&&HRA.u)||[]).forEach(function(r){
+  const d=D[r[0]];if(!d)return;const c=String(r[2]==null?'':r[2]).trim();if(!c)return;
+  const dv=dvOf(d),o=R.byDist[d]||(R.byDist[d]={c:d,dv:dv,n:0,got:0});
+  o.n++;R.n++;
+  R.byCode[c]={c:c,d:d,dv:dv};
+  R.byName[hrvDk(d)+'|'+HRTN(r[1])]=c;});
+ return _HRVREG=R;}
+function hrvSlugLbl(sl){const m=/_(\d{4})-(\d{2})$/.exec(String(sl));
+ return m?String(sl).slice(0,m.index)+' \u00b7 '+HRV_MO[+m[2]-1]+' '+m[1]:String(sl);}
+function hrvPer(){const s=el('hrvPer');return s&&s.value?s.value:'pub';}
+function hrvPerFill(){
+ const s=el('hrvPer');if(!s)return;
+ const keep=s.value||'pub',opts=[['pub','Published reading \u00b7 '+hrvD(HRA.asof)+' \u00b7 '
+  +fmt(HRA.n)+' councils']];
+ opts.push(['cur','Compiled sheet \u00b7 '+hrvSlugLbl(hrtSlug())+' \u00b7 '+fmt(hrtRows.length)
+  +' councils (follows the picker above)']);
+ const seen={cur:1};
+ try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
+  if(!k||k.indexOf(HRTKEY(''))!==0)continue;const sl=k.slice(HRTKEY('').length);
+  if(seen[sl])continue;seen[sl]=1;
+  let n=0;try{const d=JSON.parse(localStorage.getItem(k)||'null');n=d&&d.rows?d.rows.length:0;}catch(e){}
+  opts.push([sl,'Saved compile \u00b7 '+hrvSlugLbl(sl)+' \u00b7 '+fmt(n)+' councils']);}}catch(e){}
+ s.innerHTML=opts.map(function(o){return '<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>';})
+  .join('');
+ s.value=opts.some(function(o){return o[0]===keep;})?keep:'pub';}
+// A saved period, or the one on screen, scored the way the payload is: one row per council, the 27
+// indicator scores, marks earned over marks charged, the card's own band cuts.
+function hrvCompiled(pid){
+ const cur=pid==='cur',slug=cur?hrtSlug():pid;let rows=null;
+ if(cur)rows=hrtRows.slice();
+ else{try{const d=JSON.parse(localStorage.getItem(HRTKEY(slug))||'null');
+  if(d&&Array.isArray(d.rows))rows=d.rows.map(function(r){const o=hrtBlankRow();
+   HRTIN.forEach(function(c){if(r&&r[c.L]!==undefined)o[c.L]=r[c.L];});return o;});}catch(e){}}
+ const meta={v:pid,pub:false,slug:slug,lbl:hrvSlugLbl(slug),date:slug,asof:slug,
+  rows:rows?rows.length:0,skip:0,off:0,blank:0,dupe:0};
+ if(!rows||!rows.length)return {U:[],meta:meta};
+ const mk=hratMake(HRAT,rows),di=hrvDix(),seen={},out=[];
+ rows.forEach(function(r,i){
+  const k=hrvDk(r.B),dx=di[k];
+  if(dx===undefined){meta.off++;return;}
+  const v=mk.compute(i).v,ss=[];let ach=0,pos=0,ans=0;
+  HRAT.i.forEach(function(x){const q=v[x.sc];
+   if(typeof q==='number'&&isFinite(q)&&q>=0){ss.push(q);ach+=q;pos+=3;ans++;}else ss.push(-1);});
+  if(!ans){meta.blank++;return;}
+  const code=String(r.D==null?'':r.D).trim(),nk=code||('n|'+k+'|'+HRTN(r.C));
+  if(seen[nk]){meta.dupe++;return;}
+  seen[nk]=1;
+  const pct=ach/pos*100;
+  out.push([dx,String(r.C==null?'':r.C),code,ach,pos,Math.round(pct*10)/10,
+   hrtBand(pct/100),0,ss]);});
+ meta.skip=meta.off+meta.blank;
+ return {U:out,meta:meta};}
+function hrvPerMeta(P,CP){
+ const pub=P==='pub';
+ if(pub)return {v:'pub',pub:true,slug:'',lbl:'published reading',date:hrvD(HRA.asof),
+  asof:HRA.asof,rows:HRA.n,skip:0,off:0,blank:0,dupe:0};
+ return CP?CP.meta:{v:P,pub:false,slug:P,lbl:hrvSlugLbl(P),date:P,asof:P,
+  rows:0,skip:0,off:0,blank:0,dupe:0};}
+function hrtCovRows(){
+ const R=hrvReg(),got={},gb={},seen={};let off=0;
+ hrtRows.forEach(function(r){
+  const code=String(r.D==null?'':r.D).trim(),dk=hrvDk(r.B),nm=HRTN(r.C);
+  const key=code||('n|'+dk+'|'+nm);
+  if(seen[key])return;seen[key]=1;
+  let rg=code&&R.byCode[code]?R.byCode[code]:null;
+  if(!rg){const k2=R.byName[dk+'|'+nm];rg=k2&&R.byCode[k2]?R.byCode[k2]:null;}
+  if(!rg){off++;return;}
+  if(!got[rg.c]){got[rg.c]=1;gb[rg.d]=(gb[rg.d]||0)+1;}});
+ const dv=el('hrtDiv')?el('hrtDiv').value:'',dd=el('hrtDist')?el('hrtDist').value:'';
+ const sdv=dv?HRTN(dv):'',sdd=dd?HRTN(dd):'';
+ const list=Object.keys(R.byDist).map(function(d){
+  const o=R.byDist[d],g=gb[d]||0;
+  return {d:d,dv:o.dv,n:o.n,got:g,await:o.n-g};})
+  .filter(function(o){
+   if(sdv&&HRTN(o.dv)!==sdv&&HRTN(o.dv).indexOf(sdv)!==0)return false;
+   if(sdd&&HRTN(DNAME(o.d))!==sdd&&HRTN(o.d)!==sdd&&hrvDk(DNAME(o.d))!==hrvDk(sdd))return false;
+   return true;})
+  .sort(function(a,b){return a.dv===b.dv?(DNAME(a.d)<DNAME(b.d)?-1:1):(a.dv<b.dv?-1:1);});
+ const N=list.reduce(function(s,o){return s+o.n;},0),G=list.reduce(function(s,o){return s+o.got;},0);
+ return {R:R,list:list,N:N,G:G,off:off,dv:dv,dd:dd};}
+function hrtCov(){
+ const T=el('hratCovT');if(!T)return;
+ const C=hrtCovRows(),R=C.R,pc=C.N?C.G/C.N*100:0;
+ const kp=function(l,v,s){return '<span>'+l+' <b style="font-size:15px">'+v+'</b> '
+  +'<span style="color:var(--color-text-secondary)">'+s+'</span></span>';};
+ el('hratCovK').innerHTML=kp('Register',fmt(C.N),'councils in '+fmt(C.list.length)+' district'
+   +(C.list.length===1?'':'s')+(C.dv||C.dd?' in scope':''))
+  +kp('Received',fmt(C.G),pc.toFixed(1)+'% of that register')
+  +kp('Awaited',fmt(C.N-C.G),'no row on this period&rsquo;s sheet')
+  +kp('Rows in view',fmt(hrtView().length),C.off?fmt(C.off)+' outside the register':'all matched');
+ el('hratCovNote').innerHTML='Measured against the '+fmt(R.n)+' union councils on the HRA card&rsquo;s own '
+  +'roster ('+fmt(Object.keys(R.byDist).length)+' districts). A council counts as received when this '
+  +'period&rsquo;s sheet carries its UC code - or its district and UC name when the code is blank.'
+  +(C.dv||C.dd?' Scope: <b>'+esc(C.dd||C.dv)+'</b>.':'')
+  +(C.off?' '+fmt(C.off)+' row(s) on the sheet name a council outside the register.':'');
+ T.innerHTML='<thead><tr><th>Division</th><th>District</th><th>Register</th><th>Received</th>'
+  +'<th>Awaited</th><th>Received %</th></tr></thead><tbody>'
+  +(C.list.length?C.list.map(function(o){
+   return '<tr><td>'+esc(o.dv)+'</td><td>'+esc(DNAME(o.d))+'</td><td>'+fmt(o.n)+'</td><td>'
+    +fmt(o.got)+'</td><td>'+fmt(o.await)+'</td><td>'+(o.n?(o.got/o.n*100).toFixed(1):'-')
+    +'</td></tr>';}).join('')
+   :'<tr><td colspan="6" class="cnt">Nothing in the register matches the selected division or '
+    +'district.</td></tr>')
+  +'</tbody><tfoot><tr class="tot"><td>All in scope</td><td>'+fmt(C.list.length)+' district'
+  +(C.list.length===1?'':'s')+'</td><td>'+fmt(C.N)+'</td><td>'+fmt(C.G)+'</td><td>'+fmt(C.N-C.G)
+  +'</td><td>'+(C.N?pc.toFixed(1):'-')+'</td></tr></tfoot>';}
+function hrtCovCSV(){
+ const C=hrtCovRows();
+ const H=['Division','District','Register','Received','Awaited','Received %'];
+ const rows=C.list.map(function(o){return [o.dv,DNAME(o.d),o.n,o.got,o.await,
+  o.n?Math.round(o.got/o.n*1000)/10:''];});
+ rows.push(['All',C.list.length+' district'+(C.list.length===1?'':'s'),C.N,C.G,C.N-C.G,
+  C.N?Math.round(C.G/C.N*1000)/10:'']);
+ csvDownload('HRA_coverage_'+(C.dv?C.dv+'_':'')+(C.dd?C.dd+'_':'')+hrtSlug()+'.csv',H,rows);}
+function hrvScope(){const dv=el('hrtDiv')?el('hrtDiv').value:'',dd=el('hrtDist')?el('hrtDist').value:'';
+ return {dv:dv,dd:dd,k:HRTN(dv)+'\u0001'+HRTN(dd)};}
 function hrvData(){
- if(_HRVD)return _HRVD;
- const U=(typeof HRA!=='undefined'&&HRA.u)||[],D=(typeof HRA!=='undefined'&&HRA.d)||[];
- if(!U.length){_HRVD={n:0};return _HRVD;}
+ const SC=hrvScope(),P=hrvPer(),K=SC.k+'\u0001'+P,PUB=P==='pub';
+ if(_HRVD&&_HRVD.k===K)return _HRVD;
+ const CP=PUB?null:hrvCompiled(P);
+ const U0=PUB?((typeof HRA!=='undefined'&&HRA.u)||[]):(CP?CP.U:[]),
+  D=(typeof HRA!=='undefined'&&HRA.d)||[];
+ if(!U0.length){_HRVD={n:0,k:K,per:hrvPerMeta(P,CP),empty:true};return _HRVD;}
  const HI=HRA.thr[0],LO=HRA.thr[1];
  const kg={};(typeof KPGEO!=='undefined'?KPGEO.d:[]).forEach(function(p){kg[p.c]=p.v;});
  const dvOf=function(c){
@@ -12252,6 +12472,12 @@ function hrvData(){
   return HRV_DV[k]||k;};
  const ix={};D.forEach(function(c,i){ix[c]=i;});
  const ann=D.map(function(c){return {c:c,dv:dvOf(c),n:0,b:[0,0,0],oct:0,ach:0,pos:0,sum:0,vm:0};});
+ const hvS=function(a,b){a=HRTN(a);b=HRTN(b);
+  return a===b||a.indexOf(b+' ')===0||b.indexOf(a+' ')===0;};
+ const inS=function(o){return (!SC.dv||hvS(o.dv,SC.dv))
+  &&(!SC.dd||hvS(o.c,SC.dd)||hvS(DNAME(o.c),SC.dd));};
+ const U=(!SC.dv&&!SC.dd)?U0:U0.filter(function(r){const o=ann[ix[D[r[0]]]];
+  return !!o&&inS(o);});
  const div={};
  U.forEach(function(r){
   const o=ann[ix[D[r[0]]]];if(!o)return;
@@ -12281,7 +12507,9 @@ function hrvData(){
  const q=function(f){return scores.length?scores[Math.min(scores.length-1,Math.floor(f*scores.length))]:null;};
  const bt=[0,0,0],vint=[0,0];let achT=0,posT=0;
  U.forEach(function(r){bt[r[6]]++;vint[r[7]]=(vint[r[7]]||0)+1;achT+=r[3];posT+=r[4];});
- _HRVD={n:U.length,nd:D.length,ann:ann,div:div,ind:ind,blocks:blocks,bt:bt,vint:vint,
+ _HRVD={k:K,per:hrvPerMeta(P,CP),pub:PUB,scope:!!(SC.dv||SC.dd),sdv:SC.dv,sdd:SC.dd,
+  n:U.length,nd:ann.filter(function(o){return o.n;}).length,ann:ann,div:div,
+  ind:ind,blocks:blocks,bt:bt,vint:vint,
   hi:HI,lo:LO,achT:achT,posT:posT,
   min:scores.length?scores[0]:null,max:scores.length?scores[scores.length-1]:null,
   med:q(.5),q1:q(.25),q3:q(.75),
@@ -12294,28 +12522,55 @@ function hrvData(){
 function hrvRender(){
  const h=el('hrvHint');
  if(!h)return;
- const X=hrvData();
- if(!X.n){h.innerHTML='The HRA payload is empty, so there is nothing to chart.';
-  el('chrv1').textContent='';el('chrv2').textContent='';el('chrv3').textContent='';
+ hrvPerFill();
+ const X=hrvData(),P=X.per||{pub:true};
+ const s=el('hrvSrc');
+ if(s)s.textContent=P.pub?'Read from the dashboard payload: one province reading dated '+hrvD(HRA.asof)
+  :'Read from the sheet this browser holds for '+hrvSlugLbl(P.slug)+', scored by the card itself';
+ if(!X.n){
+  h.innerHTML=!P.pub?('The compiled sheet for '+esc(hrvSlugLbl(P.slug))+' holds no scored row'
+   +(X.scope?' in the selected division or district':'')+'. Upload a filled sheet above, or pick '
+   +'another campaign or the published reading.')
+   :(X.scope?'No council in the selected division or district carries an HRA reading in the published '
+    +'payload.':'The HRA payload is empty, so there is nothing to chart.');
+  el('chrv1').textContent='';el('chrv2').textContent='';el('chrv3').textContent='';['hrv1','hrv2','hrv3'].forEach(function(id){const c=el(id);if(!c)return;try{(Highcharts.charts||[]).forEach(function(ch){if(ch&&ch.renderTo===c)ch.destroy();});}catch(e){}c.innerHTML='';});
   el('hrvMNote').textContent='';el('chrvMap').textContent='';el('hrvMap').innerHTML='';
+  if(el('hrvTbl'))el('hrvTbl').innerHTML='';if(el('hrv3cap'))el('hrv3cap').textContent='';
+  const S0=el('hrvPer');if(S0)S0.onchange=function(){hrvRender();};if(typeof ntPass==='function')ntPass();
   return;}
  hrvHint(X);
  hrvBand(X);
  hrvCurve(X);
  hrvInd(X);
  hrvMap(X);
+ hrvTable(X);
  const K=el('hrvMK');
  if(K)K.onchange=function(){hrvMap(hrvData());};
  const B=el('btnHRVcsv');
  if(B)B.onclick=hrvCSV;
- _HRVR=true;}
+ const S=el('hrvPer');
+ if(S)S.onchange=function(){hrvRender();};
+ _HRVR=true;if(typeof ntPass==='function')ntPass();}
 
 function hrvHint(X){
- const dvn=Object.keys(X.div).length;
+ const dvn=Object.keys(X.div).length,P=X.per||{pub:true,lbl:'published reading'};
+ const lead=(X.scope?'<b>'+esc(X.sdv||'All divisions')+(X.sdd?' / '+esc(X.sdd):'')
+  +' selected:</b> ':'')+'<b>'+fmt(X.n)+' councils in '+fmt(X.nd)+' district'
+  +(X.nd===1?'':'s')+' and '+dvn+' division'+(dvn===1?'':'s');
+ if(!P.pub){
+  el('hrvHint').innerHTML=lead+' compiled for '+esc(P.lbl)+'.</b> The scores are read from the copies '
+   +'of the card this browser holds for that period, through the card&rsquo;s own formulas. On the '
+   +'card&rsquo;s axis '+fmt(X.bt[0])+' are Low Risk, '+fmt(X.bt[1])+' Medium and '+fmt(X.bt[2])
+   +' High ('+(X.bt[2]/X.n*100).toFixed(1)+'%). Marks earned counts an indicator only where the sheet '
+   +'carries an answer, so a half-filled row is graded over the marks it charged. '
+   +(P.skip?'<b>'+fmt(P.skip)+' row(s)</b> on the sheet are not charted: '
+     +(P.off?fmt(P.off)+' name a district outside the register':'')
+     +(P.off&&P.blank?' and ':'')+(P.blank?fmt(P.blank)+' carry no answer yet':'')+'. ':'')
+   +'This is the compiled sheet, not the published province reading, and the two are never blended.';
+  return;}
  const mix=X.mixed.map(function(o){
   return DNAME(o.c)+': '+o.old+' of '+o.n+' still on the March sheet';}).join('; ');
- el('hrvHint').innerHTML='<b>'+fmt(X.n)+' councils in '+fmt(X.nd)+' districts and '+dvn
-  +' divisions carry an HRA reading dated '+esc(hrvD(HRA.asof))+'.</b> On the card&rsquo;s own axis '
+ el('hrvHint').innerHTML=lead+' carry an HRA reading dated '+esc(hrvD(HRA.asof))+'.</b> On the card&rsquo;s own axis '
   +fmt(X.bt[0])+' are Low Risk, '+fmt(X.bt[1])+' Medium and '+fmt(X.bt[2])+' High ('
   +(X.bt[2]/X.n*100).toFixed(1)+'%). A high percentage here is a safe council &mdash; this is not the '
   +'combined UC risk score used on the Cross-cutting pages, and the two are never blended. '
@@ -12350,8 +12605,10 @@ function hrvBand(X){
  el('chrv1').innerHTML='Each bar is a division&rsquo;s councils split by the band their own score '
   +'falls in. <b>High-Risk share: '+top3+'.</b> '
   +(zeros.length?'No council is High Risk in '+zeros.join(' or ')+'. ':'')
-  +'The two divisions with the largest shares hold '+fmt(top2n)+' of the '+fmt(X.bt[2])
-  +' High-Risk councils.';}
+  +(rows.length<3?'The filter holds '+fmt(X.bt[2])+' High-Risk council'
+   +(X.bt[2]===1?'':'s')+' in '+rows.length+' division'+(rows.length===1?'':'s')+'.'
+   :'The two divisions with the largest shares hold '+fmt(top2n)+' of the '+fmt(X.bt[2])
+    +' High-Risk councils.');}
 
 function hrvCurve(X){
  const S=X.sorted;
@@ -12359,7 +12616,10 @@ function hrvCurve(X){
   chart:{type:'area',height:300,backgroundColor:'transparent',animation:false,spacing:[8,14,8,8]},
   title:{text:null},
   xAxis:{min:0,max:S.length,title:{text:'Councils, ranked by score',style:{fontSize:'11px'}},
-   tickPositions:[1,250,500,750,1000,1250,S.length],
+   tickPositions:(S.length>=1000?[1,250,500,750,1000,1250,S.length]
+    :[1,Math.max(2,Math.round(S.length*.25)),Math.max(2,Math.round(S.length*.5)),
+      Math.max(2,Math.round(S.length*.75)),S.length]
+     .filter(function(v,i,a){return a.indexOf(v)===i;})),
    labels:{formatter:function(){return fmt(this.value);}}},
   yAxis:{min:40,max:100,title:{text:'Score on the card (%)',style:{fontSize:'11px'}},
    plotBands:[{from:0,to:X.lo,color:'rgba(220,38,38,.08)'},
@@ -12415,9 +12675,12 @@ function hrvInd(X){
   series:[{name:'Marks earned',colorByPoint:true,
    data:rows.map(function(o){return {y:o.ach,color:HRVBK[o.b].c,o:o};})}]});
  CKEY('hrv3',HRVBK.map(function(b){return [b.c,b.l];}));
+ el('hrv3cap').textContent='Marks earned as a share of the marks the card charges, '+fmt(X.n)
+  +' council'+(X.n===1?'':'s')+(X.scope?' in the selected division / district':'')
+  +(X.pub?' in the published reading':' in the compiled sheet for '+esc(hrvSlugLbl(X.per.slug)));
  const worst=rows.slice(-3).reverse();
  const bl=X.blocks.slice().sort(function(a,b){return a.p-b.p;});
- const thin=X.ind.filter(function(o){return o.ap<900;})
+ const thin=X.ind.filter(function(o){return o.ap<Math.max(12,Math.round(X.n*0.64));})
   .sort(function(a,b){return a.ap-b.ap;}).slice(0,3)
   .map(function(o){return HRV_SN[o.i]+' '+fmt(o.ap);}).join(', ');
  el('chrv3').innerHTML='The three weakest indicators are <b>'
@@ -12487,7 +12750,8 @@ function hrvMap(X){
   return v<=0?'#dcfce7':v<=5?'#fde68a':v<=15?'#fb923c':'#b91c1c';};
  const tip=function(c){
   const o=by[c],o2=src(c);
-  if(!o2||!o2.n)return DNAME(c)+'\nno HRA sheet';
+  if(!o2||!o2.n)return DNAME(c)+(X.scope?'\noutside the selected division / district'
+   :(X.pub?'\nno HRA sheet':'\nno compiled row for this period'));
   return DNAME(c)+'\n'+o2.dv+' division\n'+fmt(o2.n)+' councils: '+fmt(o2.b[0])+' Low / '
    +fmt(o2.b[1])+' Medium / '+fmt(o2.b[2])+' High'
    +'\nHigh-Risk share '+(o2.hi==null?'-':o2.hi.toFixed(1)+'%')
@@ -12523,35 +12787,55 @@ function hrvMap(X){
   +lg.map(function(b){return '<span style="display:inline-flex;align-items:center;gap:4px">'
    +'<i style="width:10px;height:10px;border-radius:2px;background:'+b[0]+'"></i>'+b[1]+'</span>';}).join('')
   +'<span style="display:inline-flex;align-items:center;gap:4px"><i style="width:10px;height:10px;'
-  +'border-radius:2px;background:#f1f5f9"></i>no sheet</span></span>'
+  +'border-radius:2px;background:#f1f5f9"></i>'+(X.scope?'not in the selected division / '
+   +'district':(X.pub?'no sheet':'no row this period'))+'</span></span>'
   +'<div style="margin-top:4px"><b>'+word+':</b> '+line+'.</div>';
  const green=X.ann.filter(function(o){return o.n&&o.hi===0;}).length;
  const ex=X.ann.filter(function(o){return o.n&&o.hi===0&&o.p<76;})
   .sort(function(a,b){return a.p-b.p;})[0];
  el('chrvMap').innerHTML='Shading follows the measure picked above; the shares count councils, not '
-  +'children. '+green+' of the '+X.nd+' districts have no High-Risk council, but that is not the same as '
+  +'children. '+green+' of the '+X.nd+' district'+(X.nd===1?' has':'s have')
+  +' no High-Risk council, but that is not the same as '
   +'a clean district'+(ex?' &mdash; '+DNAME(ex.c)+' has none and still earns only '+ex.p.toFixed(1)
    +'% of its marks':'')+', which is why the measure can be switched. Bar Swat is drawn with the Swat '
   +'reading because it has no HRA sheet of its own; boundaries are the dashboard&rsquo;s KP district '
   +'shapefile and every label sits inside its own district.';}
 // HRA AT A GLANCE (5/5): the district roll-up download behind the map card.
+// The district roll-up the CSV already carried, on screen and under the same scope.
+function hrvTable(X){
+ const t=el('hrvTbl');if(!t)return;
+ const rows=X.ann.filter(function(o){return o.n;}).sort(function(a,b){return (b.hi||0)-(a.hi||0);});
+ const td=function(o){return '<tr><td>'+esc(o.dv)+'</td><td>'+esc(DNAME(o.c))+'</td><td>'+fmt(o.n)
+  +'</td><td>'+fmt(o.b[0])+'</td><td>'+fmt(o.b[1])+'</td><td>'+fmt(o.b[2])+'</td><td>'
+  +(o.hi==null?'-':o.hi.toFixed(1))+'</td><td>'+(o.p==null?'-':o.p.toFixed(1))+'</td><td>'
+  +(o.m==null?'-':o.m.toFixed(1))+'</td></tr>';};
+ t.innerHTML='<thead><tr><th>Division</th><th>District</th><th>Councils</th><th>Low Risk</th>'
+  +'<th>Medium</th><th>High</th><th>High-Risk %</th><th>Marks earned %</th><th>Mean score %</th>'
+  +'</tr></thead><tbody>'+(rows.length?rows.map(td).join('')
+  :'<tr><td colspan="9" class="cnt">No HRA reading for the selected division and district.</td></tr>')
+  +'</tbody>'+(rows.length?'<tfoot><tr class="tot"><td>All in scope</td><td>'+fmt(X.nd)
+  +(X.nd===1?' district':' districts')+'</td><td>'+fmt(X.n)+'</td><td>'+fmt(X.bt[0])+'</td><td>'+fmt(X.bt[1])+'</td><td>'
+  +fmt(X.bt[2])+'</td><td>'+(X.n?(X.bt[2]/X.n*100).toFixed(1):'-')+'</td><td>'
+  +(X.posT?(X.achT/X.posT*100).toFixed(1):'-')+'</td><td>'
+  +(X.n?((X.ann.reduce(function(s,o){return s+o.sum;},0))/X.n).toFixed(1):'-')+'</td></tr></tfoot>':'');}
 function hrvCSV(){
  const X=hrvData();
  if(!X.n){toast('The HRA payload is empty');return;}
  const H=['Division','District','Councils','Low Risk','Medium Risk','High Risk','High Risk %',
   'Marks earned %','Mean council score %','Marks earned','Marks charged','Sheets'];
- const rows=X.ann.slice().sort(function(a,b){
+ const rows=X.ann.filter(function(o){return o.n;}).slice().sort(function(a,b){
   return a.dv===b.dv?(DNAME(a.c)<DNAME(b.c)?-1:1):(a.dv<b.dv?-1:1);}).map(function(o){
   return [o.dv,DNAME(o.c),o.n,o.b[0],o.b[1],o.b[2],
    o.hi==null?'':Math.round(o.hi*10)/10,
    o.p==null?'':Math.round(o.p*10)/10,
    o.m==null?'':Math.round(o.m*10)/10,
-   o.ach,o.pos,o.dates];});
+   o.ach,o.pos,(X.pub?o.dates:X.per.slug+' (compiled)')];});
  const meanAll=X.ann.reduce(function(s,o){return s+(o.m||0)*o.n;},0)/X.n;
- rows.push(['All','All '+X.nd+' districts',X.n,X.bt[0],X.bt[1],X.bt[2],
+ rows.push(['All','All '+X.nd+' district'+(X.nd===1?'':'s'),X.n,X.bt[0],X.bt[1],X.bt[2],
   Math.round(X.bt[2]/X.n*1000)/10,Math.round(X.achT/X.posT*1000)/10,Math.round(meanAll*10)/10,
   X.achT,X.posT,'']);
- csvDownload('HRA_district_rollup_'+HRA.asof+'.csv',H,rows);}
+ csvDownload('HRA_district_rollup_'+(X.sdv?X.sdv+'_':'')+(X.sdd?X.sdd+'_':'')
+  +(X.pub?HRA.asof:X.per.slug)+'.csv',H,rows);}
 // HRA AT A GLANCE (6/6): findings and recommendations from the sheet compiled above.
 // The owner asked, 27-Oct-2026: "it would be good if we can generate a small report based on
 // compiled hra for findings and recommendations." Every figure is read from hrtRows and the card's
@@ -12877,27 +13161,29 @@ function hrtWire(){
    if(o.dataset.m)M.value=(String(o.dataset.m).length<2?'0':'')+o.dataset.m;
    hrtRefresh();};
   Y.onchange=hrtRefresh;M.onchange=hrtRefresh;
-  el('hrtDiv').onchange=()=>{hrtPage=0;hrtPaint(hrtVals());};
-  el('hrtDist').onchange=()=>{hrtPage=0;hrtPaint(hrtVals());};
+  el('hrtDiv').onchange=()=>{hrtPage=0;hrtScope();hrtPaint(hrtVals());hrtCov();hrvRender();};
+  el('hrtDist').onchange=()=>{hrtPage=0;hrtPaint(hrtVals());hrtCov();hrvRender();};
   el('btnHRThide').onclick=()=>{hrtHide=!hrtHide;
    el('btnHRThide').textContent=hrtHide?'Show the computed columns':'Hide the computed columns';
    hrtPaint(hrtVals());};
+  el('btnHRTDEL').onclick=()=>hraOwnAsk(hrtDel);
   el('btnHRTBlank').onclick=()=>hrtExport(hrtRoster(false),true);
   el('btnHRX').onclick=()=>hrtExport(hrtRows,false);
-  el('btnHRTSeed').onclick=()=>{const R=hrtRoster(true);
+  el('btnHRTSeed').onclick=()=>hraOwnAsk(()=>{const R=hrtRoster(true);
    if(!R.length){toast('The dashboard holds no councils for that division and district');return;}
    hrtRows=R;hrtPage=0;hrtStore();hrtScope();hrtPaint(hrtVals());
-   toast('Seeded '+fmt(R.length)+' councils');};
+   _HRVD=null;hrtNote();hrvRender();
+   toast('Seeded '+fmt(R.length)+' councils');});
   el('btnHRTRow').onclick=()=>{hrtRows.push(hrtBlankRow());
    hrtPage=Math.floor((hrtRows.length-1)/HRT_PG);hrtStore();hrtScope();hrtPaint(hrtVals());
    toast('One council row added');};
-  el('btnHRTCLEAR').onclick=()=>{
+  el('btnHRTCLEAR').onclick=()=>hraOwnAsk(()=>{
    if(!hrtRows.length){toast('This period is already empty');return;}
    if(!window.confirm('Empty the '+fmt(hrtRows.length)+' councils compiled for '+hrtSlug()
     +' in this browser? A file you already downloaded is untouched.'))return;
    hrtRows=[];try{localStorage.removeItem(HRTKEY(hrtSlug()));}catch(e){}
-   hrtRefresh();toast('This period is empty now');};
-  el('btnHRTCLEARALL').onclick=()=>{
+   hrtRefresh();toast('This period is empty now');});
+  el('btnHRTCLEARALL').onclick=()=>hraOwnAsk(()=>{
    const ks=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
     if(k&&k.indexOf(HRTKEY(''))===0)ks.push(k);}}catch(e){}
    if(!ks.length){toast('This browser holds no saved HRA sheet');return;}
@@ -12905,9 +13191,14 @@ function hrtWire(){
     +(ks.length===1?'':'s')+' ('+ks.map(k=>k.slice(HRTKEY('').length)).join(', ')
     +')? A file you already downloaded is untouched.'))return;
    ks.forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
-   hrtRefresh();toast('Removed every saved HRA sheet from this browser');};
+   hrtRefresh();toast('Removed every saved HRA sheet from this browser');});
   el('hrtFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(f)hrtImport(f);
-   e.target.value='';};}}
+   e.target.value='';};
+  el('btnHRTOWN').onclick=()=>{if(_hraOwn){_hraOwn=false;hraOwnUI();toast('Owner mode off');return;}
+   hraOwnAsk(null);};
+  el('btnHRTcov').onclick=hrtCovCSV;
+  el('hrvPer').onchange=()=>hrvRender();}
+ hraOwnUI();}
 function hrtRefresh(){
  hrtWire();
  hrtImpBox('');
@@ -12916,7 +13207,8 @@ function hrtRefresh(){
  hrtLogAdd(st==='kept'?'Loaded the sheet this browser saved for this period.'
   :'This period is empty in this browser.');
  hrtPaint(hrtVals());
- hrtNote();}
+ hrtNote();
+ _HRVD=null;hrvRender();}
 function hrtCsv(txt){
  const out=[],row=[];let s='',q=false;
  for(let i=0;i<txt.length;i++){const ch=txt.charAt(i);
@@ -13067,6 +13359,7 @@ function hrtImport(file){
     +'. Full detail is in the import log below.':''));
   el('hrtDiv').value='';el('hrtDist').value='';
   hrtPage=0;hrtStore();hrtScope();hrtPaint(hrtVals());hrtNote();
+  _HRVD=null;hrvRender();
   toast('Imported '+fmt(rows.length)+' councils \u2014 the period now holds '
    +fmt(hrtRows.length));};
  if(csv){const fr=new FileReader();
