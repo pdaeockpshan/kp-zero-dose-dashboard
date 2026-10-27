@@ -192,7 +192,7 @@ N_HOLD = L(r"  +' Post names, locations, facility names and remarks are excluded
 
 # ---- the tab hint: which tables follow the pick, and what cannot ----
 A_HINT = L(r"  +'across years. Every table on this page follows that pick, including the month-by-month '",
-           r"  +'reporting-coverage grid, the three HRMP blocks and the union-council listing. All three follow the same pick, but the mobile-team block stops where its Apr-2025 export stops - four of its six forms were not being filed after that - while the search-team block below it runs to Sep-2026, so a late period is a dash in one and a figure in the other.'")
+           r"  +'reporting-coverage grid, the three HRMP blocks and the union-council listing. All three follow the same pick, but the mobile-team block stops where its Apr-2025 export stops - four of its six forms were not being filed after that - while the search-team block below it runs to Oct-2026, so a late period is a dash in one and a figure in the other.'")
 N_HINT = L(r"  +'across years. Every table on this page follows that pick, including the month-by-month '",
            r"  +'reporting-coverage grid, the wastage ledger, the class cuts (post type, strategy, age band), '",
            r"  +'the year trend and the union-council listing. What does not narrow says so where it appears: '",
@@ -203,7 +203,7 @@ N_HINT = L(r"  +'across years. Every table on this page follows that pick, inclu
            r"  +'and UCs with a PTP are panel listings over '+PTP.win+', and so are the campaign and routine EPI '",
            r"  +'columns matched beside them. The three HRMP blocks follow the same '",
            r"  +'pick, but the mobile-team block stops where its Apr-2025 export stops - four of its six forms '",
-           r"  +'were not being filed after that - while the search-team block below it runs to Sep-2026, so '",
+           r"  +'were not being filed after that - while the search-team block below it runs to Oct-2026, so '",
            r"  +'a late period is a dash in one and a figure in the other.'")
 
 PAIRS = [(A_CMT, N_CMT), (A_CLS, N_CLS), (A_CELL, N_CELL), (A_TT, N_TT), (A_CHIP, N_CHIP),

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """Extract the search-team payload (const STA) from the two search-team .twbx workbooks.
 
-Sources (both in Joint Database/3. HRMP, both pulled 28-Sep-2026 per their own file dates):
-  Search Team Activity Peshawar.twbx        Extract table, 26,806 rows, one per activity report
-  Search Team Monitoring Check LIst.twbx    Extract table, 10,853 rows, one per checklist
+Sources (both in Joint Database/3. HRMP; the pull date is read from each workbook's own file date, so
+these counts move with a re-pull - they are the 26-Oct-2026 pull):
+  Search Team Activity Peshawar.twbx        Extract table, 27,279 rows, one per activity report
+  Search Team Monitoring Check LIst.twbx    Extract table, 11,011 rows, one per checklist
 
 These two workbooks are the same IDIMS forms as Search_Team_Activity-157 and
-Search_Team_Monitoring_Checklist-158 in the Raw IDIMS folder, re-exported five months later, and each
+Search_Team_Monitoring_Checklist-158 in the Raw IDIMS folder, re-exported months later, and each
 older export is contained in the workbook that superseded it: 15,281 of 15,282 activity ids and
-6,001 of 6,001 checklist ids are in the workbook, which also holds 11,505 and 4,851 rows the April
+6,001 of 6,001 checklist ids are in the workbook, which also holds 11,978 and 5,009 rows the April
 export cannot have because they were entered after it. So the workbook is the source of record, and the
 older export is only consulted for the ids it holds that the workbook lost - one activity row and no
 checklist row. That carry is asserted to stay tiny or the run aborts, because a large divergence would
@@ -16,7 +17,7 @@ mean a different cut of the form rather than a later pull, and two different cut
 
 The owner named this file as the search-team zero-dose and antigen source, and the form does carry it,
 though not where the column names suggest. The bare dose columns (zero_dose, bcg, opv_0..3, penta_1..3,
-pneumo_1..3, rota_1..2, ipv_1..2, mr_1..2, td, new_born_0_28_days, ipv_booster) are blank in all 26,806
+pneumo_1..3, rota_1..2, ipv_1..2, mr_1..2, td, new_born_0_28_days, ipv_booster) are blank in all 27,279
 rows. The target_<antigen> / coverage_<antigen> pair is filled for 21 antigens and those are child
 counts, not percentages, so this payload publishes the pair per antigen and nothing about the bare
 dose columns.
@@ -24,28 +25,30 @@ dose columns.
 The pair does not always reconcile, and the void rule is applied row by row rather than in aggregate:
 a row whose coverage exceeds its target, or whose pair holds a negative or an unreadable number,
 contributes neither number to any published cell, and the voided row count is published beside the pair
-(zdV, o3V, bV, naV, rfV) so the reader can see how much was refused. On the 26,225 kept activity rows
-that removes 585 zero-dose rows, 1,360 OPV-3 rows and 579 BCG rows - between 2% and 8% of what the form
-recorded - and the surviving province figures are 43,554 zero-dose children targeted against 25,868
-found, 61,127 against 43,216 for OPV-3, and 36,455 against 22,732 for BCG.
+(zdV, o3V, bV, naV, rfV) so the reader can see how much was refused. On the 26,698 kept activity rows
+that removes 600 zero-dose rows, 1,378 OPV-3 rows and 593 BCG rows - between 2% and 8% of what the form
+recorded - and the surviving province figures are 44,400 zero-dose children targeted against 26,467
+found, 62,234 against 44,048 for OPV-3, and 37,315 against 23,359 for BCG.
 
 Because every kept row satisfies covered <= target, so does every sum, and no ladder column can
 disagree with itself in aggregate. What can still fail is the column as a measure, and one does: td
-writes a coverage number in 8,752 rows and a target in exactly one (18,500 covered against a target of
-3 across the whole pull). A fifth of its rows contradict themselves, where the worst a used column
-manages is ipv_1 at 7.8%, so td is withheld whole by a computed rule - more than a fifth of the rows
-that recorded the pair contradicted themselves - and named in agvoid with its four numbers, so a refused
-column is visible rather than silent. Before the row rule is applied penta_3 looks like the same kind of
-failure, 98,489 covered against 64,302 target; after it the survivors reconcile at 61,063 against
-43,180, so penta_3 is published and only td is not. That is the whole difference between a column with
-a broken definition and a column with 1,355 bad rows.
+fills its coverage column in 27,260 rows - nonzero in 9,177 - and its target column in exactly one
+(a target of 3 across a pull that writes 18,938 covered). A third of its rows contradict themselves,
+where the worst a used column manages is ipv_1 at 7.7%, so td is withheld whole by a computed rule -
+more than a fifth of the rows that recorded the pair contradicted themselves - and named in agvoid with
+its four numbers, so a refused column is visible rather than silent. Before the row rule is applied
+penta_3 looks like the same kind of failure, 99,385 covered against 65,449 target; after it the
+survivors reconcile at 62,129 against 43,968, so penta_3 is published and only td is not. That is the
+whole difference between a column with a broken definition and a column with 1,375 bad rows.
 
-un_recorded_<antigen>_coverage is held out: it is a third number that reconciles with the pair in 0 of
-the rows checked (zero-dose 1,511, BCG 1,599, OPV-3 2,142 province-wide), except in the ipv_booster
-column family - named without the _coverage suffix - where coverage + un_recorded equals target in
-18,780 of the 18,936 rows that recorded it. ipv_booster therefore stays in the ladder, sparse as it is
-(266 rows carry a booster target, summing 1,143 against 447 covered), and the rest of that family never
-appears.
+un_recorded_<antigen>_coverage is held out: it is a third number beside the pair, and where a row
+records a nonzero one the triple almost never reconciles - covered + un_recorded equals target in 32 of
+the 589 zero-dose rows, 23 of the 570 BCG rows and 9 of the 1,285 OPV-3 rows that record one (the
+columns sum 1,543, 1,615 and 2,186 across the pull); where it is 0 the equation only restates the pair.
+The one exception is the ipv_booster family - named without the _coverage suffix - where coverage +
+un_recorded equals target in 19,251 of the 19,408 rows that record all three. ipv_booster therefore
+stays in the ladder, sparse as it is (278 rows carry a nonzero booster target, summing 1,143 against 447
+covered once the row rule is applied), and the rest of that family never appears.
 
 Aggregated to district x year and district x month on the same district index, year list and month-slot
 arithmetic as const PTP, const PTPM and const MTM, so the PTP tab drives all four grids from one period
@@ -58,7 +61,7 @@ A spelling that resolves to two panel districts is dropped under a named reason,
 does.
 
 Months: the month the entry was made (date_created), the same uniform rule const MTM states. The form's
-own activity date (date_mon) disagrees with the entry month in 4,131 of the 26,225 kept activity rows,
+own activity date (date_mon) disagrees with the entry month in 4,150 of the 26,698 kept activity rows,
 is unreadable in one, and runs into 2027 in two checklists, so it is reported as divergence counts and
 never used to re-date a row.
 
@@ -72,8 +75,8 @@ Marwat) and the checklist in 8, the extra three being one Shangla, one Malakand 
 checklist. Five further district spellings appear in the checklist workbook only as the nine archived
 rows, so they are dropped under a named reason and are not evidence of search-team monitoring there.
 
-The monitoring checklist joins the activity form on (district, team_no, month): 163 of the 233
-activity-side team-months have a checklist behind them, of the 267 checklist-side ones. That link is
+The monitoring checklist joins the activity form on (district, team_no, month): 166 of the 236
+activity-side team-months have a checklist behind them, of the 271 checklist-side ones. That link is
 published as matched counts per district, never as a rate over unmatched months, because a checklist
 filed in a district-month with no activity report - or an activity team-month with no checklist - is
 itself the finding.
@@ -81,7 +84,7 @@ itself the finding.
 Checklist compliance: 32 item columns answer 1, 0 or nothing - unlike the PTP monitoring export's
 undecoded 1/2/3 codes, which is why those rates could not be published and these can. Twenty-five carry
 answers; seven (the team, logistics, vaccination, cold-chain, assistant, data-recording and modality
-fields) are left blank by all 10,843 live checklists, so they are discovered from this pull rather than
+fields) are left blank by all 11,001 live checklists, so they are discovered from this pull rather than
 assumed from the April export, named in the payload and left out of the grid. Yes/no/not-recorded is
 published per item per district-year and the UI states a rate over answered rows only.
 
@@ -92,8 +95,8 @@ found and covered, the other doses administered through facilities - so the bloc
 numbers and lets the UI show their ratio as a labelled comparison, never as a coverage rate.
 
 Row accounting: a row is kept only under named reasons and the run aborts unless workbook rows minus
-the named drops plus the carried rows equals the rows kept. That is 26,806 - 582 + 1 = 26,225 activity
-rows and 10,853 - 10 + 0 = 10,843 checklists, the drops being the rows the source itself archived and
+the named drops plus the carried rows equals the rows kept. That is 27,279 - 582 + 1 = 26,698 activity
+rows and 11,011 - 10 + 0 = 11,001 checklists, the drops being the rows the source itself archived and
 repeated unique_ids. The single carried activity row is the one id the April export holds and the
 workbook lost; the carry aborts if it ever exceeds 5% of the older export.
 
@@ -112,6 +115,7 @@ Prints OK sta <json chars> <summary>, then the totals, the voids, the drops and 
 import argparse
 import collections
 import csv
+import datetime
 import io
 import json
 import os
@@ -131,7 +135,21 @@ RAW = os.path.join(HRMP, 'Raw IDIMS FIles')
 WB = {'sact': os.path.join(HRMP, 'Search Team Activity Peshawar.twbx'),
       'smon': os.path.join(HRMP, 'Search Team Monitoring Check LIst.twbx')}
 OLD = {'sact': 'Search_Team_Activity-157', 'smon': 'Search_Team_Monitoring_Checklist-158'}
-PULL = 202609  # both workbooks were pulled 28-Sep-2026; dates past this are counted, never re-dated
+def _pull_stamp():
+    """The pull date is the workbook's own file date, never a constant.
+
+    The owner re-pulls into the same two .twbx names, so a hard-coded month turns every newer row
+    into a false 'activity date after the pull was taken' finding and prints a vintage the data
+    contradicts - the 26-Oct-2026 re-pull ran to October while the constant still said September.
+    """
+    days = [os.path.getmtime(p) for p in WB.values() if os.path.exists(p)]
+    if not days:
+        raise SystemExit('ERR sta no search-team workbook under ' + HRMP)
+    d = datetime.datetime.fromtimestamp(max(days))
+    return d.year * 100 + d.month, d.strftime('%d-%b-%Y')
+
+
+PULL, PULLDAY = _pull_stamp()  # dates past this are counted, never re-dated
 MONS = {m: i + 1 for i, m in enumerate(
     ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])}
 
@@ -557,7 +575,7 @@ def ladder_voids(per):
     disagree. What can fail is the column itself: a form field that is filled with a coverage number
     and almost never with a target contradicts itself in a third of its rows, and no total built from
     it means anything. The cut is a fifth of the rows that recorded the pair - the worst a used column
-    manages is ipv_1 at 7.8% and td sits at 33.3% - and it is computed from this pull, not assumed."""
+    manages is ipv_1 at 7.7% and td sits at 33.6% - and it is computed from this pull, not assumed."""
     tot = collections.defaultdict(lambda: [0, 0, 0, 0])  # rows, target, covered, voided
     for cells in per['sact']['lad'].values():
         for x, v in enumerate(cells):
@@ -747,7 +765,7 @@ def main():
 
     checks(per, rows, lad, alm, itc, itm, ev, lnk, lnkm, tri, trim, years, ptp, n, dists, srcs, never)
     out = {'gen': dashpatch.pkt_stamp(),
-           'asof': '28-Sep-2026 (both workbook pulls)',
+           'asof': PULLDAY + ' (both workbook pulls)',
            'src': {f: srcs[f]['wb'] for f in FORMS},
            'older': {f: srcs[f]['older'] for f in FORMS},
            'vint': srcs,
@@ -783,7 +801,8 @@ def main():
                     'every free-text note, including why a row was archived',
                     'the reporting body and the post columns - who filed the form, not what it did',
                     'the bare dose columns (zero_dose, bcg, opv_*, penta_*, pneumo_*, rota_*, ipv_*, '
-                    'mr_*, td, new_born, ipv_booster): blank in all 26,806 activity rows',
+                    'mr_*, td, new_born, ipv_booster): blank in all '
+                    + format(n['sact']['read'], ',') + ' activity rows',
                     'un_recorded_<antigen>_coverage - a third number that reconciles with the pair in '
                     'none of the rows checked',
                     '; '.join('%s: %s - %s covered against %s target, %s of %s rows that recorded it '
@@ -794,7 +813,7 @@ def main():
                     'checklist fields no row ever answered: ' + ', '.join(never) if never else
                     'no checklist field was left completely unanswered'],
            'note': 'district x year and district x month counts of the two search-team IDIMS forms as '
-                   'pulled into the owner\'s two Tableau workbooks on 28-Sep-2026, which contain the '
+                   'pulled into the owner\'s two Tableau workbooks on ' + PULLDAY + ', which contain the '
                    '21-Apr-2025 export of the same forms in full apart from the ids counted in carried; '
                    'keyed on the same district index and month slots as const PTP, const PTPM and const '
                    'MTM, so the PTP period picker drives all four grids; every month is the month the '

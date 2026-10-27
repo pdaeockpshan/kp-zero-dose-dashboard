@@ -222,6 +222,7 @@ def cmd_run(cfg, a):
     for ds, e, rec, last in todo:
         out_path = os.path.join(srcutil.OUT, e['const'].lower() + '.json')
         summary, raw = extract(ds, e, out_path, rec['path'])
+        rec = _used_rec(ds, raw, rec)
         js = srcutil.read_text(out_path).strip()
         json.loads(js)
         payloads[ds] = {'const': e['const'], 'json': js, 'summary': summary,
@@ -298,19 +299,50 @@ def cmd_run(cfg, a):
     return 0
 
 
+def _src_paths(ds, raw):
+    """Paths the extractor reported reading on its `SRC <ds> <slot> <path>` lines.
+
+    Extractors decorate the tail in different ways (`(4 files)`, a summary after two spaces, a
+    second path after a pipe), so only a bare trailing count is removed here; anything that is not
+    one real path stays out of the list and out of the caller that trusts it."""
+    paths = []
+    for line in (raw or '').splitlines():
+        if line.startswith('SRC %s ' % ds):
+            parts = line.split(' ', 3)
+            if len(parts) == 4:
+                p = re.sub(r'\s+\([^)]*\)$', '', parts[3].strip())
+                if p and p not in paths:
+                    paths.append(p)
+    return [p for p in paths if len(p.split(' | ')) == 1]
+
+
+def _skipped(ds, raw):
+    """Whether the extractor named a source file it refused to use (`SKIP <ds> ...`)."""
+    return any(l.startswith('SKIP %s ' % ds) for l in (raw or '').splitlines())
+
+
+def _used_rec(ds, raw, rec):
+    """Credit the file actually read when the extractor walked back past a newer one.
+
+    The portal saves the SNID Sept 2026 round both UC-wise and as a district roll-up under one name
+    pattern; the newest match on disk can therefore be a file the extractor skipped, and recording
+    it as the source of a payload built from the table it refused would miscredit the round. Only
+    single-path reports that name a skip qualify - multi-file datasets report one of several paths.
+    """
+    if rec is None or not _skipped(ds, raw):
+        return rec
+    paths = [p for p in _src_paths(ds, raw) if os.path.isfile(p)]
+    if len(paths) == 1 and os.path.normcase(paths[0]) != os.path.normcase(rec['path']):
+        return srcutil.stat_rec(paths[0])
+    return rec
+
+
 def _src_names(ds, raw):
     """Basenames of every file the extractor reported reading (`SRC <ds> <slot> <path>`).
 
     Without this a multi-source dataset is credited in version.txt to whichever single
     file happened to be newest on disk."""
-    names = []
-    for line in (raw or '').splitlines():
-        if line.startswith('SRC %s ' % ds):
-            parts = line.split(' ', 3)
-            base = os.path.basename(parts[3].strip()) if len(parts) == 4 else ''
-            if base and base not in names:
-                names.append(base)
-    return names
+    return list(dict.fromkeys(os.path.basename(p) for p in _src_paths(ds, raw)))
 
 
 def _state_entry(p, stamp):

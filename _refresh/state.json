@@ -464,12 +464,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-27T14:20:25+05:00",
-  "chars": 17269628,
-  "internal_md5": "cb41ec407472f8ff78dd1fe8db33805f",
-  "master_md5": "e25e01a5c3687f1424b8f44fc630c2c1",
-  "note": "HRA: the compiled card as a PPTX findings report, plus the sheet's visuals. Timestamp refresh 27-Oct-2026 14:20 PKT",
-  "stamp": "27-Oct-2026 14:20"
+  "at": "2026-10-27T16:16:01+05:00",
+  "chars": 17295664,
+  "internal_md5": "2056255897219dac0e4c58a4a96e78eb",
+  "master_md5": "71c1264e2b3465d3b1da9ae140f94682",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+19247 chars). Timestamp refresh 27-Oct-2026 16:15 PKT",
+  "stamp": "27-Oct-2026 16:15"
  },
  "last_run": {
   "at": "2026-10-27T09:54:30+05:00",

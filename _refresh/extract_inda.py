@@ -8,6 +8,12 @@ no Sept option. The EOC summary coverage report (UC-wise, one file per round -
 `summary_SNID Sept 2026_<date>_<time>.xls` export) carries the admin coverage and
 missed-children fields for that round.
 
+The same name pattern also arrives district-wise (province / division / district plus one measure
+column, as on 26-Oct-2026). Shape decides which file is read, so the newest file on disk is not
+necessarily the one used, and every file skipped for shape is printed as
+`SKIP inda <name>: <reason>` for refresh.py to credit the real source. The district-wise cut is not
+new information: its zero-dose reported column reproduces this file's own district roll-up exactly.
+
 Payload `const INDA`:
   camp  campaign label
   asof  coverage report date
@@ -24,7 +30,7 @@ report's household children vaccinated, the same coverage definition as the Miss
 children tab.
 
 Usage: python _refresh/extract_inda.py [--source PATH] [--out PATH]
-Prints: SRC inda <path> | OK inda <chars> <summary> | ERR inda <reason>
+Prints: SRC inda cov <path> | OK inda <chars> <summary> | ERR inda <reason>
 """
 import argparse
 import datetime
@@ -176,25 +182,50 @@ def build(path):
     return p, summary
 
 
+def _uc_rows(path):
+    try:
+        return len(covsept.read(path)['uc'])
+    except SystemExit as e:
+        print('SKIP inda %s: %s' % (os.path.basename(path), str(e).strip()))
+    except Exception as e:
+        print('SKIP inda %s: unreadable (%s)' % (os.path.basename(path), e))
+    return 0
+
+
+def pick(source, entry):
+    """Newest file that really carries UC rows, naming every skip.
+
+    The portal saves one round in two shapes under the same name pattern - the UC-wise table this
+    payload needs and a district-wise roll-up of it. Newest-mtime-wins alone would abort the run on the
+    roll-up or credit it in state.json, so the shape decides and each rejected file is named.
+    """
+    probed = set()
+    if source:
+        probed.add(os.path.normcase(source))
+        if _uc_rows(source):
+            return srcutil.stat_rec(source)
+    for cand in srcutil.discover(entry):
+        if os.path.normcase(cand['path']) in probed:
+            continue
+        if _uc_rows(cand['path']):
+            return cand
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--source')
     ap.add_argument('--out')
     a = ap.parse_args()
     cfg = srcutil.load_sources()
-    if a.source:
-        rec = srcutil.stat_rec(a.source)
-    else:
-        rec = srcutil.newest(cfg['auto'][DS])
+    rec = pick(a.source, cfg['auto'][DS])
     if not rec:
-        raise SystemExit('ERR inda no coverage report found under %s' % cfg['auto'][DS]['roots'])
-    if not os.path.exists(rec['path']):
-        raise SystemExit('ERR inda source not found: %s' % rec['path'])
+        raise SystemExit('ERR inda no UC-wise coverage report found under %s' % cfg['auto'][DS]['roots'])
     payload, summary = build(rec['path'])
     js = srcutil.dumps(payload)
     dest = a.out or os.path.join(srcutil.OUT, 'inda.json')
     srcutil.write_text(dest, js)
-    print('SRC inda %s' % rec['path'])
+    print('SRC inda cov %s' % rec['path'])
     print('OK inda %d %s' % (len(js), summary))
 
 

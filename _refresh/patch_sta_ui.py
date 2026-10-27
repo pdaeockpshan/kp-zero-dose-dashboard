@@ -18,7 +18,8 @@ Adds, in the master only:
      this block instead of contradicting it.
 
 Design rules the patch depends on, all established by extract_sta.py:
-  - The two workbooks pulled 28-Sep-2026 are the source of record for these forms. They contain the
+  - The two workbooks pulled 26-Oct-2026 are the source of record for these forms; the pull date is
+    each .twbx's own file date, never a constant. They contain the
     April CSV of the same form in full apart from the ids counted in `vint.older_only`, and one of
     those is carried into this payload, so the block says which vintage it reads and the two blocks are
     never added together.
@@ -34,8 +35,9 @@ Design rules the patch depends on, all established by extract_sta.py:
   - The checklist item columns answer 1, 0 or nothing, which is decodable without a report definition,
     so yes / no / left-blank is published per item and the share is taken over answered rows only - a
     blank is not a no. The fields no row ever answered (`STA.inever`) are named, not graphed.
-  - Ladder and item cells are district x year, so the month picker cannot narrow those two tables; it
-    narrows the district grid and the forms table, and both say which they follow.
+  - Ladder and item cells were district x year when this module ran, so the month picker could not
+    narrow those two tables; `patch_sta_month.py` added the `alM`/`itM`/`lnkM`/`triM` books and the
+    narrowing afterwards, so un-patch that module before this one and never both in the wrong order.
   - Teams and union councils are district-scoped unions and the province figure is the sum of those, so
     they are blank in a period view, and the activity-to-checklist link is published as matched counts,
     never as a compliance rate over unmatched months.
@@ -68,7 +70,7 @@ A_HINT = ('the two HRMP blocks and the union-council listing. The two HRMP block
           'is a dash there rather than nothing filed.')
 HINT_NEW = ('the three HRMP blocks and the union-council listing. All three follow the same pick, but '
             'the mobile-team block stops where its Apr-2025 export stops - four of its six forms were '
-            'not being filed after that - while the search-team block below it runs to Sep-2026, so a '
+            'not being filed after that - while the search-team block below it runs to Oct-2026, so a '
             'late period is a dash in one and a figure in the other.')
 
 # (old, new) applied to the mobile-team caption this block makes stale. Each must occur exactly once.
@@ -79,7 +81,7 @@ FIX = [
      'All six of these files stop inside Apr-2025, because that is when the pull was taken: '),
     ("'filled in.'),",
      "'filled in. Two of these six - the search-team activity report and its monitoring checklist - "
-     "were re-pulled into a September 2026 workbook and are published again in the block below, "
+     "were re-pulled into the workbooks this payload reads and are published again in the block below, "
      "antigen by antigen, so read that one for those two forms and this one for the other four.'),"),
     ('on them is published while that question is open. Also held out:',
      'on them is published here while that question is open. For the search-team activity form it has '
@@ -90,7 +92,7 @@ FIX = [
 CARD = (
  '<div class="card" id="cSTa" style="display:none">\r\n'
  '<div class="tblhdr"><h3 style="margin:0">Search teams: the same two HRMP forms, read from the '
- 'Sep-2026 workbooks instead of the April export</h3><div style="display:flex;gap:10px;align-items:center">'
+ 'workbooks the owner re-pulled instead of the April export</h3><div style="display:flex;gap:10px;align-items:center">'
  '<span class="cnt" id="cntSTf"></span><button class="btn" id="btnSTf">Download (CSV)</button>'
  '</div></div>\r\n'
  '<div class="scroll"><table id="tSTf"></table></div>\r\n'
@@ -139,7 +141,7 @@ function staTab(){
 }
 """
 
-RENDER = r""" // HRMP search teams: the two forms the owner re-pulled into the Sep-2026 workbooks
+RENDER = r""" // HRMP search teams: the two forms the owner re-pulled into the owner's workbooks
  const SSC=el('cSTa');
  if(SSC){
   if(typeof STA==='undefined'||!STA||!STA.d||!STA.d.length||!STA.mk||!STA.forms
@@ -610,7 +612,7 @@ def patch(v, js, obj):
     v.require(t.index('function mtmTab(){') < t.index('function staTab(){')
               < t.index('function ptBadge(){'), 'staTab must sit with the other PTP cache helpers')
     # the mobile-team caption has to point here rather than contradict this block
-    v.require(t.count('were re-pulled into a September 2026 workbook') == 1
+    v.require(t.count('were re-pulled into the workbooks this payload reads') == 1
               and t.count('and not re-pulled into this payload since') == 1
               and t.count('the three HRMP blocks and the union-council listing') == 1,
               'the stale mobile-team claims were not corrected')

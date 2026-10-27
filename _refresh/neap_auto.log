@@ -136,3 +136,66 @@
 2026-10-19 13:57:21    02edec3..43c5013  main -> main
 2026-10-19 13:57:21 verify: no stored GitHub credential found - check the push manually
 2026-10-19 13:57:21 refresh exit=0
+2026-10-25 16:57:01 new NEAP file NEAP (50).xls is 298s old - waiting for the second export
+2026-10-26 19:57:00 new NEAP export: NEAP (54).xls (26-Oct-2026 19:38, 1332880 bytes) - refreshing
+2026-10-26 19:57:25 refresh: 1 to extract, 0 skipped
+2026-10-26 19:57:25 # extracting neap from NEAP (54).xls ...
+2026-10-26 19:57:25 WARN neap NEAP (54).xls is not the district-wise shape - trying the other candidates
+2026-10-26 19:57:25 
+2026-10-26 19:57:26 SRC neap district C:\Users\HD\Downloads\NEAP (53).xls
+2026-10-26 19:57:26 
+2026-10-26 19:57:26 SRC neap uc C:\Users\HD\Downloads\NEAP (54).xls
+2026-10-26 19:57:26 
+2026-10-26 19:57:26 OK neap 109281 SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 994 (NEAP (54).xls)
+2026-10-26 19:57:26 
+2026-10-26 19:57:26   neap NEAP     109,281 chars  SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 24; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 994 (NEAP (54).xls)
+2026-10-26 19:57:26   swap NEAP   in 4/4 variants
+2026-10-26 19:57:26 
+2026-10-26 19:57:26 variants:
+2026-10-26 19:57:26   index.html                                     +669 chars  NEAP 108612 -> 109281 chars; stamp 26-Oct-2026 15:54 -> 26-Oct-2026 19:57
+2026-10-26 19:57:26   preview.html                                   +669 chars  NEAP 108612 -> 109281 chars; stamp 26-Oct-2026 15:54 -> 26-Oct-2026 19:57
+2026-10-26 19:57:26   public/index.html                              +669 chars  NEAP 108612 -> 109281 chars; stamp 26-Oct-2026 15:54 -> 26-Oct-2026 19:57
+2026-10-26 19:57:26   Zero_Dose_Digitization_Dashboard.html          +669 chars  NEAP 108612 -> 109281 chars; stamp 26-Oct-2026 15:54 -> 26-Oct-2026 19:57
+2026-10-26 19:57:26 identical group md5: {'index.html': 'a39f74d7f7bd83a4938cdd640adf49dd', 'preview.html': 'a39f74d7f7bd83a4938cdd640adf49dd', 'public/index.html': 'a39f74d7f7bd83a4938cdd640adf49dd'}
+2026-10-26 19:57:26 stamp: 26-Oct-2026 15:54 -> 26-Oct-2026 19:57
+2026-10-26 19:57:26 version note: Data refresh 26-Oct-2026 19:57 PKT: NEAP re-extracted from NEAP (53).xls, NEAP (54).xls (26-Oct-2026 19:38): SNID Nov-26, 27 districts, DPEC held on time 26, AI
+2026-10-26 19:57:26 
+2026-10-26 19:57:26 WROTE index.html (16,987,460 bytes)
+2026-10-26 19:57:26 WROTE preview.html (16,987,460 bytes)
+2026-10-26 19:57:26 WROTE public/index.html (16,987,460 bytes)
+2026-10-26 19:57:26 WROTE Zero_Dose_Digitization_Dashboard.html (17,189,380 bytes)
+2026-10-26 19:57:26 WROTE version.txt
+2026-10-26 19:57:26 WROTE public\version.txt
+2026-10-26 19:57:26 REFRESHED neap
+2026-10-26 19:57:26 publish: pending changes
+2026-10-26 19:57:26  M Zero_Dose_Digitization_Dashboard.html
+2026-10-26 19:57:26  M _refresh/dashpatch.py
+2026-10-26 19:57:26  M _refresh/extract_ptp.py
+2026-10-26 19:57:26  M _refresh/extract_sta.py
+2026-10-26 19:57:26  M _refresh/neap_auto.log
+2026-10-26 19:57:26  M _refresh/state.json
+2026-10-26 19:57:26  M hyperd.log
+2026-10-26 19:57:26  M index.html
+2026-10-26 19:57:26  M preview.html
+2026-10-26 19:57:26  M public/index.html
+2026-10-26 19:57:26  M public/version.txt
+2026-10-26 19:57:26  M version.txt
+2026-10-26 19:57:26 ?? _refresh/hyperd.log
+2026-10-26 19:57:26 ?? _refresh/neap_auto.lock
+2026-10-26 19:57:26 ?? _refresh/patch_ptp_class_month.py
+2026-10-26 19:57:26 ?? _refresh/patch_ptp_excel.py
+2026-10-26 19:57:26 ?? _refresh/patch_sta_month.py
+2026-10-26 19:57:26 ?? _refresh/recon_hrmp26.py
+2026-10-26 19:57:26 ?? _refresh/recon_stw2.py
+2026-10-26 19:57:26 ?? _refresh/recon_stw3.py
+2026-10-26 19:57:26 ?? _refresh/recon_stwa.py
+2026-10-26 19:57:26 warning: in the working copy of '_refresh/state.json', LF will be replaced by CRLF the next time Git touches it
+2026-10-26 19:57:26 staged: Zero_Dose_Digitization_Dashboard.html _refresh/state.json index.html preview.html public/index.html public/version.txt version.txt 
+2026-10-26 19:57:26 [main 70516d7] Auto-refresh NEAP from EOC pre-campaign export
+2026-10-26 19:57:26  7 files changed, 1286 insertions(+), 449 deletions(-)
+2026-10-26 19:57:26 To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-26 19:57:26    bf61271..70516d7  main -> main
+2026-10-26 19:57:26 push: To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-26 19:57:26    bf61271..70516d7  main -> main
+2026-10-26 19:57:26 verify: no stored GitHub credential found - check the push manually
+2026-10-26 19:57:26 refresh exit=0
