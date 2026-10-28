@@ -464,12 +464,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-28T11:32:52+05:00",
-  "chars": 17396827,
-  "internal_md5": "ddf9d1283ec80bcc2d383ce81d01d4c1",
-  "master_md5": "7a8d5b52e9113e3425269c927ae86f88",
-  "note": "Morning deployment: districts can now file the report from a Google Form; the tab reads the response sheet live (latest submission per district-day wins, plan inherited when blank, awaited and % computed). Rebuilt the form with planned+deployed counts for all nine cadres and UC planned/reported, whole numbers only. Verified end to end with a live submission.. Timestamp refresh 28-Oct-2026 11:32 PKT",
-  "stamp": "28-Oct-2026 11:32"
+  "at": "2026-10-28T11:41:35+05:00",
+  "chars": 17397061,
+  "internal_md5": "5607d87a05402f690034255c9b144f40",
+  "master_md5": "4cc3fabb56045312d9ac543042e541e2",
+  "note": "Morning deployment: the feed reads both question phrasings, so renaming the form items to Mobile teams planned / Mobile teams deployed cannot break the board.. Timestamp refresh 28-Oct-2026 11:41 PKT",
+  "stamp": "28-Oct-2026 11:41"
  },
  "last_run": {
   "at": "2026-10-28T09:07:18+05:00",
