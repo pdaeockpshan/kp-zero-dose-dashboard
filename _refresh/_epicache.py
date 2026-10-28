@@ -16,7 +16,9 @@ import srcutil
 
 CACHE = os.path.join(srcutil.HERE, 'cache')
 EPI_CACHE = os.path.join(CACHE, 'epi25mon.pkl')
-AGVER = ','.join(epi_ag.KEYS)
+# ':uc1' says the cached record also carries the per-Union-Council rows, which the UC monthly
+# payload needs; records written before that are re-read once.
+AGVER = ','.join(epi_ag.KEYS) + ':uc1'
 
 
 def load():
@@ -25,9 +27,12 @@ def load():
             cache = pickle.load(f)
     except (OSError, EOFError, ValueError):
         return {}
-    # skip markers (False / 'ERR: ...') stay; parsed months must match the current panel
+    # parsed months must match the current panel; an ERR marker is retried, never trusted -
+    # the file id carries mtime and size, so a changed file is re-read anyway and a fixed
+    # parser must not stay blocked by a parse that failed under the old one.
     return {k: v for k, v in cache.items()
-            if not isinstance(v, dict) or v.get('agv') == AGVER}
+            if not (isinstance(v, dict) and v.get('agv') != AGVER)
+            and not (isinstance(v, str) and v.startswith('ERR:'))}
 
 
 def store(cache):
@@ -39,8 +44,10 @@ def store(cache):
 
 
 def read_consolidated(rec):
-    """One monthly export -> {'mo': 'YYYY-MM', 'ed': {epi_district: {n,s,+antigens}}}.
+    """One monthly export -> {'mo': 'YYYY-MM', 'ed': {epi_district: {n,s,+antigens}},
+    'uc': {Uncode: {d,t,u,n,s,+antigens}}}.
 
+    'uc' is empty for the 2024 district-level exports (they carry Distcode, not Uncode).
     Returns None for files whose period header cannot be read (not single-month).
     """
     import io
@@ -72,10 +79,17 @@ def read_consolidated(rec):
     if miss:
         raise RuntimeError('monthly export %s is missing columns %s' % (rec['name'], miss))
     agc = [(a[0], a[1]) for a in AG if a[1] in t.columns]
+    # the total footer only looks like a data row after the colspan flattening shifts numbers
+    # left into the empty cells; the serial number is the one column that cannot be shifted
+    # into, so it is what separates the rows from the footer.
+    t['S No.'] = pd.to_numeric(t['S No.'], errors='coerce')
+    t = t[t['S No.'].notna()].copy()
     # UC-wise exports carry Uncode (numeric per-UC rows, totals lack it); the
     # district-level 2024 exports instead carry Distcode.
+    uc = {}
     if 'Uncode' in t.columns:
-        t = t[pd.to_numeric(t['Uncode'], errors='coerce').notna()].copy()
+        t['Uncode'] = t['Uncode'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip()
+        t = t[t['Uncode'].str.match(r'^\d+$')].copy()
     elif 'Distcode' in t.columns:
         t = t[pd.to_numeric(t['Distcode'], errors='coerce').notna()].copy()
     num = ['Target Newborns', 'Target Surviving Infants'] + [c for _, c in agc]
@@ -89,7 +103,28 @@ def read_consolidated(rec):
             continue
         out[ed] = {'n': int(g['Target Newborns'].sum()), 's': int(g['Target Surviving Infants'].sum()),
                    **{k: int(g[c].sum()) for k, c in agc}}
-    return {'mo': mo, 'ed': out, 'agv': AGVER}
+    if 'Uncode' in t.columns:
+        junkrows = []
+        for _, x in t.iterrows():
+            ed = str(x['District']).strip()
+            if ed.lower() in junk:
+                # a handful of Chitral Upper councils come through with district '0'; they are
+                # all-zero rows, so they carry no dose and must not create a fake district - but
+                # a non-zero one would be silently lost, so it aborts the extract instead.
+                nz = [c for c in num if float(x[c]) > 0]
+                if nz:
+                    raise RuntimeError('%s: UC %s has district "%s" but reports %s'
+                                       % (rec['name'], x['Uncode'], ed, ', '.join(nz)))
+                junkrows.append(x['Uncode'])
+                continue
+            uc[x['Uncode']] = {
+                'd': ed, 't': str(x['Tehsil']).strip(), 'u': str(x['Union Council']).strip(),
+                'n': int(x['Target Newborns']), 's': int(x['Target Surviving Infants']),
+                **{k: int(x[c]) for k, c in agc}}
+        if junkrows:
+            print('  note: %s dropped %d all-zero rows with no district (%s)'
+                  % (rec['name'], len(junkrows), ', '.join(sorted(set(junkrows)))))
+    return {'mo': mo, 'ed': out, 'uc': uc, 'agv': AGVER}
 
 
 def months(cache):
@@ -98,18 +133,25 @@ def months(cache):
 
 
 def embedded_const(repo, name, array=False):
-    """Read an embedded dashboard payload (const NAME) out of index.html."""
+    """Read an embedded dashboard payload (const NAME) out of index.html.
+
+    The payload is decoded rather than cut at the first '}' - EMETA holds nested objects,
+    so a scan for a closing brace stops inside its first month entry.
+    """
     import json
 
     s = srcutil.read_text(os.path.join(repo, 'index.html'))
     i = s.find('const %s = ' % name)
     if i < 0:
         raise SystemExit('ERR const %s not found in index.html' % name)
-    end = '];' if array else '}'
-    j = s.find(end, i)
-    if j < 0:
-        raise SystemExit('ERR const %s: no closing %s in index.html' % (name, end))
-    return json.loads(s[i + len('const %s = ' % name):j + 1].replace('<\\/', '</'))
+    i += len('const %s = ' % name)
+    try:
+        obj, _ = json.JSONDecoder().raw_decode(s[i:].replace('<\\/', '</'))
+    except ValueError as ex:
+        raise SystemExit('ERR const %s cannot be read from index.html: %s' % (name, ex))
+    if array and not isinstance(obj, list) or not array and not isinstance(obj, dict):
+        raise SystemExit('ERR const %s is not a%s' % (name, 'n array' if array else 'n object'))
+    return obj
 
 
 def edmap(repo):

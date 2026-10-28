@@ -1,4 +1,4 @@
-"""Extend the dashboard's EPIM (const EPIM) with the 2024/2025 monthly EPI-MIS exports.
+"""Extend the dashboard's EPIM (const EPIM) with the 2023/2024/2025 monthly EPI-MIS exports.
 
 Companion to extract_emeta.py: same discovery, same per-file cache. Rows for the
 pre-2026 months are aggregated per EPI district from the monthly exports (2025
@@ -64,7 +64,20 @@ def build(cfg):
             # 2026 months come from the embedded payload, not these files (only one 2026
             # single-month export is on file, and mixing it into that year's rows would put
             # two extraction sources inside one month).
-            by_mo.setdefault(rec_o['mo'], {}).update(rec_o['ed'])
+            # One month can sit in several exports: the UC-wise one, and older district-level
+            # downloads that disagree (Jan 2025: bcg 2,538 over its UCs, 2,119 in a summary).
+            # Discovery is newest-first, so the first UC-wise copy wins; a district-level copy
+            # is only used for a month that has no UC-wise export (all of 2024). Never let a
+            # later, older copy overwrite the month already held.
+            have = by_mo.get(rec_o['mo'])
+            if have is None or (not have[0] and rec_o.get('uc')):
+                if have is not None:
+                    print('  note: %s replaces %s for %s (UC-wise)' % (
+                        rec['name'], have[2], rec_o['mo']))
+                by_mo[rec_o['mo']] = (bool(rec_o.get('uc')), rec_o['ed'], rec['name'])
+            elif rec['name'] != have[2]:
+                print('  note: %s also carries %s - keeping %s'
+                      % (rec['name'], rec_o['mo'], have[2]))
     _epicache.store(cache)
     if not by_mo:
         raise SystemExit('ERR %s no pre-2026 monthly exports found' % DS)
@@ -74,13 +87,13 @@ def build(cfg):
     for r in old:
         dmap[r['ed']] = r
     rows = [r for r in old if r['mo'] >= '2026']
-    unknown = sorted({ed for eds in by_mo.values() for ed in eds} - set(dmap))
+    unknown = sorted({ed for _, eds, _ in by_mo.values() for ed in eds} - set(dmap))
     if unknown:
         raise SystemExit('ERR %s districts not in the embedded EPIM mapping: %s' % (DS, unknown))
     added = 0
     for mo in sorted(by_mo):
-        for ed in sorted(by_mo[mo]):
-            v = by_mo[mo][ed]
+        for ed in sorted(by_mo[mo][1]):
+            v = by_mo[mo][1][ed]
             ref = dmap[ed]
             rows.append({'mo': mo, 'ed': ed, 'ds': ref['ds'], 'dv': ref['dv'],
                          'n': v['n'], 's': v['s'],
