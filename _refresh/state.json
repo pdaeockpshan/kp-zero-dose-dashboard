@@ -464,12 +464,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-28T11:41:35+05:00",
-  "chars": 17397061,
-  "internal_md5": "5607d87a05402f690034255c9b144f40",
-  "master_md5": "4cc3fabb56045312d9ac543042e541e2",
-  "note": "Morning deployment: the feed reads both question phrasings, so renaming the form items to Mobile teams planned / Mobile teams deployed cannot break the board.. Timestamp refresh 28-Oct-2026 11:41 PKT",
-  "stamp": "28-Oct-2026 11:41"
+  "at": "2026-10-28T12:53:43+05:00",
+  "chars": 17397418,
+  "internal_md5": "456cdf85a65e5bd911c195593605618f",
+  "master_md5": "b3830ef09ddda0802db87c94fc5d5c32",
+  "note": "Morning deployment: the sheet-feed chip now counts district-days filed and says how many resubmissions replaced an earlier one, so a district that files two or three times a morning still reads as one report; the feed itself always kept the latest submission per district-day. Timestamp refresh 28-Oct-2026 12:53 PKT",
+  "stamp": "28-Oct-2026 12:53"
  },
  "last_run": {
   "at": "2026-10-28T09:07:18+05:00",

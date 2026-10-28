@@ -1,45 +1,21 @@
-/**
- * Morning team deployment - renames the count questions to plain English.
- *
- * "Teams planned today - Mobile teams" becomes "Mobile teams planned", and so on for every cadre,
- * with "UCs planned today" / "UCs reported today" becoming "UCs planned" / "UCs reported".
- *
- * Paste this file into the same Apps Script project as mdep_form_fix.gs (File - New - Script file),
- * pick renameMorningForm from the Run dropdown and Run. It only sets titles: item order, required
- * flags, whole-number validation, the form link and the response sheet are untouched, and no
- * response is created or deleted. Safe to run twice - a second run finds nothing left to rename.
- */
-
-var FORM_ID = '1UnWmFlLedcMJyz8ttlHb669IYZZWoS_obPtMw-7jx-U';
-
-var CADRES = ['Mobile teams', 'Influencers', 'Fixed teams', 'Transit teams', 'Roaming teams',
-              'AIC teams', 'UPEC chairmen', 'DCF teams', 'Security'];
-
+// Renames the morning-report questions to "Mobile teams planned" / "Mobile teams deployed" style.
+// Paste into the Apps Script project, select all (Ctrl+A) first so nothing of the old text is left,
+// then Run renameMorningForm.
 function renameMorningForm() {
-  var form = FormApp.openById(FORM_ID);
-  var map = {
-    'UCs planned today': 'UCs planned',
-    'UCs reported today': 'UCs reported'
-  };
-  for (var c = 0; c < CADRES.length; c++) {
-    map['Teams planned today - ' + CADRES[c]] = CADRES[c] + ' planned';
-    map['Teams deployed today - ' + CADRES[c]] = CADRES[c] + ' deployed';
+  var form = FormApp.openById('1UnWmFlLedcMJyz8ttlHb669IYZZWoS_obPtMw-7jx-U');
+  var cadres = ['Mobile teams', 'Influencers', 'Fixed teams', 'Transit teams', 'Roaming teams',
+                'AIC teams', 'UPEC chairmen', 'DCF teams', 'Security'];
+  var map = { 'UCs planned today': 'UCs planned', 'UCs reported today': 'UCs reported' };
+  for (var c = 0; c < cadres.length; c++) {
+    map['Teams planned today - ' + cadres[c]] = cadres[c] + ' planned';
+    map['Teams deployed today - ' + cadres[c]] = cadres[c] + ' deployed';
   }
-
-  var renamed = [], skipped = [];
-  var items = form.getItems();
-  for (var i = 0; i < items.length; i++) {
-    var it = items[i], t = it.getTitle();
-    if (map[t]) { it.setTitle(map[t]); renamed.push(t + ' -> ' + map[t]); }
-    else if (/planned|deployed/i.test(t)) skipped.push(t);
-  }
-
-  // Anything still titled in the old style means the map did not cover it - say so loudly.
-  Logger.log('renamed %s item(s)', renamed.length);
-  renamed.forEach(function (s) { Logger.log('  %s', s); });
-  if (skipped.length) {
-    Logger.log('untouched pairs (check these by hand):');
-    skipped.forEach(function (s) { Logger.log('  %s', s); });
-  }
-  Logger.log('form now: %s', form.getItems().map(function (x) { return x.getTitle(); }).join(' | '));
+  var done = 0, left = [];
+  form.getItems().forEach(function (it) {
+    var t = it.getTitle();
+    if (map[t]) { it.setTitle(map[t]); done++; }
+    else if (/planned|deployed/.test(t)) { left.push(t); }
+  });
+  Logger.log('renamed ' + done + ' item(s)');
+  if (left.length) { Logger.log('still old-style: ' + left.join(' | ')); }
 }
