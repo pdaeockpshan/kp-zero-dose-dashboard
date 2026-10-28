@@ -71,32 +71,46 @@
    "summary": "manual inject"
   },
   "epim": {
-   "at": "2026-10-23T12:22:44+05:00",
-   "chars": 330406,
-   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls|1792648544|7425118",
-   "payload_sha1": "331a2bb24dfd99c0",
+   "at": "2026-10-28T17:46:18+05:00",
+   "chars": 491974,
+   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls|1793191054|7392660",
+   "payload_sha1": "746597fe1cdfacd9",
    "source": {
-    "mtime": 1792648544.1312902,
-    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls",
-    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls",
-    "size": 7425118
+    "mtime": 1793191054.742391,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "size": 7392660
    },
-   "stamp": "23-Oct-2026 12:22",
-   "summary": "1221 rows: 1221 embedded 2026 + 888 new (pre-2026: 24 months x 37 districts), 8 extra doses"
+   "stamp": "28-Oct-2026 17:22",
+   "summary": "1665 rows: 1665 rebuilt from 45 monthly exports (45 months) + 0 kept from the embedded payload, 8 extra doses"
+  },
+  "epiuc": {
+   "at": "2026-10-28T17:46:32+05:00",
+   "chars": 3142801,
+   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls|1793191054|7392660",
+   "payload_sha1": "7cfa7588e6f41ced",
+   "source": {
+    "mtime": 1793191054.742391,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "size": 7392660
+   },
+   "stamp": "28-Oct-2026 17:46",
+   "summary": "Jan 2023 - Sep 2026 | 33 months x 1459 UCs x 21 fields, extras bcg,opv0,opv1,opv2,opv3,p1,p2,p3,pcv1,pcv2,pcv3,ipv1,ipv2,rota1,rota2,mr1,mr2,tcv,fi, 1177 all-zero UC-dose series; every district-month re-adds to EPIM"
   },
   "epm": {
-   "at": "2026-10-23T12:29:07+05:00",
-   "chars": 2435,
-   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls|1792648544|7425118",
-   "payload_sha1": "3b6815129d2e43e4",
+   "at": "2026-10-28T17:45:48+05:00",
+   "chars": 3003,
+   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls|1793191054|7392660",
+   "payload_sha1": "f46cf8abc7f9f4dc",
    "source": {
-    "mtime": 1792648544.1312902,
-    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls",
-    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (35).xls",
-    "size": 7425118
+    "mtime": 1793191054.742391,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls",
+    "size": 7392660
    },
-   "stamp": "23-Oct-2026 12:25",
-   "summary": "33 months (0 new: -..-), 925 district-months from 25 exports (0 parsed now)"
+   "stamp": "28-Oct-2026 17:22",
+   "summary": "45 months (0 new: -..-), 1665 district-months from 45 exports (0 parsed now)"
   },
   "esup": {
    "at": "2026-10-16T14:14:55+05:00",
@@ -464,20 +478,19 @@
   }
  },
  "last_push": {
-  "at": "2026-10-28T17:22:22+05:00",
-  "chars": 19883235,
-  "internal_md5": "8887c7a78d66ef225c5bdde305a32b85",
-  "master_md5": "d444315bbd02a72489f4780f2bf891f7",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+374 chars). Timestamp refresh 28-Oct-2026 17:22 PKT",
-  "stamp": "28-Oct-2026 17:22"
+  "at": "2026-10-28T17:57:34+05:00",
+  "chars": 20755782,
+  "internal_md5": "a7bff4277de13b384acaf29db7ef13b8",
+  "master_md5": "c5fda24932987aca35db05cce05d1f1a",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (-148 chars). Timestamp refresh 28-Oct-2026 17:57 PKT",
+  "stamp": "28-Oct-2026 17:57"
  },
  "last_run": {
-  "at": "2026-10-28T09:07:18+05:00",
+  "at": "2026-10-28T17:46:32+05:00",
   "datasets": [
-   "neap",
-   "mpqa"
+   "epiuc"
   ],
   "dry_run": false,
-  "stamp": "28-Oct-2026 09:07"
+  "stamp": "28-Oct-2026 17:46"
  }
 }

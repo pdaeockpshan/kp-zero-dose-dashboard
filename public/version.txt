@@ -144,3 +144,7 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 Pushed the hand-edited index.html master to preview / public / internal builds (+1396 chars). Timestamp refresh 28-Oct-2026 17:04 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+513 chars). Timestamp refresh 28-Oct-2026 17:12 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+374 chars). Timestamp refresh 28-Oct-2026 17:22 PKT
+Data refresh 28-Oct-2026 17:22 PKT: EMETA re-extracted from Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls (28-Oct-2026 17:37): 45 months (0 new: -..-), 1665 district-months from 45 exports (0 parsed now).
+Data refresh 28-Oct-2026 17:22 PKT: EPIM re-extracted from Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls (28-Oct-2026 17:37): 1665 rows: 1665 rebuilt from 45 monthly exports (45 months) + 0 kept from the embedded payload, 8 extra doses.
+Data refresh 28-Oct-2026 17:46 PKT: EPIUC re-extracted from Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (44).xls (28-Oct-2026 17:37): Jan 2023 - Sep 2026 | 33 months x 1459 UCs x 21 fields, extras bcg,opv0,opv1,opv2,opv3,p1,p2,p3,pcv1,pcv2,pcv3,ipv1,ipv2,rota1,rota2,mr1,mr2,tcv,fi, 1177 all-zero UC-dose series; every district-month re-adds to EPIM. Timestamp refresh 28-Oct-2026 17:46 PKT.
+Pushed the hand-edited index.html master to preview / public / internal builds (-148 chars). Timestamp refresh 28-Oct-2026 17:57 PKT

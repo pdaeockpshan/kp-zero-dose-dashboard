@@ -474,7 +474,7 @@
    "note": "Fills the Sept-2026 gap in the compiled-indicators export: the data pack's Admin table gets SNID Sept 2026 from the same UC-wise coverage workbook as the Missed children tab. Only admin coverage/missed columns are available; MP target, same-day coverage, guest, HRMP mobile and school stay not reported, and the report's Zero Dose Covered column has no slot in INDIC's 21 admin keys (it feeds ZD and ADV instead). Keep a shell export together with its _files folder - covsept.py resolves the shell. The newest file that really carries UC rows wins, and the 23-Oct-2026 export genuinely revises the round (vaccinated 6,235,824, still missed 121,677 - unchanged from 22-Oct - while zero-dose covered rose 19,144 to 24,052; that column feeds ZD/ADV, not these 21 admin keys). The portal saves one round in two shapes under the same summary name: the UC-wise table this payload needs and a district-wise roll-up of it (province/division/district plus one measure column - the 26-Oct-2026 file is the Bannu and D.I. Khan divisions only). The roll-up is not new information and is provably a cut of the same data: its zero-dose reported column reproduces the 23-Oct UC-wise file's own district sums exactly (Bannu 4,205, Lakki Marwat 4,555, South Waziristan North 492, D.I. Khan 5,284, Tank 967, South Waziristan Lower 572, South Waziristan Upper 290 - 16,365 of the province's 62,128), so skipping it loses nothing. extract_inda.py therefore probes each candidate's header from newest mtime down, prints `SKIP inda <file>: <reason>` for every file it refuses and takes the newest one that carries UC rows - a newer wrong-shape export neither aborts the run nor gets credited as the source, because refresh.py run records the path the extractor reports reading rather than the newest match on disk. A genuine .xlsx re-save of the same round is still never a candidate: covsept.py reads header rows from HTML only, and a flattened .xlsx header aborts loudly rather than shifting figures. Drop the new export in Downloads and run --only inda."
   },
   "epm": {
-   "label": "EPI month index (EMETA) with the 2023-2025 monthly exports",
+   "label": "EPI month index (EMETA) with the 2023-2026 monthly exports",
    "const": "EMETA",
    "extractor": "extract_emeta.py",
    "roots": [
@@ -487,10 +487,10 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html (2026) are kept; parsed months are added. Run together with epim. The dose panel the EPI section reads (EMETA.ag) is regenerated from the shared spec _refresh/epi_ag.py; cached months carry that panel as an agv signature, so entries parsed under an older panel are skipped rather than trusted."
+   "note": "Every single-month export's own period header (<h5>YYYY-MM - YYYY-MM</h5>) is read; per-district aggregates are cached in _refresh/cache/epi25mon.pkl keyed by file id, so only new files pay the pandas parse. Months already embedded in index.html are kept unless their own export is on disk, in which case the parsed month replaces them. A month carrying a part-report flag from an earlier build loses it (and its reporting % and the `partial` captions go with it) once its own single-month export is on disk - Sep 2026 did on 28-Oct-2026, when its export re-added to the YTD register. Run together with epim. The dose panel the EPI section reads (EMETA.ag) is regenerated from the shared spec _refresh/epi_ag.py; cached months carry that panel as an agv signature, so entries parsed under an older panel are skipped rather than trusted."
   },
   "epim": {
-   "label": "EPI district-month coverage rows (EPIM) with 2023-2025",
+   "label": "EPI district-month coverage rows (EPIM) with 2023-2026",
    "const": "EPIM",
    "extractor": "extract_epim.py",
    "roots": [
@@ -503,10 +503,10 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Companion to epm (same parse cache). pre-2026 district rows are aggregated from the monthly exports (2025 UC-wise, 2024 district-level); the embedded 2026 rows are kept verbatim; an EPI district not in the embedded mapping aborts the extract. Pre-2026 rows carry the full 19-dose epi_ag panel; the embedded 2026 rows keep only the eleven core doses, because their single-month exports are no longer on disk."
+   "note": "Companion to epm (same parse cache). Every month with an export on disk is rebuilt from it, 2026 included since 28-Oct-2026 (the embedded 2026 rows had been frozen at eleven core doses with a part-report September); a month with no on-disk export keeps the embedded rows rather than vanishing from the year. An EPI district not in the embedded mapping aborts the extract. Every rebuilt month carries the full 19-dose epi_ag panel."
   },
   "epiuc": {
-   "label": "EPI UC-month dose counts (EPIUC), Jan-Dec 2023 and Jan-Dec 2025",
+   "label": "EPI UC-month dose counts (EPIUC): Jan-Dec 2023, Jan-Dec 2025 and Jan-Sep 2026",
    "const": "EPIUC",
    "extractor": "extract_epi_ucm.py",
    "roots": [
@@ -519,7 +519,7 @@
    "exclude": [
     "~$*"
    ],
-   "note": "Companion to epim (same discovery and parse cache): one row per UC per month for the UC-wise months - Jan-Dec 2023 and Jan-Dec 2025 - rebuilt from those monthly exports. 2024 is district-level and 2026 is a year-to-date report, so neither yields UC-month rows. Values are dose counts, never percentages; rows stay aligned to the embedded EPI order and the extractor aborts if the UC count or the embedded mapping changes. When a month is on disk twice, the newest UC-wise copy wins (older district-level copies disagree: Jan 2025 bcg 2,538 over its UCs vs 2,119 in a summary)."
+   "note": "Companion to epim (same discovery and parse cache): one row per UC per month for every UC-wise month - Jan-Dec 2023, Jan-Dec 2025 and Jan-Sep 2026 (33 months) - rebuilt from those monthly exports. 2024 is district-level, so it yields no UC-month rows; the 2026 months arrived 28-Oct-2026 and their per-UC sums reproduce the embedded EPI YTD register exactly. Values are dose counts, never percentages; rows stay aligned to the embedded EPI order and the extractor aborts if the UC count or the embedded mapping changes, and every district-month must re-add to EPIM. When a month is on disk twice, the newest UC-wise copy wins (older district-level copies disagree: Jan 2025 bcg 2,538 over its UCs vs 2,119 in a summary). A month EMETA flags as a part-report is not published at UC grain."
   },
   "rca": {
    "label": "EPI-MIS rapid coverage assessments, visit-level (const ERCA)",

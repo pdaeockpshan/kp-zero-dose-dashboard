@@ -3,11 +3,13 @@
 Companion to extract_emeta.py: same discovery, same per-file cache. Rows for the
 pre-2026 months are aggregated per EPI district from the monthly exports (2025
 arrives UC-wise, 2024 as district-level summaries - the shared cache handles both)
-and carry the full epi_ag panel; the months already embedded in index.html (2026)
-are kept verbatim (they were built from that year's exports, of which only
-September is still on disk, so 2026 rows show the core doses only). The EPI
-district -> dashboard district(s) / division mapping is taken from the embedded
-EPIM rows; an export district that is not in that mapping aborts the extract.
+and carry the full epi_ag panel. 2026 is rebuilt the same way now that every
+2026 month has its own UC-wise export on disk (the embedded 2026 rows had been
+frozen from an older build: core doses only, and a September that was a
+part-report). A month with no on-disk export is still kept verbatim from the
+embedded payload. The EPI district -> dashboard district(s) / division mapping is
+taken from the embedded EPIM rows; an export district that is not in that mapping
+aborts the extract.
 
 Usage: python _refresh/extract_epim.py [--out PATH]
 Prints: SRC epim <newest file> | OK epim <json chars> <summary> | ERR epim <reason>
@@ -60,10 +62,7 @@ def build(cfg):
             cache[fid] = rec_o if rec_o is not None else False
             if rec_o is not None:
                 nnew += 1
-        if isinstance(rec_o, dict) and rec_o['mo'] < '2026':
-            # 2026 months come from the embedded payload, not these files (only one 2026
-            # single-month export is on file, and mixing it into that year's rows would put
-            # two extraction sources inside one month).
+        if isinstance(rec_o, dict):
             # One month can sit in several exports: the UC-wise one, and older district-level
             # downloads that disagree (Jan 2025: bcg 2,538 over its UCs, 2,119 in a summary).
             # Discovery is newest-first, so the first UC-wise copy wins; a district-level copy
@@ -80,13 +79,15 @@ def build(cfg):
                       % (rec['name'], rec_o['mo'], have[2]))
     _epicache.store(cache)
     if not by_mo:
-        raise SystemExit('ERR %s no pre-2026 monthly exports found' % DS)
+        raise SystemExit('ERR %s no monthly exports found' % DS)
 
     old = embedded_epim(cfg['repo'])
     dmap = {}
     for r in old:
         dmap[r['ed']] = r
-    rows = [r for r in old if r['mo'] >= '2026']
+    # every month with an export is rebuilt from it; a month whose export is not on disk
+    # keeps the embedded rows rather than disappearing from the year
+    rows = [r for r in old if r['mo'] not in by_mo]
     unknown = sorted({ed for _, eds, _ in by_mo.values() for ed in eds} - set(dmap))
     if unknown:
         raise SystemExit('ERR %s districts not in the embedded EPIM mapping: %s' % (DS, unknown))
@@ -100,11 +101,11 @@ def build(cfg):
                          **{k: v[k] for k in epi_ag.KEYS if k in v}})
             added += 1
     rows.sort(key=lambda r: (r['mo'], r['ed']))
-    n25 = len({r['mo'] for r in rows if r['mo'] < '2026'})
     extk = {a[0] for a in epi_ag.EXT}
     ext = len({k for r in rows for k in r if k in extk})
-    summary = '%d rows: %d embedded 2026 + %d new (pre-2026: %d months x %d districts), %d extra doses' % (
-        len(rows), len(old), added, n25, len(dmap), ext)
+    summary = ('%d rows: %d rebuilt from %d monthly exports (%d months) + %d kept from the '
+               'embedded payload, %d extra doses' % (
+                   len(rows), added, len(by_mo), len(by_mo), len(rows) - added, ext))
     return rows, summary
 
 
