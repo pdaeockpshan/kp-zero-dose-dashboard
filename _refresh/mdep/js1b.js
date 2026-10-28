@@ -53,9 +53,9 @@ function mdpTodayDay(n){
  const d=Math.floor((n0-s)/864e5)+1,m=n?mdpLastDay(n):7;
  return d<1?1:d>m?m:d;}
 function mdpLastPlan(n){for(let d=mdpLastDay(n);d>=1;d--){const r=mdpGet(d,n);if(r)return r.p.slice();}return null;}
-function mdpRows(){
+function mdpRows(base){
  const R=[];
- for(const o of mdpBase()){
+ for(const o of (base||mdpBase())){
   const dy=o.dy;
   if(MDD&&MDD>dy)continue;
   const days=MDD?[MDD]:[...Array(dy)].map((_,i)=>i+1),got=[];

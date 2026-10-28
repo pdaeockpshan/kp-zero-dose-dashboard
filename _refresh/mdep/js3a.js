@@ -21,7 +21,6 @@ function mdpFormSync(){
  el('mdpUCP').value=r?r.ucp:(sc.uc||0);
  el('mdpUCR').value=r?r.ucr:'';
  el('mdpInc').value=r?(r.inc||0):0;
- el('mdpTTM').value=r?(r.ttm||0):0;
  el('mdpRsn').value=r?(r.rsn||''):'';
  MDP_TYPES.forEach((t,i)=>{el('mdpP'+i).value=lp?(lp[i]||0):0;el('mdpD'+i).value=r?(r.d[i]||0):0;});
  el('mdpFormLbl').textContent=n?('Day '+d+' · '+DNAME(n)+(r?' · saved report':' · new report')):'No district';
@@ -42,7 +41,7 @@ function mdpReadForm(){
  const fd=el('mdpFDist'),n=fd?fd.value:'',g=id=>Math.max(0,Math.round(+el(id).value||0));
  return {n:n,day:+el('mdpFDay').value||1,at:el('mdpAt').value||'',ucp:g('mdpUCP'),ucr:g('mdpUCR'),
   p:MDP_TYPES.map((t,i)=>g('mdpP'+i)),d:MDP_TYPES.map((t,i)=>g('mdpD'+i)),
-  ttm:g('mdpTTM'),inc:g('mdpInc'),rsn:el('mdpRsn').value||'',ts:new Date().toISOString()};
+  ttm:0,inc:g('mdpInc'),rsn:el('mdpRsn').value||'',ts:new Date().toISOString()};
 }
 function mdpSaveForm(){
  const r=mdpReadForm();
