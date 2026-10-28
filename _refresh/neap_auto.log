@@ -199,3 +199,30 @@
 2026-10-26 19:57:26    bf61271..70516d7  main -> main
 2026-10-26 19:57:26 verify: no stored GitHub credential found - check the push manually
 2026-10-26 19:57:26 refresh exit=0
+2026-10-28 08:57:01 new NEAP export: NEAP (58).xls (28-Oct-2026 08:44, 1333371 bytes) - refreshing
+2026-10-28 08:57:05 refresh: 1 to extract, 0 skipped
+2026-10-28 08:57:05 # extracting neap from NEAP (58).xls ...
+2026-10-28 08:57:05 WARN neap NEAP (58).xls is not the district-wise shape - trying the other candidates
+2026-10-28 08:57:05 
+2026-10-28 08:57:05 SRC neap district C:\Users\HD\Downloads\NEAP (57).xls
+2026-10-28 08:57:05 
+2026-10-28 08:57:05 SRC neap uc C:\Users\HD\Downloads\NEAP (58).xls
+2026-10-28 08:57:05 
+2026-10-28 08:57:05 OK neap 109843 SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (58).xls)
+2026-10-28 08:57:05 
+2026-10-28 08:57:05   neap NEAP     109,843 chars  SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (58).xls)
+2026-10-28 08:57:05   swap NEAP   in 4/4 variants
+2026-10-28 08:57:05 Traceback (most recent call last):
+2026-10-28 08:57:05   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 653, in <module>
+2026-10-28 08:57:05     sys.exit(main())
+2026-10-28 08:57:05              ^^^^^^
+2026-10-28 08:57:05   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 643, in main
+2026-10-28 08:57:05     return cmd_run(cfg, a)
+2026-10-28 08:57:05            ^^^^^^^^^^^^^^^
+2026-10-28 08:57:05   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\refresh.py", line 267, in cmd_run
+2026-10-28 08:57:05     sums = dashpatch.check_identical(cfg, vs)
+2026-10-28 08:57:05            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-28 08:57:05   File "C:\Users\HD\Documents\kp-zero-dose-dashboard\_refresh\dashpatch.py", line 202, in check_identical
+2026-10-28 08:57:05     raise AssertionError('public build diverged from index/preview: %s' % sums)
+2026-10-28 08:57:05 AssertionError: public build diverged from index/preview: {'index.html': '5dfc1aa80d0fc8672779e5661ef94d11', 'preview.html': '15f83817d6d850bd595b2836e2aa1e16', 'public/index.html': '15f83817d6d850bd595b2836e2aa1e16'}
+2026-10-28 08:57:05 refresh exit=1
