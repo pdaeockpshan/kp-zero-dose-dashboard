@@ -27,7 +27,8 @@ this script is not mistaken for a full rebuild of the plate - it aborts when the
 exists in any case.
 
 The MPQA join moved the same day from the single Nov-26 `MPQA` payload to `MPQAH`, the per-campaign
-carry (11 portal rounds, NID FEB 2025 to SNID Nov 2026) built by `extract_mpqa_hist.py` from the
+carry (28 portal rounds, SNID JAN 2022 to SNID Nov 2026; a pre-2025 round joins the district
+grain only, because CIN holds UC rows for 2025-26) built by `extract_mpqa_hist.py` from the
 harvest in `_refresh/cache/mpqa_hist_*.json`, so each row reads its own campaign's round. That
 payload is a cache rebuild, not a Downloads pickup, and this patch still does not build it.
 

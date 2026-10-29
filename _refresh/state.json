@@ -266,6 +266,20 @@
    "stamp": "29-Oct-2026 09:38",
    "summary": "SNID Nov-26, 27 districts, 377 of 381 assigned UCs reported (99.0%) - 320 pass, 52 needs improvement, 5 serious issues, 4 still to report"
   },
+  "mpqah": {
+   "at": "2026-10-29T15:27:16+05:00",
+   "chars": 193354,
+   "file_id": "manual|mpqah.json",
+   "payload_sha1": "2ea32d18a156479c",
+   "source": {
+    "mtime": 1793269622.467302,
+    "name": "mpqah.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\mpqah.json",
+    "size": 193354
+   },
+   "stamp": "29-Oct-2026 15:27",
+   "summary": "manual inject"
+  },
   "mtm": {
    "at": "2026-10-27T09:54:30+05:00",
    "chars": 28135,

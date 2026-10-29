@@ -16,9 +16,16 @@ Reported, desk %, field %, over-all % - and those are the only ones published, s
 formats land in one shape without inventing a crosswalk between item columns.
 
 The agent harvested, per round, the district-wise and UC-wise tables (dataview 2 and 3)
-for: FEB-25, APR-25, MAY-25, SEP-25, OCT-25, DEC-25, FEB-26, APR-26, MAY-26 on OLD and
-SEP-26, NOV-26 on NEW. That is every routine campaign from Feb-2025 to Nov-2026; the
-plate offers earlier campaigns too and prints dashes for them.
+for 28 rounds - FEB-25, APR-25, MAY-25, SEP-25, OCT-25, DEC-25, FEB-26, APR-26, MAY-26 on
+OLD and SEP-26, NOV-26 on NEW, then a second pass over every OLD-page round back to
+JAN-22 that still returns a table: DEC-24, OCT-24, SEP-24, JUN-24, JAN-24, NOV-23 (the
+plate's NID NOV 2023; the portal also lists a SNID NOV (OBR) 2023 round, empty), OCT-23,
+MAY-23, MAR-23, FEB-23, JAN-23, NOV-22, OCT-22, JUN-22, MAY-22, MAR-22, JAN-22.
+July/2024, Mar-24, Apr-24, Feb-24, Aug-23 and Jun-23 come back empty and the plate's NID
+AUG 2022 is left out because the portal files that month as "SNID Aug 2022 Phase I", not
+the plate's NID - all of them drop the MPQA columns on the plate. Earlier campaigns too.
+A pre-2025 round joins the district grain only: `CIN` holds UC rows for 2025-26 only, so
+there is no UC row to hang a UC-grain MPQA on.
 
 Per round this extractor asserts, and refuses to emit on any mismatch:
   * every UC row's district has a district summary row, and every summary district has
@@ -72,6 +79,23 @@ ROUNDS = [
     ('MAY-25-1', 'NID May 2025', 'old'),
     ('APR-25-1', 'NID APRIL 2025', 'old'),
     ('FEB-25-1', 'NID FEB 2025', 'old'),
+    ('DEC-24-1', 'SNID DEC 2024', 'old'),
+    ('OCT-24-1', 'NID OCT 2024', 'old'),
+    ('SEP-24-1', 'SNID SEP 2024', 'old'),
+    ('JUN-24-1', 'SNID JUN 2024', 'old'),
+    ('JAN-24-1', 'NID JAN 2024', 'old'),
+    ('NOV-23-2', 'NID NOV 2023', 'old'),
+    ('OCT-23-1', 'NID OCT 2023', 'old'),
+    ('MAY-23-1', 'SNID MAY 2023', 'old'),
+    ('MAR-23-1', 'SNID MAR 2023', 'old'),
+    ('FEB-23-1', 'SNID FEB 2023', 'old'),
+    ('JAN-23-1', 'NID JAN 2023', 'old'),
+    ('NOV-22-1', 'SNID NOV 2022', 'old'),
+    ('OCT-22-1', 'SNID OCT 2022', 'old'),
+    ('JUN-22-1', 'SNID JUN 2022', 'old'),
+    ('MAY-22-1', 'NID May22', 'old'),
+    ('MAR-22-1', 'NID MAR22', 'old'),
+    ('JAN-22-1', 'SNID JAN22', 'old'),
 ]
 BLANK = ('', '-', 'N/A', 'NA')
 
