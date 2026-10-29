@@ -478,12 +478,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-29T10:14:06+05:00",
-  "chars": 20769566,
-  "internal_md5": "e0c8e22016c5c01bc8b83becb9e8a1e4",
-  "master_md5": "7d97d7c5bba6a473daf730b151b6989c",
-  "note": "Home screen: three district-wise control-room trigger reminders (MPQA 57 UCs Nov-26, ICM 726 UCs Sept-26, admin coverage 138 UCs Sept-26) and a pendency popover on pre-campaign readiness (82 gaps, 4 MPQA reports unfiled, 6 trigger feedbacks pending). Timestamp refresh 29-Oct-2026 10:14 PKT",
-  "stamp": "29-Oct-2026 10:14"
+  "at": "2026-10-29T11:26:42+05:00",
+  "chars": 20791069,
+  "internal_md5": "e982c29549423c94863c0be20685c106",
+  "master_md5": "2dedca50cd80c4931f52dc3cb45eb3d8",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+21503 chars). Timestamp refresh 29-Oct-2026 11:26 PKT",
+  "stamp": "29-Oct-2026 11:26"
  },
  "last_run": {
   "at": "2026-10-29T09:38:06+05:00",
