@@ -831,6 +831,17 @@
    "patterns": [],
    "portal": "NEOC (login required)",
    "howto": "In-dashboard import only: Intra-campaign tab > NEOC block > paste table / import CSV-TSV-HTML export / run the copied snippet in your own NEOC console. Stored in localStorage['kpNEOC.icm.v1'], never committed. Session cookies are not used by any script here."
+  },
+  "trig": {
+   "label": "EOC control-room triggers (MPQA, ICM, admin coverage) - district-wise",
+   "const": [
+    "TRIG"
+   ],
+   "extractor": "extract_trig.py",
+   "roots": [],
+   "patterns": [],
+   "portal": "EOC dashboard > Control Room Triggers (https://www.eoc.gov.pk/trigger/index), signed-in browser",
+   "howto": "Read the three trigger tables while signed in to the EOC portal with campaign NOV-26-1 and province 3:KP; the portal prints zeros until the round starts, so ICM and admin coverage stay on SEP-26-1. Save the scraped tables to _refresh/cache/trig_<date>.json as {src,asof,note,tables:{mpqa,icm,admin}}, each with per-district [flagA,flagB,total,feedback] plus tot. Then run python _refresh/extract_trig.py (checks a+b==total, feedback<=total, the Total row against the column sums, duplicate districts, and matches the MPQA trigger table against the embedded MPQA payload) and inject with refresh.py inject --const TRIG --from _refresh/out/trig.json. Counts are UCs only - no child names, no feedback text, no credentials read or stored."
   }
  }
 }
