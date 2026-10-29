@@ -160,3 +160,4 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 Campaign indicators: each campaign's own MPQA round (MPQAH, 11 rounds NID Feb 2025 to SNID Nov 2026) in the district and UC grains. Timestamp refresh 29-Oct-2026 14:58 PKT
 Data refresh 29-Oct-2026 15:27 PKT: MPQAH payload replaced from mpqah.json (193,354 chars). Timestamp refresh 29-Oct-2026 15:27 PKT.
 Pushed the hand-edited index.html master to preview / public / internal builds (+2208 chars). Timestamp refresh 29-Oct-2026 16:06 PKT
+Campaign indicators: multi-UC picker (CINS.ucs) and downloads named by scope instead of _All_districts; master cloned to the three variants. Timestamp refresh 29-Oct-2026 16:24 PKT
