@@ -253,18 +253,18 @@
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
   },
   "mpqa": {
-   "at": "2026-10-28T09:07:18+05:00",
-   "chars": 23625,
-   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-28_08-44-39.xls|1793159081|1403906",
-   "payload_sha1": "153d09550957564f",
+   "at": "2026-10-29T09:38:06+05:00",
+   "chars": 23639,
+   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-29_09-21-41.xls|1793247704|1405105",
+   "payload_sha1": "97c0cf716f5c9735",
    "source": {
-    "mtime": 1793159081.9528213,
-    "name": "Micro_Plan_Scoring__2026-10-28_08-44-39.xls",
-    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-28_08-44-39.xls",
-    "size": 1403906
+    "mtime": 1793247704.3598776,
+    "name": "Micro_Plan_Scoring__2026-10-29_09-21-41.xls",
+    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-29_09-21-41.xls",
+    "size": 1405105
    },
-   "stamp": "28-Oct-2026 09:07",
-   "summary": "SNID Nov-26, 27 districts, 372 of 381 assigned UCs reported (97.6%) - 317 pass, 50 needs improvement, 5 serious issues, 9 still to report"
+   "stamp": "29-Oct-2026 09:38",
+   "summary": "SNID Nov-26, 27 districts, 377 of 381 assigned UCs reported (99.0%) - 320 pass, 52 needs improvement, 5 serious issues, 4 still to report"
   },
   "mtm": {
    "at": "2026-10-27T09:54:30+05:00",
@@ -478,19 +478,19 @@
   }
  },
  "last_push": {
-  "at": "2026-10-28T17:57:34+05:00",
-  "chars": 20755782,
-  "internal_md5": "a7bff4277de13b384acaf29db7ef13b8",
-  "master_md5": "c5fda24932987aca35db05cce05d1f1a",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (-148 chars). Timestamp refresh 28-Oct-2026 17:57 PKT",
-  "stamp": "28-Oct-2026 17:57"
+  "at": "2026-10-29T09:37:28+05:00",
+  "chars": 20756396,
+  "internal_md5": "9b00b93084e0c7bbb070279e12713c82",
+  "master_md5": "e81837f1df77d2fec5351373332a7b82",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+252 chars). Timestamp refresh 29-Oct-2026 09:37 PKT",
+  "stamp": "29-Oct-2026 09:37"
  },
  "last_run": {
-  "at": "2026-10-29T09:27:05+05:00",
+  "at": "2026-10-29T09:38:06+05:00",
   "datasets": [
-   "neap"
+   "mpqa"
   ],
   "dry_run": false,
-  "stamp": "29-Oct-2026 09:27"
+  "stamp": "29-Oct-2026 09:38"
  }
 }

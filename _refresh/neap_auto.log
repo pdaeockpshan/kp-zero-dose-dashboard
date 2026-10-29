@@ -226,3 +226,54 @@
 2026-10-28 08:57:05     raise AssertionError('public build diverged from index/preview: %s' % sums)
 2026-10-28 08:57:05 AssertionError: public build diverged from index/preview: {'index.html': '5dfc1aa80d0fc8672779e5661ef94d11', 'preview.html': '15f83817d6d850bd595b2836e2aa1e16', 'public/index.html': '15f83817d6d850bd595b2836e2aa1e16'}
 2026-10-28 08:57:05 refresh exit=1
+2026-10-29 09:27:00 new NEAP export: NEAP (60).xls (29-Oct-2026 09:21, 1333378 bytes) - refreshing
+2026-10-29 09:27:32 refresh: 1 to extract, 0 skipped
+2026-10-29 09:27:32 # extracting neap from NEAP (60).xls ...
+2026-10-29 09:27:32 WARN neap NEAP (60).xls is not the district-wise shape - trying the other candidates
+2026-10-29 09:27:32 
+2026-10-29 09:27:32 SRC neap district C:\Users\HD\Downloads\NEAP (59).xls
+2026-10-29 09:27:32 
+2026-10-29 09:27:32 SRC neap uc C:\Users\HD\Downloads\NEAP (60).xls
+2026-10-29 09:27:32 
+2026-10-29 09:27:32 OK neap 110205 SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (60).xls)
+2026-10-29 09:27:32 
+2026-10-29 09:27:32   neap NEAP     110,205 chars  SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 993 (NEAP (60).xls)
+2026-10-29 09:27:32   swap NEAP   in 4/4 variants
+2026-10-29 09:27:32 
+2026-10-29 09:27:32 variants:
+2026-10-29 09:27:32   index.html                                     +362 chars  NEAP 109843 -> 110205 chars; stamp 28-Oct-2026 17:57 -> 29-Oct-2026 09:27
+2026-10-29 09:27:32   preview.html                                   +362 chars  NEAP 109843 -> 110205 chars; stamp 28-Oct-2026 17:57 -> 29-Oct-2026 09:27
+2026-10-29 09:27:32   public/index.html                              +362 chars  NEAP 109843 -> 110205 chars; stamp 28-Oct-2026 17:57 -> 29-Oct-2026 09:27
+2026-10-29 09:27:32   Zero_Dose_Digitization_Dashboard.html          +362 chars  NEAP 109843 -> 110205 chars; stamp 28-Oct-2026 17:57 -> 29-Oct-2026 09:27
+2026-10-29 09:27:32 identical group md5: {'index.html': '661e64a9ad5c7f08508d772970b50332', 'preview.html': '661e64a9ad5c7f08508d772970b50332', 'public/index.html': '661e64a9ad5c7f08508d772970b50332'}
+2026-10-29 09:27:32 stamp: 28-Oct-2026 17:57 -> 29-Oct-2026 09:27
+2026-10-29 09:27:32 version note: Data refresh 29-Oct-2026 09:27 PKT: NEAP re-extracted from NEAP (59).xls, NEAP (60).xls (29-Oct-2026 09:21): SNID Nov-26, 27 districts, DPEC held on time 26, AI
+2026-10-29 09:27:32 
+2026-10-29 09:27:32 WROTE index.html (20,766,202 bytes)
+2026-10-29 09:27:32 WROTE preview.html (20,766,202 bytes)
+2026-10-29 09:27:32 WROTE public/index.html (20,766,202 bytes)
+2026-10-29 09:27:32 WROTE Zero_Dose_Digitization_Dashboard.html (20,968,122 bytes)
+2026-10-29 09:27:32 WROTE version.txt
+2026-10-29 09:27:32 WROTE public\version.txt
+2026-10-29 09:27:32 REFRESHED neap
+2026-10-29 09:27:32 publish: pending changes
+2026-10-29 09:27:32  M Zero_Dose_Digitization_Dashboard.html
+2026-10-29 09:27:32  M _refresh/neap_auto.log
+2026-10-29 09:27:32  M _refresh/state.json
+2026-10-29 09:27:32  M index.html
+2026-10-29 09:27:32  M preview.html
+2026-10-29 09:27:32  M public/index.html
+2026-10-29 09:27:32  M public/version.txt
+2026-10-29 09:27:32  M version.txt
+2026-10-29 09:27:32 ?? _refresh/mdep/~$mdp_sheet_intake_SNID_Nov-26.xlsx
+2026-10-29 09:27:32 ?? _refresh/neap_auto.lock
+2026-10-29 09:27:32 warning: in the working copy of '_refresh/state.json', LF will be replaced by CRLF the next time Git touches it
+2026-10-29 09:27:32 staged: Zero_Dose_Digitization_Dashboard.html _refresh/state.json index.html preview.html public/index.html public/version.txt version.txt 
+2026-10-29 09:27:32 [main 4365ecb] Auto-refresh NEAP from EOC pre-campaign export
+2026-10-29 09:27:32  7 files changed, 23 insertions(+), 21 deletions(-)
+2026-10-29 09:27:32 To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-29 09:27:32    7744df8..4365ecb  main -> main
+2026-10-29 09:27:32 push: To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-29 09:27:32    7744df8..4365ecb  main -> main
+2026-10-29 09:27:32 verify: no stored GitHub credential found - check the push manually
+2026-10-29 09:27:32 refresh exit=0
