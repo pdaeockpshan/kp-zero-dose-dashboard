@@ -19,6 +19,18 @@ One panel per grain, one source per column per campaign: Sept-26 from the sheet,
 from the data pack, and a column a round does not report is dashes, never zero. Nothing is summed
 across campaigns - a multi-campaign plate adds a Campaign column instead.
 
+Later on 29-Oct-2026 the master gained three things this one-shot patch does not build: the
+cascading Division / District selects (`cinFSync`, `CINS.div` / `CINS.dist`), the MPQA columns
+(`cinMQ*`), and the owner gate on the daily-reminder button (`remOwnUI` / `remOwnAsk`,
+`#btnRemindOwn`). Those edits went straight into index.html and are noted here only so replaying
+this script is not mistaken for a full rebuild of the plate - it aborts when the CIN block already
+exists in any case.
+
+The MPQA join moved the same day from the single Nov-26 `MPQA` payload to `MPQAH`, the per-campaign
+carry (11 portal rounds, NID FEB 2025 to SNID Nov 2026) built by `extract_mpqa_hist.py` from the
+harvest in `_refresh/cache/mpqa_hist_*.json`, so each row reads its own campaign's round. That
+payload is a cache rebuild, not a Downloads pickup, and this patch still does not build it.
+
 Master only: preview / public / internal pick the block up through push_master.py, which needs the
 owner's word.
 """

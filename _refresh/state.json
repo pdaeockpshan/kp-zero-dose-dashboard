@@ -478,12 +478,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-29T14:04:20+05:00",
-  "chars": 20905936,
-  "internal_md5": "5ee61a66fba9f53a9cd8fb05e3791d55",
-  "master_md5": "35b05787aa898aba354601d0fac6686b",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+466 chars). Timestamp refresh 29-Oct-2026 14:04 PKT",
-  "stamp": "29-Oct-2026 14:04"
+  "at": "2026-10-29T14:58:50+05:00",
+  "chars": 21007366,
+  "internal_md5": "51232dffc1e1a5fb13095bf7e83592c6",
+  "master_md5": "a894e5760b4cb0a8a61f52bf56627865",
+  "note": "Campaign indicators: each campaign's own MPQA round (MPQAH, 11 rounds NID Feb 2025 to SNID Nov 2026) in the district and UC grains. Timestamp refresh 29-Oct-2026 14:58 PKT",
+  "stamp": "29-Oct-2026 14:58"
  },
  "last_run": {
   "at": "2026-10-29T09:38:06+05:00",
