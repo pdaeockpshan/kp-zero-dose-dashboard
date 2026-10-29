@@ -478,12 +478,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-29T11:26:42+05:00",
-  "chars": 20791069,
-  "internal_md5": "e982c29549423c94863c0be20685c106",
-  "master_md5": "2dedca50cd80c4931f52dc3cb45eb3d8",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+21503 chars). Timestamp refresh 29-Oct-2026 11:26 PKT",
-  "stamp": "29-Oct-2026 11:26"
+  "at": "2026-10-29T11:45:08+05:00",
+  "chars": 20796953,
+  "internal_md5": "8b05cfe4f7bbdc32d97e60d2f503ddb6",
+  "master_md5": "d30341f7d355b371ea5d25da36de39b9",
+  "note": "Home trigger alert: a docked MPQA + ICM pendency card (count-up, chip ping, once per session, reduced-motion aware); the intensity modal is now click-only. Timestamp refresh 29-Oct-2026 11:45 PKT",
+  "stamp": "29-Oct-2026 11:45"
  },
  "last_run": {
   "at": "2026-10-29T09:38:06+05:00",
