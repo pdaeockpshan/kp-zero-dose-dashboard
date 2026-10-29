@@ -41,8 +41,8 @@ A_DISP = 'hcamp:renderHCamp,'
 A_CHIP = '<div class="hubchips"><button data-hl="hrd">High-risk district focus</button>'
 A_JS = '// <<PACKJS'
 
-NAV = (' <button class="tab" data-tab="cind"><span class="tl">Campaign indicators</span>'
-       '<span class="badge">District &amp; UC</span></button>\r\n')
+NAV = (chr(10) + '   <button class="tab" data-tab="cind"><span class="tl">Campaign indicators</span>'
+       '<span class="badge">District &amp; UC</span></button>')
 
 PANE = """<!-- ================= CAMPAIGN INDICATORS: ONE PLATE ================= -->
 <section class="pane" id="p-cind">
@@ -85,6 +85,12 @@ const CINTT={'Administrative Target':'Children in the campaign administrative ta
  'LQAS Pass %':'Lots passed as a share of lots assessed',
  'LQAS_NT':'Portal column LQAS_NT',
  'LQAS_TVBMC':'Portal column LQAS_TVBMC'};
+// The sheet heads its LQAS block Pass / Intermediate / Fail with nothing naming the instrument, so the
+// three print as LQAS lots; the two portal codes lose their underscore. CIN.k keeps the sheet's own
+// labels, because those are the join keys into INDIC.
+const CINLB={'Pass':'LQAS Pass','Intermediate':'LQAS Intermediate','Fail':'LQAS Fail',
+ 'LQAS_NT':'LQAS NT','LQAS_TVBMC':'LQAS TVBMC'};
+function cinLab(s){return CINLB[s]||s;}
 function cinIdx(){
  if(CINIX)return CINIX;
  const cols={admin:INDIC.S.admin.k.map(x=>x[0]),icm:INDIC.S.icm.k.map(x=>x[0]),lqas:INDIC.S.lqas.k.map(x=>x[0])};
@@ -186,8 +192,8 @@ function cinRows(){
  // A column no row in this selection reports is left out and named in the caption, rather than
  // printed as a run of dashes. The sheet itself is uneven: its district tab has no ICM Total Missed.
  const keep=CIN.k.map((c,j)=>rows.some(r=>r.v[j]!=null&&r.v[j]>-1));
- const drop=CIN.k.filter((c,j)=>!keep[j]).map(c=>c[0]);
- const V=CIN.k.map((c,j)=>({k:'v'+j,l:c[0],n:1,tt:CINTT[c[0]]||'',
+ const drop=CIN.k.filter((c,j)=>!keep[j]).map(c=>cinLab(c[0]));
+ const V=CIN.k.map((c,j)=>({k:'v'+j,l:cinLab(c[0]),n:1,tt:CINTT[c[0]]||'',
   sv:r=>{const v=r.v[j];return (v==null||v===-1)?null:v;},f:r=>pkVal(r.v[j],c[1])})).filter((c,j)=>keep[j]);
  const CP=multi?[{k:'cp',l:'Campaign',sv:r=>-r.cs,f:r=>esc(r.cn)}]:[];
  const cols=onD
@@ -205,13 +211,13 @@ function cinDraw(){
  drawTable('cinT',r.cols,r.rows,multi?'cp':'d',1);
  const lab=multi?(sel.length+' campaigns'):pkCampLab(CINCL[sel[0]]||{l:''});
  const nInd=CIN.k.length-r.drop.length;
- el('cinCnt').textContent=lab+' \u00b7 '+r.rows.length+(onD?' district rows':' UC rows');
- el('cinHd').textContent=nInd+' indicators \u00b7 district and UC grain \u00b7 as of '+CIN.asof;
- let cap='<b>'+esc(lab)+'</b> \u00b7 '+nInd+' indicators at '+(onD?'district':'UC')+' grain. '+
+ el('cinCnt').textContent=lab+' · '+r.rows.length+(onD?' district rows':' UC rows');
+ el('cinHd').textContent=nInd+' indicators · district and UC grain · as of '+CIN.asof;
+ let cap='<b>'+esc(lab)+'</b> · '+nInd+' indicators at '+(onD?'district':'UC')+' grain. '+
   '<b>SNID Sept 2026</b> is the compiled campaign sheet ('+esc(CIN.src)+', '+esc(CIN.asof)+
   ', '+fmt(CIN.n)+' UCs); every earlier round is merged from the dashboard campaign data pack ('+
   esc(INDIC.asof)+') into the same columns, so this table and the data pack cannot disagree. '+
-  'Counts are never summed across campaigns \u2014 a multi-campaign table adds a Campaign column. '+
+  'Counts are never summed across campaigns — a multi-campaign table adds a Campaign column. '+
   '&ldquo;&ndash;&rdquo; = not reported for that campaign.';
  if(r.drop.length)cap+=' Left out because no campaign in this selection reports it: <b>'+esc(r.drop.join(', '))+'</b>.';
  if(!onD)cap+=' UC rows are embedded for '+fmt(CINUCOK.length)+' of the '+fmt(CINCL.length)+' campaigns; '+
@@ -222,7 +228,7 @@ function cinDraw(){
 function cinGrid(){
  const r=cinRows(),sel=r.sel,multi=r.multi,onD=r.onD,ucSel=r.ucSel;
  const KI=CIN.k.map((c,j)=>j).filter(j=>r.keep[j]);
- const H0=KI.map(j=>CIN.k[j][0]),rows=[];
+ const H0=KI.map(j=>cinLab(CIN.k[j][0])),rows=[];
  const uc=!onD&&ucSel.length>0;
  if(uc){
   const H=(multi?['Campaign']:[]).concat(['District','Tehsil','UC','UC Code','UC criteria'],H0);
@@ -295,7 +301,9 @@ def patch(v, js, obj):
 
     t = t.replace(A_CONST, 'const CIN = ' + js + ';\r\n' + A_CONST)
     t = t.replace(A_END, A_END + '\r\n' + _x(PANE))
-    t = t.replace(A_NAV, A_NAV + '\r\n' + NAV)
+    j = t.index(A_NAV)
+    j = t.index('</button>', j) + len('</button>')
+    t = t[:j] + _x(NAV) + t[j:]
     t = t.replace(A_TABS, "'hcamp','cind','hrd','hrat','c3','cpre'")
     t = t.replace(A_DISP, 'hcamp:renderHCamp,cind:renderCIN,')
     t = t.replace(A_CHIP, A_CHIP.replace('<div class="hubchips">',
@@ -308,9 +316,12 @@ def patch(v, js, obj):
                    'id="cinXl"', 'function cinGrid(){', 'function cinXlsx(){',
                    'function renderCIN(){', 'const CINCL=[CIN.camp].concat(INDIC.camps);',
                    "'hcamp','cind','hrd'", 'cind:renderCIN,',
-                   'data-hl="cind"', '// >>CINJS'):
+                   'data-hl="cind"', '// >>CINJS',
+                   'function cinLab(s){return CINLB[s]||s;}', 'l:cinLab(c[0])'):
         v.require(t.count(needle) == 1, '%s occurs %d times (want 1)' % (needle, t.count(needle)))
     v.require(t.count('data-tab="cind"') == 1, 'the cind nav button is not exactly one')
+    v.require(t.index('id="bHC"') < t.index('data-tab="cind"'),
+              'the cind nav button must follow the Campaign overview button, not nest inside it')
     v.require(t.index('const INDIC = ') < t.index('const CIN = ') < t.index('const ICMD = '),
               'CIN must sit between INDIC and ICMD')
     v.require(t.index('id="p-hcamp"') < t.index('id="p-cind"') < t.index('id="p-c3"'),
