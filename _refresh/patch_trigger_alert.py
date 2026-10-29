@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Adds the home-screen trigger alert: an animated docked card for MPQA and ICM pendency.
+"""Adds the home-screen trigger alert: an animated docked card for MPQA trigger pendency.
 
 Four atomic edits to the index.html master:
   1. alert CSS          - after the reminder styles
@@ -8,9 +8,13 @@ Four atomic edits to the index.html master:
   4. the 1.7s auto-open - now opens the card, and the intensity modal becomes click-only
 
 The card takes over from the MPQA intensity modal as the automatic alert: it docks top-right
-without covering the page, shows once per browser session, pings the two trigger chips, and
-hands off to the intensity popover or the district table. The modal's session flag and its
-auto-opener go with it, so there is one alert on the home screen, not two.
+without covering the page, shows once per browser session, pings the MPQA chip, and hands off
+to the intensity popover. The modal's session flag and its auto-opener go with it, so there is
+one alert on the home screen, not two.
+
+ICM is left out until the Nov-26 round carries its own ICM triggers: the ICM table on the home
+strip is still the SNID Sept-26 round, and announcing those pending UCs as today's alert would
+read as current. It is one line in ALERTC to bring it back.
 
 Master only: preview / public / internal pick the block up through push_master.py.
 """
@@ -77,7 +81,9 @@ JS = """// ---------- Home trigger alert: a docked card announcing pending trigg
 // tables stay one click away. It shows once per browser session, never covers the page, and
 // counts up unless the reader has asked for reduced motion.
 const ALERTK='kpTrigAlert.v1';
-const ALERTC={mpqa:['#be123c','rgba(190,18,60,.45)'],icm:['#b45309','rgba(180,83,9,.45)']};
+// ICM is deliberately absent: its trigger table still belongs to the SNID Sept-26 round. Add
+// icm:['#b45309','rgba(180,83,9,.45)'] once the Nov-26 round carries ICM trigger feedback.
+const ALERTC={mpqa:['#be123c','rgba(190,18,60,.45)']};
 function alertRows(){
  const out=[];
  (TRIG.t||[]).forEach(t=>{

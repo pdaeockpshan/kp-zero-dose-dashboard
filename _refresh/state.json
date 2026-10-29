@@ -478,12 +478,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-29T11:45:08+05:00",
-  "chars": 20796953,
-  "internal_md5": "8b05cfe4f7bbdc32d97e60d2f503ddb6",
-  "master_md5": "d30341f7d355b371ea5d25da36de39b9",
-  "note": "Home trigger alert: a docked MPQA + ICM pendency card (count-up, chip ping, once per session, reduced-motion aware); the intensity modal is now click-only. Timestamp refresh 29-Oct-2026 11:45 PKT",
-  "stamp": "29-Oct-2026 11:45"
+  "at": "2026-10-29T11:51:41+05:00",
+  "chars": 20797104,
+  "internal_md5": "808b9b9749fde0dc302d336e49a6cdb9",
+  "master_md5": "d3aab1d66ec109c5fe8f61e11bfb196b",
+  "note": "Trigger alert: MPQA only for now; ICM waits for the Nov-26 round's own triggers. Timestamp refresh 29-Oct-2026 11:51 PKT",
+  "stamp": "29-Oct-2026 11:51"
  },
  "last_run": {
   "at": "2026-10-29T09:38:06+05:00",
