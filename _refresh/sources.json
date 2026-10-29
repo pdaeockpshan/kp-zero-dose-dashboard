@@ -473,6 +473,22 @@
    "portal": "EOC summary coverage report (portal > coverage > export UC-wise): the direct export arrives as summary_<campaign>_<date>_<time>.xls with the table in the sibling <name>_files/sheet001.htm; the legacy pipeline's saved copy is cov_SNID Sept 2026.xls",
    "note": "Fills the Sept-2026 gap in the compiled-indicators export: the data pack's Admin table gets SNID Sept 2026 from the same UC-wise coverage workbook as the Missed children tab. Only admin coverage/missed columns are available; MP target, same-day coverage, guest, HRMP mobile and school stay not reported, and the report's Zero Dose Covered column has no slot in INDIC's 21 admin keys (it feeds ZD and ADV instead). Keep a shell export together with its _files folder - covsept.py resolves the shell. The newest file that really carries UC rows wins, and the 23-Oct-2026 export genuinely revises the round (vaccinated 6,235,824, still missed 121,677 - unchanged from 22-Oct - while zero-dose covered rose 19,144 to 24,052; that column feeds ZD/ADV, not these 21 admin keys). The portal saves one round in two shapes under the same summary name: the UC-wise table this payload needs and a district-wise roll-up of it (province/division/district plus one measure column - the 26-Oct-2026 file is the Bannu and D.I. Khan divisions only). The roll-up is not new information and is provably a cut of the same data: its zero-dose reported column reproduces the 23-Oct UC-wise file's own district sums exactly (Bannu 4,205, Lakki Marwat 4,555, South Waziristan North 492, D.I. Khan 5,284, Tank 967, South Waziristan Lower 572, South Waziristan Upper 290 - 16,365 of the province's 62,128), so skipping it loses nothing. extract_inda.py therefore probes each candidate's header from newest mtime down, prints `SKIP inda <file>: <reason>` for every file it refuses and takes the newest one that carries UC rows - a newer wrong-shape export neither aborts the run nor gets credited as the source, because refresh.py run records the path the extractor reports reading rather than the newest match on disk. A genuine .xlsx re-save of the same round is still never a candidate: covsept.py reads header rows from HTML only, and a flattened .xlsx header aborts loudly rather than shifting figures. Drop the new export in Downloads and run --only inda."
   },
+  "cin": {
+   "label": "Campaign indicators at one plate - district and UC grain, one column per indicator (const CIN)",
+   "const": "CIN",
+   "extractor": "extract_cin.py",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ],
+   "patterns": [
+    "*District and UCs Wise Campaign Indicators*.xlsx"
+   ],
+   "exclude": [
+    "~$*"
+   ],
+   "portal": "Pre-filled district/UC campaign-indicator workbook prepared by the data cell (District Wise + UC Wise tabs) from the portal's compiled campaign export",
+   "note": "Stores only SNID Sept 2026. The workbook's Feb/Apr/May 2026 blocks are a re-cut of the data the dashboard already carries - the extractor proves them equal to INDIC row for row at both grains (district: target, still NA, SM %, ICM recall %, LQAS pass %; UC rows on Administrative Target 1418/1418, 1417/1418 and 928/928) and proves the Sept district admin block equal to INDA on six columns, 17,415 values in all - so only the fourth round is emitted. Earlier rounds merge from INDIC into the same 17 columns at render time: one copy of the data, so the plate and the data pack cannot disagree. Tab shapes differ and are asserted: the district tab has no ICM Total Missed, the UC tab no ICM TVBCM, so a row keeps -1 where its tab stops and the page leaves a column out only when no campaign in the selection reports it (the caption names it). Units are declared and proved: Feb/Apr/May percentages are fractions on both tabs; Sept district is already percent, Sept UC SM% is percent while ICM%/LQAS% are fractions. 975 UC rows are counted and skipped from the cross-check because the workbook groups by district+UC name while the portal keeps the tehsil split (Bannu's two AMANDI UCs sum into one workbook row); six Lakki Marwat UCs absent from the Sept summary report keep the workbook's row with only their admin columns uncross-checked. Sept covers 37 districts - the coverage report has no old Wazir-S district, only Lower and Upper. Drop the new workbook in Downloads and run --only cin."
+  },
   "epm": {
    "label": "EPI month index (EMETA) with the 2023-2026 monthly exports",
    "const": "EMETA",

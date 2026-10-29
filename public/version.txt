@@ -155,3 +155,4 @@ Home screen: three district-wise control-room trigger reminders (MPQA 57 UCs Nov
 Pushed the hand-edited index.html master to preview / public / internal builds (+21503 chars). Timestamp refresh 29-Oct-2026 11:26 PKT
 Home trigger alert: a docked MPQA + ICM pendency card (count-up, chip ping, once per session, reduced-motion aware); the intensity modal is now click-only. Timestamp refresh 29-Oct-2026 11:45 PKT
 Trigger alert: MPQA only for now; ICM waits for the Nov-26 round's own triggers. Timestamp refresh 29-Oct-2026 11:51 PKT
+Pushed the hand-edited index.html master to preview / public / internal builds (+108366 chars). Timestamp refresh 29-Oct-2026 13:45 PKT
