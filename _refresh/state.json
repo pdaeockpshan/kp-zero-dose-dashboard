@@ -506,12 +506,12 @@
   }
  },
  "last_push": {
-  "at": "2026-10-29T16:24:05+05:00",
-  "chars": 21112880,
-  "internal_md5": "9c769652ee6e73b9a3fd63992d4bde32",
-  "master_md5": "a4f2a6babf7ce7e15ec0cdedcdf7b448",
-  "note": "Campaign indicators: multi-UC picker (CINS.ucs) and downloads named by scope instead of _All_districts; master cloned to the three variants. Timestamp refresh 29-Oct-2026 16:24 PKT",
-  "stamp": "29-Oct-2026 16:24"
+  "at": "2026-10-30T10:24:25+05:00",
+  "chars": 21116299,
+  "internal_md5": "ee2f038afec830db50bfc68cddcf7cf3",
+  "master_md5": "aadc31b863616eecac9c505de890f9fa",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+1358 chars). Timestamp refresh 30-Oct-2026 10:24 PKT",
+  "stamp": "30-Oct-2026 10:24"
  },
  "last_run": {
   "at": "2026-10-30T09:31:37+05:00",
