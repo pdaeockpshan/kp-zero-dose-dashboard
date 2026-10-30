@@ -245,7 +245,8 @@ def main():
             # one the pre-campaign card already uses, so it is carried for when it lands
             raise SystemExit('ERR mpqah %r is not a campaign label in INDIC' % label)
         rec, summary, tot = build_round(rid, label, fmt, got[rid])
-        rec['a'] = asof
+        # A round re-cut from a later export carries its own date; the rest keep the harvest date.
+        rec['a'] = got[rid].get('a') or asof
         match = sum(1 for c in rec['u'] if c in codes)
         print('OK mpqah %s %s (UC codes matched %d of %d in INDIC)'
               % (rid, summary, match, len(rec['u'])))

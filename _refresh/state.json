@@ -253,31 +253,31 @@
    "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
   },
   "mpqa": {
-   "at": "2026-10-29T09:38:06+05:00",
-   "chars": 23639,
-   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-29_09-21-41.xls|1793247704|1405105",
-   "payload_sha1": "97c0cf716f5c9735",
+   "at": "2026-10-30T09:31:37+05:00",
+   "chars": 24870,
+   "file_id": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-30_09-20-07.xls|1793334010|1482223",
+   "payload_sha1": "a12f503956f63142",
    "source": {
-    "mtime": 1793247704.3598776,
-    "name": "Micro_Plan_Scoring__2026-10-29_09-21-41.xls",
-    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-29_09-21-41.xls",
-    "size": 1405105
+    "mtime": 1793334010.095103,
+    "name": "Micro_Plan_Scoring__2026-10-30_09-20-07.xls",
+    "path": "C:\\Users\\HD\\Downloads\\Micro_Plan_Scoring__2026-10-30_09-20-07.xls",
+    "size": 1482223
    },
-   "stamp": "29-Oct-2026 09:38",
-   "summary": "SNID Nov-26, 27 districts, 377 of 381 assigned UCs reported (99.0%) - 320 pass, 52 needs improvement, 5 serious issues, 4 still to report"
+   "stamp": "30-Oct-2026 09:30",
+   "summary": "SNID Nov-26, 27 districts, 399 of 402 assigned UCs reported (99.3%) - 341 pass, 53 needs improvement, 5 serious issues, 3 still to report"
   },
   "mpqah": {
-   "at": "2026-10-29T15:27:16+05:00",
-   "chars": 193354,
+   "at": "2026-10-30T09:35:23+05:00",
+   "chars": 193786,
    "file_id": "manual|mpqah.json",
-   "payload_sha1": "2ea32d18a156479c",
+   "payload_sha1": "7ed872532df0a26b",
    "source": {
-    "mtime": 1793269622.467302,
+    "mtime": 1793334914.0563605,
     "name": "mpqah.json",
     "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\mpqah.json",
-    "size": 193354
+    "size": 193786
    },
-   "stamp": "29-Oct-2026 15:27",
+   "stamp": "30-Oct-2026 09:35",
    "summary": "manual inject"
   },
   "mtm": {
@@ -462,6 +462,20 @@
    "stamp": "23-Oct-2026 16:37",
    "summary": "36 districts, YTD 21-Oct-2026 (NP-AFP 29.2, SA 86.8%, Notif7d 81.8%), 6 division rows, monthly 2019-2026, pendency 21-Oct-2026, line list cases 2023:4934, 2024:5887, 2025:5410, 2026:4184, last EPID KP/60/26/086, 0 non-KP rows skipped"
   },
+  "trig": {
+   "at": "2026-10-30T09:34:19+05:00",
+   "chars": 3441,
+   "file_id": "manual|trig.json",
+   "payload_sha1": "27f62c5949d82cd1",
+   "source": {
+    "mtime": 1793334646.2768629,
+    "name": "trig.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\trig.json",
+    "size": 3444
+   },
+   "stamp": "30-Oct-2026 09:34",
+   "summary": "manual inject"
+  },
   "ucc": {
    "at": "2026-10-19T16:12:25+05:00",
    "chars": 2758,
@@ -500,11 +514,11 @@
   "stamp": "29-Oct-2026 16:24"
  },
  "last_run": {
-  "at": "2026-10-30T09:27:05+05:00",
+  "at": "2026-10-30T09:31:37+05:00",
   "datasets": [
-   "neap"
+   "mpqa"
   ],
   "dry_run": false,
-  "stamp": "30-Oct-2026 09:27"
+  "stamp": "30-Oct-2026 09:30"
  }
 }
