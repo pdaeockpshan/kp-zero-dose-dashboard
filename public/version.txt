@@ -161,3 +161,4 @@ Campaign indicators: each campaign's own MPQA round (MPQAH, 11 rounds NID Feb 20
 Data refresh 29-Oct-2026 15:27 PKT: MPQAH payload replaced from mpqah.json (193,354 chars). Timestamp refresh 29-Oct-2026 15:27 PKT.
 Pushed the hand-edited index.html master to preview / public / internal builds (+2208 chars). Timestamp refresh 29-Oct-2026 16:06 PKT
 Campaign indicators: multi-UC picker (CINS.ucs) and downloads named by scope instead of _All_districts; master cloned to the three variants. Timestamp refresh 29-Oct-2026 16:24 PKT
+Data refresh 30-Oct-2026 09:27 PKT: NEAP re-extracted from NEAP (61).xls, NEAP (62).xls (30-Oct-2026 09:19): SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (62).xls). Timestamp refresh 30-Oct-2026 09:27 PKT.
