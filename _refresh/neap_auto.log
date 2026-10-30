@@ -277,3 +277,54 @@
 2026-10-29 09:27:32    7744df8..4365ecb  main -> main
 2026-10-29 09:27:32 verify: no stored GitHub credential found - check the push manually
 2026-10-29 09:27:32 refresh exit=0
+2026-10-30 09:27:00 new NEAP export: NEAP (62).xls (30-Oct-2026 09:19, 1333300 bytes) - refreshing
+2026-10-30 09:29:02 refresh: 1 to extract, 0 skipped
+2026-10-30 09:29:02 # extracting neap from NEAP (62).xls ...
+2026-10-30 09:29:02 WARN neap NEAP (62).xls is not the district-wise shape - trying the other candidates
+2026-10-30 09:29:02 
+2026-10-30 09:29:02 SRC neap district C:\Users\HD\Downloads\NEAP (61).xls
+2026-10-30 09:29:02 
+2026-10-30 09:29:02 SRC neap uc C:\Users\HD\Downloads\NEAP (62).xls
+2026-10-30 09:29:02 
+2026-10-30 09:29:02 OK neap 110412 SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (62).xls)
+2026-10-30 09:29:02 
+2026-10-30 09:29:02   neap NEAP     110,412 chars  SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (62).xls)
+2026-10-30 09:29:02   swap NEAP   in 4/4 variants
+2026-10-30 09:29:02 
+2026-10-30 09:29:02 variants:
+2026-10-30 09:29:02   index.html                                     +207 chars  NEAP 110205 -> 110412 chars; stamp 29-Oct-2026 16:24 -> 30-Oct-2026 09:27
+2026-10-30 09:29:02   preview.html                                   +207 chars  NEAP 110205 -> 110412 chars; stamp 29-Oct-2026 16:24 -> 30-Oct-2026 09:27
+2026-10-30 09:29:02   public/index.html                              +207 chars  NEAP 110205 -> 110412 chars; stamp 29-Oct-2026 16:24 -> 30-Oct-2026 09:27
+2026-10-30 09:29:02   Zero_Dose_Digitization_Dashboard.html          +207 chars  NEAP 110205 -> 110412 chars; stamp 29-Oct-2026 16:24 -> 30-Oct-2026 09:27
+2026-10-30 09:29:02 identical group md5: {'index.html': 'bf76a131d2ea79ab9196a58ac7bc3642', 'preview.html': 'bf76a131d2ea79ab9196a58ac7bc3642', 'public/index.html': 'bf76a131d2ea79ab9196a58ac7bc3642'}
+2026-10-30 09:29:02 stamp: 29-Oct-2026 16:24 -> 30-Oct-2026 09:27
+2026-10-30 09:29:02 version note: Data refresh 30-Oct-2026 09:27 PKT: NEAP re-extracted from NEAP (61).xls, NEAP (62).xls (30-Oct-2026 09:19): SNID Nov-26, 27 districts, DPEC held on time 26, AI
+2026-10-30 09:29:03 
+2026-10-30 09:29:03 WROTE index.html (21,123,205 bytes)
+2026-10-30 09:29:03 WROTE preview.html (21,123,205 bytes)
+2026-10-30 09:29:03 WROTE public/index.html (21,123,205 bytes)
+2026-10-30 09:29:03 WROTE Zero_Dose_Digitization_Dashboard.html (21,325,125 bytes)
+2026-10-30 09:29:03 WROTE version.txt
+2026-10-30 09:29:03 WROTE public\version.txt
+2026-10-30 09:29:03 REFRESHED neap
+2026-10-30 09:29:03 publish: pending changes
+2026-10-30 09:29:03  M Zero_Dose_Digitization_Dashboard.html
+2026-10-30 09:29:03  M _refresh/neap_auto.log
+2026-10-30 09:29:03  M _refresh/state.json
+2026-10-30 09:29:03  M index.html
+2026-10-30 09:29:03  M preview.html
+2026-10-30 09:29:03  M public/index.html
+2026-10-30 09:29:03  M public/version.txt
+2026-10-30 09:29:03  M version.txt
+2026-10-30 09:29:03 ?? _refresh/mdep/~$mdp_sheet_intake_SNID_Nov-26.xlsx
+2026-10-30 09:29:03 ?? _refresh/neap_auto.lock
+2026-10-30 09:29:03 warning: in the working copy of '_refresh/state.json', LF will be replaced by CRLF the next time Git touches it
+2026-10-30 09:29:03 staged: Zero_Dose_Digitization_Dashboard.html _refresh/state.json index.html preview.html public/index.html public/version.txt version.txt 
+2026-10-30 09:29:03 [main e11cf78] Auto-refresh NEAP from EOC pre-campaign export
+2026-10-30 09:29:03  7 files changed, 23 insertions(+), 21 deletions(-)
+2026-10-30 09:29:03 To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-30 09:29:03    1492fd8..e11cf78  main -> main
+2026-10-30 09:29:03 push: To https://github.com/pdaeockpshan/kp-zero-dose-dashboard.git
+2026-10-30 09:29:03    1492fd8..e11cf78  main -> main
+2026-10-30 09:29:03 verify: no stored GitHub credential found - check the push manually
+2026-10-30 09:29:03 refresh exit=0
