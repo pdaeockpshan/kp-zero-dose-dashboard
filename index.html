@@ -1566,6 +1566,20 @@ body.navopen .navtog .car{transform:rotate(180deg)}
  <div class="card"><div class="kl">ZD validated</div><div class="kv" id="zrK5" style="color:#6d28d9">&ndash;</div><div class="ks" id="zrK5s"></div></div>
 </div>
 <div class="card">
+<div class="tblhdr"><h3 style="margin:0">Where the zero-dose burden sits</h3><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="cnt" id="zrMCnt"></span><div class="hmcwrap"><button type="button" class="hmcbtn" id="zrVCB" aria-haspopup="true" aria-expanded="false" title="Pick any set of campaigns for the map and bars alone — the tables above keep the page filters"><span id="zrVCT">Campaigns &middot; follow filters</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="zrVCP" hidden></div></div><button class="btn pri" id="zrChartPptx">Map &amp; chart (PPTX)</button></span></div>
+<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;padding:4px 0 8px">
+ <div style="flex:0 1 540px;min-width:300px;max-width:560px">
+  <div id="zrMap"></div>
+  <div id="zrMapLeg" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--color-text-muted);margin-top:6px"></div>
+ </div>
+ <div style="flex:1 1 340px;min-width:300px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><b style="font-size:12px">Districts by zero-dose children recorded</b><span class="cnt" style="font-size:11px">bar = recorded &middot; filled part = covered in the same round</span></div>
+  <div id="zrBars" style="max-height:600px;overflow:auto;margin-top:6px"></div>
+ </div>
+</div>
+<div class="cap" id="zrMCap"></div>
+</div>
+<div class="card">
 <div class="tblhdr"><h3 style="margin:0">Round by round &mdash; recorded, covered, digitized, validated</h3><span class="cnt" id="zrCnt"></span></div>
 <div class="scroll"><table id="tZReg"></table></div>
 <div class="cap" id="zrCap"></div>
@@ -20513,7 +20527,7 @@ function scopeKeys(o){
 }
 
 /* ---------- state ---------- */
-var S={div:'',dist:new Set(),ucs:new Set(),year:'',camp:'',deckCamp:''};
+var S={div:'',dist:new Set(),ucs:new Set(),year:'',camp:'',deckCamp:'',vcam:new Set()};
 var TABSRC=null;
 
 function districtList(){return DISTS.filter(function(d){return !S.div||DIST[d]===S.div;});}
@@ -20647,9 +20661,9 @@ function readUC(){
  S.ucs=new Set(sel);usBtn();draw();
 }
 function resetAll(){
- S={div:'',dist:new Set(),ucs:new Set(),year:'',camp:'',deckCamp:''};
+ S={div:'',dist:new Set(),ucs:new Set(),year:'',camp:'',deckCamp:'',vcam:new Set()};
  $('zrDiv').value='';$('zrYear').value='';$('zrCamp').value='';
- fillCamps();fillDeckCamps();deckLabel();
+ vzClose();fillCamps();fillDeckCamps();deckLabel();
  dsBtn();usSync();draw();
 }
 
@@ -20711,21 +20725,7 @@ function draw(){
  $('zrCap').textContent='Recorded and covered come from the IDIMS advance reports (2022 to SNID Sept 2026), covered meaning vaccinated during that same round. Digitized is the Sept-26 linelist-vs-IDIMS exercise and exists only for the nine districts it covered, so every other round shows a dash. Validated is the zero-dose validation register, which carries four of the advance-report rounds plus four special activities that have no advance report. The four columns have different denominators; a dash means the source does not cover the round, not a zero.';
 
  /* district table for the same campaign scope */
- var dd={},districts=[...new Set([...K].map(function(k){return UC[k].d;}))].sort();
- districts.forEach(function(d){dd[d]=0;});
- var per={};
- rows.forEach(function(r){
-  var key=r.n+'|'+r.y;per[key]=per[key]||{};
- });
- var scopeRows=ROWS.filter(function(r){return (!S.year||String(r.y)===S.year)&&(!S.camp||r.n===S.camp);});
- var DT=districts.map(function(d){
-  var ks=scopeKeys({div:S.div,dist:new Set([d]),ucs:S.ucs.size?S.ucs:null}),o={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0};
-  scopeRows.forEach(function(r){var a=agg(r,ks);
-   o.rep+=a.rep;o.cov+=a.cov;o.covUc+=a.covUc;
-   if(a.dUc){o.dig+=a.dig;o.digRep+=a.digRep;o.dUc+=a.dUc;}
-   if(a.vUc){o.val+=a.val;o.conf+=a.conf;o.vUc+=a.vUc;}});
-  return o;
- });
+ var DT=distRows(K);
  drawTable('tZRegD',[
   {k:'d',l:'District',f:function(r){return '<b>'+esc(dn(r.d))+'</b>';}},
   {k:'dv',l:'Division',f:function(r){return esc(divLabel(r.dv));}},
@@ -20737,6 +20737,121 @@ function draw(){
   {k:'vp',l:'Confirmed %',n:1,sv:function(r){return r.val?r.conf/r.val:null;},f:function(r){return r.vUc&&r.val?rgN(r.conf/r.val*100,95,90)+'%':'–';}}
  ],DT,'rep',-1,'No district in this scope.');
  $('zrDCnt').textContent=DT.length+' districts';
+ renderViz(DT);
+}
+
+/* ---------- district map + ranked bars ---------- */
+/* The map and bars carry their own campaign picker (S.vcam); empty means they follow Year + Campaign. */
+function vizCampList(){
+ var l=[];ROWS.forEach(function(r){if(!S.year||String(r.y)===S.year)l.push(r.n);});
+ return l.filter(function(v,i){return l.indexOf(v)===i;}).sort(function(a,b){return CAMPORDER.indexOf(b)-CAMPORDER.indexOf(a);});
+}
+function scopeRounds(){
+ return ROWS.filter(function(r){
+  if(S.year&&String(r.y)!==S.year)return false;
+  return S.vcam.size?S.vcam.has(r.n):(!S.camp||r.n===S.camp);
+ });
+}
+function vizRoundsText(){
+ if(!S.vcam.size)return S.camp?S.camp:'all rounds in scope';
+ var p=[...S.vcam].sort(function(a,c){return CAMPORDER.indexOf(a)-CAMPORDER.indexOf(c);});
+ return p.length<=3?p.join(', '):p.slice(0,3).join(', ')+' +'+(p.length-3)+' more';
+}
+function vizHeaderText(){return S.vcam.size?scopeText()+' \u00b7 map and bars only: '+vizRoundsText():scopeText();}
+function distRows(K){
+ var sr=scopeRounds();
+ return [...new Set([...K].map(function(k){return UC[k].d;}))].sort().map(function(d){
+  var ks=scopeKeys({div:S.div,dist:new Set([d]),ucs:S.ucs.size?S.ucs:null}),o={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0};
+  sr.forEach(function(r){var a=agg(r,ks);
+   o.rep+=a.rep;o.cov+=a.cov;o.covUc+=a.covUc;o.repUc+=a.repUc;
+   if(a.dUc){o.dig+=a.dig;o.digRep+=a.digRep;o.dUc+=a.dUc;}
+   if(a.vUc){o.val+=a.val;o.conf+=a.conf;o.vUc+=a.vUc;}});
+  return o;
+ });
+}
+function covBin(o){
+ if(!o||!o.rep||!o.covUc)return {f:'#cbd5e1',c:'#475569',p:null};
+ var p=o.cov/o.rep*100;
+ return p>=90?{f:'#15803d',c:'#ffffff',p:p}:p>=80?{f:'#b45309',c:'#ffffff',p:p}:{f:'#b91c1c',c:'#ffffff',p:p};
+}
+function zrMapSvg(DT){
+ if(typeof KPGEO==='undefined'||!KPGEO.d||!KPGEO.d.length)return '<div class="empty">District geometry not embedded in this file.</div>';
+ var IN={};DT.forEach(function(o){IN[o.d]=o;});
+ var vb=KPGEO.vb,FU=vb[0]/540;
+ var svg='<svg id="zrMapSvg" viewBox="0 0 '+vb[0]+' '+vb[1]+'" role="img" aria-label="Khyber Pakhtunkhwa district map, coloured by the share of recorded zero-dose children covered in the same round" style="width:100%;display:block;aspect-ratio:'+vb[0]+'/'+vb[1]+'">';
+ svg+=KPGEO.d.map(function(p){
+  var o=IN[p.c],g=covBin(o),op=o&&o.rep>0&&o.rep<25?'0.55':'1';
+  var tip=!o?(dn(p.c)+' \u2014 no UC in this scope')
+   :(dn(p.c)+' \u2014 '+fN(o.rep)+' recorded, '+(o.covUc?fN(o.cov)+' covered ('+fP(pct(o.cov,o.rep))+')':'covered not reported'));
+  return '<path d="'+p.p+'" fill="'+(o?g.f:'#f1f5f9')+'" fill-opacity="'+op+'" stroke="#fff" stroke-width="0.9"><title>'+esc(tip)+'</title></path>';
+ }).join('');
+ var LAB=hrvLab();
+ svg+=LAB.filter(function(l){return l.ld;}).map(function(l){
+  return '<g pointer-events="none"><line x1="'+l.cx.toFixed(1)+'" y1="'+l.cy.toFixed(1)+'" x2="'+l.x.toFixed(1)+'" y2="'+l.y.toFixed(1)+'" stroke="#334155" stroke-width="'+(0.8*FU).toFixed(2)+'" stroke-opacity=".55"/><circle cx="'+l.cx.toFixed(1)+'" cy="'+l.cy.toFixed(1)+'" r="'+(1.5*FU).toFixed(1)+'" fill="#334155"/></g>';}).join('');
+ svg+=LAB.map(function(l){
+  return '<text x="'+l.x.toFixed(1)+'" y="'+(l.y+l.fs*0.34).toFixed(1)+'" text-anchor="middle" font-size="'+l.fs.toFixed(1)+'" font-weight="600" fill="#0f172a" stroke="#fff" stroke-width="'+(l.fs*0.3).toFixed(1)+'" stroke-linejoin="round" paint-order="stroke" pointer-events="none">'+esc(l.n)+'</text>';}).join('');
+ return svg+'</svg>';
+}
+function zrMapLeg(DT){
+ var cnt={};DT.forEach(function(o){var b=covBin(o);cnt[b.f]=(cnt[b.f]||0)+1;});
+ cnt['#f1f5f9']=(KPGEO.d?KPGEO.d.length:37)-DT.length;
+ return [['#15803d','90%+ covered'],['#b45309','80\u201389.9%'],['#b91c1c','below 80%'],['#cbd5e1','no covered figure'],['#f1f5f9','no UC in scope']]
+  .map(function(x){return '<span style="display:inline-flex;align-items:center;gap:4px"><i style="width:10px;height:10px;border-radius:2px;background:'+x[0]+';display:inline-block"></i>'+x[1]+' '+(cnt[x[0]]||0)+'</span>';}).join('');
+}
+function zrBarsHtml(DT){
+ if(!DT.length)return '<div class="cap" style="padding:8px 2px">No district carries a zero-dose figure in this scope.</div>';
+ var max=0;DT.forEach(function(o){if(o.rep>max)max=o.rep;});
+ return DT.slice().sort(function(a,b){return b.rep-a.rep;}).map(function(o){
+  var b=covBin(o),w=max?Math.max(1.5,o.rep/max*100):0;
+  var tip=dn(o.d)+' \u2014 '+fN(o.rep)+' recorded'+(o.covUc?', '+fN(o.cov)+' covered ('+fP(pct(o.cov,o.rep))+')':', covered not reported');
+  return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px" title="'+esc(tip)+'">'
+   +'<span style="flex:0 0 104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(dn(o.d))+'</span>'
+   +'<span style="flex:1 1 auto;height:10px;border-radius:3px;overflow:hidden;background:'+(b.p==null?'#cbd5e1':'#e2e8f0')+'"><i style="display:block;height:100%;width:'+(b.p==null?0:Math.max(0,Math.min(100,b.p)))+'%;background:'+b.f+'"></i></span>'
+   +'<span class="cnt" style="flex:0 0 148px;text-align:right;font-variant-numeric:tabular-nums">'+fN(o.rep)+' \u00b7 '+(b.p==null?'\u2013':fP(b.p))+'</span>'
+   +'</div>';
+ }).join('');
+}
+function renderViz(DT){
+ vzSync();
+ var t=totals(DT),rs=scopeRounds();
+ $('zrMap').innerHTML=zrMapSvg(DT);
+ $('zrMapLeg').innerHTML=zrMapLeg(DT);
+ $('zrBars').innerHTML=zrBarsHtml(DT);
+ vzBtn();
+ if($('zrMCnt'))$('zrMCnt').textContent=DT.length+' districts \u00b7 '+rs.length+' round'+(rs.length===1?'':'s');
+ if($('zrMCap'))$('zrMCap').textContent='Colour is covered \u00f7 recorded on the same district and the same rounds: '+fN(t.rep)+' recorded and '+(t.covUc?fN(t.cov)+' covered ('+fP(pct(t.cov,t.rep))+')':'no covered figure')
+  +' across '+vizRoundsText()+'. Green is 90% or more, amber 80 to 89.9%, red below 80%; slate means the source carries no covered figure for that district, pale grey that it has no UC in scope. A district is drawn pale where fewer than 25 children are recorded, so a handful of cases cannot paint it red. Bar length is recorded children, the filled segment the covered share of them.';
+}
+
+/* ---------- campaign picker for the map and bars ---------- */
+function vzSync(){
+ var list=vizCampList(),p=$('zrVCP');
+ if([...S.vcam].some(function(n){return list.indexOf(n)<0;}))
+  S.vcam=new Set([...S.vcam].filter(function(n){return list.indexOf(n)>=0;}));
+ if(p&&!p.hidden&&p.dataset.key!==list.join('|'))vzList();
+}
+function vzBtn(){
+ var t=$('zrVCT'),b=$('zrVCB');
+ if(!t||!b)return;
+ var n=S.vcam.size,p=[...S.vcam].sort(function(a,c){return CAMPORDER.indexOf(c)-CAMPORDER.indexOf(a);});
+ t.textContent=!n?'Campaigns \u00b7 follow filters':n===1?p[0]:n+' campaigns';
+ b.title=!n?'The map and bars follow the Year and Campaign pickers above':('Map and bars only \u2014 '+p.join(', '));
+ b.style.borderColor=n?'var(--color-primary)':'';
+ b.style.background=n?'#f0fdfa':'';
+}
+function vzList(){
+ var p=$('zrVCP'),list=vizCampList();
+ p.dataset.key=list.join('|');
+ p.innerHTML='<div class="hmcacts"><button type="button" data-a="none">Follow filters</button><button type="button" data-a="all">All '+list.length+'</button></div>'
+  +(list.length?list.map(function(n){
+   return '<label class="hmcopt"><input type="checkbox" value="'+esc(n)+'"'+(S.vcam.has(n)?' checked':'')+'><span>'+esc(n)+'</span></label>';}).join('')
+  :'<div class="cap" style="padding:6px 8px">No campaign in this year.</div>');
+}
+function vzOpen(){vzList();$('zrVCP').hidden=false;$('zrVCB').setAttribute('aria-expanded','true');}
+function vzClose(){$('zrVCP').hidden=true;$('zrVCB').setAttribute('aria-expanded','false');}
+function readViz(){
+ S.vcam=new Set([...$('zrVCP').querySelectorAll('input[type=checkbox]:checked')].map(function(x){return x.value;}));
+ renderViz(distRows(visibleKeys()));
 }
 
 /* ---------- downloads ---------- */
@@ -20809,8 +20924,8 @@ function dYears(rows){
  return Object.keys(out).map(function(k){return out[k];}).sort(function(a,b){return a.y-b.y;});
 }
 function totals(rows){
- var t={rep:0,cov:0,covUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0,n:0};
- rows.forEach(function(r){t.n++;t.rep+=r.rep;t.cov+=r.cov;t.covUc+=r.covUc;if(r.dUc){t.dig+=r.dig;t.digRep+=r.digRep;t.dUc+=r.dUc;}if(r.vUc){t.val+=r.val;t.conf+=r.conf;t.vUc+=r.vUc;}});
+ var t={rep:0,cov:0,covUc:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0,n:0};
+ rows.forEach(function(r){t.n++;t.rep+=r.rep;t.cov+=r.cov;t.covUc+=r.covUc;t.repUc+=r.repUc||0;if(r.dUc){t.dig+=r.dig;t.digRep+=r.digRep;t.dUc+=r.dUc;}if(r.vUc){t.val+=r.val;t.conf+=r.conf;t.vUc+=r.vUc;}});
  return t;
 }
 function stamp(){try{var d=new Date();var p=function(v){return(v<10?'0':'')+v;};
@@ -21192,6 +21307,99 @@ function districtUniverse(sc){ // districts a slide covers, for the subtitle cou
  var o={};DISTS.forEach(function(d){if(!sc.div||DIST[d]===sc.div)o[d]=1;});return o;
 }
 
+/* ---------- district map & chart deck ---------- */
+function zrChartFile(){
+ var d=new Date(),p=function(v){return(v<10?'0':'')+v;};
+ var sc=[];
+ sc.push(S.div?S.div.replace(/[^A-Za-z0-9]+/g,'-'):'KP');
+ if(S.dist.size===1)sc.push([...S.dist][0].replace(/[^A-Za-z0-9]+/g,'-'));
+ else if(S.dist.size>1)sc.push(S.dist.size+'districts');
+ if(S.ucs.size===1)sc.push(UC[[...S.ucs][0]].u.replace(/[^A-Za-z0-9]+/g,'-'));
+ else if(S.ucs.size>1)sc.push(S.ucs.size+'UCs');
+ sc.push(S.year||'2022-2026');
+ if(S.vcam.size)sc.push(S.vcam.size===1?[...S.vcam][0].replace(/[^A-Za-z0-9]+/g,'-'):S.vcam.size+'campaigns');
+ else if(S.camp)sc.push(S.camp.replace(/[^A-Za-z0-9]+/g,'-'));
+ return 'ZD_Register_'+sc.join('_')+'_district_map_'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes())+'.pptx';
+}
+function zrMapPng(DT){
+ return new Promise(function(res){
+  var html=zrMapSvg(DT);
+  if(html.indexOf('<svg')<0)return res(null);
+  var d=document.createElement('div');d.innerHTML=html;
+  var s0=d.querySelector('svg');
+  s0.removeAttribute('id');s0.removeAttribute('style');
+  var vb=KPGEO.vb,W=Math.round(vb[0]*1.9),H=Math.round(vb[1]*1.9);
+  s0.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  s0.setAttribute('width',String(W));s0.setAttribute('height',String(H));
+  s0.setAttribute('font-family','"Segoe UI",Arial,sans-serif');
+  var img=new Image();
+  img.onload=function(){
+   var cv=document.createElement('canvas');cv.width=W;cv.height=H;
+   var x=cv.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,W,H);
+   x.drawImage(img,0,0,W,H);
+   res({url:cv.toDataURL('image/png'),w:W,h:H});
+  };
+  img.onerror=function(){res(null);};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(s0));
+ });
+}
+async function buildChartDeck(P){
+ var pptx=new P();pptx.layout='LAYOUT_WIDE';
+ pptx.title='Zero-dose register - district map and chart';pptx.company='KP EOC';
+ var K=visibleKeys(),DT=distRows(K),t=totals(DT);
+ var DTS=DT.slice().sort(function(a,b){return b.rep-a.rep;});
+ var page=1;
+
+ /* the map */
+ var s=pptx.addSlide();s.background={color:C.white};
+ head(s,'Zero-dose register','Where the zero-dose burden sits',vizHeaderText());
+ kpi(s,0.62,1.72,2.90,fN(t.rep),'zero-dose children recorded',C.pri);
+ kpi(s,3.71,1.72,2.90,t.covUc?fN(t.cov):'\u2013','covered in the same round',C.good);
+ kpi(s,6.80,1.72,2.90,t.rep?pcol(pct(t.cov,t.rep)):'\u2013','covered \u00f7 recorded',C.pri);
+ kpi(s,9.89,1.72,2.90,fN(DT.length),'districts in scope',C.sec);
+ var shot=await zrMapPng(DT);
+ if(shot){
+  var ih=4.05,iw=ih*shot.w/shot.h;
+  s.addImage({data:shot.url,x:0.62,y:2.82,w:iw,h:ih});
+ }else{
+  s.addText('District geometry not embedded in this file.',{x:0.62,y:2.82,w:3.4,h:0.3,fontSize:9,color:C.mut,fontFace:FF});
+ }
+ var LX=4.30,cnt={};DT.forEach(function(o){var b=covBin(o);cnt[b.f]=(cnt[b.f]||0)+1;});
+ cnt['#f1f5f9']=(KPGEO.d?KPGEO.d.length:37)-DT.length;
+ [['#15803d','90% or more covered'],['#b45309','80 to 89.9% covered'],['#b91c1c','below 80% covered'],['#cbd5e1','no covered figure for this scope'],['#f1f5f9','no UC in this scope']]
+  .forEach(function(l,i){var y=2.86+i*0.30;
+   s.addShape('roundRect',{x:LX,y:y,w:0.20,h:0.18,rectRadius:0.02,fill:{color:l[0]},line:{color:'#ffffff',width:0.5}});
+   s.addText(l[1]+'  \u00b7  '+(cnt[l[0]]||0)+' districts',{x:LX+0.30,y:y-0.03,w:5.9,h:0.24,fontSize:9.4,color:C.mut,fontFace:FF});
+  });
+ s.addText('Colour is covered \u00f7 recorded for the same district over the same rounds. A district is drawn pale where fewer than 25 children are recorded, so a handful of cases cannot paint it red. Polygon labels are the map\u2019s abbreviated names; the district-detail slide lists every district in full.',{x:LX,y:4.84,w:8.55,h:1.10,fontSize:9.4,color:C.mut,fontFace:FF,lineSpacingMultiple:1.22});
+ s.addText('Recorded and covered both come from the IDIMS advance reports, so the two numbers behind every colour share one denominator. Digitized and validated are deliberately not on this slide: the Sept-26 linelist exercise and the validation register cover different children over different periods.',{x:LX,y:5.98,w:8.55,h:0.9,fontSize:9.0,color:C.sec,fontFace:FF,lineSpacingMultiple:1.22});
+ pg(s,page++);
+
+ /* ranked bars */
+ s=pptx.addSlide();head(s,'Ranked districts',DTS.length+' districts, recorded against covered',vizHeaderText()+' \u00b7 each pair is one district, the lighter bar recorded and the darker covered in the same round');
+ var rev=DTS.slice().reverse();
+ s.addChart(pptx.ChartType.bar,[
+  {name:'ZD recorded',labels:rev.map(function(o){return dn(o.d);}),values:rev.map(function(o){return o.rep;})},
+  {name:'ZD covered in round',labels:rev.map(function(o){return dn(o.d);}),values:rev.map(function(o){return o.covUc?o.cov:null;})}
+ ],{x:0.62,y:1.80,w:12.10,h:5.15,barDir:'bar',chartColors:['#0e7490','#15803d'],showLegend:true,legendPos:'b',legendFontSize:8.5,
+   catAxisLabelFontSize:DTS.length>24?6.8:8.2,valAxisLabelFontSize:8,catAxisLabelColor:'#334155',valAxisLabelColor:'#475569',
+   showValue:false,barGapWidthPct:55,valGridLine:{color:'#e2e8f0',size:0.5}});
+ pg(s,page++);
+
+ /* district detail */
+ var TOP=DTS.slice(0,22),REST=DTS.slice(22);
+ s=pptx.addSlide();head(s,'District detail',REST.length?'Top 22 districts by recorded, then the rest':'Every district in scope',vizHeaderText()+' \u00b7 a dash means no covered figure for that district, not a zero');
+ var body=TOP.map(function(o){return [dn(o.d),divLabel(o.dv),o.repUc?fN(o.repUc):'\u2013',fN(o.rep),o.covUc?fN(o.cov):'\u2013',o.covUc&&o.rep?pcol(pct(o.cov,o.rep)):'\u2013'];});
+ if(REST.length){
+  var r={repUc:0,rep:0,cov:0,covUc:0};REST.forEach(function(o){r.repUc+=o.repUc;r.rep+=o.rep;r.cov+=o.cov;r.covUc+=o.covUc;});
+  body.push(['All other districts ('+REST.length+')','',fN(r.repUc),fN(r.rep),r.covUc?fN(r.cov):'\u2013',r.covUc&&r.rep?pcol(pct(r.cov,r.rep)):'\u2013']);
+ }
+ body.push(['All districts in scope ('+DT.length+')','',fN(t.repUc),fN(t.rep),t.covUc?fN(t.cov):'\u2013',t.covUc&&t.rep?pcol(pct(t.cov,t.rep)):'\u2013']);
+ tbl(s,['District','Division','UCs reporting','ZD recorded','ZD covered','Covered %'],body,0.62,1.80,12.10,[3.05,2.55,1.70,1.60,1.60,1.60],0.20,7.6);
+ pg(s,page++);
+ return pptx;
+}
+
 /* ---------- wiring ---------- */
 function init(){
  if(!$('p-zreg'))return;
@@ -21201,6 +21409,13 @@ function init(){
  $('zrDiv').onchange=function(){S.div=this.value;S.dist=new Set();S.ucs=new Set();refillDistricts();usSync();draw();};
  $('zrYear').onchange=function(){S.year=this.value;fillCamps();draw();};
  $('zrCamp').onchange=function(){S.camp=this.value;draw();};
+ $('zrVCB').onclick=function(e){e.stopPropagation();if($('zrVCP').hidden)vzOpen();else vzClose();};
+ $('zrVCP').addEventListener('change',function(e){if(e.target&&e.target.type==='checkbox')readViz();});
+ $('zrVCP').addEventListener('click',function(e){
+  var bt=e.target.closest('button[data-a]');if(!bt)return;e.preventDefault();
+  var all=bt.dataset.a==='all';
+  $('zrVCP').querySelectorAll('input[type=checkbox]').forEach(function(x){x.checked=all;});
+  readViz();});
  $('zrDeckCp').onchange=function(){S.deckCamp=this.value;deckLabel();};
  $('zrReset').onclick=resetAll;
  $('zrDistB').onclick=function(e){e.stopPropagation();if($('zrDistP').hidden)dsOpen();else dsClose();};
@@ -21208,10 +21423,22 @@ function init(){
  document.addEventListener('click',function(e){
   if(!$('zrDistP').hidden&&!e.target.closest('#zrDistP')&&!e.target.closest('#zrDistB'))dsClose();
   if(!$('zrUCP').hidden&&!e.target.closest('#zrUCP')&&!e.target.closest('#zrUCB')){$('zrUCP').hidden=true;$('zrUCB').setAttribute('aria-expanded','false');}
+  if(!$('zrVCP').hidden&&!e.target.closest('#zrVCP')&&!e.target.closest('#zrVCB'))vzClose();
  });
  $('zrXlsx').onclick=dlExcel;
  $('zrCsv').onclick=dlCsv;
  $('zrDCsv').onclick=dlDistrictCsv;
+ $('zrChartPptx').onclick=async function(){
+  var b=this,old=b.textContent;b.disabled=true;b.textContent='Building\u2026';
+  try{
+   await loadPptx();
+   var pptx=await buildChartDeck(window.PptxGenJS);
+   var fn=zrChartFile();
+   await saveDeck(pptx,fn);
+   b.textContent=old;toast('Map and chart downloaded ('+fn+')');
+  }catch(e){console.error(e);b.textContent=old;toast('Chart deck could not be built');}
+  finally{b.disabled=false;}
+ };
  $('zrDeck').onclick=async function(){
   var b=this,old=b.textContent;b.disabled=true;b.textContent='Building deck\u2026';
   try{
