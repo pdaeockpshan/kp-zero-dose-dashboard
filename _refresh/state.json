@@ -506,12 +506,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-02T17:40:01+05:00",
-  "chars": 21334119,
-  "internal_md5": "d212a7ba725d122980e36c5d295f8062",
-  "master_md5": "28f6e3da86c3031d4d038173558b240c",
-  "note": "Morning deployment: the shared district sheet now files one tab per campaign day (Day-1st to Day-5th); the page reads each tab, refuses a tab serving another day, and the intake workbook mirrors the five tabs. A missing Blockers tab now says so instead of showing a cached log. Timestamp refresh 02-Nov-2026 17:39 PKT",
-  "stamp": "02-Nov-2026 17:39"
+  "at": "2026-11-02T17:54:20+05:00",
+  "chars": 21335627,
+  "internal_md5": "8ed1ccbd7e25caaef883aa9d66d54431",
+  "master_md5": "081996eea0047c414bd222fb24dd71dd",
+  "note": "Morning deployment: PESHAWAR and KHYBER get their own Day-6th and Day-7th tabs (they run 5 active days plus 2 catch-up days); the reader treats those two tabs as optional until the shared sheet carries them, and the intake workbook builds seven day tabs with the two districts only on days 6-7. Timestamp refresh 02-Nov-2026 17:54 PKT",
+  "stamp": "02-Nov-2026 17:54"
  },
  "last_run": {
   "at": "2026-11-01T12:48:17+05:00",

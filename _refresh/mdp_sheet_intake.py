@@ -7,9 +7,10 @@ of update and its counts - that works offline in the Sheets app too. The header 
 mdpFeedParse already accepts, and the tab names are the ones MDP_FEED.gridTabs asks for, so the
 dashboard reads each tab through the same gviz CSV path as the form responses.
 
-The shared sheet carries five tabs, days 1-5. The catch-up days PESHAWAR and KHYBER run on days
-6-7, and extended catch-up days (8-12), are not in that workbook; if they have to be collected the
-reporting desk adds the tab and the page is pointed at it.
+The shared sheet carries seven tabs: days 1-5 for every district, and days 6-7 for PESHAWAR and
+KHYBER only, because those two run 5 active days plus 2 catch-up days. Extended catch-up days (8-12)
+are not in that workbook; if one has to be collected the reporting desk adds the tab and the page is
+pointed at it.
 
 Run: python _refresh/mdp_sheet_intake.py
 """
@@ -32,7 +33,9 @@ CADRES = ['Mobile teams', 'Influencers', 'Fixed teams', 'Transit teams', 'Roamin
 HEAD = (['Timestamp', 'Division', 'District', 'Campaign day', 'UCs planned', 'UCs reported']
         + [h for c in CADRES for h in (c + ' planned', c + ' deployed')]
         + ['Security incidents', 'Why is deployment late (SEC / NET / BOY / TRA / OTH)'])
-TABS = [('Day-1st', 1), ('Day-2nd', 2), ('Day-3rd', 3), ('Day-4th', 4), ('Day-5th', 5)]
+TABS = [('Day-1st', 1), ('Day-2nd', 2), ('Day-3rd', 3), ('Day-4th', 4), ('Day-5th', 5),
+        ('Day-6th', 6), ('Day-7th', 7)]
+LONG_DAYS = ('PESHAWAR', 'KHYBER')
 
 HDR_FILL = PatternFill('solid', fgColor='FF5B21B6')
 ID_FILL = PatternFill('solid', fgColor='FFEEF0F6')
@@ -48,12 +51,21 @@ def scope():
     return [(r[0], r[1]) for r in snd['d']]
 
 
+def run_length(name):
+    """Days the district runs: 7 for PESHAWAR and KHYBER (5 active + 2 catch-up), else 5."""
+    return 7 if name in LONG_DAYS else 5
+
+
+def districts_on(day, districts):
+    return [(n, dv) for n, dv in districts if day <= run_length(n)]
+
+
 def read_me(ws, camp, districts):
     ws.column_dimensions['A'].width = 116
     names = ', '.join(n for n, _ in TABS)
     lines = [
         ('Morning team deployment - district intake sheet', 'title'),
-        ('%s · %d districts · %d day tabs · one pre-made row per district per day'
+        ('%s · %d districts · %d day tabs · one pre-made row per district per day it runs'
          % (camp, len(districts), len(TABS)), 'sub'),
         ('', ''),
         ('How to file', 'h'),
@@ -81,10 +93,10 @@ def read_me(ws, camp, districts):
          'or deployed count is typed on it.', ''),
         ('', ''),
         ('Day blocks', 'h'),
-        ('- One tab per day, days 1-5, every district. The sheet this workbook mirrors carries only those '
-         'five tabs, so the catch-up days PESHAWAR and KHYBER run on days 6-7 are not filed here.', ''),
-        ('- If those days have to be collected, the reporting desk adds a Day-6th and a Day-7th tab and '
-         'the page is pointed at them; it does not read a tab nobody named.', ''),
+        ('- Days 1-5: one tab per day, every district. Days 6-7 carry only PESHAWAR and KHYBER - '
+         'those two run 5 active days plus 2 catch-up days, so no other district has a row there.', ''),
+        ('- An extended catch-up day beyond day 7 is asked for by a district and added by the reporting '
+         'desk; the page reads only the tabs named in its tab list.', ''),
         ('', ''),
         ('Reading', 'h'),
         ('The dashboard reads each day tab as CSV every time the Morning deployment tab opens (at most '
@@ -116,7 +128,6 @@ def build():
     day_sheets = [first] + [wb.create_sheet(name) for name, _ in TABS[1:]]
     lists = wb.create_sheet('Lists')
     rme = wb.create_sheet('Read me')
-    last = len(districts) + 1
 
     notes = {
         1: 'Time of this update, 24-hour HH:MM (08:15). A row with no reported or deployed count is '
@@ -127,6 +138,8 @@ def build():
         len(HEAD): 'SEC / NET / BOY / STK / TRA / OTH, comma-separated when more than one applies.',
     }
     for (name, day), ws in zip(TABS, day_sheets):
+        rows = districts_on(day, districts)
+        last = len(rows) + 1
         for j, h in enumerate(HEAD, start=1):
             c = ws.cell(row=1, column=j, value=h)
             c.fill = HDR_FILL
@@ -136,7 +149,7 @@ def build():
             ws.cell(row=1, column=j).comment = Comment(txt, 'Reporting desk', width=260, height=90)
 
         r = 2
-        for n, dv in districts:
+        for n, dv in rows:
             for j, v in enumerate(['', dv, n, day], start=1):
                 c = ws.cell(row=r, column=j, value=v)
                 c.font = SMALL
@@ -208,8 +221,9 @@ def build():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     wb.save(OUT)
     print('WROTE %s' % OUT)
-    print('  %d day tabs, %d rows each (%d districts), columns %d'
-          % (len(TABS), len(districts), len(districts), len(HEAD)))
+    print('  %d day tabs, columns %d' % (len(TABS), len(HEAD)))
+    print('  rows per tab: %s'
+          % ', '.join('%s %d' % (n, len(districts_on(d, districts))) for n, d in TABS))
     print('  tabs: %s' % ' | '.join(n for n, _ in TABS))
     print('  header: %s' % ' | '.join(HEAD[:6] + ['...'] + HEAD[-2:]))
 
