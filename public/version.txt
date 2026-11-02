@@ -179,3 +179,4 @@ Pushed the hand-edited index.html master to preview / public / internal builds (
 Pushed the hand-edited index.html master to preview / public / internal builds (+1487 chars). Timestamp refresh 01-Nov-2026 21:42 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+1591 chars). Timestamp refresh 01-Nov-2026 21:51 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+426 chars). Timestamp refresh 02-Nov-2026 17:18 PKT
+Morning deployment: the shared district sheet now files one tab per campaign day (Day-1st to Day-5th); the page reads each tab, refuses a tab serving another day, and the intake workbook mirrors the five tabs. A missing Blockers tab now says so instead of showing a cached log.. Timestamp refresh 02-Nov-2026 17:39 PKT
