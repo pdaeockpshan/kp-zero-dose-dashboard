@@ -1,0 +1,117 @@
+cluster rows 882 districts 27 UC codes 882
+  TANK UCs export 21 published tuc/ruc 20 20
+  KHYBER UCs export 42 published tuc/ruc 41 41
+  PESHAWAR UCs export 101 published tuc/ruc 100 100
+  ORAKZAI UCs export 41 published tuc/ruc 40 40
+cluster count mismatches: 112
+  cl    12 districts  total +27  (published 2969 -> export 2996)
+  hh    12 districts  total +189  (published 20783 -> export 20972)
+  door  11 districts  total +168  (published 19773 -> export 19941)
+  nr     2 districts  total +18  (published 906 -> export 924)
+  rc    12 districts  total +496  (published 49083 -> export 49579)
+  rv    12 districts  total +438  (published 43132 -> export 43570)
+  mi     9 districts  total +58  (published 5955 -> export 6013)
+  tdn    2 districts  total +6  (published 210 -> export 216)
+  tm     1 districts  total +2  (published 497 -> export 499)
+  na     7 districts  total +44  (published 4785 -> export 4829)
+  rf     1 districts  total +6  (published 463 -> export 469)
+  gr     2 districts  total +20  (published 2792 -> export 2812)
+  gv     2 districts  total +14  (published 2569 -> export 2583)
+  seen  12 districts  total +387  (published 38827 -> export 39214)
+  fm    12 districts  total +383  (published 37558 -> export 37941)
+  pca    1 districts  total +1  (published 151 -> export 152)
+  ma     2 districts  total +2  (published 55 -> export 57)
+published totals cl/hh/rc/rv/mi: [2969, 20783, 49083, 43132, 5955]
+export totals   cl/hh/rc/rv/mi: [2996, 20972, 49579, 43570, 6013]
+
+supervisor rows 643 districts 27
+  DIKHAN max dev 49.96
+     pub [93.85, 95.38, 90.77, 95.38, 96.92, 21.54, 100, 98.46, 89.23, 95.38]
+     exp [97.79, 99.26, 98.99, 99.26, 99.05, 71.5, 100.0, 100.0, 94.75, 96.53]
+  TANK max dev 94.74
+     pub [92.11, 92.11, 86.84, 92.11, 94.74, 5.26, 100, 84.21, 81.58, 97.37]
+     exp [97.06, 97.06, 92.75, 97.06, 94.44, 100.0, 100.0, 93.75, 86.27, 97.22]
+  WAZIR-S Lower max dev 30.3
+     pub [60.61, 60.61, 63.64, 63.64, 78.79, 3.03, 93.94, 63.64, 72.73, 78.79]
+     exp [90.91, 90.91, 91.67, 86.11, 86.46, 20.0, 96.08, 84.72, 89.29, 85.56]
+  WAZIR-S Upper max dev 32.14
+     pub [75, 75, 85.71, 78.57, 75, None, 100, 64.29, 75, 89.29]
+     exp [93.75, 93.75, 100.0, 96.88, 96.67, None, 100.0, 96.43, 100.0, 97.22]
+  CHARSADA max dev 7.2
+     pub [100, 100, 89.47, 100, 97.37, None, 100, 100, 89.47, 100]
+     exp [100.0, 100.0, 96.67, 100.0, 100.0, None, 100.0, 100.0, 96.05, 100.0]
+  KHYBER max dev 57.11
+     pub [90.67, 94.67, 92, 96, 98.67, 4, 100, 94.67, 98.67, 100]
+     exp [95.6, 97.2, 98.77, 98.18, 98.53, 61.11, 100.0, 98.77, 99.58, 100.0]
+  MOHMAND max dev 6.38
+     pub [93.62, 93.62, 87.23, 93.62, 93.62, None, 97.87, 97.87, 89.36, 93.62]
+     exp [100.0, 100.0, 91.29, 100.0, 95.29, None, 98.55, 100.0, 95.24, 96.97]
+  NOWSHERA max dev 47.56
+     pub [92.68, 92.68, 91.46, 92.68, 97.56, 2.44, 98.78, 97.56, 85.37, 95.12]
+     exp [94.7, 94.7, 96.88, 94.7, 98.48, 50.0, 99.24, 98.48, 89.39, 97.66]
+  PESHAWAR max dev 37.85
+     pub [99.66, 100, 99.66, 99.66, 98.98, 2.39, 100, 98.63, 97.95, 100]
+     exp [100.0, 100.0, 99.66, 99.66, 99.27, 40.24, 100.0, 99.73, 98.59, 100.0]
+  BANNU max dev 44.74
+     pub [49.12, 47.37, 82.46, 52.63, 100, 5.26, 100, 96.49, 96.49, 98.25]
+     exp [78.92, 81.75, 95.83, 75.79, 100.0, 50.0, 100.0, 98.52, 98.52, 99.11]
+  LAKKIMRWT max dev 16.67
+     pub [82.14, 82.14, 96.43, 82.14, 96.43, None, 100, 100, 98.21, 96.43]
+     exp [98.81, 98.81, 100.0, 98.81, 97.32, None, 100.0, 100.0, 100.0, 99.07]
+  WAZIR-N max dev 36.31
+     pub [42.86, 42.86, 64.29, 57.14, 100, None, 100, 42.86, 71.43, 85.71]
+     exp [66.67, 66.67, 80.0, 83.33, 100.0, None, 100.0, 79.17, 91.67, 92.86]
+  ABOTABAD max dev 72.26
+     pub [47.95, 47.95, 94.52, 58.22, 98.63, 2.74, 99.32, 97.95, 98.63, 99.32]
+     exp [76.2, 76.2, 97.12, 78.41, 99.18, 75.0, 99.83, 99.2, 99.34, 99.83]
+  KOHISTANUPPER max dev 37.5
+     pub [75, 75, 87.5, 75, 87.5, 12.5, 100, 100, 87.5, 100]
+     exp [100.0, 100.0, 100.0, 100.0, 100.0, 50.0, 100.0, 100.0, 100.0, 100.0]
+  KOLAIPALAS max dev 26.66
+     pub [93.33, 93.33, 100, 100, 100, 6.67, 100, 86.67, 93.33, 100]
+     exp [92.86, 92.86, 100.0, 100.0, 100.0, 33.33, 100.0, 88.1, 95.24, 100.0]
+  TORGHAR max dev 26.43
+     pub [60, 55, 85, 60, 100, None, 100, 100, 90, 95]
+     exp [84.29, 81.43, 88.89, 77.5, 100.0, None, 100.0, 100.0, 94.44, 100.0]
+  BAJOUR max dev 96.55
+     pub [93.1, 93.1, 94.83, 94.83, 98.28, 3.45, 100, 98.28, 96.55, 96.55]
+     exp [97.92, 97.92, 95.51, 100.0, 98.08, 100.0, 100.0, 98.08, 98.0, 100.0]
+  CHITRALLOWER max dev 40.78
+     pub [76, 76, 96, 80, 100, 12, 96, 100, 100, 100]
+     exp [87.78, 87.78, 100.0, 90.0, 100.0, 52.78, 96.67, 100.0, 100.0, 100.0]
+  CHITRALUPPER max dev 18.87
+     pub [61.54, 69.23, 100, 96.15, 100, None, 100, 100, 96.15, 100]
+     exp [79.76, 88.1, 100.0, 100.0, 100.0, None, 100.0, 100.0, 96.67, 100.0]
+  DIRLOWER max dev 29.44
+     pub [95.56, 94.44, 94.44, 94.44, 96.67, 8.89, 98.89, 97.78, 96.67, 96.67]
+     exp [94.85, 96.21, 96.97, 94.36, 97.55, 38.33, 99.02, 97.94, 98.99, 96.57]
+  DIRUPPER max dev 28.33
+     pub [85, 80, 95, 85, 100, 5, 100, 95, 95, 100]
+     exp [92.42, 87.88, 97.22, 92.42, 100.0, 33.33, 100.0, 95.83, 95.83, 100.0]
+  HANGU max dev 93.62
+     pub [91.49, 91.49, 97.87, 91.49, 87.23, 6.38, 100, 87.23, 95.74, 97.87]
+     exp [95.59, 95.59, 98.61, 95.59, 97.06, 100.0, 100.0, 97.06, 97.22, 98.61]
+  KARAK max dev 14.5
+     pub [91.3, 91.3, 86.96, 89.13, 95.65, 2.17, 100, 95.65, 84.78, 93.48]
+     exp [93.23, 93.23, 91.67, 91.98, 97.4, 16.67, 100.0, 98.67, 90.67, 94.79]
+  KOHAT max dev 36.92
+     pub [99.1, 99.1, 93.69, 99.1, 98.2, 5.41, 100, 98.2, 97.3, 98.2]
+     exp [98.72, 98.72, 96.71, 98.72, 100.0, 42.33, 100.0, 99.12, 97.01, 97.86]
+  KURRAM max dev 31.0
+     pub [93.02, 93.02, 95.35, 95.35, 93.02, 2.33, 97.67, 95.35, 93.02, 97.67]
+     exp [97.83, 97.83, 100.0, 100.0, 100.0, 33.33, 100.0, 100.0, 100.0, 100.0]
+  ORAKZAI max dev 85.71
+     pub [100, 100, 100, 100, 92.86, 14.29, 100, 92.86, 92.86, 100]
+     exp [100.0, 100.0, 100.0, 100.0, 95.45, 100.0, 100.0, 100.0, 100.0, 100.0]
+max supervisor deviation from published sv: 96.55
+blank rates: {'% Vaccine Carrier': 0.101, '% OPV vials': 0.101, '% Finger markers': 0.053, '% Cold Chain maintained': 0.082, '% Microplan Updated': 0.025, '% Supervisor carrying Vitamin-A': 0.921, '% Name and ID match': 0.002, '% Checklist Completed': 0.048, '% Supervisor supported teams': 0.045, '% Quality of the IPC Skills of the supervisor with the teams': 0.017}
+zero rates: {'% Vaccine Carrier': 0.0, '% OPV vials': 0.0, '% Finger markers': 0.0, '% Cold Chain maintained': 0.0, '% Microplan Updated': 0.0, '% Supervisor carrying Vitamin-A': 0.0, '% Name and ID match': 0.0, '% Checklist Completed': 0.0, '% Supervisor supported teams': 0.0, '% Quality of the IPC Skills of the supervisor with the teams': 0.0}
+
+team rows 913 districts 27 teams total 19092 UC names 888
+team columns: ['Campaign name', 'Province name', 'District name', 'Tehsil name', 'UC name', '# Teams Monitored', '% Female', '% Adult', '% Name Matches ID', '% Quilty of Markers', '% Training', '% Cold Chain- approved Vaccine carrier', '% Cold Chain- lid and seal properly', '% Cold Chain- no water inside carrier', '% Dry', '% Valid VVM', '% Intact Label', '% Vial Properly Recapped', '% Vacc. Children matched with doses', '% Tally Sheet filling', '% Team administered Vitamin-A', '% Record of Missed Children', '% Location in Route Map', '% Proper Workload', '% Asking Newborn,NA,SC', '% Asking for AFP&RI', '% Marker Used for FM Only', '% Marking FM fully', '% Minimizing Vaccine Wastage', 'District', 'teams']
+transit rows 272 districts 24 sites total 665 UC names 271
+transit columns: ['Campaign name', 'Province name', 'District name', 'Tehsil name', 'UC name', '# Sites Visited', '% Located as per MP', '% Accessible', '% Visible', '% Site Identified by Posters or Banners', '% Team Wearing IDs Badges', '% Adult', '% Cold Chain - approved Vaccine carrier', '% Cold Chain - lid and seal properly', '% Cold Chain - no water inside carrier', '% Cold Chain - vaccine carrier lined with ice', '% Each Team with Vaccine Carrier', '% Each Team with Marker', '% Each Team with Tally Sheet', '% Dry', '% Valid VVM', '% Intact Label', '% Vial Properly Recapped', '% Vacc. Children matched with doses', '% Dose Matches Children Vaccinated', '% Security Present', '% Security Helping The Team', 'District', 'sites']
+team districts missing: []
+transit districts missing: ['ORAKZAI', 'WAZIR-N', 'WAZIR-S Lower']
+team per district: {'ABOTABAD': 1990, 'BAJOUR': 885, 'BANNU': 1011, 'CHARSADA': 1051, 'CHITRALLOWER': 277, 'CHITRALUPPER': 231, 'DIKHAN': 2132, 'DIRLOWER': 1141, 'DIRUPPER': 633, 'HANGU': 383, 'KARAK': 640, 'KHYBER': 641, 'KOHAT': 972, 'KOHISTANLOWER': 85, 'KOHISTANUPPER': 148, 'KOLAIPALAS': 79, 'KURRAM': 394, 'LAKKIMRWT': 1020, 'MOHMAND': 453, 'NOWSHERA': 1214, 'ORAKZAI': 127, 'PESHAWAR': 2633, 'TANK': 485, 'TORGHAR': 162, 'WAZIR-N': 36, 'WAZIR-S Lower': 200, 'WAZIR-S Upper': 69}
+transit per district: {'ABOTABAD': 77, 'BAJOUR': 13, 'BANNU': 40, 'CHARSADA': 28, 'CHITRALLOWER': 21, 'CHITRALUPPER': 3, 'DIKHAN': 37, 'DIRLOWER': 29, 'DIRUPPER': 5, 'HANGU': 21, 'KARAK': 30, 'KHYBER': 5, 'KOHAT': 14, 'KOHISTANLOWER': 3, 'KOHISTANUPPER': 2, 'KOLAIPALAS': 4, 'KURRAM': 7, 'LAKKIMRWT': 24, 'MOHMAND': 3, 'NOWSHERA': 40, 'PESHAWAR': 249, 'TANK': 2, 'TORGHAR': 7, 'WAZIR-S Upper': 1}

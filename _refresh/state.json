@@ -506,12 +506,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-02T21:07:39+05:00",
-  "chars": 21349142,
-  "internal_md5": "82d839dc3e766bd37a6924da3d3978a6",
-  "master_md5": "5a3d709b3d72944c9b27ba53cb797495",
-  "note": "SNID Nov 2026 (NOV-26-1) day-1 data added: admin coverage, ICM cluster, operational issues and supervisor checklists for 27 districts. Timestamp refresh 02-Nov-2026 21:07 PKT",
-  "stamp": "02-Nov-2026 21:07"
+  "at": "2026-11-02T23:01:06+05:00",
+  "chars": 21355317,
+  "internal_md5": "175d7c4134c7a61a14d11a85f8a14342",
+  "master_md5": "3b2f10e57552a6251699ed1053de9c66",
+  "note": "SNID Nov 2026 day 1 refresh - coverage 10:43 reconciled with the UC export, ICM cluster 10:33, team 10:35, transit 10:37. Timestamp refresh 02-Nov-2026 23:01 PKT",
+  "stamp": "02-Nov-2026 23:01"
  },
  "last_run": {
   "at": "2026-11-01T12:48:17+05:00",

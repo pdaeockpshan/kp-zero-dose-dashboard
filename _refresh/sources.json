@@ -778,7 +778,8 @@
     "camp_quality.json"
    ],
    "portal": "NEOC (login required)",
-   "howto": "Export from NEOC into _portal/camp_quality.json, or use the in-dashboard NEOC import block on the Intra-campaign tab (stores to localStorage, never to the repo)."
+   "howto": "Export from NEOC into _portal/camp_quality.json, or use the in-dashboard NEOC import block on the Intra-campaign tab (stores to localStorage, never to the repo).",
+   "note": "SNID Nov-26 day 1: 02-Nov coverage district 10:43 (reconciled cell-for-cell with UC 10:43 - 996 UCs, target 4,808,167, vaccinated 1,372,776, still missed 156,119), ICM cluster 10:33 (2,996 clusters, 882 of 996 UCs reported, 6,013 missed), team monitoring 10:35 (NOCD.tv 19,092 forms) and transit 10:37 (NOCD.tr 665). Built by build_nov26_refresh.py and applied by patch_nov26_refresh.py. The supervisor UC export does not reproduce the portal's supervisor percentages, so CQ.icm.sv and NOCD.sp keep the portal values and that export only feeds ICMQ.aic. Excluded: the two 02-Nov exports labelled SNID May 2026 (team old format, fixed sites) - Nov fixed-site monitoring stays missing."
   },
   "mism": {
    "label": "Missed children & refusals",

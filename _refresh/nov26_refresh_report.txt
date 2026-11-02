@@ -1,0 +1,113 @@
+SNID Nov 2026 day-1 refresh from the 02-Nov-2026 Downloads exports
+excluded (campaign label says SNID May 2026): icm_2026-11-02_10-35-24.xls, icm_fixed_2026-11-02_10-36-02.xls
+
+admin coverage: 27 districts, target 4,808,167, vaccinated 1,372,776, coverage 28.55%, missed 156,119, NA 105,062, refusals 12,835, mobile 126,283
+admin districts changed vs published: 5
+  KOHAT          {'housesP': (59339, 59334), 'housesV': (59880, 59780)}
+  LAKKIMRWT      {'housesV': (34708, 34706), 'na': (4692, 4682), 'ref': (2196, 2198), 'missed': (9154, 9146), 'mobile': (2102, 2101)}
+  PESHAWAR       {'vacc': (172661, 172654)}
+  TANK           {'housesP': (15248, 16520), 'housesV': (13858, 14644), 'vacc': (22008, 23093), 'cov': (23.3, 24.45), 'na': (1405, 1476), 'ref': (543, 550), 'missed': (1948, 4291), 'mobile': (3524, 4000), 'waste': (3.63, 3.76)}
+  WAZIR-N        {'missed': (1837, 8697)}
+  totals target/vacc/missed/na/ref: [4808167, 1371698, 146924, 105001, 12826] -> [4808167, 1372776, 156119, 105062, 12835]
+
+ICM cluster: 27 districts, 2996 clusters, 20972 houses, 49579 recall, 6013 missed, 882 UCs reported of 996 planned
+  published: 2969 clusters, 20783 houses, 49083 recall, 5955 missed, 878/878 UCs
+  ABOTABAD       {'tuc': (48, 54), 'cl': (169, 171), 'hh': (1183, 1197), 'door': (1161, 1175), 'nr': (31, 41), 'rc': (1865, 1886), 'rv': (1678, 1699), 'gr': (176, 177), 'gv': (175, 176), 'seen': (1688, 1709), 'fm': (1671, 1692)}
+  BAJOUR         {'tuc': (38, 39)}
+  BANNU          {'tuc': (38, 57), 'cl': (159, 160), 'hh': (1113, 1120), 'door': (1066, 1073), 'rc': (2649, 2665), 'rv': (2228, 2241), 'mi': (421, 424), 'na': (293, 296), 'seen': (1971, 1982), 'fm': (1907, 1918)}
+  CHARSADA       {'tuc': (48, 49)}
+  DIRLOWER       {'tuc': (40, 41), 'cl': (131, 132), 'hh': (917, 924), 'door': (888, 895), 'rc': (2260, 2275), 'rv': (2018, 2030), 'mi': (242, 245), 'tdn': (3, 6), 'seen': (1925, 1939), 'fm': (1878, 1892), 'ma': (2, 3)}
+  DIRUPPER       {'tuc': (31, 32), 'cl': (108, 109), 'hh': (756, 763), 'door': (726, 733), 'rc': (1771, 1786), 'rv': (1615, 1630), 'seen': (1495, 1510), 'fm': (1484, 1499)}
+  KHYBER         {'tuc': (41, 53), 'ruc': (41, 42), 'cl': (161, 164), 'hh': (1127, 1148), 'door': (1099, 1120), 'rc': (3139, 3171), 'rv': (2823, 2852), 'mi': (316, 319), 'na': (294, 297), 'seen': (2372, 2400), 'fm': (2360, 2388)}
+  KOHISTANLOWER  {'tuc': (9, 10)}
+  KOHISTANUPPER  {'tuc': (6, 15)}
+  KOLAIPALAS     {'tuc': (8, 13)}
+  KURRAM         {'tuc': (51, 76)}
+  LAKKIMRWT      {'tuc': (38, 40), 'cl': (139, 140), 'hh': (973, 980), 'door': (936, 943), 'rc': (2750, 2773), 'rv': (2330, 2349), 'mi': (420, 424), 'na': (299, 303), 'seen': (2053, 2072), 'fm': (1947, 1966)}
+  MOHMAND        {'tuc': (27, 29)}
+  ORAKZAI        {'tuc': (40, 46), 'ruc': (40, 41), 'cl': (107, 110), 'hh': (749, 770), 'door': (736, 757), 'rc': (1808, 1849), 'rv': (1736, 1777), 'seen': (1570, 1604), 'fm': (1539, 1573)}
+  PESHAWAR       {'tuc': (100, 103), 'ruc': (100, 101), 'cl': (353, 362), 'hh': (2471, 2534), 'door': (2424, 2487), 'rc': (5500, 5653), 'rv': (4741, 4862), 'mi': (759, 791), 'na': (634, 660), 'rf': (116, 122), 'gr': (345, 364), 'gv': (299, 312), 'seen': (3959, 4050), 'fm': (3827, 3915)}
+  TANK           {'tuc': (20, 22), 'ruc': (20, 21), 'cl': (84, 85), 'hh': (588, 595), 'rc': (1445, 1464), 'rv': (1250, 1268), 'mi': (195, 196), 'na': (143, 144), 'seen': (1049, 1066), 'fm': (988, 1004)}
+  WAZIR-N        {'tuc': (17, 23), 'cl': (37, 38), 'hh': (259, 266), 'door': (192, 199), 'nr': (36, 44), 'rc': (804, 828), 'rv': (645, 666), 'mi': (159, 162), 'tdn': (19, 22), 'seen': (656, 677), 'fm': (525, 546), 'ma': (5, 6)}
+  WAZIR-S Lower  {'tuc': (30, 36), 'cl': (77, 80), 'hh': (539, 560), 'door': (415, 422), 'rc': (1750, 1872), 'rv': (1438, 1554), 'mi': (312, 318), 'tm': (75, 77), 'na': (120, 124), 'seen': (1309, 1416), 'fm': (1151, 1258), 'pca': (21, 22)}
+  WAZIR-S Upper  {'tuc': (24, 34), 'cl': (75, 76), 'hh': (525, 532), 'door': (471, 478), 'rc': (958, 973), 'rv': (863, 875), 'mi': (95, 98), 'na': (63, 66), 'seen': (794, 803), 'fm': (754, 763)}
+  operational issue non-null: 27 districts (published 20)
+
+NOCD: team visits 19,092 over 27 districts (913 export rows); transit visits 665 over 24 districts (272 rows); fixed sites not imported (May export only)
+
+ICMQ: tm 913 rows / aic 643 rows; wt {'tm': 'teams', 'aic': 'uc'}
+  tm keys carried: ['fem', 'adu', 'idm', 'mkq', 'trn', 'cc1', 'cc2', 'cc3', 'dry', 'vvm', 'lab', 'rec', 'mat', 'tal', 'vita', 'rmc', 'rtm', 'wkl', 'ask', 'afp', 'fmo', 'fmf', 'wst']
+  tm keys absent: ['loc', 'gov', 'vmk', 'cc4']
+  aic keys carried: ['vac', 'opv', 'fmk', 'ccm', 'mpu', 'vit', 'nid', 'chk', 'sup', 'ipc']
+  aic keys absent: ['trt', 'cri', 'vm3', 'pov', 'cv1', 'cv2', 'cv3', 'cv4']
+  zc: {'aic': ['vit']}
+  dq: None
+  tm fill (valid/total, non-zero/valid):
+    fem    913/  913  nz   720  
+    adu    913/  913  nz   913  
+    idm    913/  913  nz   909  
+    mkq    913/  913  nz   912  
+    trn    913/  913  nz   912  
+    cc1    913/  913  nz   910  
+    cc2    913/  913  nz   899  
+    cc3    913/  913  nz   900  
+    dry    913/  913  nz   912  
+    vvm    913/  913  nz   913  
+    lab    913/  913  nz   913  
+    rec    913/  913  nz   913  
+    mat    913/  913  nz   913  
+    tal    913/  913  nz   909  
+    vita   913/  913  nz   283  
+    rmc    913/  913  nz   908  
+    rtm    913/  913  nz   906  
+    wkl    913/  913  nz   912  
+    ask    913/  913  nz   908  
+    afp    913/  913  nz   907  
+    fmo    913/  913  nz   913  
+    fmf    913/  913  nz   911  
+    wst    913/  913  nz   912  
+  aic fill (valid/total, non-zero/valid):
+    vac    578/  643  nz   578  
+    opv    578/  643  nz   578  
+    fmk    609/  643  nz   609  
+    ccm    590/  643  nz   590  
+    mpu    627/  643  nz   627  
+    vit     51/  643  nz    51  NOT CARRIED
+    nid    642/  643  nz   642  
+    chk    612/  643  nz   612  
+    sup    614/  643  nz   614  
+    ipc    632/  643  nz   632  
+  tm province means:
+    fem  76.7
+    adu  99.8
+    idm  99.8
+    mkq  97.6
+    trn  99.7
+    cc1  99.0
+    cc2  87.7
+    cc3  87.5
+    dry  100.0
+    vvm  100.0
+    lab  100.0
+    rec  99.9
+    mat  99.8
+    tal  99.7
+    vita 4.1
+    rmc  99.5
+    rtm  99.2
+    wkl  99.9
+    ask  99.4
+    afp  98.8
+    fmo  99.8
+    fmf  99.9
+    wst  99.3
+  aic province means:
+    vac  93.9
+    opv  94.2
+    fmk  97.3
+    ccm  94.6
+    mpu  98.2
+    nid  99.7
+    chk  98.2
+    sup  96.9
+    ipc  98.5
