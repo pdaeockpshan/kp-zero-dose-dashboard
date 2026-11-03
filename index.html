@@ -8847,15 +8847,25 @@ const stTag=s=>'<span class="st '+STL[s][0]+'">'+STL[s][1]+'</span>';
 const nfmt=v=>v==null?'–':fmt(Math.round(v));
 const pfmt=v=>v==null?'–':v.toFixed(1)+'%';
 const ERK='kpERM.SNIDNOV26.v1',ERK_OLD='kpERM.SNIDOCT26.v1';
-const COVD={camp:'SNID Nov-26',day:2,asof:'2026-11-03 14:51',tg:4808167,vacc:1448189,src:'EOC portal Summary reported coverage'};
+const ERPORT = {"camp":"SNID Nov-26","src":"EOC portal Campaign Coverage report (SNID Nov 2026, district-wise): overall children vaccinated, recorded NA and recorded refusals","asof":"2026-11-03 16:40","snaps":{"2":{"t":"2026-11-03 16:40","pu":"2026-11-03 16:27","d":{"BANNU":[55526,10071,3024],"LAKKIMRWT":[71293,11028,3893],"WAZIR-N":[44349,3740,265],"DIKHAN":[120716,19901,1871],"TANK":[23394,2840,404],"WAZIR-S Lower":[34651,2903,335],"WAZIR-S Upper":[12731,1107,128],"ABOTABAD":[73414,11765,95],"KOHISTANLOWER":[18386,1432,0],"KOHISTANUPPER":[16003,836,0],"KOLAIPALAS":[7663,257,0],"TORGHAR":[26714,2443,0],"HANGU":[61089,7086,133],"KARAK":[49435,7500,466],"KOHAT":[102575,16599,1404],"KURRAM":[58503,6968,26],"ORAKZAI":[28635,2534,3],"BAJOUR":[175074,18289,25],"CHITRALLOWER":[22983,3268,0],"CHITRALUPPER":[11689,1506,0],"DIRLOWER":[226758,30322,82],"DIRUPPER":[100574,13553,26],"CHARSADA":[189108,31464,1273],"KHYBER":[61136,8056,287],"MOHMAND":[59831,8751,62],"NOWSHERA":[157461,26457,1073],"PESHAWAR":[179035,30440,5411]}}}};
+const COVD={camp:'SNID Nov-26',day:2,asof:'2026-11-03 16:27',tg:4808167,vacc:1988726,src:'EOC portal Summary reported coverage'};
 const covdShort=()=>'day '+COVD.day+' · as of '+COVD.asof+': '+fmt(COVD.vacc)+' vaccinated of '+fmt(COVD.tg)+' ('+(COVD.vacc/COVD.tg*100).toFixed(2)+'%)';
-let ERD=1,ERM={},ERMD={};
+let ERD=(()=>{const k=Object.keys((ERPORT&&ERPORT.snaps)||{}).map(Number);return k.length?Math.max(...k):1;})(),ERM={},ERMD={};
 try{let L=JSON.parse(localStorage.getItem(ERK)||'null');
  if(!L||!L.v){const O=JSON.parse(localStorage.getItem(ERK_OLD)||'null');if(O&&O.v){L={v:O.v,d:{}};try{localStorage.setItem(ERK,JSON.stringify(L));localStorage.removeItem(ERK_OLD);}catch(e2){}}}
  ERM=(L&&L.v)||{};ERMD=(L&&L.d)||{};}catch(e){ERM={};ERMD={};}
 const erSave=()=>{try{localStorage.setItem(ERK,JSON.stringify({v:ERM,d:ERMD}));}catch(e){}};
 const erK=(i,d)=>i+'_'+d;
-const erDay=(i,d)=>{const x=ERM[erK(i,d)];return x&&x.length===3?x:null;};
+const erDayT=(i,d)=>{const x=ERM[erK(i,d)];return x&&x.length===3?x:null;};
+// EOC portal fallback: a day without a typed tally takes the portal running total for that day minus everything counted on earlier days
+function erPortDay(i,d){const S=(typeof ERPORT!=='undefined'&&ERPORT.snaps)||{},c=S[d],n=(SND.d[i]||[])[0];if(!c||!c.d||!c.d[n])return null;
+ const x=c.d[n],e=[0,0,0];for(let k=1;k<d;k++){const y=erDay(i,k);if(y){e[0]+=y[0];e[1]+=y[1];e[2]+=y[2];}}
+ return [Math.max(0,x[0]-e[0]),Math.max(0,x[1]-e[1]),Math.max(0,x[2]-e[2])];}
+const erDay=(i,d)=>erDayT(i,d)||erPortDay(i,d);
+function erPortNote(){const S=(typeof ERPORT!=='undefined'&&ERPORT.snaps)||{},ks=Object.keys(S).map(Number).sort((a,b)=>a-b);if(!ks.length)return '';
+ const s=S[ERD],gap=ks[0]>1?' Days 1–'+ks[0]+' are combined in the Day '+ks[0]+' figure (no end-of-day portal snapshot for earlier days).':'';
+ const typed=snBase().filter(o=>erDayT(o.i,ERD)).length;
+ return '<br><b>Auto-filled from the EOC portal</b> · '+(s?'Day '+ERD+' snapshot taken '+esc(s.t)+(s.pu?' (portal updated '+esc(s.pu)+')':'')+'; daily figure = running total minus earlier days.':'no portal snapshot for Day '+ERD+' yet.')+gap+' Typed tallies replace the portal figure for that district and day'+(typed?' ('+typed+' typed for Day '+ERD+' in this browser)':'')+'; portal figures show in blue italics.';}
 const erDefDate=d=>{const p=String(SND.st||'2026-11-02').split('-'),t=new Date(Date.UTC(+p[0],(+p[1]||1)-1,+p[2]||1));t.setUTCDate(t.getUTCDate()+(d-1));const z=n=>(n<10?'0':'')+n;return t.getUTCFullYear()+'-'+z(t.getUTCMonth()+1)+'-'+z(t.getUTCDate());};
 const nowLbl=()=>{const d=new Date(),z=n=>(n<10?'0':'')+n;return z(d.getDate())+'-'+ERMON[d.getMonth()]+'-'+d.getFullYear()+' '+z(d.getHours())+':'+z(d.getMinutes());};
 function erDateLbl(iso){const p=String(iso||'').split('-');return p.length===3?p[2]+'-'+ERMON[(+p[1]||1)-1]+'-'+p[0]:String(iso||'');}
@@ -8949,8 +8959,8 @@ function erBuildIn(){
  const R=erRows(),t=el('tERIn');
  const H=['District','Category','Target','Daily target','Expected by tonight','Vaccinated today','Missed / absent','Refusals','Cumulative','Coverage %','Pace %','Status'];
  t.innerHTML='<thead><tr>'+H.map((h,i)=>'<th'+(i>=2?' class="n"':'')+'>'+h+'</th>').join('')+'</tr></thead><tbody>'+
-  (R.length?R.map(o=>{const x=erDay(o.i,ERD);
-   const inp=f=>'<td class="n"><input class="eri" type="number" min="0" step="1" data-i="'+o.i+'" data-f="'+f+'" value="'+(x?x[f]:'')+'" aria-label="'+esc(o.n)+' '+['vaccinated','missed','refusals'][f]+'"></td>';
+  (R.length?R.map(o=>{const x=erDay(o.i,ERD),xp=!!x&&!erDayT(o.i,ERD);
+   const inp=f=>'<td class="n"><input class="eri" type="number" min="0" step="1" data-i="'+o.i+'" data-f="'+f+'" value="'+(x?x[f]:'')+'"'+(xp?' title="EOC portal figure — type to override" style="color:#0369a1;font-style:italic"':'')+' aria-label="'+esc(o.n)+' '+['vaccinated','missed','refusals'][f]+'"></td>';
    return '<tr><td>'+esc(o.n)+'</td><td>'+snCat(o.cat)+'</td><td class="n">'+fmt(o.tg)+'</td><td class="n">'+nfmt(o.dt)+'</td><td class="n">'+nfmt(o.exp)+'</td>'+
     inp(0)+inp(1)+inp(2)+
     '<td class="n" id="erv'+o.i+'">'+fmt(o.v)+'</td><td class="n" id="erc'+o.i+'">'+pfmt(o.cov)+'</td><td class="n" id="erp'+o.i+'">'+(o.pace==null?'–':rgN(o.pace,95,80)+'%')+'</td><td class="n" id="ers'+o.i+'">'+stTag(o.st)+'</td></tr>';}).join('')
@@ -8958,7 +8968,7 @@ function erBuildIn(){
  if(!t._erW){t._erW=1;
   t.addEventListener('input',e=>{const x=e.target;
    if(!x.classList||!x.classList.contains('eri'))return;
-   const i=+x.dataset.i,f=+x.dataset.f,v=Math.max(0,parseInt(x.value,10)||0),kk=erK(i,ERD),c=ERM[kk]||[0,0,0];
+   const i=+x.dataset.i,f=+x.dataset.f,v=Math.max(0,parseInt(x.value,10)||0),kk=erK(i,ERD),c=ERM[kk]||(erPortDay(i,ERD)||[0,0,0]).slice();
    c[f]=v;
    if(c[0]||c[1]||c[2])ERM[kk]=c;else delete ERM[kk];
    erSave();erRecalc();});}
@@ -9032,7 +9042,7 @@ function renderER(){
  di.onchange=()=>{ERMD[ERD]=di.value;erSave();renderER();};
  el('bER').textContent='Day '+ERD;
  el('erDayLbl2').textContent='Day '+ERD+(ERMD[ERD]?' · '+erDateLbl(ERMD[ERD]):'');
- el('erHint').innerHTML='Daily target = district target ÷ campaign days (<b>'+SND.n5+' days for '+esc(SND.d5.join(' and '))+'</b>, <b>'+SND.n3+' days for the rest of KP</b>). Enter the evening tally for <b>Day '+ERD+'</b> and print the one-pager above for the review meeting — tallies are stored in this browser only and are never uploaded.'+(COVD?'<br><b>EOC portal snapshot</b> · '+covdShort()+' · portal-reported figure, not the evening tally.':'');
+ el('erHint').innerHTML='Daily target = district target ÷ campaign days (<b>'+SND.n5+' days for '+esc(SND.d5.join(' and '))+'</b>, <b>'+SND.n3+' days for the rest of KP</b>). Enter the evening tally for <b>Day '+ERD+'</b> and print the one-pager above for the review meeting — tallies are stored in this browser only and are never uploaded.'+(COVD?'<br><b>EOC portal snapshot</b> · '+covdShort()+' · portal-reported running total.':'')+erPortNote();
  el('erPrint').onclick=()=>window.print();
  el('erCSV').onclick=erCSVgo;
  el('erPaste').onclick=erPasteGo;
