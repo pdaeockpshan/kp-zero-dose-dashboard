@@ -16212,7 +16212,7 @@ function renderNovUC(lab){
  const z=R.filter(r=>r.vac===0&&r.tg>0), u60=R.filter(r=>r.vac>0&&r.cov!=null&&r.cov<60), lr=R.filter(r=>r.lr), icmN=R.filter(r=>r.cl>=3).length;
  el('nuHint').textContent=NOVUC.l+' \u00b7 '+NOVUC.src+' \u00b7 read '+NOVUC.asof+'.'+tNote;
  el('nuCnt').textContent=fmt(R.length)+' UCs in view';
- el('nu1').textContent=fmt(z.length); el('nu1s').textContent=fmt(R.filter(r=>r.nd).length)+' with no data at all \u00b7 '+fmt(z.reduce((a,r)=>a+r.tg,0))+' children in their target';
+ el('nu1').textContent=fmt(z.length); el('nu1s').textContent=fmt(z.filter(r=>r.nd).length)+' with no data at all \u00b7 '+fmt(z.reduce((a,r)=>a+r.tg,0))+' children in their target';
  el('nu2').textContent=fmt(lo); el('nu2s').textContent=(st?(lo/st*100).toFixed(0)+'% of the '+fmt(st)+' still missed':'')+' \u00b7 areas teams have not covered yet';
  el('nu3').textContent=fmt(u60.length); el('nu3s').textContent='of '+fmt(R.filter(r=>r.vac>0).length)+' UCs reporting \u00b7 coverage against the household target';
  el('nu4').textContent=fmt(lr.length); el('nu4s').textContent='of '+fmt(icmN)+' UCs with 3+ ICM clusters';
