@@ -9,16 +9,25 @@ internal file, but only after proving that the same regeneration still reproduce
 file from the previous master byte for byte. Nothing is written unless the proof passes, so a new
 per-variant difference can never be flattened away by an overwrite.
 
+The proof needs the master the internal build was actually regenerated from. That is normally
+preview.html, but a round that edited index.html and left the clones untouched (a test copy, an
+auto-update) makes preview newer than the internal build. --rebase-internal takes that older
+master from a git revision instead of turning the guard off: the same byte-for-byte proof still
+has to pass against the named revision before anything is written.
+
 Usage:
   python _refresh/push_master.py --dry-run    proof and diff report, writes nothing
   python _refresh/push_master.py              push, bump the PKT stamp, note in version.txt
   python _refresh/push_master.py --no-stamp   push, leave the stamp and version files alone
+  python _refresh/push_master.py --rebase-internal <rev>
+                                             prove a stale internal build against <rev>:index.html
 """
 import argparse
 import datetime
 import hashlib
 import os
 import re
+import subprocess
 import sys
 
 import dashpatch
@@ -69,6 +78,25 @@ def first_diff(a, b):
     return min(len(a), len(b))
 
 
+def git_show(repo, rev, rel):
+    out = subprocess.run(['git', 'show', '%s:%s' % (rev, rel)], cwd=repo,
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if out.returncode != 0:
+        raise SystemExit('ABORT: cannot read %s at %s: %s'
+                         % (rel, rev, out.stderr.decode('utf-8', 'replace').strip()))
+    text = out.stdout.decode('utf-8')
+    if '\r\n' not in text:
+        text = text.replace('\n', '\r\n')
+    return text
+
+
+def stamp_in(text, where):
+    hits = re.findall(r'Updated ' + dashpatch.STAMP_RE, text)
+    if len(hits) != 1:
+        raise SystemExit('ABORT: %s does not carry exactly one "Updated" stamp' % where)
+    return hits[0]
+
+
 def variant_paths(cfg):
     paths = {}
     for rel in [MASTER] + CLONES + [INTERNAL]:
@@ -79,7 +107,7 @@ def variant_paths(cfg):
     return paths
 
 
-def load_checked(cfg):
+def load_checked(cfg, rebase=None):
     paths = variant_paths(cfg)
     master = srcutil.read_text(paths[MASTER])
     prev = srcutil.read_text(paths[CLONES[0]])
@@ -92,17 +120,21 @@ def load_checked(cfg):
         check_crlf(rel, text)
     if VSHOWN.search(master).group(2) != 'false':
         raise SystemExit('ABORT: %s carries VSHOWN = true, it is not the public master' % MASTER)
+    base = git_show(cfg['repo'], rebase, MASTER) if rebase else prev
     own = own_payloads(internal)
-    rebuilt = as_internal(prev, own)
+    rebuilt = as_internal(base, own)
     if rebuilt != internal:
         raise SystemExit('ABORT: regeneration cannot reproduce %s (first difference at char %s). '
                          'The variants differ in more than %s plus VSHOWN, so this tool must be '
                          'extended before it may overwrite anything.'
                          % (INTERNAL, format(first_diff(internal, rebuilt), ','),
                             ' / '.join(PER_VARIANT)))
-    print('proof: %s regenerates exactly from the previous master plus its own %s payloads'
-          % (INTERNAL, ' / '.join(PER_VARIANT)))
-    return paths, master, prev, internal, own
+    print('proof: %s regenerates exactly from %s%s plus its own %s payloads'
+          % (INTERNAL, (rebase + ':') if rebase else '', MASTER, ' / '.join(PER_VARIANT)))
+    if rebase:
+        print('rebase: the internal build is %s chars behind the current master and will be '
+              'regenerated from it' % format(len(master) - len(base), ','))
+    return paths, master, prev, internal, own, base
 
 
 def main():
@@ -110,12 +142,25 @@ def main():
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--no-stamp', action='store_true')
     ap.add_argument('--note', help='version.txt line, derived from the master diff when omitted')
+    ap.add_argument('--rebase-internal', metavar='REV',
+                    help='git revision whose index.html the internal build was last regenerated '
+                         'from; proves it there before rebasing it onto the current master')
     a = ap.parse_args()
 
     cfg = srcutil.load_sources()
-    paths, master, prev, internal, own = load_checked(cfg)
+    paths, master, prev, internal, own, base = load_checked(cfg, a.rebase_internal)
     stamps = {rel: dashpatch.get_stamp(dashpatch.Variant(paths[rel], rel)) for rel in paths}
-    if len(set(stamps.values())) != 1:
+    if a.rebase_internal:
+        public = {rel: stamps[rel] for rel in [MASTER] + CLONES}
+        if len(set(public.values())) != 1:
+            raise SystemExit('ABORT: stamps disagree across the public variants: %s' % public)
+        base_stamp = stamp_in(base, a.rebase_internal + ':' + MASTER)
+        if stamps[INTERNAL] != base_stamp:
+            raise SystemExit('ABORT: %s carries %s but %s carries %s'
+                             % (INTERNAL, stamps[INTERNAL], a.rebase_internal, base_stamp))
+        print('stamps: public %s, internal %s (%s) - rebasing'
+              % (stamps[MASTER], stamps[INTERNAL], a.rebase_internal))
+    elif len(set(stamps.values())) != 1:
         raise SystemExit('ABORT: stamps disagree across variants: %s' % stamps)
     old = stamps[MASTER]
     new = old if a.no_stamp else dashpatch.pkt_stamp(datetime.datetime.now(dashpatch.PKT))
