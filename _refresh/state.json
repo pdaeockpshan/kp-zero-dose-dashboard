@@ -520,11 +520,11 @@
   }
  },
  "last_push": {
-  "at": "2026-11-05T18:49:09+05:00",
+  "at": "2026-11-05T18:51:41+05:00",
   "chars": 23258268,
-  "internal_md5": "b271bd4ab21097856704e79927a5aa0f",
-  "master_md5": "797773f1b85abf56d0102573ab289371",
-  "note": "Home photo strip: two SNID Nov-26 supervision photographs added - a pre-deployment briefing at a health facility and a household visit with the campaign banner - cropped to the strip ratio, recompressed and EXIF-stripped; no official's name appears in the page. Timestamp refresh 05-Nov-2026 18:49 PKT",
+  "internal_md5": "0560926fc3084209dbd1159eb36b714d",
+  "master_md5": "5835d6d9686795f63ef2163654bc73be",
+  "note": "Home photo strip laid out four-up so the eight photographs fill two rows on desktop",
   "stamp": "05-Nov-2026 18:49"
  },
  "last_run": {
