@@ -506,12 +506,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-04T22:42:07+05:00",
-  "chars": 22018029,
-  "internal_md5": "08be251fbde9cde7e3d8a41cac23133d",
-  "master_md5": "91e3e03a9bb2cdf02e45ed8c7181785b",
-  "note": "Campaign overview and Post-campaign analysis open on SNID Nov-26 (day 3); the data pack opens on the newest round that posted each export and names the Sept-26 LQAS and May-26 market-survey / PCM fallbacks. Internal build rebased from 7d75472.. Timestamp refresh 04-Nov-2026 22:42 PKT",
-  "stamp": "04-Nov-2026 22:42"
+  "at": "2026-11-05T16:46:03+05:00",
+  "chars": 22869903,
+  "internal_md5": "9ae8f1d23548596fef51b13934a8613b",
+  "master_md5": "56d01996710b14a172e9e5d38ab730aa",
+  "note": "SNID Nov-26 Day 4: coverage, campaign indicators, ICM pack rebuilt from the 05-Nov portal exports; four Nov-26 supervision photographs on the home page (stock child photograph removed). Timestamp refresh 05-Nov-2026 16:46 PKT",
+  "stamp": "05-Nov-2026 16:46"
  },
  "last_run": {
   "at": "2026-11-01T12:48:17+05:00",

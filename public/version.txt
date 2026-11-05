@@ -184,3 +184,4 @@ Morning deployment: PESHAWAR and KHYBER get their own Day-6th and Day-7th tabs (
 SNID Nov 2026 (NOV-26-1) day-1 data added: admin coverage, ICM cluster, operational issues and supervisor checklists for 27 districts. Timestamp refresh 02-Nov-2026 21:07 PKT
 SNID Nov 2026 day 1 refresh - coverage 10:43 reconciled with the UC export, ICM cluster 10:33, team 10:35, transit 10:37. Timestamp refresh 02-Nov-2026 23:01 PKT
 Campaign overview and Post-campaign analysis open on SNID Nov-26 (day 3); the data pack opens on the newest round that posted each export and names the Sept-26 LQAS and May-26 market-survey / PCM fallbacks. Internal build rebased from 7d75472. Timestamp refresh 04-Nov-2026 22:42 PKT
+SNID Nov-26 Day 4: coverage, campaign indicators, ICM pack rebuilt from the 05-Nov portal exports; four Nov-26 supervision photographs on the home page (stock child photograph removed). Timestamp refresh 05-Nov-2026 16:46 PKT
