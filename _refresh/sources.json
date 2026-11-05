@@ -522,7 +522,7 @@
    "note": "Companion to epm (same parse cache). Every month with an export on disk is rebuilt from it, 2026 included since 28-Oct-2026 (the embedded 2026 rows had been frozen at eleven core doses with a part-report September); a month with no on-disk export keeps the embedded rows rather than vanishing from the year. An EPI district not in the embedded mapping aborts the extract. Every rebuilt month carries the full 19-dose epi_ag panel."
   },
   "epiuc": {
-   "label": "EPI UC-month dose counts (EPIUC): Jan-Dec 2023, Jan-Dec 2025 and Jan-Sep 2026",
+   "label": "EPI UC-month dose counts (EPIUC): Jan-Dec 2023, Jan-Dec 2025 and Jan-Oct 2026",
    "const": "EPIUC",
    "extractor": "extract_epi_ucm.py",
    "roots": [
