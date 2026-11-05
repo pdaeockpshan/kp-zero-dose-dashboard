@@ -3,27 +3,28 @@
 Usage: python _refresh/extract_trig.py [--source PATH] [--out PATH]
 Prints one status line: OK trig <json chars> <summary> | ERR trig <reason>
 
-Source: EOC portal > Control Room Trigger Feedback (https://www.eoc.gov.pk/trigger/index),
+Source: EOC portal > Control Room Trigger Feedback (https://www.eoc.gov.pk/trigger/feedback/),
 campaign SNID Nov 2026, province KP, district roll-up tables. The portal is behind a
 login, so the tables are not a Downloads export: `_refresh/cache/trig_<date>.json` holds
 the three tables exactly as the signed-in portal printed them (a blank cell is stored
 as 0), and this extractor validates and reshapes that snapshot.
 
-Three tables are kept, because they are the only triggers with districts flagged:
+Three tables are kept, because they are the only feedback-bearing triggers:
 
   mpqa   SNID Nov-26  UC micro-plan score below 90%
                       cols: need improvement | serious issues
-  icm    SNID Sept-26 poorly covered area | missed area flagged by the monitors
-  admin  SNID Sept-26 UC coverage below 75% | above 115%
+  icm    SNID Nov-26  poorly covered area | missed area flagged by the monitors
+  admin  SNID Nov-26  UC coverage below 70% | above 115%
 
-The ICM and admin-coverage tables are the *last round that has intra-campaign data*:
-the SNID Nov 2026 round had not started when the snapshot was taken, and the portal
-printed 0 for every district in both tables for that campaign. That campaign label is
-carried in the payload so no view can present a Sept-26 count as a Nov-26 one.
+A UC can be flagged for both ICM results, so the ICM snapshot rows carry a sixth field,
+the count met by both, and total is the distinct flagged UCs (flagA + flagB - both).
+The other three compliance triggers on the portal (missed children covered, still NA,
+still refusal) carry no feedback and are not extracted.
 
-Each table row is [district, flagA, flagB, total, feedback]. The extractor asserts
-flagA + flagB == total for every row and for the portal's own Total row, feedback never
-exceeds total, and both totals equal the column sums. The MPQA table is additionally
+Each table row is [district, flagA, flagB, total, feedback] ([... , both] for ICM).
+The extractor asserts flagA + flagB == total (ICM: flagA + flagB - both == total) for
+every row, feedback never exceeds total, and both totals equal the column sums. The
+MPQA table is additionally
 reconciled against the MPQA payload we already hold from the portal's own export: the
 per-district needs-improvement and serious counts must match exactly, which is what
 proves the scrape is the same round and not a stale page.
@@ -70,8 +71,14 @@ def build(snap):
     for tid, label in LABELS:
         t = snap['tables'][tid]
         rows, seen = {}, set()
+        overlap = 0
         for r in t['rows']:
-            raw, a, b, tot, fb = r
+            both = 0
+            if len(r) == 6:
+                raw, a, b, tot, fb, both = r
+                overlap += both
+            else:
+                raw, a, b, tot, fb = r
             key = raw.upper().replace(' ', '')
             if key not in names:
                 raise SystemExit('ERR trig unknown district %r in %s' % (raw, tid))
@@ -79,8 +86,12 @@ def build(snap):
             if d in seen:
                 raise SystemExit('ERR trig %s lists %s twice' % (tid, d))
             seen.add(d)
-            if a + b != tot:
-                raise SystemExit('ERR trig %s %s: %d+%d != %d' % (tid, d, a, b, tot))
+            if a + b - both != tot:
+                raise SystemExit('ERR trig %s %s: %d+%d-both %d != %d'
+                                 % (tid, d, a, b, both, tot))
+            if both > min(a, b):
+                raise SystemExit('ERR trig %s %s: both %d exceeds a flag column'
+                                 % (tid, d, both))
             if fb > tot:
                 raise SystemExit('ERR trig %s %s: feedback %d > total %d' % (tid, d, fb, tot))
             rows[d] = [a, b, tot, fb]
@@ -112,8 +123,8 @@ def cross_check_mpqa(tabs):
             bad.append('%s missing from MPQA payload' % d)
         elif [v[0], v[1]] != [e[3], e[4]]:
             bad.append('%s trigger %d/%d vs export %d/%d' % (d, v[0], v[1], e[3], e[4]))
-    for d in emp['d']:
-        if d not in t['d']:
+    for d, e in emp['d'].items():
+        if d not in t['d'] and (e[3] or e[4]):
             bad.append('%s in MPQA payload but not in trigger table' % d)
     if bad:
         raise SystemExit('ERR trig MPQA trigger disagrees with the export: ' + '; '.join(bad))

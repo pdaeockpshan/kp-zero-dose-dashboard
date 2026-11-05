@@ -506,12 +506,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-05T16:46:03+05:00",
-  "chars": 22869903,
-  "internal_md5": "9ae8f1d23548596fef51b13934a8613b",
-  "master_md5": "56d01996710b14a172e9e5d38ab730aa",
-  "note": "SNID Nov-26 Day 4: coverage, campaign indicators, ICM pack rebuilt from the 05-Nov portal exports; four Nov-26 supervision photographs on the home page (stock child photograph removed). Timestamp refresh 05-Nov-2026 16:46 PKT",
-  "stamp": "05-Nov-2026 16:46"
+  "at": "2026-11-05T17:14:26+05:00",
+  "chars": 22869487,
+  "internal_md5": "2eb87c46dd3efade9351729acdbec74b",
+  "master_md5": "4b33943d77a58b8661969c07eab1dee1",
+  "note": "Control-room triggers refreshed from the EOC Trigger Feedback page (05-Nov-2026): ICM 380 flagged UCs on SNID Nov-26 (319 poorly covered + 124 missed, 63 both; 285 feedbacked, 95 pending) and admin coverage 218 outside 70-115% (no feedback field); MPQA stays 58 with all feedback. All three tables now read the running round, each labelled with its roll-up. Timestamp refresh 05-Nov-2026 17:14 PKT",
+  "stamp": "05-Nov-2026 17:14"
  },
  "last_run": {
   "at": "2026-11-01T12:48:17+05:00",
