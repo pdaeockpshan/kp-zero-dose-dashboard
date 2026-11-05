@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-05T18:51:41+05:00",
+  "at": "2026-11-05T18:53:35+05:00",
   "chars": 23258268,
-  "internal_md5": "0560926fc3084209dbd1159eb36b714d",
-  "master_md5": "5835d6d9686795f63ef2163654bc73be",
-  "note": "Home photo strip laid out four-up so the eight photographs fill two rows on desktop",
-  "stamp": "05-Nov-2026 18:49"
+  "internal_md5": "663e93a33760be60e4de6ac0ab4408f3",
+  "master_md5": "b87a84944604548c14b11bed756597cc",
+  "note": "Rebuild of all four variants from the master at the owner's request - no data change in this build: the home photo strip carries eight SNID Nov-26 frames in a four-up grid. Timestamp refresh 05-Nov-2026 18:53 PKT",
+  "stamp": "05-Nov-2026 18:53"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
