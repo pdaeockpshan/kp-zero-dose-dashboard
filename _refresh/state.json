@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-06T16:06:10+05:00",
-  "chars": 23259898,
-  "internal_md5": "ba9b22575223114660a29b40a925f29b",
-  "master_md5": "93253b51eca12c02b99b2a545c17c5d6",
-  "note": "Post-campaign review deck reordered at the owner's request: it now opens with campaign background, then coverage, surveillance updates and zero dose before readiness, ICM, LQAS and the scorecard; SNID Nov-26 campaign datasets verified current at the 04/05-Nov portal vintages (coverage day 4 at 4,114,155 of 4,808,167, ICM HH clusters, team, fixed-site and supervisor monitoring). Timestamp refresh 06-Nov-2026 16:06 PKT",
-  "stamp": "06-Nov-2026 16:06"
+  "at": "2026-11-06T16:33:26+05:00",
+  "chars": 23259907,
+  "internal_md5": "904439608716d838878388d0c56417f3",
+  "master_md5": "b6c9036ee3ca61b2fdfba6b35847ed4c",
+  "note": "SNID Nov-26 monitor counts refreshed from the 06-Nov IDIMS combined exports (all verified SNID November 2026): team-monitoring forms filed 77,000 across 27 districts, fixed-site visits 3,759, supervisor checklist completion and teams-supported percentages; transit visits stay at the 04-Nov vintage (no fresh transit export); counts are filed forms/site visits, not distinct teams/sites. Timestamp refresh. Timestamp refresh 06-Nov-2026 16:33 PKT",
+  "stamp": "06-Nov-2026 16:33"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
