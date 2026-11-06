@@ -1138,7 +1138,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 05-Nov-2026 18:53</span>
+  <span class="hupd" id="hUpd">Updated 06-Nov-2026 16:06</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -1361,7 +1361,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="igbS" aria-label="Area"></select><button class="btn pri" id="btnIGB">Prepare immunity gap brief</button></div></div></div>
 <div class="cnt" id="igbStatus" style="margin-top:8px"></div></div>
 <div class="card" style="margin-bottom:14px;border-top:5px solid #c2410c"><h3 style="margin:0">Post-campaign review</h3>
-<div class="bgrid"><div class="bcard" style="--bc:#c2410c;grid-column:1/-1"><b>📋 Post-campaign review</b><small>One campaign from start to finish: pre-campaign readiness, intra-campaign monitoring (ICM), LQAS, missed children and refusals, zero dose and the surveillance picture, a district scorecard with <b>good / average / poor / needs-focus</b> districts, the performance map, where the data disagrees, and recommended actions. 13 slides.</small>
+<div class="bgrid"><div class="bcard" style="--bc:#c2410c;grid-column:1/-1"><b>📋 Post-campaign review</b><small>One campaign from background to results: campaign background and scope, coverage, surveillance updates and zero dose first, then pre-campaign readiness, intra-campaign monitoring (ICM), LQAS, a district scorecard with <b>good / average / poor / needs-focus</b> classes, the performance map, where the data disagrees, and recommended actions. About 15 slides.</small>
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="pcrC" aria-label="Campaign"></select><select id="pcrS" aria-label="Area"></select><button class="btn pri" id="btnPCR">Prepare post-campaign review</button></div></div></div>
 <div class="cnt" id="pcrStatus" style="margin-top:8px"></div></div>
 <div class="card" style="margin-bottom:14px"><h3 style="margin:0">Quick briefs</h3>
@@ -16541,65 +16541,71 @@ async function renderPCR(P,X){ const pptx=new P(); pptx.layout='LAYOUT_WIDE'; pp
   s.addText('POST-CAMPAIGN REVIEW',{x:0.8,y:1.35,w:11.7,h:0.5,fontFace:F,fontSize:16,bold:true,color:'FDBA74',charSpacing:4});
   s.addText(X.lab,{x:0.8,y:1.9,w:11.7,h:1.0,fontFace:F,fontSize:44,bold:true,color:'FFFFFF'});
   s.addText(X.scopeL,{x:0.8,y:2.95,w:11.7,h:0.6,fontFace:F,fontSize:24,color:'FFEDD5'});
-  s.addText('From preparation to results: pre-campaign readiness · intra-campaign monitoring · LQAS · missed children and refusals · zero dose · surveillance · district performance',{x:0.8,y:3.75,w:11.7,h:0.8,fontFace:F,fontSize:14,color:'FED7AA'});
+  s.addText('Campaign background · coverage · surveillance · zero dose · pre-campaign readiness · intra-campaign monitoring · LQAS · district performance',{x:0.8,y:3.75,w:11.7,h:0.8,fontFace:F,fontSize:14,color:'FED7AA'});
   [['Good',S.cls.g.length,'16A34A'],['Average',S.cls.a.length,'F59E0B'],['Poor',S.cls.r.length,'DC2626'],['Needs focus',S.cls.f.length,'450A0A']].forEach(([l,n,c],i)=>{const x=0.8+i*2.95;
    s.addShape(pptx.ShapeType.rect,{x,y:4.85,w:2.75,h:1.05,fill:{color:c},line:{color:'FFFFFF',width:1}}); s.addText([{text:String(n),options:{fontSize:28,bold:true,breakLine:true}},{text:l+' districts',options:{fontSize:12}}],{x,y:4.85,w:2.75,h:1.05,fontFace:F,color:'FFFFFF',align:'center',valign:'middle'});});
   s.addText('Prepared '+X.date+' · Sources: EOC portal (pre-campaign, ICM, LQAS, coverage, surveillance), SMC Tracker / IDIMS, KP EPI-MIS',{x:0.8,y:6.55,w:11.7,h:0.4,fontFace:F,fontSize:10,color:'FED7AA'});}
- // 2 at a glance
+ // 2 campaign background
+ {const s=base('Campaign background','What this round set out to reach and where it stands');
+  const M=(CQ.meta||{})[((X.D||{}).C||{}).v]||{}, Rm=X.R.map(r=>r.m).filter(Boolean), hp=sum_(Rm,m=>m.hp||0), hv=sum_(Rm,m=>m.hv||0);
+  kpis(s,[{l:'Districts',v:n0(X.R.length)},{l:'UCs reporting',v:n0(X.UM.length||(typeof NOVUC!=='undefined'&&NOVUC&&NOVUC.v===X.D.C.v?NOVUC.r.length:0)),s:'UC rows in the portal coverage summary'},{l:'Target children',v:S.m_tg==null?'–':fmt(S.m_tg),s:'household target from microplans'},{l:'Houses planned',v:hp?fmt(hp):'–'},{l:'Houses visited',v:hv?fmt(hv):'–',s:hp&&hv?Math.round(hv/hp*100)+'% of planned':''}],1.35);
+  table(s,['Item','Detail'],[['Campaign',X.lab+(M.start?' · started '+M.start:'')],['Area',X.scopeL],['Status',M.day?('Campaign day '+M.day+' as of '+M.asof+' · portal read '+M.read):'Round complete'],['Approach','House-to-house bOPV vaccination of children 0–59 months']],{x:0.5,y:2.95,w:6.4,colW:[1.5,4.9],rh:0.42,fs:11,left:true});
+  bullets(s,['Aim: vaccinate every targeted child and record missed, refusing and zero-dose children for follow-up during the round.','Quality is read four ways: admin coverage, ICM house visits, supervisor checklists and post-campaign LQAS.','Zero-dose children found are entered in IDIMS and validated during the round.',M.day?'The round is still under way: figures are provisional and move with each portal update.':'Figures are as reported by the sources on the final slide.'],{x:7.2,y:2.95,w:5.6,h:3.6,fs:12});}
+ // 3 at a glance
  {const s=base('Campaign at a glance','Headline results for '+X.lab);
   kpis(s,[{l:'Readiness',v:p1(S.rd),s:'pre-campaign indicators',vc:S.rd>=95?GRN:S.rd>=85?AMB:RED},{l:'ICM recall',v:p1(S.rec),s:'children 0–59 m vaccinated',vc:S.rec>=95?GRN:S.rec>=90?AMB:RED},{l:'LQAS passed',v:p1(S.lqp),s:fmt(S.l_P||0)+' of '+fmt(S.l_n||0)+' lots',vc:S.lqp>=90?GRN:S.lqp>=80?AMB:RED},
    {l:'Still missed',v:n0(S.m_st),s:p1(S.stp)+' of target',vc:OR},{l:'Still refusing',v:n0(S.m_srf),s:S.srp==null?'':S.srp.toFixed(2)+'% of target',vc:RED}],1.35);
   s.addText('Key messages',{x:0.5,y:2.9,w:12.3,h:0.35,fontFace:F,fontSize:14,bold:true,color:TXT}); bullets(s,pcrMsgs(X),{x:0.5,y:3.3,w:12.3,h:3.5,fs:14});}
- // 3 pre-campaign
- {const s=base('① Pre-campaign readiness','Preparatory indicators reported before the campaign');
+ // 4 coverage (admin)
+ {const s=base('① Coverage data (admin): still-missed children and refusals','Children vaccinated, still missed after catch-up and still refusing — from the campaign coverage summary');
+  kpis(s,[{l:'Vaccinated',v:p1(S.vp),s:fmt(S.m_vc||0)+' of '+fmt(S.m_tg||0)+' target'},{l:'Still missed',v:n0(S.m_st),s:p1(S.stp)+' of target',vc:OR},{l:'Still away (NA)',v:n0(S.m_sna)},{l:'Still refusing',v:n0(S.m_srf),vc:RED},{l:'Left over',v:n0(S.m_slo)}],1.35);
+  table(s,['UC','District','Target','Still missed','% of target','Still refusing','Still away'],X.UM.slice(0,10).map(r=>[cut(r.u,26),r.d,fmt(r.tg),{t:fmt(r.st),b:true},r.tg?(r.st/r.tg*100).toFixed(1)+'%':'–',fmt(r.srf),fmt(r.sna)]),{x:0.5,y:2.95,w:12.3,colW:[3.0,2.0,1.4,1.5,1.4,1.5,1.5],rh:0.32,fs:10,empty:'No UC-level missed children data for this campaign.'});
+  note(s,'The 10 UCs with the most children still missed after catch-up.',{x:0.5,y:6.6,w:12.3,h:0.3,fs:9,i:true});}
+ // 5 surveillance
+ {const s=base('② Surveillance updates','Polio cases, positive sewage and AFP reporting — where poliovirus is and how well we would detect it');
+  kpis(s,[{l:'Polio cases 2026',v:n0(X.wpv.length),vc:X.wpv.length?RED:GRN},{l:'ZD AFP cases',v:n0(X.afp.length),s:'zero-dose children with AFP'},{l:'Sewage positive',v:X.esS?p1(X.esP/X.esS*100):'–',s:fmt(X.esP)+' of '+fmt(X.esS)+' samples '+X.D.yr},{l:'Low AFP reporting',v:n0(X.lowAFP.length),s:'districts under half KP median',vc:X.lowAFP.length?AMB:GRN},{l:'Watch districts',v:n0(X.WD.length)}],1.35);
+  const rows=X.R.filter(r=>r.wpv||r.esPos||r.watch||X.lowAFP.some(a=>a.d===r.d)).sort((a,b)=>b.wpv-a.wpv||(b.esPos-a.esPos)).slice(0,10).map(r=>[r.d,r.wpv||'–',r.esS?r.esP+' of '+r.esS:'No site',X.lowAFP.some(a=>a.d===r.d)?{t:'Low',c:RAG.a}:'OK',r.watch?{t:'Yes',c:RAG.r}:'–',{t:CLS[r.cls][0],c:RAG[r.cls]}]);
+  table(s,['District','Polio cases','Sewage positive','AFP reporting','Watch district','Campaign class'],rows,{x:0.5,y:2.95,w:12.3,colW:[2.6,1.6,2.2,1.9,1.8,2.2],rh:0.32,fs:10,empty:'No polio case, positive sewage, low AFP reporting or watch district in this area.'});}
+ // 6 zero dose
+ {const s=base('③ Zero-dose children in this campaign','Reported and covered in this campaign, recorded in IDIMS and validated');
+  kpis(s,[{l:'ZD reported',v:n0(S.zr),s:'zero routine-dose children found'},{l:'ZD covered',v:S.zc==null?'Not in report':p1(S.zc),s:S.zc==null?'no covered count in this campaign report':'of reported children'},{l:'Digitized in IDIMS',v:X.digOn?p1(X.dig):'–',s:X.digOn?fmt(X.dnot)+' not entered':'only for the current IDIMS campaign'},
+   {l:'Validated',v:n0(X.VV.n),s:'children checked'},{l:'Vaccinated',v:X.VV.n?p1(X.VV.p):'–',s:X.VV.n?fmt(X.VV.vn)+' not vaccinated':'no validation yet'}],1.35);
+  const G=X.R.filter(r=>r.zr).sort((a,b)=>b.zr-a.zr).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>r.zr),{x:0.5,y:2.85,w:12.3,h:4.05,title:'Zero-dose children reported by district (top 15)',fmt:'#,##0',vt:'Children',cols:['0F766E']});}
+ // 7 pre-campaign
+ {const s=base('④ Pre-campaign readiness','Preparatory indicators reported before the campaign');
   kpis(s,[{l:'DPEC on time',v:p1(S.p_dpec)},{l:'Teams trained',v:p1(S.p_trn)},{l:'Microplans validated',v:p1(S.p_mpv)},{l:'Female member',v:p1(S.p_fem),s:'mobile teams'},{l:'Local member',v:p1(S.p_loc),s:'mobile teams'}],1.35);
   const G=X.R.filter(r=>r.rd!=null).sort((a,b)=>a.rd-b.rd).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>+r.rd.toFixed(1)),{x:0.5,y:2.85,w:7.2,h:4.05,title:'Least ready districts (readiness %)',min:Math.min(60,Math.floor(((G[0]||{}).rd||80)/10)*10),max:100,vt:'Readiness (%)'});
   const lw=k=>X.R.filter(r=>r.p&&r.p[k]!=null).sort((a,b)=>a.p[k]-b.p[k]).slice(0,3).map(r=>r.d+' ('+Math.round(r.p[k])+'%)').join(', ')||'–';
   bullets(s,['Lowest teams trained: '+lw('trn'),'Lowest microplan validation: '+lw('mpv'),'Fewest female members: '+lw('fem'),'Fewest local members: '+lw('loc'),'Fewest government-accountable members: '+lw('gov')],{x:8.0,y:2.95,w:4.8,h:3.9,fs:12});}
- // 4 ICM
- {const s=base('② Intra-campaign monitoring (ICM)','What monitors found in houses during the campaign'), mi=S.i_mi||0, sh=v=>mi?Math.round(v/mi*100)+'% of missed':'';
+ // 8 ICM
+ {const s=base('⑤ Intra-campaign monitoring (ICM)','What monitors found in houses during the campaign'), mi=S.i_mi||0, sh=v=>mi?Math.round(v/mi*100)+'% of missed':'';
   kpis(s,[{l:'Recall coverage',v:p1(S.rec),s:fmt(S.i_rc||0)+' children checked'},{l:'Finger-marked',v:p1(S.fmp),s:'of children seen'},{l:'Children missed',v:n0(mi),vc:OR},{l:'Child away',v:n0(S.i_na),s:sh(S.i_na)},{l:'Refusals',v:n0(S.i_rf),s:sh(S.i_rf),vc:RED}],1.35);
   const G=X.R.filter(r=>r.rec!=null).sort((a,b)=>a.rec-b.rec).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>+r.rec.toFixed(1)),{x:0.5,y:2.85,w:6.6,h:4.05,title:'Lowest ICM recall coverage (%)',min:Math.min(80,Math.floor(((G[0]||{}).rec||90)/5)*5),max:100,vt:'Recall coverage (%)'});
   bars(s,['Team did not visit','Team missed child','Child away','Refusal'],[S.i_tdn||0,S.i_tm||0,S.i_na||0,S.i_rf||0],{x:7.3,y:2.85,w:5.5,h:4.05,title:'Why children were missed (count)',fmt:'#,##0',vt:'Children'});}
- // 5 LQAS
- {const s=base('③ Post-campaign LQAS','Independent lot quality assurance sampling after the campaign');
+ // 9 LQAS
+ {const s=base('⑥ Post-campaign LQAS','Independent lot quality assurance sampling after the campaign');
   kpis(s,[{l:'Lots assessed',v:n0(S.l_n)},{l:'Passed',v:p1(S.lqp),s:fmt(S.l_P||0)+' lots over 90%',vc:S.lqp>=90?GRN:S.lqp>=80?AMB:RED},{l:'Intermediate',v:n0(S.l_I),s:'80–90%'},{l:'Failed',v:n0(S.l_F),s:'under 80%',vc:RED},{l:'Admin coverage',v:p1(S.vp),s:'vaccinated, % of target'}],1.35);
   const G=X.R.filter(r=>r.lqp!=null).sort((a,b)=>a.lqp-b.lqp||b.l.n-a.l.n).slice(0,15); bars(s,G.map(r=>r.d+' ('+r.l.n+')'),G.map(r=>+r.lqp.toFixed(1)),{x:0.5,y:2.85,w:6.6,h:4.05,title:'Lowest LQAS pass rate (% of lots; lots in brackets)',max:100,vt:'Lots passed (%)'});
   bars(s,['Child away','Newborn','Migrant','Refused','Team did not visit','Team missed child','Other'],[S.l_aw,S.l_nb,S.l_mg,S.l_rf,S.l_dn,S.l_tm,S.l_ot].map(v=>v||0),{x:7.3,y:2.85,w:5.5,h:4.05,title:'Why children were unvaccinated in LQAS lots',fmt:'#,##0',vt:'Children'});}
- // 6 missed & refusals
- {const s=base('④ Missed children and refusals (admin data)','Children still missed after catch-up, from the campaign coverage summary');
-  kpis(s,[{l:'Vaccinated',v:p1(S.vp),s:fmt(S.m_vc||0)+' of '+fmt(S.m_tg||0)+' target'},{l:'Still missed',v:n0(S.m_st),s:p1(S.stp)+' of target',vc:OR},{l:'Still away (NA)',v:n0(S.m_sna)},{l:'Still refusing',v:n0(S.m_srf),vc:RED},{l:'Left over',v:n0(S.m_slo)}],1.35);
-  table(s,['UC','District','Target','Still missed','% of target','Still refusing','Still away'],X.UM.slice(0,10).map(r=>[cut(r.u,26),r.d,fmt(r.tg),{t:fmt(r.st),b:true},r.tg?(r.st/r.tg*100).toFixed(1)+'%':'–',fmt(r.srf),fmt(r.sna)]),{x:0.5,y:2.95,w:12.3,colW:[3.0,2.0,1.4,1.5,1.4,1.5,1.5],rh:0.32,fs:10,empty:'No UC-level missed children data for this campaign.'});
-  note(s,'The 10 UCs with the most children still missed after catch-up.',{x:0.5,y:6.6,w:12.3,h:0.3,fs:9,i:true});}
- // 7 zero dose
- {const s=base('⑤ Zero-dose children in this campaign','Reported and covered in this campaign, recorded in IDIMS and validated');
-  kpis(s,[{l:'ZD reported',v:n0(S.zr),s:'zero routine-dose children found'},{l:'ZD covered',v:S.zc==null?'Not in report':p1(S.zc),s:S.zc==null?'no covered count in this campaign report':'of reported children'},{l:'Digitized in IDIMS',v:X.digOn?p1(X.dig):'–',s:X.digOn?fmt(X.dnot)+' not entered':'only for the current IDIMS campaign'},
-   {l:'Validated',v:n0(X.VV.n),s:'children checked'},{l:'Vaccinated',v:X.VV.n?p1(X.VV.p):'–',s:X.VV.n?fmt(X.VV.vn)+' not vaccinated':'no validation yet'}],1.35);
-  const G=X.R.filter(r=>r.zr).sort((a,b)=>b.zr-a.zr).slice(0,15); bars(s,G.map(r=>r.d),G.map(r=>r.zr),{x:0.5,y:2.85,w:12.3,h:4.05,title:'Zero-dose children reported by district (top 15)',fmt:'#,##0',vt:'Children',cols:['0F766E']});}
- // 8 surveillance
- {const s=base('⑥ Surveillance context','Where poliovirus is and how well we would detect it');
-  kpis(s,[{l:'Polio cases 2026',v:n0(X.wpv.length),vc:X.wpv.length?RED:GRN},{l:'ZD AFP cases',v:n0(X.afp.length),s:'zero-dose children with AFP'},{l:'Sewage positive',v:X.esS?p1(X.esP/X.esS*100):'–',s:fmt(X.esP)+' of '+fmt(X.esS)+' samples '+X.D.yr},{l:'Low AFP reporting',v:n0(X.lowAFP.length),s:'districts under half KP median',vc:X.lowAFP.length?AMB:GRN},{l:'Watch districts',v:n0(X.WD.length)}],1.35);
-  const rows=X.R.filter(r=>r.wpv||r.esPos||r.watch||X.lowAFP.some(a=>a.d===r.d)).sort((a,b)=>b.wpv-a.wpv||(b.esPos-a.esPos)).slice(0,10).map(r=>[r.d,r.wpv||'–',r.esS?r.esP+' of '+r.esS:'No site',X.lowAFP.some(a=>a.d===r.d)?{t:'Low',c:RAG.a}:'OK',r.watch?{t:'Yes',c:RAG.r}:'–',{t:CLS[r.cls][0],c:RAG[r.cls]}]);
-  table(s,['District','Polio cases','Sewage positive','AFP reporting','Watch district','Campaign class'],rows,{x:0.5,y:2.95,w:12.3,colW:[2.6,1.6,2.2,1.9,1.8,2.2],rh:0.32,fs:10,empty:'No polio case, positive sewage, low AFP reporting or watch district in this area.'});}
- // 9-10 scorecard
+ // 10-11 scorecard
  {const R=X.R.slice().sort((a,b)=>(a.sc==null?999:a.sc)-(b.sc==null?999:b.sc)), half=Math.ceil(R.length/2), parts=R.length>20?[R.slice(0,half),R.slice(half)]:[R];
   parts.forEach((P_,k)=>{const s=base('⑦ District scorecard'+(parts.length>1?' ('+(k+1)+' of 2)':''),'Lowest score first · green = at target, amber = close, red = below');
    table(s,['District','Readiness','ICM recall','Finger-marked','LQAS passed','Still missed','Still refusing','ZD covered','Score','Class'],P_.map(r=>[{t:r.d,b:true},cl(r,'rd'),cl(r,'rec'),cl(r,'fmp'),cl(r,'lqp'),cl(r,'stp'),cl(r,'srp',2),cl(r,'zc'),{t:r.sc==null?'–':Math.round(r.sc)+'%',b:true},{t:CLS[r.cls][0],c:RAG[r.cls],b:true}]),
     {x:0.5,y:1.3,w:12.3,colW:[1.9,1.1,1.1,1.2,1.15,1.1,1.15,1.1,0.9,1.5],rh:Math.min(0.28,5.25/Math.max(1,P_.length)),fs:P_.length>16?8:9});});}
- // 11 map
+ // 12 map
  {const s=base('⑧ District performance map','Good / average / poor / needs focus · '+X.lab); const cols={g:'#16a34a',a:'#f59e0b',r:'#dc2626',f:'#7f1d1d',n:'#d1d5db'}, fills={}; Object.keys(LBLP).forEach(d=>fills[d]='#eef2f7'); X.D.R.forEach(r=>{fills[r.d]=X.R.includes(r)?cols[r.cls]:'#eef2f7';});
   try{const url=await mapPng({fills,noLegend:true,labels:true}); s.addImage({data:url.replace(/^data:/,''),x:0.5,y:1.25,h:5.65,w:5.65*((Math.round(1290*418/588)+60)/1350)});}catch(e){note(s,'Map could not be drawn in this browser.',{x:0.5,y:3,w:6});}
   let y=1.35; ['f','r','a','g'].forEach(k=>{const L=S.cls[k]; s.addShape(pptx.ShapeType.rect,{x:6.4,y,w:0.28,h:0.28,fill:{color:cols[k].slice(1)},line:{color:cols[k].slice(1)}});
    s.addText(CLS[k][0]+' ('+L.length+')',{x:6.8,y:y-0.05,w:6,h:0.36,fontFace:F,fontSize:13,bold:true,color:TXT}); s.addText(L.length?L.sort((a,b)=>(a.sc||0)-(b.sc||0)).map(r=>r.d+(r.sc!=null?' '+Math.round(r.sc)+'%':'')).join(', '):'None',{x:6.8,y:y+0.3,w:6,h:0.95,fontFace:F,fontSize:10.5,color:GRY,valign:'top'}); y+=1.32;});
   note(s,'Needs focus = poor or average district with a 2026 polio case, positive sewage or on the polio watch list.',{x:6.4,y:6.62,w:6.4,h:0.3,fs:9,i:true});}
- // 12 triangulation
+ // 13 triangulation
  {const s=base('⑨ Where the data disagrees','Pre-campaign, ICM, LQAS and admin data compared district by district');
   const rows=S.tri.slice(0,9).map(r=>[{t:r.d,b:true},{t:CLS[r.cls][0],c:RAG[r.cls]},cut(r.F.map(f=>f[0]).join(' · '),170)]);
   table(s,['District','Class','What disagrees'],rows,{x:0.5,y:1.3,w:12.3,colW:[1.9,1.4,9.0],rh:0.55,fs:9,left:true,empty:'The sources agree in every district: no disagreement flagged.'});
   note(s,'Check these districts in the field before relying on either source.'+(S.tri.length>9?' '+(S.tri.length-9)+' more districts on the Campaign overview page.':''),{x:0.5,y:6.62,w:12.3,h:0.3,fs:9,i:true});}
- // 13 actions
+ // 14 actions
  {const s=base('Recommended actions','Based on the indicators in this review'); const A=pcrActions(X); bullets(s,A.length?A:['No major issues flagged: keep the current campaign quality.'],{x:0.5,y:1.4,w:12.3,h:5.4,fs:A.length>6?13:15});}
- // 14 method
+ // 15 method
  {const s=base('How districts are classified','Method and sources');
   table(s,['Indicator','Green (2 points)','Amber (1 point)','Red (0 points)','Source'],[['Pre-campaign readiness (mean of 5 indicators)','95% or more','85–95%','Under 85%','EOC: Pre Campaign'],['ICM recall coverage','95% or more','90–95%','Under 90%','EOC: ICM'],['Finger-marked (ICM)','95% or more','90–95%','Under 90%','EOC: ICM'],['LQAS lots passed','90% or more','80–90%','Under 80%','EOC: Post Campaign LQAS'],['Children still missed after catch-up','2% of target or less','2–4%','Over 4%','EOC: coverage summary'],['Children still refusing','0.5% or less','0.5–1%','Over 1%','EOC: coverage summary'],['ZD children covered in that campaign','90% or more','80–90%','Under 80%','EOC: coverage summary']],
    {x:0.5,y:1.3,w:12.3,colW:[3.6,1.9,1.7,1.7,3.4],rh:0.36,fs:10,left:true});
