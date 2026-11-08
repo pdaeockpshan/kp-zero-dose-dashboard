@@ -312,7 +312,7 @@
    "note": "Two sources per refresh: the weekly log gives YTD and 2013-2026 yearly indicator histories per district plus division roll-ups, month-wise AFP detection 2019-2026 and the newest pendency snapshot; the line list gives case aggregates only (OPV dose buckets, stool adequacy, notification/investigation timeliness, classification) - no names or addresses are extracted. The `Indicators ` sheet name has a trailing space; its district rows sit above the Grand Total and division rows below it. `refresh.py run` passes the newest file of the whole entry, which can be either source, so the extractor routes `--source` by filename (`Surv. Weekly Updates Log*` -> weekly log, `LineList-*` -> line list) and discovers the other slot itself; `--ll` overrides the line list. 08-Nov-2026 vintage: `LineList-2023-2024-2025-2026 (1).xlsx` (line list to 28-Oct-2026, last EPID KP/32/26/185) gives 2026 cases 4,445, zero-dose 91, pending 292; 2023-2025 are unchanged, which is what identifies it as the same register. Only the line-list block moved; the weekly indicators still date to 21-Oct-2026."
   },
   "afpd": {
-   "label": "AFP case + lab database: EOC master AFP.DBF and AFPLAB.DBF exports (2026 case, timeliness, dose-history and lab-result aggregates)",
+   "label": "AFP case + lab database: EOC master AFP/AFPLAB exports, DBF or Epi Info REC (2026 case, timeliness, dose-history and lab-result aggregates)",
    "const": "AFPD",
    "extractor": "extract_afpd.py",
    "roots": [
@@ -320,13 +320,15 @@
    ],
    "patterns": [
     "AFP.DBF",
-    "AFPLAB.DBF"
+    "AFPLAB.DBF",
+    "AFP.REC",
+    "AFPLAB.REC"
    ],
    "exclude": [
     "~$*"
    ],
-   "portal": "EOC AFP case database + polio lab database (manual DBF export)",
-   "note": "Two files per refresh: AFP.DBF is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB.DBF is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Both are dBase III files with fixed-width ASCII fields; the portal writes non-standard field type codes but every value is a string and dates are YYYYMMDD. Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it. Since 22-Oct-2026 the payload also carries mk (ten indicator keys) and mm (those ten per district, per year, per onset month), which is what the Surveillance tab year / month KPI filter reads; the extractor cross-checks every district-month column against dm, dy and the province y totals and aborts on any drift."
+   "portal": "EOC AFP case database + polio lab database (manual DBF or REC export)",
+   "note": "Two files per refresh: AFP is the AFP case master (one row per case, KP only, 2022-2026) and AFPLAB is the polio lab database (one row per stool specimen - cases, contacts and hotcases). Either master format is accepted and the newest file of each slot wins: dBase III .DBF (fixed-width ASCII fields, non-standard type codes, dates YYYYMMDD) or Epi Info .REC (field-definition block then fixed-width records wrapped every 78 bytes with a trailing `!`, dates DD/MM/YYYY). Only dates, geography, dose history and lab-result codes are read - names and addresses stay out of the payload (public GitHub Pages site). Result codes: 1 = positive, 2 = negative, 7 = pending/not done; CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending. The master databases are typically a week fresher than the published weekly log, so this payload complements SURVW rather than replacing it. Since 22-Oct-2026 the payload also carries mk (ten indicator keys) and mm (those ten per district, per year, per onset month), which is what the Surveillance tab year / month KPI filter reads; the extractor cross-checks every district-month column against dm, dy and the province y totals and aborts on any drift. 08-Nov-2026 vintage: the 04-Nov REC cut (`AFP.REC` 25,336 rows, `AFPLAB.REC`) replaces the 21-Oct DBF pair - 4,445 KP 2026 cases, 7 WPV1, 291 pending."
   },
   "sops": {
    "label": "Surveillance operations: active visits, IDIMS zero reporting, AFP pendency tracker, VPD weekly cases",

@@ -5,13 +5,17 @@ Prints: SRC lines + one status line `OK afpd <json chars> <summary>` | ERR afpd 
 
 Sources (both in Downloads, exported from the EOC portal's AFP case database
 and polio lab database):
-  * `AFP.DBF`    - AFP case master: one row per AFP case, KP only, 2022-2026.
-  * `AFPLAB.DBF` - Polio lab database: one row per stool specimen (cases,
-                   contacts and hotcases), 2022-2026.
+  * `AFP.DBF` / `AFP.REC`    - AFP case master: one row per AFP case, KP only,
+                   2022-2026.
+  * `AFPLAB.DBF` / `AFPLAB.REC` - Polio lab database: one row per stool
+                   specimen (cases, contacts and hotcases), 2022-2026.
 
-Both are dBase III files: 32-byte header, 32-byte field descriptors, then
-fixed-width space-padded ASCII records (the portal writes non-standard field
-type codes, but every value is a string; dates are YYYYMMDD).
+Two master formats are accepted, newest wins: dBase III (32-byte header,
+32-byte field descriptors, then fixed-width space-padded ASCII records; the
+portal writes non-standard field type codes, but every value is a string;
+dates are YYYYMMDD) and Epi Info .REC (a field-definition block, then
+fixed-width records wrapped every 78 bytes with a trailing `!`; dates are
+DD/MM/YYYY and are normalised on read).
 
 PII: the case DB carries names and addresses. The DBF reader decodes every
 field in memory; aggregation uses dates, geography, dose history and result
@@ -21,6 +25,10 @@ patient, UC or EPID identifiers - the dashboard is a public GitHub Pages site.
 Result codes (asserted against the case DB's merged copy of the same results):
 1 = positive, 2 = negative, 7 = pending / not done. CLASS: 1 = WPV1,
 2 = VDPV, 3 = discarded, blank = pending expert classification.
+A case the NEOC WPV1 line list has already confirmed can still be CLASS-blank
+in the master while the district finishes its investigation; those EPIDs are
+listed in CONFIRMED and counted as CLASS 1, with an abort if the list ever
+points at a missing or differently classified record.
 Timeliness follows the portal's own flags (verified against the line list):
 notified <7 days = DNOT-DONSET in 0-7 days; investigated <48 h =
 DOI-DNOT in 0-2 days (48 h from notification, the WHO definition - the
@@ -55,6 +63,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import statistics
 import struct
 import sys
@@ -73,6 +82,80 @@ ZK = ['zc', 'zp', 'zw']
 MK = ['n', 'ad', 'n7', 'i48', 'zd', 'du', 'c1', 'cw', 'cp', 'c3']
 RENAME = {'WAZIR-S LOWER': 'WAZIR-S Lower', 'WAZIR-S UPPER': 'WAZIR-S Upper'}
 UNDIVIDED = 'WAZIR-S (undivided)'
+AFPSRC = ('AFP.DBF', 'AFP.REC')
+LABSRC = ('AFPLAB.DBF', 'AFPLAB.REC')
+# NEOC's WPV1 line list confirms a case before the district keys the expert
+# classification into the case database, so CLASS stays blank in the master
+# until the investigation closes. Counted as CLASS 1 here. The EPID is internal
+# only - it is never emitted into the payload.
+CONFIRMED = {'KP/34/26/159'}
+
+
+REC_DT = re.compile(r'^\d{2}/\d{2}/\d{4}$')
+
+
+def rec_records(path, need=('PROVINCE', 'YRONSET', 'DISTRICT', 'DONSET')):
+    """Yield one dict per Epi Info .REC record (text field block + fixed-width rows).
+
+    The portal's .REC export wraps the payload every 78 bytes, appends '!', then
+    CRLF; the records themselves are the field widths laid end to end. Dates are
+    DD/MM/YYYY here (the DBF writes YYYYMMDD) and are normalised on the way out.
+    """
+    with open(path, 'r', encoding='latin-1', newline='') as fh:
+        text = fh.read()
+    lines = text.split('\r\n')
+    try:
+        nfields = int(lines[0].split()[0])
+    except (IndexError, ValueError):
+        raise SystemExit('ERR afpd %s has no REC field count' % os.path.basename(path))
+    defs = lines[1:1 + nfields]
+    if len(defs) != nfields:
+        raise SystemExit('ERR afpd %s REC field block is truncated' % os.path.basename(path))
+    fields = []
+    off = 0
+    for d in defs:
+        p = d.split()
+        try:
+            name, ln = p[0].lstrip('_#'), int(p[7])
+        except (IndexError, ValueError):
+            raise SystemExit('ERR afpd %s REC field line unreadable: %r'
+                             % (os.path.basename(path), d[:48]))
+        fields.append((name, off, ln))
+        off += ln
+    body = text[sum(len(l) + 2 for l in lines[:1 + nfields]):]
+    for ln in body.split('\r\n'):
+        if ln and not ln.endswith('!'):
+            raise SystemExit('ERR afpd %s REC body line lacks its terminator'
+                             % os.path.basename(path))
+    stream = body.replace('\r\n', '').replace('!', '')
+    rlen = off
+    nrec = len(stream) // rlen if rlen else 0
+    tail = len(stream) - nrec * rlen
+    if not rlen or not nrec or tail > 2:
+        raise SystemExit('ERR afpd %s REC body does not divide into %d-byte records (tail %d)'
+                         % (os.path.basename(path), rlen, tail))
+    want = {n for n, _, _ in fields}
+    for col in need:
+        if col not in want:
+            raise SystemExit('ERR afpd %s misses column %s' % (os.path.basename(path), col))
+    for i in range(nrec):
+        s = stream[i * rlen:(i + 1) * rlen]
+        d = {}
+        for name, o, l in fields:
+            if not l:
+                continue
+            v = s[o:o + l].strip()
+            if REC_DT.match(v):
+                v = v[6:10] + v[3:5] + v[0:2]
+            d.setdefault(name, v)
+        yield d
+
+
+def records(path, need=('PROVINCE', 'YRONSET', 'DISTRICT', 'DONSET')):
+    """Read either master format: dBase III (.DBF) or Epi Info (.REC)."""
+    with open(path, 'rb') as fh:
+        head = fh.read(1)
+    return dbf_records(path, need) if head == b'\x03' else rec_records(path, need)
 
 
 def dbf_records(path, need=('PROVINCE', 'YRONSET', 'DISTRICT', 'DONSET')):
@@ -152,17 +235,17 @@ def surv_scope(repo):
 
 
 def pick(entry, which, override=None):
-    """Newest file under the entry matching one exact filename, or the override."""
-    pat = 'AFP.DBF' if which == 'afp' else 'AFPLAB.DBF'
+    """Newest master of either format under the entry, or the override."""
+    pats = ('AFP.DBF', 'AFP.REC') if which == 'afp' else ('AFPLAB.DBF', 'AFPLAB.REC')
     if override:
         return override
     best = None
     for rec in srcutil.discover(entry):
-        if rec['name'] == pat:
+        if rec['name'].upper() in pats:
             if best is None or rec['mtime'] > best['mtime']:
                 best = rec
     if best is None:
-        raise SystemExit('ERR afpd no %s under %s' % (pat, entry.get('roots')))
+        raise SystemExit('ERR afpd no %s under %s' % ('/'.join(pats), entry.get('roots')))
     return best['path']
 
 
@@ -220,7 +303,8 @@ def build_case(path, repo):
     zm = {k: [[0] * 12 for _ in ZK] for k in dists}
     maxon = maxen = None
     skip = unknown = 0
-    for r in dbf_records(path):
+    seen = set()
+    for r in records(path):
         if r['PROVINCE'] != 'KP':
             skip += 1
             continue
@@ -239,6 +323,15 @@ def build_case(path, repo):
         onset = pdate(r['DONSET'])
         if onset is None or onset.year != yr:
             raise SystemExit('ERR afpd invalid or mismatched onset date in %d' % yr)
+        if r['EPID'] in CONFIRMED:
+            cls = r['CLASS'].strip()
+            if yr != 2026:
+                raise SystemExit('ERR afpd confirmed override %s is not a 2026 case' % r['EPID'])
+            if cls and cls != '1':
+                raise SystemExit('ERR afpd confirmed override %s now classifies as %r'
+                                 % (r['EPID'], cls))
+            r['CLASS'] = '1'
+            seen.add(r['EPID'])
         if maxon is None or onset > maxon:
             maxon = onset
         en = pdate(r['DENTER'])
@@ -258,6 +351,9 @@ def build_case(path, repo):
                 zm[k][zi][mi] += inc[key]
     if unknown:
         raise SystemExit('ERR afpd %d rows with a district outside the SURV scope' % unknown)
+    if CONFIRMED - seen:
+        raise SystemExit('ERR afpd confirmed override %s not found in this cut'
+                         % ', '.join(sorted(CONFIRMED - seen)))
     if maxon is None or maxen is None:
         raise SystemExit('ERR afpd no KP rows with onset/entry dates')
     d = {k: {key: dy[k][2026][key] for key in DK} for k in dists}
@@ -309,7 +405,7 @@ def build_lab(path):
     sp = rs = pv1 = npev = 0
     tt = []
     maxc = maxr = None
-    for r in dbf_records(path, ('PROVINCE', 'DISTRICT', 'DSTCOLL1', 'DVIREP1')):
+    for r in records(path, ('PROVINCE', 'DISTRICT', 'DSTCOLL1', 'DVIREP1')):
         if r['PROVINCE'] != 'KP':
             continue
         c1 = pdate(r['DSTCOLL1'])
@@ -356,8 +452,9 @@ def main():
     a = ap.parse_args()
     cfg = srcutil.load_sources()
     entry = cfg['auto'][DS]
-    afp = a.afp or (a.source if a.source and os.path.basename(a.source).upper() == 'AFP.DBF' else None)
-    lab = a.lab or (a.source if a.source and os.path.basename(a.source).upper() == 'AFPLAB.DBF' else None)
+    srcbase = os.path.basename(a.source).upper() if a.source else ''
+    afp = a.afp or (a.source if srcbase in AFPSRC else None)
+    lab = a.lab or (a.source if srcbase in LABSRC else None)
     afp = pick(entry, 'afp', afp)
     lab = pick(entry, 'lab', lab)
     if not os.path.exists(afp) or not os.path.exists(lab):
