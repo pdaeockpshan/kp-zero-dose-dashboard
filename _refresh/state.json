@@ -15,18 +15,18 @@
    "summary": "42 campaigns 2022-2026, 37 districts, 1452 UCs, 34243 rows, reported 1,799,796, covered 1,190,488"
   },
   "afpd": {
-   "at": "2026-10-22T14:23:36+05:00",
-   "chars": 73461,
-   "file_id": "C:\\Users\\HD\\Downloads\\AFPLAB.DBF|1792566470|61908992",
-   "payload_sha1": "14a3483f49fc31a9",
+   "at": "2026-11-08T22:39:29+05:00",
+   "chars": 73540,
+   "file_id": "manual|afpd_rec.json",
+   "payload_sha1": "80c1aaa8b69612ca",
    "source": {
-    "mtime": 1792566470.2249446,
-    "name": "AFPLAB.DBF",
-    "path": "C:\\Users\\HD\\Downloads\\AFPLAB.DBF",
-    "size": 61908992
+    "mtime": 1794159477.5972977,
+    "name": "afpd_rec.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\afpd_rec.json",
+    "size": 73540
    },
-   "stamp": "22-Oct-2026 14:23",
-   "summary": "25075 KP AFP cases 2022-2026, 4184 in 2026 (onset to 2026-10-14, entered to 2026-10-20): adequacy 86.8%, notified <7d 80.4%, investigated <48h 93.3%, 88 zero-dose, 5 WPV1, 384 pending; lab 2026: 11298 specimens, 11066 results (to 2026-10-15), 7 PV1 / 1153 NPEV isolations, median turnaround 15.0d (30.9% within 14d); month matrix 10 indicators x 37 districts x 5 years"
+   "stamp": "08-Nov-2026 22:39",
+   "summary": "manual inject"
   },
   "can": {
    "at": "2026-10-14T11:30:33+05:00",
