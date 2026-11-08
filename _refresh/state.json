@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-06T21:00:45+05:00",
-  "chars": 23259350,
-  "internal_md5": "574f4dd85e97641c62366f21181c1bd5",
-  "master_md5": "31ca21a07412739affa57f7ef52b7661",
-  "note": "SNID Nov-26 household layer + recorded zero dose from the EOC portal district/UC summary reports (06-Nov-2026 20:27 read): 4,005,855 of 4,183,183 HH children (95.8%), still missed 227,887, zero routine dose 42,653, AFP 171; children-level CQ/NOVUC stay at the 05-Nov read (153-col export no longer produced).. Timestamp refresh 06-Nov-2026 21:00 PKT",
-  "stamp": "06-Nov-2026 21:00"
+  "at": "2026-11-08T20:44:20+05:00",
+  "chars": 23262946,
+  "internal_md5": "f2feac11589c8041270e2e86cce54e20",
+  "master_md5": "d1decbe431651727470521cf8b4e8288",
+  "note": "Sept-26 zero-dose validation refreshed to the 08-Nov-2026 Comparison_Report (421 UCs: linelist 30,188 to 30,963, duplicates 6 to 9, completion 95.0 to 97.5%); district cover notes, DHIST point and RLOG regenerated from it. Coverage stays at the 06-Nov-2026 20:27 portal read (no newer export); ICM team/fixed-site/supervisor counts 06-Nov, ICM quality % and HH-cluster form 04-Nov (no newer form-11 or UC % export); triggers checked 08-Nov, unchanged 05-Nov read.. Timestamp refresh 08-Nov-2026 20:44 PKT",
+  "stamp": "08-Nov-2026 20:44"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
