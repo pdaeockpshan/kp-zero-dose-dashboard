@@ -16,8 +16,9 @@ Sources (newest of each under the configured roots, all manual EOC downloads):
       Blocks run Feb-2022 to the newest snapshot. The other sheets in this workbook are
       per-record validation forms (officer names, designations, emails, EPIDs) and are
       deliberately not read.
-  * `Zero_Report_Cases_ONLY.xlsx` - `Sumamy`: per district per week, AFP / measles / NNT case
-      counts for 2026, with the three annual totals as the last columns.
+  * `Zero_Report_Cases_ONLY.xlsx` / `Zero_Report_Cases - ONLY.xlsx` - `Sumamy`: per district
+      per week, AFP / measles / NNT case counts for 2026, with the three annual totals as the
+      last columns. Both spellings are accepted; the newest file wins.
 
 Nothing here carries a name, address, CNIC, phone, email or EPID into the payload: district
 and week/month labels and counts only. District spelling is normalised to the dashboard's own
@@ -435,7 +436,7 @@ def main():
         return f
 
     av, zr, pn, vp = (pick(a.av, 'Active-visit (20??).xlsx'), pick(a.zr, 'Zero Reporting IDIMS*.xlsx'),
-                      pick(a.pn, 'Pendency Status on *.xlsx'), pick(a.vp, 'Zero_Report_Cases_ONLY.xlsx'))
+                      pick(a.pn, 'Pendency Status on *.xlsx'), pick(a.vp, 'Zero_Report_Cases*ONLY.xlsx'))
     for p in (av, zr, pn, vp):
         print('SRC %s' % p)
 

@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-08T20:44:20+05:00",
-  "chars": 23262946,
-  "internal_md5": "f2feac11589c8041270e2e86cce54e20",
-  "master_md5": "d1decbe431651727470521cf8b4e8288",
-  "note": "Sept-26 zero-dose validation refreshed to the 08-Nov-2026 Comparison_Report (421 UCs: linelist 30,188 to 30,963, duplicates 6 to 9, completion 95.0 to 97.5%); district cover notes, DHIST point and RLOG regenerated from it. Coverage stays at the 06-Nov-2026 20:27 portal read (no newer export); ICM team/fixed-site/supervisor counts 06-Nov, ICM quality % and HH-cluster form 04-Nov (no newer form-11 or UC % export); triggers checked 08-Nov, unchanged 05-Nov read.. Timestamp refresh 08-Nov-2026 20:44 PKT",
-  "stamp": "08-Nov-2026 20:44"
+  "at": "2026-11-08T21:10:21+05:00",
+  "chars": 23263262,
+  "internal_md5": "9d0a948b5579331910d5aadf974f8007",
+  "master_md5": "732f56461b5b9449587b70fe2adc9536",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+316 chars). Timestamp refresh 08-Nov-2026 21:10 PKT",
+  "stamp": "08-Nov-2026 21:10"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
