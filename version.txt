@@ -202,3 +202,4 @@ Sept-26 zero-dose validation refreshed to the 08-Nov-2026 Comparison_Report (421
 Pushed the hand-edited index.html master to preview / public / internal builds (+316 chars). Timestamp refresh 08-Nov-2026 21:10 PKT
 WPV line list 06-Nov-2026: KP 7 confirmed WPV1 cases (+1 Khyber, onset 16-Oct); AFP pending 309->308; internal EPID payload rebuilt. Timestamp refresh 08-Nov-2026 22:08 PKT
 Data refresh 08-Nov-2026 22:39 PKT: AFPD payload replaced from afpd_rec.json (73,540 chars). Timestamp refresh 08-Nov-2026 22:39 PKT.
+SNID Nov 2026 recorded zero dose added to the PEI SYNERGY register: 42,653 recorded over 996 UCs from the 06-Nov-2026 UC-wise summary export, covered still a dash; register now 43 rounds.
