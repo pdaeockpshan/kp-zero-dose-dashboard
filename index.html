@@ -1138,7 +1138,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 09-Nov-2026 10:32</span>
+  <span class="hupd" id="hUpd">Updated 09-Nov-2026 10:49</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2792,7 +2792,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 
 <!-- ================= HUB: Zero Dose ================= -->
 <section class="pane hubpane" id="p-hzd">
-<div class="hubhd"><div><h2>Zero Dose</h2><p>Zero-dose children recorded in each campaign's own return, covered against that same campaign's list, entered in IDIMS and validated as vaccinated. SNID Nov-26 recorded zero dose is in; its coverage, LQAS and validation are the post-campaign returns awaited. The cards show all of KP; the cross-check table follows the division / district filter.</p><div class="hubchips"><button data-hl="zov">Reported vs covered</button><button data-hl="zcmp">Campaign trends</button><button data-hl="zperf">Good & under performers</button><button data-hl="zins">Insights</button><button data-hl="overview">Linelist vs IDIMS</button><button data-hl="followup">ZD follow-up</button><button data-hl="notes">District notes</button><button data-hl="vsum">Validation summary</button><button data-hl="vfu">Validation follow-up</button></div></div></div>
+<div class="hubhd"><div><h2>Zero Dose</h2><p>Zero-dose children recorded in each campaign's own return, covered against that same campaign's list, entered in IDIMS and validated as vaccinated. SNID Nov-26 recorded zero dose is in; its coverage, LQAS, IDIMS digitization and validation are the post-campaign returns awaited; the IDIMS and validation cards stay blank until those returns are compiled rather than showing an earlier round. The cards show all of KP; the cross-check table follows the division / district filter.</p><div class="hubchips"><button data-hl="zov">Reported vs covered</button><button data-hl="zcmp">Campaign trends</button><button data-hl="zperf">Good & under performers</button><button data-hl="zins">Insights</button><button data-hl="overview">Linelist vs IDIMS</button><button data-hl="followup">ZD follow-up</button><button data-hl="notes">District notes</button><button data-hl="vsum">Validation summary</button><button data-hl="vfu">Validation follow-up</button></div></div></div>
 <div class="hgrid"><div class="hcard" style="--hc:#0f766e" data-go="zov" tabindex="0">
    <div class="hhd"><span class="hn">1</span><span class="ht">Zero dose reported &amp; covered</span><span class="hmore">Details →</span></div>
    <div class="hbody"><div class="hring" id="hR1"></div><div class="hfacts" id="hF1"></div></div>
@@ -2805,7 +2805,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
    <div class="hhd"><span class="hn">3</span><span class="ht">Validated as vaccinated</span><span class="hmore">Details →</span></div>
    <div class="hbody"><div class="hring" id="hR3"></div><div class="hfacts" id="hF3"></div></div>
    <div class="halarm" id="hA3"></div>
-  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: zero dose</h3><span class="cnt" id="cntZTri"></span><span style="flex:1"></span><button class="btn" id="btnZTricsv">Download (CSV)</button></div><div class="cap" id="capZTri" style="margin-top:0">Reported coverage, IDIMS entry and validation compared district by district. A flag shows where they do not match.</div><div class="scroll"><table id="tZTri"></table></div></div>
+  </div></div><div class="card"><div class="tblhdr"><h3 style="margin:0">Data triangulation: zero dose</h3><span class="cnt" id="cntZTri"></span><span style="flex:1"></span><button class="btn" id="btnZTricsv">Download (CSV)</button></div><div class="cap" id="capZTri" style="margin-top:0">Reported coverage, IDIMS entry and validation compared district by district. A flag shows where they do not match. IDIMS entry and validation are not campaign-scoped; they show the last compiled round.</div><div class="scroll"><table id="tZTri"></table></div></div>
 </section>
 
 <!-- ================= HUB: EPI ================= -->
@@ -6929,6 +6929,10 @@ function hRing(p,type,sz){
   `</svg><span class="rc"><b style="color:${col}">${p==null?'–':p.toFixed(1)+'%'}</b>${sz>80&&tg?`<small>target ${tg}%</small>`:''}</span>`;
 }
 const hBub=(n,lab,tip,go)=>`<button class="hb ${n?'':'ok'}" data-hgo="${go}" title="${esc(tip)}"><i>${fmt(n)}</i>${lab?`<span>${lab}</span>`:''}</button>`;
+const HZNOVRET={dig:false,val:false}; // SNID Nov-26 post-campaign returns: flip a key to true in the round its return lands in DATA / VAL
+const HZNOVCP='SNID November 2026';
+function hzdK(){const S=SYNCP&&SYNCP.hz?SYNCP.hz:null;return !S?'N':(['N','S','M','A'].find(x=>S.has(x))||'N');}
+function hzdAwait(what){return hzdK()==='N'&&!HZNOVRET[what];}
 function hAlarm(id,ttl,items){
  const bad=items.some(x=>x[0]>0);
  el(id).className='halarm'+(bad?'':' ok');
@@ -6944,17 +6948,32 @@ function renderHome(){
  el('hF1').innerHTML=`<div class="hf"><b>${fmt(nv.rep)}</b>zero-dose children recorded · ${esc(novLabel())} · ${fmt(nv.n)} UCs</div><div class="hf"><b>${fmt(zRep)}</b>reported · ${esc(CAMP[ZSAME?'M':'S'])} · <b>${fmt(z['c'+cK])}</b> covered in the same report (${pc(z['p'+cK])})</div>`;
  hAlarm('hA1','Under-performing',[[zD,'districts',`${zD} districts covered less than 80% of their reported zero-dose children (${CAMP[cK]})`,'zperf'],[zU,'UCs',`${zU} UCs covered less than 80% of their reported zero-dose children (${CAMP[cK]})`,'zperf']]);
  // 2. digitization
+ if(hzdAwait('dig')){
+  el('hR2').innerHTML=hRing(null,'dig',104);
+  el('hF2').innerHTML=`<div class="hf"><b>–</b>IDIMS entry return awaited for ${esc(novLabel())}</div><div class="hf">No earlier round is shown; the card fills when the Nov digitization return is compiled</div>`;
+  el('hA2').style.display='none';
+ }else{
+  el('hA2').style.display='';
  const drep=S_(DATA,r=>r.rep), dll=S_(DATA,r=>r.ll), dp=drep?dll/drep*100:null;
  const dDl=Object.values(DATA.reduce((a,r)=>{(a[r.d]=a[r.d]||{r:0,l:0});a[r.d].r+=r.rep;a[r.d].l+=r.ll;return a;},{}));
  const dD=dDl.filter(x=>x.r&&x.l/x.r*100<90).length, dU=DATA.filter(r=>r.rep>0&&r.ll/r.rep*100<80).length, d0=DATA.filter(r=>r.rep>0&&r.ll===0).length;
  el('hR2').innerHTML=hRing(dp,'dig',104);
  el('hF2').innerHTML=`<div class="hf"><b>${fmt(dll)}</b>linelisted children entered, of ${fmt(drep)} reported in IDIMS</div><div class="hf"><b>${fmt(S_(DATA,gapOf))}</b>children still to be entered · ${DATA.length} UCs, 9 districts</div>`;
  hAlarm('hA2','Under-performing',[[dD,'districts',`${dD} districts below 90% digitized`,'overview'],[dU,'UCs',`${dU} UCs below 80% digitized, including ${d0} with no entries at all`,'followup']]);
+ }
  // 3. validation
- const v=aggV(VAL), vD=groupV(VAL,'d').filter(x=>x.n&&x.p<95).length, vU=groupV(VAL,'c').filter(x=>x.n&&x.p<90).length;
+ if(hzdAwait('val')){
+  el('hR3').innerHTML=hRing(null,'vac',104);
+  el('hF3').innerHTML=`<div class="hf"><b>–</b>validation return awaited for ${esc(novLabel())}</div><div class="hf">No earlier round is shown; the card fills when the Nov validation return is compiled</div>`;
+  el('hA3').style.display='none';
+ }else{
+  el('hA3').style.display='';
+ const V0=hzdK()==='N'?VAL.filter(r=>r.cp===HZNOVCP):VAL;
+ const v=aggV(V0), vD=groupV(V0,'d').filter(x=>x.n&&x.p<95).length, vU=groupV(V0,'c').filter(x=>x.n&&x.p<90).length;
  el('hR3').innerHTML=hRing(v.p,'vac',104);
  el('hF3').innerHTML=`<div class="hf"><b>${fmt(v.n)}</b>children re-checked by validators · ${fmt(v.f)} forms, ${v.u} UCs</div><div class="hf"><b>${fmt(v.vn)}</b>children found not vaccinated</div>`;
  hAlarm('hA3','Under-performing',[[vD,'districts',`${vD} districts where less than 95% of validated children were vaccinated`,'vsum'],[vU,'UCs',`${vU} UCs where less than 90% of validated children were vaccinated`,'vfu']]);
+ }
  // 4. EPI antigen-wise
  const e=aggE(EPI), gE=groupE(EPI,'d');
  el('hE0').textContent=EPI.length?`KP EPI-MIS · ${EPER} · ${fmt(EPI.length)} UCs`:'No EPI data';
@@ -17158,12 +17177,12 @@ function novAgg(rows){const w=rows||novRows();let rep=0,cov=0,sC=0,nC=0;const DS
  return {n:w.length,rep,cov:nC?cov:null,rc:sC,covUc:!!nC,p:sC?cov/sC*100:null,dists:DS.size};}
 function novSum(){return novAgg(novRows().filter(matchG));}
 function hzCampaign(){const S=SYNCP.hz;if(!S)return 'N';return ['N','S','M','A'].find(k=>S.has(k))||'N';}
-function hzdStrip(){const inZ=ZD.filter(matchG), z=agg(inZ), D=DATA.filter(matchG), dr=S_(D,r=>r.rep), dl=S_(D,r=>r.ll), v=aggV(VAL.filter(matchG)), k=hzCampaign();
- const dig=['Digitized in IDIMS',D.length?pc(dr?dl/dr*100:null):'–',D.length?`${fmt(dl)} of ${fmt(dr)} entered · ${fmt(Math.max(0,dr-dl))} not entered`:'no IDIMS data for this area (9 districts only)','#6d28d9'];
- const val=['Validated vaccinated',v.n?pc(v.p):'–',v.n?`${fmt(v.vy)} of ${fmt(v.n)} children checked · ${fmt(v.vn)} not vaccinated`:'no validation records','#15803d'];
+function hzdStrip(){const inZ=ZD.filter(matchG), z=agg(inZ), D=DATA.filter(matchG), dr=S_(D,r=>r.rep), dl=S_(D,r=>r.ll), k=hzCampaign(), V0=k==='N'?VAL.filter(r=>r.cp===HZNOVCP):VAL, v=aggV(V0.filter(matchG));
+ const dig=(k==='N'&&!HZNOVRET.dig)?['Digitized in IDIMS','–','post-campaign digitization return awaited','#6d28d9']:['Digitized in IDIMS',D.length?pc(dr?dl/dr*100:null):'–',D.length?`${fmt(dl)} of ${fmt(dr)} entered · ${fmt(Math.max(0,dr-dl))} not entered`:'no IDIMS data for this area (9 districts only)','#6d28d9'];
+ const val=(k==='N'&&!HZNOVRET.val)?['Validated vaccinated','–','post-campaign validation return awaited','#15803d']:['Validated vaccinated',v.n?pc(v.p):'–',v.n?`${fmt(v.vy)} of ${fmt(v.n)} children checked · ${fmt(v.vn)} not vaccinated`:'no validation records','#15803d'];
  if(k==='N'){const nv=novSum();
   hubStrip('hzd',[['Zero dose reported',fmt(nv.rep),esc(novLabel())+' · '+fmt(nv.n)+' UC'+(nv.n===1?'':'s')+' · '+fmt(nv.dists)+' district'+(nv.dists===1?'':'s')],['ZD children covered','–','post-campaign coverage return awaited','#64748b'],['Not covered','–','follows the coverage return','#64748b'],dig,val],
-   'SNID Nov-26 recorded zero dose is the round’s own UC-wise return. Its covered figure, LQAS and validation are the post-campaign returns awaited; SNID Sept-26 remains the last measured coverage.');
+   'SNID Nov-26 recorded zero dose is the round’s own UC-wise return. Its covered figure, LQAS, IDIMS digitization and validation are the post-campaign returns awaited; SNID Sept-26 remains the last measured coverage.');
   return;}
  const rc=z['rc'+k]||0, cc=z['c'+k]||0;
  hubStrip('hzd',[['Zero dose reported',fmt(z['r'+k]||0),esc(CAMP[k])+' · '+fmt(z['n'+k]||0)+' UCs'],['ZD children covered',pc(z['p'+k]),`${fmt(cc)} of ${fmt(rc)} · ${esc(CAMP[k])}`,'#0f766e'],['Not covered',fmt(Math.max(0,rc-cc)),'zero-dose children still to reach','#b91c1c'],dig,val]);}

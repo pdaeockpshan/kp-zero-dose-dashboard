@@ -208,3 +208,25 @@ requiring a byte-exact match, and assert the result contains no names before wri
    `SRC <id> <path>` and `OK <id> <chars> <summary>`.
 3. `python _refresh/refresh.py run --only <id> --force --dry-run` - the payload should come
    back byte-identical if nothing in the source changed. That is the faithfulness test.
+
+
+## SNID Nov-26 awaited cards (Zero Dose overview)
+
+`DATA` (IDIMS linelist-vs-entry) has no campaign field and `VAL` holds every validation round,
+so neither payload can say on its own whether the current campaign's return exists. The
+overview therefore carries an explicit switch next to `hAlarm` in the app block:
+
+```js
+const HZNOVRET={dig:false,val:false};
+```
+
+* `dig` - flip to `true` in the round the SNID Nov-26 IDIMS digitization comparison replaces
+  `DATA` (extract `data` from the new Comparison_Report). Until then the "Digitized in IDIMS"
+  card and KPI item stay blank with an awaited note instead of showing the Sept-26 exercise.
+* `val` - flip to `true` when the Nov-26 validation return is complete in `VAL`. Until then the
+  "Validated as vaccinated" card stays awaited; once true it reads only `cp === 'SNID November
+  2026'`, so the earlier rounds cannot leak back in. (220 Nov rows were already in `VAL` on
+  09-Nov-2026 - a partial round, which is why row presence alone is not the test.)
+
+Both flags apply only to the Nov campaign view (`hzCampaign() === 'N'`); Sept / May / Apr keep
+the figures they had.

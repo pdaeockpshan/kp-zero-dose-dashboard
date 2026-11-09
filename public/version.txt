@@ -201,3 +201,4 @@ Home three questions read SNID Nov-26 as concluded: Nov recorded count leads, Se
 Zero Dose overview: SNID Nov-26 recorded zero dose (42,653 children, 996 UCs) with a campaign picker and division/district multi-select filters; Nov covered stays a dash until the post-campaign return.
 Zero Dose overview filters: label the division and district pickers and fix single-area plurals in the Nov-26 strip.
 Zero Dose side-by-side: a dash in the covered column means the post-campaign return is awaited, not missing data.
+Zero Dose overview: the IDIMS digitization and validation cards stay blank and awaited on the SNID Nov-26 view instead of carrying Sept-26 figures; they fill, Nov-scoped, when the Nov returns are compiled.
