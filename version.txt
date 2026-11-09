@@ -204,3 +204,6 @@ WPV line list 06-Nov-2026: KP 7 confirmed WPV1 cases (+1 Khyber, onset 16-Oct); 
 Data refresh 08-Nov-2026 22:39 PKT: AFPD payload replaced from afpd_rec.json (73,540 chars). Timestamp refresh 08-Nov-2026 22:39 PKT.
 SNID Nov 2026 recorded zero dose added to the PEI SYNERGY register: 42,653 recorded over 996 UCs from the 06-Nov-2026 UC-wise summary export, covered still a dash; register now 43 rounds.
 Home three questions read SNID Nov-26 as concluded: Nov recorded count leads, Sept-26 stays the last measured gap, coverage/LQAS/validation named as the post-campaign returns awaited. Timestamp refresh 09-Nov-2026 10:07 PKT.
+Zero Dose overview: SNID Nov-26 recorded zero dose (42,653 children, 996 UCs) with a campaign picker and division/district multi-select filters; Nov covered stays a dash until the post-campaign return.
+Zero Dose overview filters: label the division and district pickers and fix single-area plurals in the Nov-26 strip.
+Zero Dose side-by-side: a dash in the covered column means the post-campaign return is awaited, not missing data.
