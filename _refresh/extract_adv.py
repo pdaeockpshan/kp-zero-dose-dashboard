@@ -11,6 +11,12 @@ in the covered column; for campaigns also tracked by the dashboard's ZD reported
 covered dataset (NID Apr 26, SNID May 2026, SNID Sept 2026) both figures are filled
 from that dataset, other such campaigns keep the tracked children as reported with
 coverage unknown.
+A round the advance reports have not reached yet is taken from the portal's UC-wise
+summary coverage export (summary_<campaign>_<yyyymmdd>_<hhmmss>.xls): its zero-routine-
+dose reported column is the same per-UC figure the advance report carries (proved on
+SNID Sept 2026 - 62,128 on both). Its covered column counts children covered by the
+NEXT round, so such a round gets recorded only and covered stays null until a later
+round reports. Every summary file's totals row must re-add from its own UC rows.
 Campaign names without a readable month/year abort the extract (add them to
 auto.adv.config.campaigns in sources.json).
 
@@ -24,6 +30,7 @@ import sys
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import covsept
 import srcutil
 
 DS = 'adv'
@@ -32,6 +39,7 @@ MONTHS = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
 MONTH_RE = re.compile(r'\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEPT|SEP|OCT|NOV|DEC)[A-Z]*')
 YEAR_RE = re.compile(r'\b(20\d\d|\d\d)\b')
 ASOF_RE = re.compile(r'(20\d{6})T(\d{6})')
+SUM_NAME = re.compile(r'^summary_(.+?)_(\d{4}-\d{2}-\d{2})_(\d{6})(?:\s*\(\d+\))?\.xlsx?$', re.I)
 
 # campaigns that also appear on the dashboard's ZD reported & covered page, with the
 # ZD row keys for this campaign's reported/covered (labels mirror the ZD tab).
@@ -165,9 +173,11 @@ def build(cfg, allow_unknown=False):
     if not files:
         raise SystemExit('ERR adv no advance_reports files under %s' % e['roots'])
     div = zd_divisions(cfg['repo'])
+    adv_files = [r for r in files if not r['name'].lower().startswith('summary_')]
+    sum_files = [r for r in files if SUM_NAME.match(r['name'])]
 
-    camps, rows_by_camp, skipped, files_used = {}, {}, [], []
-    for rec in files:
+    camps, rows_by_camp, skipped, files_used, used_recs = {}, {}, [], [], []
+    for rec in adv_files:
         df, err = read_frame(rec)
         if df is None:
             skipped.append('%s (%s)' % (rec['name'], err.split(':')[0]))
@@ -176,6 +186,7 @@ def build(cfg, allow_unknown=False):
         if not fresh:
             continue
         files_used.append(rec['name'])
+        used_recs.append(rec)
         sub = df[df.camp.isin(fresh)]
         for c, g in sub.groupby('camp'):
             camps[c] = True
@@ -226,6 +237,72 @@ def build(cfg, allow_unknown=False):
                   'ZD reported & covered data (%d UCs, %d added%s)'
                   % (c, len(new), added, ', %d UCs unmatched' % miss if miss else ''))
 
+    # Rounds the advance reports have not reached: the portal's UC-wise summary coverage export
+    # carries the same zero-routine-dose reported column per UC. Its covered column counts children
+    # covered by the NEXT round, so a round taken from here keeps recorded only.
+    ovr = (e.get('config') or {}).get('campaigns') or {}
+
+    def ckey(name):
+        y, mon, _t = campaign_meta(name, ovr)
+        return (y, 99 if mon is None else mon)
+
+    sm = {}
+    sm_recs = []
+    if sum_files and camps:
+        newest_adv = max(ckey(c) for c in camps)
+        known = {norm_label(c) for c in camps}
+        trip = {}
+        for rows in rows_by_camp.values():
+            for d, t, uc, _rp, _cv in rows:
+                trip.setdefault((norm_label(d), norm_label(uc)), (d, t, uc))
+        pend = {}
+        for rec in sum_files:
+            g = SUM_NAME.match(rec['name'])
+            name = g.group(1).strip()
+            if norm_label(name) in known or ckey(name) <= newest_adv:
+                continue
+            pend.setdefault(name, []).append(rec)
+        for name in sorted(pend):
+            got, errs = None, []
+            for rec in pend[name]:
+                try:
+                    book = covsept.read(rec['path'])
+                except SystemExit as ex:
+                    errs.append('%s (%s)' % (rec['name'], str(ex).strip().replace('ERR cov', '').strip()))
+                    continue
+                drift = covsept.check_totals(book['uc'], book['tot'], ['tgt', 'zrep', 'zcov', 'vacc'])
+                if drift:
+                    raise SystemExit('ERR adv %s totals do not reconcile: %s'
+                                     % (rec['name'], '; '.join(drift)))
+                got = (rec, book)
+                break
+            if got is None:
+                raise SystemExit('ERR adv no UC-wise summary coverage export for %s: %s'
+                                 % (name, ', '.join(errs)))
+            rec, book = got
+            rows, miss, tehd = [], [], set()
+            for urow in book['uc']:
+                tri = trip.get((norm_label(urow['dist']), norm_label(urow['uc'])))
+                if tri is None:
+                    miss.append('%s/%s' % (urow['dist'], urow['uc']))
+                    continue
+                if norm_label(tri[1]) != norm_label(urow['teh']):
+                    tehd.add('%s vs %s' % (tri[1], urow['teh']))
+                rows.append((tri[0], tri[1], tri[2], int(urow['zrep'] or 0), None))
+            if miss:
+                raise SystemExit('ERR adv %s: %d UC(s) not in the advance-report geography: %s'
+                                 % (rec['name'], len(miss), ', '.join(miss[:6])))
+            g = SUM_NAME.match(rec['name'])
+            sm[name] = {'f': rec['name'], 'd': g.group(2), 'n': len(rows)}
+            rows_by_camp[name] = rows
+            camps[name] = True
+            sm_recs.append(rec)
+            if tehd:
+                print('WARN adv %s: kept the advance-report tehsil for %s'
+                      % (rec['name'], ', '.join(sorted(tehd))))
+            print('WARN adv %s: recorded taken from its UC-wise summary coverage export (%s); covered '
+                  'stays empty - that report\'s covered column counts the next round' % (name, rec['name']))
+
     unknown = sorted({r[0] for rows in rows_by_camp.values() for r in rows} - set(div))
     if unknown and not allow_unknown:
         raise SystemExit('ERR adv districts not in dashboard ZD data: %s '
@@ -239,7 +316,6 @@ def build(cfg, allow_unknown=False):
         ui[(d, t, uc)] = len(u)
         u.append([di[d], t, uc])
 
-    ovr = (e.get('config') or {}).get('campaigns') or {}
     meta = {}
     for n in sorted(camps):
         y, m, t = campaign_meta(n, ovr)
@@ -256,15 +332,26 @@ def build(cfg, allow_unknown=False):
 
     rep = sum(r[1] for rows in rs for r in rows)
     cov = sum(r[2] or 0 for rows in rs for r in rows)
-    m = ASOF_RE.search(files[0]['name'])
-    asof = '%s-%s-%s' % (m.group(1)[:4], m.group(1)[4:6], m.group(1)[6:]) if m else None
+    m = ASOF_RE.search(adv_files[0]['name']) if adv_files else None
+    dates = ['%s-%s-%s' % (m.group(1)[:4], m.group(1)[4:6], m.group(1)[6:])] if m else []
+    asof = max(dates + [v['d'] for v in sm.values()]) if sm or dates else None
     note = '; skipped: %s' % ', '.join(skipped) if skipped else ''
-    out = {'src': 'IDIMS advance reports (%d files used, newest %s%s)' % (
-               len(files_used), files_used[0] if files_used else '-', note),
-           'asof': asof, 'ds': ds, 'dv': [div[d] for d in ds], 'u': u, 'c': cs, 'r': rs}
+    src = 'IDIMS advance reports (%d files used, newest %s%s)' % (
+        len(files_used), files_used[0] if files_used else '-', note)
+    if sm:
+        src += ' + UC-wise summary coverage export for %s (%s)' % (
+            ', '.join(sorted(sm)), ', '.join(v['f'] for v in sm.values()))
+    out = {'src': src, 'asof': asof, 'ds': ds, 'dv': [div[d] for d in ds]}
+    if sm:
+        out['sm'] = sm
+    out.update({'u': u, 'c': cs, 'r': rs})
     summary = '%d campaigns %d-%d, %d districts, %d UCs, %d rows, reported %s, covered %s' % (
         len(cs), cs[0]['y'], cs[-1]['y'], len(ds), len(u),
         sum(len(x) for x in rs), format(rep, ','), format(cov, ','))
+    if sm:
+        summary += ' (%s from its summary coverage export)' % ', '.join(sorted(sm))
+    for r in used_recs[:1] + sm_recs:
+        print('SRC adv %s' % r['path'])
     return out, summary
 
 

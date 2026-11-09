@@ -1548,7 +1548,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ZD REPORTED & COVERED: ADVANCE REPORTS 2023-2026 -->
 <section class="pane" id="p-adv">
 <div class="cqbar"><b>Recorded &amp; covered</b><span class="cnt">IDIMS advance reports</span><div class="hmcwrap"><button type="button" class="hmcbtn" id="fADCb" aria-haspopup="true" aria-expanded="false" title="Choose one or more campaigns — every KPI, chart and table compiles across the selection"><span id="fADCt">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="fADCp" hidden></div></div><span class="cnt" id="adNote"></span></div>
-<div class="hint" id="adHint">Every campaign from 2022 to SNID Sept 2026: zero-dose children reported per UC and how many were covered during the same round, straight from the IDIMS advance reports. Pick one campaign or compile many with the campaign picker — every KPI, chart and table follows the selection, on top of the Division, District, Tehsil and search filters, and the district summary compiles it all. Covered here means vaccinated during that campaign — the covered-by-next-round figures on the other Reported &amp; Covered pages are compiled differently. The 2026 campaigns (NID Apr-26, SNID May-26, SNID Sept-26) do carry covered-in-round figures: their advance-report exports leave those columns blank or half-filled, so both figures are taken from the dashboard's own zero-dose dataset, and SNID Sept-26's covered figure is that round's own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded) — self-reported for the round, not yet reconciled.</div>
+<div class="hint" id="adHint">Every campaign from 2022 to SNID Nov 2026: zero-dose children reported per UC and how many were covered during the same round, straight from the IDIMS advance reports. Pick one campaign or compile many with the campaign picker — every KPI, chart and table follows the selection, on top of the Division, District, Tehsil and search filters, and the district summary compiles it all. Covered here means vaccinated during that campaign — the covered-by-next-round figures on the other Reported &amp; Covered pages are compiled differently. The 2026 campaigns (NID Apr-26, SNID May-26, SNID Sept-26) do carry covered-in-round figures: their advance-report exports leave those columns blank or half-filled, so both figures are taken from the dashboard's own zero-dose dataset, and SNID Sept-26's covered figure is that round's own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded) — self-reported for the round, not yet reconciled. SNID Nov 2026 has no advance report yet: its recorded figure comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026, and its covered column stays a dash until a round follows.</div>
 <div class="kpis">
 <div class="card"><div class="kl">ZD children reported</div><div class="kv" id="adk1">–</div><div class="ks" id="adk1s"></div></div>
 <div class="card"><div class="kl">Covered in round</div><div class="kv" id="adk2" style="color:#15803d">–</div><div class="ks" id="adk2s"></div></div>
@@ -8747,7 +8747,7 @@ function renderADV(){
  drawTable('tADV',cols,R,'rep',-1);
  el('cntADV').textContent=fmt(R.length)+' UCs';
  el('adNote').textContent=ADV.c.length+' campaigns \u00b7 '+ADV.c[0].y+'\u2013'+ADV.c[ADV.c.length-1].y+' \u00b7 export '+ADV.asof;
- el('capad3').textContent='Source: IDIMS advance reports ('+esc(ADV.src)+'). Same-round coverage (vaccinated during that campaign) is compiled differently from the reported-and-covered figures on the Reported vs Covered pages, so the two can differ for the same campaign. For NID Apr 26, SNID May 2026 and SNID Sept 2026 the newest advance report carries no usable coverage column, so their covered figures are taken from the Reported & Covered page — for SNID Sept 2026 that is the round\u2019s own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded). '+(multi?('Compiled across '+sel.length+' selected campaigns'+(covMiss?(' \u2014 covered-in-round is available for '+(sel.length-covMiss)+' of them'):'')+'. '):'')+'Campaigns before 2022 are on the Campaign history tab.';
+ el('capad3').textContent='Source: IDIMS advance reports ('+esc(ADV.src)+'). Same-round coverage (vaccinated during that campaign) is compiled differently from the reported-and-covered figures on the Reported vs Covered pages, so the two can differ for the same campaign. For NID Apr 26, SNID May 2026 and SNID Sept 2026 the newest advance report carries no usable coverage column, so their covered figures are taken from the Reported & Covered page — for SNID Sept 2026 that is the round\u2019s own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded). SNID Nov 2026 is recorded-only: its count comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026 and it carries no covered figure yet. '+(multi?('Compiled across '+sel.length+' selected campaigns'+(covMiss?(' \u2014 covered-in-round is available for '+(sel.length-covMiss)+' of them'):'')+'. '):'')+'Campaigns before 2022 are on the Campaign history tab.';
  el('adCSV').onclick=()=>csvDownload('advance-'+(multi?'compiled-'+sel.length+'-campaigns':cp.n.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase())+'.csv',['District','Tehsil','UC','UC criteria'].concat(multi?['Campaigns']:[]).concat(['ZD reported','Covered in round','Covered %','Not covered']),R.map(x=>[x.d,x.t,x.u,critLab(x.d,x.u)].concat(multi?[x.n>1?x.n:'']:[]).concat([x.rep,x.cov==null?'':x.cov,x.cov==null?'':(x.rep?Math.round(x.cov/x.rep*1000)/10:''),x.nc==null?'':x.nc])));
 }
 // ---------- SNID Nov-26 scope + evening review one-pager ----------
@@ -21101,7 +21101,7 @@ function nm(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');}
 function fN(n){return n==null||isNaN(n)?'–':Math.round(n).toLocaleString('en-US');}
 function fP(v){return v==null||isNaN(v)?'–':(Math.round(v*10)/10).toFixed(1)+'%';}
 function ucN(n){return fN(n)+' UC'+(n===1?'':'s');}
-function pct(a,b){return b?a/b*100:null;}
+function pct(a,b){return (a==null||isNaN(a)||!b)?null:a/b*100;} function crp(o){return o&&o.covRep!=null?o.covRep:o.rep;}
 var MON={'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,'JUL':7,'AUG':8,'SEP':9,'OCT':10,'NOV':11,'DEC':12};
 var DN={'DIKHAN':'DI Khan','LAKKIMRWT':'Lakki Marwat','KOHISTANUPPER':'Kohistan Upper','KOHISTANLOWER':'Kohistan Lower',
  'KOLAIPALAS':'Kohistan Palas','TORGHAR':'Tor Ghar','DIRLOWER':'Dir Lower','DIRUPPER':'Dir Upper','ABOTABAD':'Abbottabad',
@@ -21121,7 +21121,7 @@ var DIVS=[...new Set(Object.keys(DIST).map(function(d){return DIST[d];}))].sort(
 var DISTS=Object.keys(DIST).sort();
 
 /* ---------- campaign rows ---------- */
-var VALMAP={'NIDAPR2026':'NID Apr 26','NIDFEB2026':'NID Feb 26','SNIDMAY2026':'SNID May 2026','SNIDSEP2026':'SNID Sept 2026'};
+var VALMAP={'NIDAPR2026':'NID Apr 26','NIDFEB2026':'NID Feb 26','SNIDMAY2026':'SNID May 2026','SNIDSEP2026':'SNID Sept 2026','SNIDNOVEMBER2026':'SNID Nov 2026'};
 function cpDate(cp){
  var y=+((cp.match(/(20\d{2})/)||[])[1]||0),m=0;
  cp.toUpperCase().replace(/(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)/g,function(x){if(!m)m=MON[x];return x;});
@@ -21150,8 +21150,8 @@ var CAMPORDER=ROWS.map(function(r){return r.n;});
 
 /* ---------- aggregation ---------- */
 function agg(r,K){
- var o={rep:0,cov:0,covUc:0,repUc:0,dig:null,digRep:null,dUc:0,val:null,conf:null,vUc:0};
- if(r.uc)r.uc.forEach(function(x){if(!K.has(x.k))return;o.rep+=x.rep;o.repUc++;if(x.cov!=null){o.cov+=x.cov;o.covUc++;}});
+ var o={rep:0,cov:0,covUc:0,covRep:0,repUc:0,dig:null,digRep:null,dUc:0,val:null,conf:null,vUc:0};
+ if(r.uc)r.uc.forEach(function(x){if(!K.has(x.k))return;o.rep+=x.rep;o.repUc++;if(x.cov!=null){o.cov+=x.cov;o.covUc++;}});if(o.covUc)o.covRep=o.rep;
  if(r.dm)Object.keys(r.dm).forEach(function(k){if(!K.has(k))return;o.dig+=r.dm[k].ll;o.digRep+=r.dm[k].rep;o.dUc++;});
  if(r.vm)Object.keys(r.vm).forEach(function(k){if(!K.has(k))return;o.val+=r.vm[k].n;o.conf+=r.vm[k].vy;o.vUc++;});
  if(o.dig===null)o.dig=null;if(o.val===null)o.val=null;
@@ -21316,7 +21316,7 @@ function shownRows(){
   if(S.year&&String(r.y)!==S.year)return;
   if(S.camp&&r.n!==S.camp)return;
   var a=agg(r,K);if(!a.repUc&&!a.dUc&&!a.vUc)return;
-  out.push({n:r.n,y:r.y,adv:r.adv,ord:r.ord,rep:a.rep,cov:a.cov,covUc:a.covUc,repUc:a.repUc,dig:a.dig,digRep:a.digRep,dUc:a.dUc,val:a.val,conf:a.conf,vUc:a.vUc});
+  out.push({n:r.n,y:r.y,adv:r.adv,ord:r.ord,rep:a.rep,cov:a.cov,covUc:a.covUc,covRep:a.covRep,repUc:a.repUc,dig:a.dig,digRep:a.digRep,dUc:a.dUc,val:a.val,conf:a.conf,vUc:a.vUc});
  });
  return out;
 }
@@ -21333,15 +21333,15 @@ function scopeText(){
 }
 function draw(){
  var rows=shownRows(),K=visibleKeys();
- var rep=0,cov=0,covUc=0,dig=0,digRep=0,val=0,conf=0;
- rows.forEach(function(r){rep+=r.rep;cov+=r.cov;covUc+=r.covUc;if(r.dUc){dig+=r.dig;digRep+=r.digRep;}if(r.vUc){val+=r.val;conf+=r.conf;}});
+ var rep=0,cov=0,covUc=0,covRep=0,dig=0,digRep=0,val=0,conf=0;
+ rows.forEach(function(r){rep+=r.rep;cov+=r.cov;covUc+=r.covUc;covRep+=r.covRep||0;if(r.dUc){dig+=r.dig;digRep+=r.digRep;}if(r.vUc){val+=r.val;conf+=r.conf;}});
  var na=rows.filter(function(r){return r.adv>=0;}).length,nv=rows.length-na;
  $('zrK1').textContent=fN(rep);
  $('zrK1s').textContent=na+' advance round'+(na===1?'':'s')+(nv?' + '+nv+' validation-only':'')+' \u00b7 '+ucN([...K].length)+' in scope';
- $('zrK2').textContent=fN(cov);
- $('zrK2s').textContent=covUc?'covered in the same round':'covered-in-round not reported';
- $('zrK3').textContent=fP(pct(cov,rep));
- $('zrK3s').textContent='covered \u00f7 recorded';
+ $('zrK2').textContent=covUc?fN(cov):'\u2013';
+ $('zrK2s').textContent=covUc?(covRep<rep?'covered in the same round, over the rounds that report it':'covered in the same round'):'covered-in-round not reported';
+ $('zrK3').textContent=covUc?fP(pct(cov,covRep)):'\u2013';
+ $('zrK3s').textContent=covUc?'covered \u00f7 recorded, rounds with a covered figure':'covered \u00f7 recorded';
  $('zrK4').textContent=fN(dig);
  $('zrK4s').textContent=dig?'linelist entries of '+fN(digRep)+' recorded':'digitization covers the Sept-26 exercise only';
  $('zrK5').textContent=fN(val);
@@ -21353,7 +21353,7 @@ function draw(){
   {k:'repUc',l:'UCs reporting',n:1,f:function(r){return r.repUc?fN(r.repUc):'–';}},
   {k:'rep',l:'ZD recorded',n:1,f:function(r){return r.adv<0?'–':fN(r.rep);}},
   {k:'cov',l:'ZD covered',n:1,f:function(r){return r.covUc?fN(r.cov):'–';}},
-  {k:'cp',l:'Covered %',n:1,sv:function(r){return r.rep?r.cov/r.rep:null;},f:function(r){return r.covUc&&r.rep?rgN(r.cov/r.rep*100,90,80)+'%':'–';}},
+  {k:'cp',l:'Covered %',n:1,tt:'covered \u00f7 recorded, over the rounds that report a covered figure; a recorded-only round such as SNID Nov 2026 sits in the recorded column but not in this share',sv:function(r){return r.covRep?r.cov/r.covRep:null;},f:function(r){return r.covUc&&r.covRep?rgN(r.cov/r.covRep*100,90,80)+'%':'–';}},
   {k:'dig',l:'ZD digitized',n:1,f:function(r){return r.dUc?fN(r.dig):'–';}},
   {k:'dp',l:'Digitized %',n:1,sv:function(r){return r.digRep?r.dig/r.digRep:null;},f:function(r){return r.dUc&&r.digRep?rgN(r.dig/r.digRep*100,95,80)+'%':'–';}},
   {k:'val',l:'ZD validated',n:1,f:function(r){return r.vUc?fN(r.val):'–';}},
@@ -21363,7 +21363,7 @@ function draw(){
  drawTable('tZReg',COLS,rows.slice().reverse(),'y',-1,'No round in this scope carries a zero-dose figure.');
  $('zrCnt').textContent=rows.length+' rows \u00b7 newest first';
  $('zrScope').textContent='Scope: '+scopeText()+(S.ucs.size?'':'  \u00b7  '+ucN([...K].length));
- $('zrCap').textContent='Recorded and covered come from the IDIMS advance reports (2022 to SNID Sept 2026), covered meaning vaccinated during that same round. Digitized is the Sept-26 linelist-vs-IDIMS exercise and exists only for the nine districts it covered, so every other round shows a dash. Validated is the zero-dose validation register, which carries four of the advance-report rounds plus four special activities that have no advance report. The four columns have different denominators; a dash means the source does not cover the round, not a zero.';
+ $('zrCap').textContent='Recorded comes from the IDIMS advance reports (2022 to SNID Sept 2026) plus, for SNID Nov 2026, that round\u2019s own UC-wise summary coverage export of 06-Nov-2026 \u2014 42,653 children reported. Covered means vaccinated during that same round; it is a dash for SNID Nov 2026 because the export\u2019s covered column is the next-round figure and no round has followed, and the covered share is taken over the rounds that do report covered, so a round still awaiting it never enters the denominator as uncovered, though the recorded totals do include it. Digitized is the Sept-26 linelist-vs-IDIMS exercise and exists only for the nine districts it covered, so every other round shows a dash. Validated is the zero-dose validation register, which carries four of the advance-report rounds plus four special activities that have no advance report. The four columns have different denominators; a dash means the source does not cover the round, not a zero.';
 
  /* district table for the same campaign scope */
  var DT=distRows(K);
@@ -21372,7 +21372,7 @@ function draw(){
   {k:'dv',l:'Division',f:function(r){return esc(divLabel(r.dv));}},
   {k:'rep',l:'ZD recorded',n:1,f:function(r){return fN(r.rep);}},
   {k:'cov',l:'ZD covered',n:1,f:function(r){return r.covUc?fN(r.cov):'–';}},
-  {k:'cp',l:'Covered %',n:1,sv:function(r){return r.rep?r.cov/r.rep:null;},f:function(r){return r.covUc&&r.rep?rgN(r.cov/r.rep*100,90,80)+'%':'–';}},
+  {k:'cp',l:'Covered %',n:1,tt:'covered \u00f7 recorded, over the rounds that report a covered figure; a recorded-only round such as SNID Nov 2026 sits in the recorded column but not in this share',sv:function(r){return r.covRep?r.cov/r.covRep:null;},f:function(r){return r.covUc&&r.covRep?rgN(r.cov/r.covRep*100,90,80)+'%':'–';}},
   {k:'dig',l:'ZD digitized',n:1,f:function(r){return r.dUc?fN(r.dig):'–';}},
   {k:'val',l:'ZD validated',n:1,f:function(r){return r.vUc?fN(r.val):'–';}},
   {k:'vp',l:'Confirmed %',n:1,sv:function(r){return r.val?r.conf/r.val:null;},f:function(r){return r.vUc&&r.val?rgN(r.conf/r.val*100,95,90)+'%':'–';}}
@@ -21402,17 +21402,17 @@ function vizHeaderText(){return S.vcam.size?scopeText()+' \u00b7 map and bars on
 function distRows(K){
  var sr=scopeRounds();
  return [...new Set([...K].map(function(k){return UC[k].d;}))].sort().map(function(d){
-  var ks=scopeKeys({div:S.div,dist:new Set([d]),ucs:S.ucs.size?S.ucs:null}),o={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0};
+  var ks=scopeKeys({div:S.div,dist:new Set([d]),ucs:S.ucs.size?S.ucs:null}),o={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,covRep:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0};
   sr.forEach(function(r){var a=agg(r,ks);
-   o.rep+=a.rep;o.cov+=a.cov;o.covUc+=a.covUc;o.repUc+=a.repUc;
+   o.rep+=a.rep;o.cov+=a.cov;o.covUc+=a.covUc;o.covRep+=a.covRep;o.repUc+=a.repUc;
    if(a.dUc){o.dig+=a.dig;o.digRep+=a.digRep;o.dUc+=a.dUc;}
    if(a.vUc){o.val+=a.val;o.conf+=a.conf;o.vUc+=a.vUc;}});
   return o;
  });
 }
 function covBin(o){
- if(!o||!o.rep||!o.covUc)return {f:'#cbd5e1',c:'#475569',p:null};
- var p=o.cov/o.rep*100;
+ if(!o||!o.covRep||!o.covUc)return {f:'#cbd5e1',c:'#475569',p:null};
+ var p=o.cov/o.covRep*100;
  return p>=90?{f:'#15803d',c:'#ffffff',p:p}:p>=80?{f:'#b45309',c:'#ffffff',p:p}:{f:'#b91c1c',c:'#ffffff',p:p};
 }
 function zrMapSvg(DT){
@@ -21423,7 +21423,7 @@ function zrMapSvg(DT){
  svg+=KPGEO.d.map(function(p){
   var o=IN[p.c],g=covBin(o),op=o&&o.rep>0&&o.rep<25?'0.55':'1';
   var tip=!o?(dn(p.c)+' \u2014 no UC in this scope')
-   :(dn(p.c)+' \u2014 '+fN(o.rep)+' recorded, '+(o.covUc?fN(o.cov)+' covered ('+fP(pct(o.cov,o.rep))+')':'covered not reported'));
+   :(dn(p.c)+' \u2014 '+fN(o.rep)+' recorded, '+(o.covUc?fN(o.cov)+' covered ('+fP(pct(o.cov,crp(o)))+')':'covered not reported'));
   return '<path d="'+p.p+'" fill="'+(o?g.f:'#f1f5f9')+'" fill-opacity="'+op+'" stroke="#fff" stroke-width="0.9"><title>'+esc(tip)+'</title></path>';
  }).join('');
  var LAB=hrvLab();
@@ -21444,7 +21444,7 @@ function zrBarsHtml(DT){
  var max=0;DT.forEach(function(o){if(o.rep>max)max=o.rep;});
  return DT.slice().sort(function(a,b){return b.rep-a.rep;}).map(function(o){
   var b=covBin(o),w=max?Math.max(1.5,o.rep/max*100):0;
-  var tip=dn(o.d)+' \u2014 '+fN(o.rep)+' recorded'+(o.covUc?', '+fN(o.cov)+' covered ('+fP(pct(o.cov,o.rep))+')':', covered not reported');
+  var tip=dn(o.d)+' \u2014 '+fN(o.rep)+' recorded'+(o.covUc?', '+fN(o.cov)+' covered ('+fP(pct(o.cov,crp(o)))+')':', covered not reported');
   return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12px" title="'+esc(tip)+'">'
    +'<span style="flex:0 0 104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(dn(o.d))+'</span>'
    +'<span style="flex:1 1 auto;height:10px;border-radius:3px;overflow:hidden;background:'+(b.p==null?'#cbd5e1':'#e2e8f0')+'"><i style="display:block;height:100%;width:'+(b.p==null?0:Math.max(0,Math.min(100,b.p)))+'%;background:'+b.f+'"></i></span>'
@@ -21460,7 +21460,7 @@ function renderViz(DT){
  $('zrBars').innerHTML=zrBarsHtml(DT);
  vzBtn();
  if($('zrMCnt'))$('zrMCnt').textContent=DT.length+' districts \u00b7 '+rs.length+' round'+(rs.length===1?'':'s');
- if($('zrMCap'))$('zrMCap').textContent='Colour is covered \u00f7 recorded on the same district and the same rounds: '+fN(t.rep)+' recorded and '+(t.covUc?fN(t.cov)+' covered ('+fP(pct(t.cov,t.rep))+')':'no covered figure')
+ if($('zrMCap'))$('zrMCap').textContent='Colour is covered \u00f7 recorded on the same district and the same rounds: '+fN(t.rep)+' recorded and '+(t.covUc?fN(t.cov)+' covered ('+fP(pct(t.cov,crp(t)))+')':'no covered figure')
   +' across '+vizRoundsText()+'. Green is 90% or more, amber 80 to 89.9%, red below 80%; slate means the source carries no covered figure for that district, pale grey that it has no UC in scope. A district is drawn pale where fewer than 25 children are recorded, so a handful of cases cannot paint it red. Bar length is recorded children, the filled segment the covered share of them.';
 }
 
@@ -21511,10 +21511,10 @@ function scopeSlug(){
 var H=['Campaign','Year','UCs reporting','ZD recorded','ZD covered','Covered %','ZD digitized','Digitized %','ZD validated','Confirmed vaccinated','Confirmed %','Source'];
 function xrows(){
  return shownRows().slice().reverse().map(function(r){
-  return [r.n,r.y,r.repUc||'',r.adv<0?'':r.rep,r.covUc?r.cov:'',r.covUc&&r.rep?Math.round(r.cov/r.rep*1000)/10:'',
+  return [r.n,r.y,r.repUc||'',r.adv<0?'':r.rep,r.covUc?r.cov:'',r.covUc&&r.covRep?Math.round(r.cov/r.covRep*1000)/10:'',
    r.dUc?r.dig:'',r.dUc&&r.digRep?Math.round(r.dig/r.digRep*1000)/10:'',r.vUc?r.val:'',r.vUc?r.conf:'',
    r.vUc&&r.val?Math.round(r.conf/r.val*1000)/10:'',
-   r.adv<0?'Validation register only (no advance report)':(r.dig?'Advance report + Sept-26 digitization':'IDIMS advance report')];
+   r.adv<0?'Validation register only (no advance report)':((ADV.sm&&ADV.sm[r.n])?'UC-wise summary coverage export':(r.dig?'Advance report + Sept-26 digitization':'IDIMS advance report'))];
  });
 }
 function readmeRows(){
@@ -21522,7 +21522,7 @@ function readmeRows(){
   ['Table','Zero-dose register: recorded, covered, digitized and validated by round.'],
   ['Scope',scopeText()],
   ['Rounds',shownRows().length+' of '+ROWS.length],
-  ['Recorded / covered','IDIMS advance reports 2022 to SNID Sept 2026 (export '+ADV.asof+'). Covered means vaccinated during the same round.'],
+  ['Recorded / covered','IDIMS advance reports 2022 to SNID Sept 2026 (export '+ADV.asof+'), plus SNID Nov 2026 from its own UC-wise summary coverage export of 06-Nov-2026. Covered means vaccinated during the same round; it is a dash for SNID Nov 2026 until a round follows, and the covered share uses only the rounds that report covered.'],
   ['Digitized','Sept-26 linelist-vs-IDIMS exercise, report of 08-Nov-2026: nine districts, 421 UCs, 30,963 linelist entries against 31,762 IDIMS-reported children. Other rounds carry no digitization figure.'],
   ['Validated','Zero-dose validation register: 8 activities, entries 20-Jan-2026 to 03-Nov-2026. Confirmed = validator saw the child vaccinated.'],
   ['Dashes','A dash means that source does not cover the round, not a zero.'],
@@ -21552,21 +21552,21 @@ var FF='Segoe UI';
 function dScopeKeys(o){return scopeKeys({div:o.div||'',dist:o.dist?new Set([o.dist]):null});}
 function dRows(o){
  var K=dScopeKeys(o);
- return ROWS.map(function(r){var a=agg(r,K);return{n:r.n,y:r.y,adv:r.adv,rep:a.rep,cov:a.cov,covUc:a.covUc,repUc:a.repUc,dig:a.dig,digRep:a.digRep,dUc:a.dUc,val:a.val,conf:a.conf,vUc:a.vUc};});
+ return ROWS.map(function(r){var a=agg(r,K);return{n:r.n,y:r.y,adv:r.adv,rep:a.rep,cov:a.cov,covUc:a.covUc,covRep:a.covRep,repUc:a.repUc,dig:a.dig,digRep:a.digRep,dUc:a.dUc,val:a.val,conf:a.conf,vUc:a.vUc};});
 }
 function dYears(rows){
  var out={};
  rows.forEach(function(r){
-  var g=out[r.y]||(out[r.y]={y:r.y,n:0,rep:0,cov:0,covUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0});
-  if(r.adv>=0){g.n++;g.rep+=r.rep;g.cov+=r.cov;g.covUc+=r.covUc;}
+  var g=out[r.y]||(out[r.y]={y:r.y,n:0,rep:0,cov:0,covUc:0,covRep:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0});
+  if(r.adv>=0){g.n++;g.rep+=r.rep;g.cov+=r.cov;g.covUc+=r.covUc;g.covRep+=r.covRep;}
   if(r.dUc){g.dig+=r.dig;g.digRep+=r.digRep;g.dUc+=r.dUc;}
   if(r.vUc){g.val+=r.val;g.conf+=r.conf;g.vUc+=r.vUc;}
  });
  return Object.keys(out).map(function(k){return out[k];}).sort(function(a,b){return a.y-b.y;});
 }
 function totals(rows){
- var t={rep:0,cov:0,covUc:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0,n:0};
- rows.forEach(function(r){t.n++;t.rep+=r.rep;t.cov+=r.cov;t.covUc+=r.covUc;t.repUc+=r.repUc||0;if(r.dUc){t.dig+=r.dig;t.digRep+=r.digRep;t.dUc+=r.dUc;}if(r.vUc){t.val+=r.val;t.conf+=r.conf;t.vUc+=r.vUc;}});
+ var t={rep:0,cov:0,covUc:0,covRep:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0,n:0};
+ rows.forEach(function(r){t.n++;t.rep+=r.rep;t.cov+=r.cov;t.covUc+=r.covUc;t.covRep+=r.covRep||0;t.repUc+=r.repUc||0;if(r.dUc){t.dig+=r.dig;t.digRep+=r.digRep;t.dUc+=r.dUc;}if(r.vUc){t.val+=r.val;t.conf+=r.conf;t.vUc+=r.vUc;}});
  return t;
 }
 function stamp(){try{var d=new Date();var p=function(v){return(v<10?'0':'')+v;};
@@ -21598,9 +21598,9 @@ function pcol(v){return v==null?'–':(Math.round(v*10)/10).toFixed(1)+'%';}
 function campRound(camp){return ROWS.filter(function(r){return r.n===camp;})[0]||null;}
 function campDistricts(rr,K){
  var m={};
- function row(d){return m[d]||(m[d]={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,repUc:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0});}
+ function row(d){return m[d]||(m[d]={d:d,dv:DIST[d],rep:0,cov:0,covUc:0,covRep:0,repUc:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0});}
  if(!rr)return [];
- (rr.uc||[]).forEach(function(x){if(!K.has(x.k))return;var o=row(UC[x.k].d);o.rep+=x.rep;o.repUc++;if(x.cov!=null){o.cov+=x.cov;o.covUc++;}});
+ (rr.uc||[]).forEach(function(x){if(!K.has(x.k))return;var o=row(UC[x.k].d);o.rep+=x.rep;o.repUc++;if(x.cov!=null){o.cov+=x.cov;o.covUc++;}});Object.keys(m).forEach(function(k){var o=m[k];o.covRep=o.covUc?o.rep:0;});
  if(rr.dm)Object.keys(rr.dm).forEach(function(k){if(!K.has(k))return;var g=rr.dm[k],o=row(UC[k].d);o.ll+=g.ll;o.llRep+=g.rep;o.dUc++;});
  if(rr.vm)Object.keys(rr.vm).forEach(function(k){if(!K.has(k))return;var g=rr.vm[k],o=row(UC[k].d);o.val+=g.n;o.conf+=g.vy;o.vUc++;});
  return Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return a.d.localeCompare(b.d);});
@@ -21637,8 +21637,8 @@ function buildDeck(P,camp){
  var plan=deckScopes(),page=1;
  var prov=dRows({}),pt=totals(prov);
  var covRows={};
- function addRows(list){list.forEach(function(r){var o=covRows[r.n]||(covRows[r.n]={n:r.n,y:r.y,adv:r.adv,rep:0,cov:0,covUc:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0});
-  o.rep+=r.rep;o.cov+=r.cov;o.covUc+=r.covUc;o.repUc+=r.repUc;if(r.dUc){o.dig+=r.dig;o.digRep+=r.digRep;o.dUc+=r.dUc;}if(r.vUc){o.val+=r.val;o.conf+=r.conf;o.vUc+=r.vUc;}});}
+ function addRows(list){list.forEach(function(r){var o=covRows[r.n]||(covRows[r.n]={n:r.n,y:r.y,adv:r.adv,rep:0,cov:0,covUc:0,covRep:0,repUc:0,dig:0,digRep:0,dUc:0,val:0,conf:0,vUc:0});
+  o.rep+=r.rep;o.cov+=r.cov;o.covUc+=r.covUc;o.covRep+=r.covRep;o.repUc+=r.repUc;if(r.dUc){o.dig+=r.dig;o.digRep+=r.digRep;o.dUc+=r.dUc;}if(r.vUc){o.val+=r.val;o.conf+=r.conf;o.vUc+=r.vUc;}});}
  if(S.dist.size)DISTS.forEach(function(d){if(S.dist.has(d))addRows(dRows({div:DIST[d],dist:d}));});
  else addRows(dRows({div:S.div||'',dist:null}));
  var covList=Object.keys(covRows).map(function(k){return covRows[k];});
@@ -21651,7 +21651,7 @@ function buildDeck(P,camp){
  s.addShape('rect',{x:0,y:0,w:13.333,h:0.16,fill:{color:C.pri},line:{width:0}});
  s.addText('PEI SYNERGY  \u00b7  ZERO-DOSE REGISTER',{x:0.62,y:1.05,w:12,h:0.3,fontSize:10,bold:true,color:C.pri,charSpacing:1.6,fontFace:FF});
  s.addText('Zero-dose children, round by round',{x:0.62,y:1.45,w:12,h:0.9,fontSize:40,bold:true,color:C.ink,fontFace:FF});
- s.addText('Recorded and covered in each campaign, digitized into the linelist, and validated as vaccinated \u2014 2022 to SNID Sept 2026. Scope: '+covTxt+'.',{x:0.62,y:2.38,w:11.4,h:0.7,fontSize:13,color:C.mut,fontFace:FF,lineSpacingMultiple:1.25});
+ s.addText('Recorded and covered in each campaign, digitized into the linelist, and validated as vaccinated \u2014 2022 to '+ROWS[ROWS.length-1].n+'. Scope: '+covTxt+'.',{x:0.62,y:2.38,w:11.4,h:0.7,fontSize:13,color:C.mut,fontFace:FF,lineSpacingMultiple:1.25});
  var cs=[[fN(covList.filter(function(r){return r.adv>=0;}).length),'advance-report rounds, 2022\u20132026'],[fN(ct.rep),'zero-dose children recorded'],[ct.covUc?fN(ct.cov):'\u2013','covered in the same round'],[ct.vUc?fN(ct.val):'\u2013','children validated']];
  cs.forEach(function(c,i){var x=0.62+i*3.09;kpi(s,x,3.40,2.90,c[0],c[1],i===3?C.sec:C.pri);});
  s.addText('Sources: IDIMS advance reports (export '+ADV.asof+'), the Sept-26 linelist-vs-IDIMS exercise, and the zero-dose validation register. Every figure is a count rolled up from the dashboard\u2019s own payloads.',{x:0.62,y:4.75,w:11.6,h:0.55,fontSize:9.6,color:C.mut,fontFace:FF,lineSpacingMultiple:1.25});
@@ -21662,7 +21662,7 @@ function buildDeck(P,camp){
  /* how to read */
  s=pptx.addSlide();head(s,'How to read','Four columns, four sources, four denominators','A dash is not a zero.');
  var defs=[
-  ['Recorded','Zero-dose children reported per UC in the IDIMS advance report for that round. All 42 rounds from SNID Jan-22 to SNID Sept-26 carry it.'],
+  ['Recorded','Zero-dose children reported per UC in the IDIMS advance report for that round, except SNID Nov 2026, whose count comes from that round\u2019s own UC-wise summary coverage export. All '+ROWS.filter(function(r){return r.adv>=0;}).length+' rounds from SNID Jan-22 to SNID Nov 2026 carry a recorded figure, and SNID Nov 2026 does not yet carry a covered one.'],
   ['Covered','Zero-dose children vaccinated during that same round, from the same report. Covered % is covered \u00f7 recorded on the UCs that reported both.'],
   ['Digitized','Children written into the zero-dose linelist against the IDIMS figure. Only the Sept-26 exercise has it: nine districts, 421 UCs. Digitized % is entries \u00f7 IDIMS reported on that same scope.'],
   ['Validated','Children the zero-dose validation register carries for that activity, and how many the validator confirmed as vaccinated. Four advance-report rounds plus four special activities have register rows.']
@@ -21679,14 +21679,14 @@ function buildDeck(P,camp){
  s=pptx.addSlide();head(s,'Province','Khyber Pakhtunkhwa by year','Every round, every district, as the payloads stand today.');
  var Y=dYears(prov);
  tbl(s,['Year','Rounds','ZD recorded','ZD covered','Covered %','ZD digitized','ZD validated'],
-  Y.map(function(g){return [g.y,g.n,fN(g.rep),g.covUc?fN(g.cov):'–',pcol(pct(g.cov,g.rep)),g.dUc?fN(g.dig):'–',g.vUc?fN(g.val):'–'];}),
+  Y.map(function(g){return [g.y,g.n,fN(g.rep),g.covUc?fN(g.cov):'–',pcol(pct(g.cov,crp(g))),g.dUc?fN(g.dig):'–',g.vUc?fN(g.val):'–'];}),
   0.62,1.80,7.60,[0.75,0.8,1.35,1.35,1.1,1.15,1.1],0.30,8.6);
  var recent=prov.filter(function(r){return r.adv>=0;}).slice(-6);
  tbl(s,['Round','Recorded','Covered','Cov %','Validated'],
-  recent.map(function(r){return [r.n,fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,r.rep)),r.vUc?fN(r.val):'–'];}),
+  recent.map(function(r){return [r.n,fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,crp(r))),r.vUc?fN(r.val):'–'];}),
   8.44,1.80,4.27,[1.75,0.8,0.75,0.5,0.47],0.30,7.6);
  s.addText('Latest six advance-report rounds',{x:8.44,y:1.52,w:4.2,h:0.24,fontSize:8,bold:true,color:C.pri,fontFace:FF});
- s.addText('Totals: '+fN(pt.rep)+' recorded \u00b7 '+fN(pt.cov)+' covered ('+pcol(pct(pt.cov,pt.rep))+') \u00b7 '+fN(pt.dig)+' digitized \u00b7 '+fN(pt.val)+' validated ('+fN(pt.conf)+' confirmed).',{x:0.62,y:6.40,w:12.09,h:0.3,fontSize:9,color:C.mut,fontFace:FF});
+ s.addText('Totals: '+fN(pt.rep)+' recorded \u00b7 '+fN(pt.cov)+' covered ('+pcol(pct(pt.cov,crp(pt)))+') \u00b7 '+fN(pt.dig)+' digitized \u00b7 '+fN(pt.val)+' validated ('+fN(pt.conf)+' confirmed).',{x:0.62,y:6.40,w:12.09,h:0.3,fontSize:9,color:C.mut,fontFace:FF});
  pg(s,page++);
 
  /* province: all rounds */
@@ -21694,7 +21694,7 @@ function buildDeck(P,camp){
  [[first,'2022\u20132023'],[second,'2024\u20132026']].forEach(function(part){
   s=pptx.addSlide();head(s,'All rounds','Khyber Pakhtunkhwa \u00b7 '+part[1]+' \u2014 every campaign, side by side','Province totals, not the page scope.');
   tbl(s,['Round','Year','Recorded','Covered','Cov %','Digitized','Validated','Confirmed'],
-   part[0].map(function(r){return [r.n,r.y,r.adv<0?'–':fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,r.rep)),r.dUc?fN(r.dig):'–',r.vUc?fN(r.val):'–',r.vUc?pcol(pct(r.conf,r.val)):'–'];}),
+   part[0].map(function(r){return [r.n,r.y,r.adv<0?'–':fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,crp(r))),r.dUc?fN(r.dig):'–',r.vUc?fN(r.val):'–',r.vUc?pcol(pct(r.conf,r.val)):'–'];}),
    0.62,1.74,12.09,[3.05,0.65,1.55,1.55,0.9,1.35,1.45,1.59],0.205,7.8);
   pg(s,page++);
  });
@@ -21710,22 +21710,22 @@ function buildDeck(P,camp){
   head(s,sc.kind==='division'?'Division':'District',sc.label,
    (sc.kind==='division'?'Division register \u00b7 ':'')+(nd===1?'1 district':nd+' districts')+' \u00b7 '+ucN(dScopeKeys({div:sc.div,dist:sc.dist}).size));
   kpi(s,0.62,1.78,2.90,fN(t.rep),'ZD recorded, 2022\u20132026');
-  kpi(s,3.68,1.78,2.90,t.covUc?pcol(pct(t.cov,t.rep)):'–','covered share, all rounds',C.good);
+  kpi(s,3.68,1.78,2.90,t.covUc?pcol(pct(t.cov,crp(t))):'–','covered share, all rounds',C.good);
   kpi(s,6.74,1.78,2.90,t.vUc?fN(t.val):'–',t.vUc?'children validated · '+fN(t.conf)+' confirmed':'no register rows here',C.sec);
   kpi(s,9.80,1.78,2.90,t.dUc?fN(t.dig):'–',t.dUc?'digitized, Sept-26 exercise':'no digitization exercise here',C.warn);
   tbl(s,['Year','Rounds','Recorded','Covered','Cov %','Digitized','Validated'],
-   yy.map(function(g){return [g.y,g.n,fN(g.rep),g.covUc?fN(g.cov):'–',pcol(pct(g.cov,g.rep)),g.dUc?fN(g.dig):'–',g.vUc?fN(g.val):'–'];}),
+   yy.map(function(g){return [g.y,g.n,fN(g.rep),g.covUc?fN(g.cov):'–',pcol(pct(g.cov,crp(g))),g.dUc?fN(g.dig):'–',g.vUc?fN(g.val):'–'];}),
    0.62,2.94,7.60,[0.75,0.8,1.35,1.35,1.1,1.15,1.1],0.275,8.6);
   var rec=rows.filter(function(r){return r.adv>=0;}).slice(-5);
   tbl(s,['Recent round','Recorded','Covered','Cov %'],
-   rec.map(function(r){return [r.n,fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,r.rep))];}),
+   rec.map(function(r){return [r.n,fN(r.rep),r.covUc?fN(r.cov):'–',pcol(pct(r.cov,crp(r)))];}),
    8.44,2.94,4.27,[1.85,0.85,0.8,0.77],0.275,7.8);
   var nAdv=rows.filter(function(r){return r.adv>=0;}).length;
   var lines=[];
-  if(t.rep)lines.push(fN(t.rep)+' zero-dose children recorded across '+nAdv+' advance-report rounds, '+pcol(pct(t.cov,t.rep))+' covered in the same round.');
+  if(t.rep)lines.push(fN(t.rep)+' zero-dose children recorded across '+nAdv+' advance-report rounds, '+(t.covUc?pcol(pct(t.cov,crp(t)))+' covered in the same round, over the rounds that report covered.':'but no covered figure yet for the newest round in this total.'));
   if(t.vUc)lines.push(fN(t.val)+' validated and '+fN(t.conf)+' confirmed vaccinated in the register.');
   if(t.dUc)lines.push(fN(t.dig)+' entered into the linelist in the Sept-26 exercise.');
-  if(y26&&y26.rep)lines.push('2026 so far: '+fN(y26.rep)+' recorded, '+pcol(pct(y26.cov,y26.rep))+' covered.');
+  if(y26&&y26.rep)lines.push('2026 so far: '+fN(y26.rep)+' recorded, '+(y26.covUc?pcol(pct(y26.cov,crp(y26)))+' covered.':'covered not yet reported for SNID Nov 2026.'));
   s.addText(lines.join(' '),{x:0.62,y:6.30,w:12.09,h:0.6,fontSize:9.4,color:C.mut,fontFace:FF,lineSpacingMultiple:1.2,fit:'shrink'});
   pg(s,page++);
  });
@@ -21733,7 +21733,7 @@ function buildDeck(P,camp){
  /* notes */
  s=pptx.addSlide();head(s,'Data notes','What each column does and does not cover','');
  var notes=[
-  ['Recorded and covered','IDIMS advance reports. The 2026 rounds take their covered figures from the dashboard\u2019s own zero-dose dataset because the advance exports leave those columns blank; SNID Sept-26 covered is that round\u2019s own UC-wise export (39,176 of 62,128, self-reported, not reconciled by a later round).'],
+  ['Recorded and covered','IDIMS advance reports. The 2026 rounds take their covered figures from the dashboard\u2019s own zero-dose dataset because the advance exports leave those columns blank; SNID Sept-26 covered is that round\u2019s own UC-wise export (39,176 of 62,128, self-reported, not reconciled by a later round). SNID Nov 2026 has no advance report yet: its recorded count is that round\u2019s own UC-wise summary coverage export of 06-Nov-2026, and covered stays a dash until a round follows, so its children are not counted as uncovered in any share.'],
   ['Digitized','Sept-26 linelist-vs-IDIMS exercise, nine districts and 421 UCs, report of 08-Nov-2026: 30,963 linelist entries against 31,762 IDIMS-reported children. Other rounds carry no digitization figure.'],
   ['Validated','Zero-dose validation register: 8 activities, entries 20-Jan-2026 to 03-Nov-2026. Four map to advance-report rounds; KP-Special-1-Jul, KP Special Aug, KP Special Aug-Sep-3 and SNID November are validation-only and show no recorded or covered figure.'],
   ['Freshness','The live IDIMS validation activity has continued past the register\u2019s last entry. This deck prints the register as published; a newer export would move only the validated columns.']
@@ -21747,17 +21747,17 @@ function buildDeck(P,camp){
  return pptx;
 }
 function campTotals(list){
- var t={nd:0,uc:0,rep:0,cov:0,covUc:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0};
+ var t={nd:0,uc:0,rep:0,cov:0,covUc:0,covRep:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0};
  list.forEach(function(o){
-  t.nd++;t.uc+=o.repUc||0;t.rep+=o.rep||0;t.cov+=o.cov||0;t.covUc+=o.covUc||0;
+  t.nd++;t.uc+=o.repUc||0;t.rep+=o.rep||0;t.cov+=o.cov||0;t.covUc+=o.covUc||0;t.covRep+=o.covRep||0;
   t.ll+=o.ll||0;t.llRep+=o.llRep||0;t.dUc+=o.dUc||0;t.val+=o.val||0;t.conf+=o.conf||0;t.vUc+=o.vUc||0;});
  return t;
 }
 function campDivRows(rr){
  var ds=campDistricts(rr,scopeKeys({div:'',dist:null})),m={};
  ds.forEach(function(o){
-  var g=m[o.dv]||(m[o.dv]={dv:o.dv,nd:0,uc:0,rep:0,cov:0,covUc:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0});
-  g.nd++;g.uc+=o.repUc||0;g.rep+=o.rep||0;g.cov+=o.cov||0;g.covUc+=o.covUc||0;
+  var g=m[o.dv]||(m[o.dv]={dv:o.dv,nd:0,uc:0,rep:0,cov:0,covUc:0,covRep:0,ll:0,llRep:0,dUc:0,val:0,conf:0,vUc:0});
+  g.nd++;g.uc+=o.repUc||0;g.rep+=o.rep||0;g.cov+=o.cov||0;g.covUc+=o.covUc||0;g.covRep+=o.covRep||0;
   g.ll+=o.ll||0;g.llRep+=o.llRep||0;g.dUc+=o.dUc||0;g.val+=o.val||0;g.conf+=o.conf||0;g.vUc+=o.vUc||0;});
  return DIVS.map(function(v){return m[v];}).filter(Boolean);
 }
@@ -21784,16 +21784,17 @@ function buildCampDeck(P,camp){
   {x:0.62,y:2.32,w:11.6,h:0.74,fontSize:13,color:C.mut,fontFace:FF,lineSpacingMultiple:1.25});
  var cs=[
   [rr.adv>=0?fN(pt.rep):'\u2013',rr.adv>=0?'zero-dose children recorded in this round':'no advance report for this activity'],
-  [rr.adv>=0&&pt.rep?pcol(pct(pt.cov,pt.rep)):'\u2013','covered in the same round'],
+  [rr.adv>=0&&pt.covUc?pcol(pct(pt.cov,pt.covRep)):'\u2013',rr.adv>=0?(pt.covUc?'covered in the same round':'covered not yet reported'):'covered in the same round'],
   [rr.dig&&pt.dUc?fN(pt.ll):'\u2013',rr.dig&&pt.dUc?'digitized into the linelist':rr.dig?'no digitization exercise in this scope':'no digitization figure for this round'],
   [rr.val&&pt.vUc?fN(pt.val):'\u2013',rr.val&&pt.vUc?'validated in the register':rr.val?'no register rows in this scope':'no register rows for this round']
  ];
  cs.forEach(function(c,i){var x=0.62+i*3.09;kpi(s,x,3.24,2.90,c[0],c[1],i===2?C.warn:i===3?C.sec:C.pri);});
- var scopeLine=rr.adv>=0?('Scope '+scopeTxt+'  \u00b7  '+fN(ucRep)+' UCs reported this round  \u00b7  '+fN(pt.cov)+' covered  \u00b7  '+fN(pt.conf)+' confirmed vaccinated')
+ var scopeLine=rr.adv>=0?('Scope '+scopeTxt+'  \u00b7  '+fN(ucRep)+' UCs reported this round  \u00b7  '+(pt.covUc?fN(pt.cov)+' covered  \u00b7  ':(ADV.sm&&ADV.sm[camp]?'covered not yet reported  \u00b7  ':fN(pt.cov)+' covered  \u00b7  '))+fN(pt.conf)+' confirmed vaccinated')
   :('Scope '+scopeTxt+'  \u00b7  '+fN(pt.val)+' register entries  \u00b7  '+fN(pt.conf)+' confirmed vaccinated');
  s.addText(scopeLine,{x:0.62,y:4.40,w:12.09,h:0.28,fontSize:9.6,color:C.mut,fontFace:FF});
  var src=[];
- if(rr.adv>=0)src.push('Recorded and covered: IDIMS advance report for '+camp+(ADV.asof?' (export '+ADV.asof+')':'')+'.');
+ if(rr.adv>=0&&ADV.sm&&ADV.sm[camp])src.push('Recorded only: the UC-wise summary coverage export for '+camp+' of '+ADV.sm[camp].d+'; its covered column is a dash until a round follows.');
+ else if(rr.adv>=0)src.push('Recorded and covered: IDIMS advance report for '+camp+(ADV.asof?' (export '+ADV.asof+')':'')+'.');
  if(rr.dig)src.push('Digitized: the Sept-26 linelist-vs-IDIMS exercise.');
  if(rr.val)src.push('Validated: the zero-dose validation register.');
  s.addText(src.join(' ')+' Every figure is a count rolled up from the dashboard\u2019s own payloads, and a dash is a source that does not cover the round or this scope, never a zero.',{x:0.62,y:4.76,w:11.6,h:0.6,fontSize:9.6,color:C.mut,fontFace:FF,lineSpacingMultiple:1.25});
@@ -21809,7 +21810,7 @@ function buildCampDeck(P,camp){
   'The zero-dose validation register carries no rows for this round, so validated is a dash.';
  [
   ['Recorded',rr.adv>=0?'Zero-dose children reported per UC in the IDIMS advance report for '+camp+'. '+fN(ucRep)+' UCs in scope carry a figure.':'This activity has no IDIMS advance report, so recorded and covered stay empty by source.'],
-  ['Covered',rr.adv>=0?'Children vaccinated during the same round in the same report. Covered % is covered \u00f7 recorded on the '+ucN(bothU)+' in scope that reported both.':'No same-round coverage figure exists for this activity, so the covered column is a dash.'],
+  ['Covered',rr.adv>=0?(bothU?'Children vaccinated during the same round in the same report. Covered % is covered \u00f7 recorded on the '+ucN(bothU)+' in scope that reported both.':'This round\u2019s export carries recorded children but no covered figure yet, so the covered column is a dash and those children are not counted as uncovered in any share.'):'No same-round coverage figure exists for this activity, so the covered column is a dash.'],
   ['Digitized',digTxt],
   ['Validated',valTxt]
  ].forEach(function(d,i){
@@ -21831,7 +21832,7 @@ function buildCampDeck(P,camp){
     0.62,1.80,7.60,[2.7,1.2,1.2,1.3,1.2],0.28,8.6);
   }else{
    tbl(s,['Division','Districts','UCs','Recorded','Covered','Cov %','Digitized','Validated'],
-    dvr.map(function(g){return [divLabel(g.dv),g.nd,fN(g.uc),fN(g.rep),g.covUc?fN(g.cov):'\u2013',pcol(pct(g.cov,g.rep)),g.dUc?fN(g.ll):'\u2013',g.vUc?fN(g.val):'\u2013'];}),
+    dvr.map(function(g){return [divLabel(g.dv),g.nd,fN(g.uc),fN(g.rep),g.covUc?fN(g.cov):'\u2013',pcol(pct(g.cov,crp(g))),g.dUc?fN(g.ll):'\u2013',g.vUc?fN(g.val):'\u2013'];}),
     0.62,1.80,7.60,[1.45,0.68,0.66,1.05,0.95,0.78,0.95,1.08],0.28,8.4);
   }
   var top=allD.filter(function(o){return o.rep>0||o.ll>0||o.val>0;});
@@ -21843,9 +21844,9 @@ function buildCampDeck(P,camp){
   top=top.slice(0,9);
   s.addText(valOnly?'Largest register counts':rr.dig?'Largest linelist gaps':'Largest district counts',{x:8.44,y:1.52,w:4.2,h:0.24,fontSize:8,bold:true,color:C.pri,fontFace:FF});
   tbl(s,valOnly?['District','Division','Validated','Confirmed']:rr.dig?['District','Recorded','Cov %','Digitized']:['District','Division','Recorded','Cov %'],
-   top.map(function(o){return valOnly?[dn(o.d),divLabel(o.dv),fN(o.val),fN(o.conf)]:rr.dig?[dn(o.d),fN(o.rep),pcol(pct(o.cov,o.rep)),o.dUc?fN(o.ll):'\u2013']:[dn(o.d),divLabel(o.dv),fN(o.rep),pcol(pct(o.cov,o.rep))];}),
+   top.map(function(o){return valOnly?[dn(o.d),divLabel(o.dv),fN(o.val),fN(o.conf)]:rr.dig?[dn(o.d),fN(o.rep),pcol(pct(o.cov,crp(o))),o.dUc?fN(o.ll):'\u2013']:[dn(o.d),divLabel(o.dv),fN(o.rep),pcol(pct(o.cov,crp(o)))];}),
    8.44,1.80,4.27,valOnly?[1.55,1.0,0.9,0.82]:rr.dig?[1.75,0.9,0.72,0.9]:[1.55,1.0,0.9,0.82],0.28,7.8);
-  var line=valOnly?('Total: '+fN(pt.val)+' register entries \u00b7 '+fN(pt.conf)+' confirmed vaccinated'):('Total: '+fN(pt.rep)+' recorded \u00b7 '+fN(pt.cov)+' covered ('+pcol(pct(pt.cov,pt.rep))+')');
+  var line=valOnly?('Total: '+fN(pt.val)+' register entries \u00b7 '+fN(pt.conf)+' confirmed vaccinated'):('Total: '+fN(pt.rep)+' recorded \u00b7 '+(pt.covUc?fN(pt.cov)+' covered ('+pcol(pct(pt.cov,pt.covRep))+')':'covered not yet reported'));
   if(rr.dig)line+=' \u00b7 '+fN(pt.ll)+' digitized';
   if(rr.val&&!valOnly)line+=' \u00b7 '+fN(pt.val)+' validated ('+fN(pt.conf)+' confirmed)';
   s.addText(line+'.',{x:0.62,y:6.40,w:12.09,h:0.3,fontSize:9,color:C.mut,fontFace:FF});
@@ -21868,7 +21869,7 @@ function buildCampDeck(P,camp){
    kpi(s,9.80,1.78,2.90,fN(t.vUc),ucN(t.vUc)+' carry register rows',C.pri);
   }else{
    kpi(s,0.62,1.78,2.90,fN(t.rep),'ZD recorded in '+camp);
-   kpi(s,3.68,1.78,2.90,t.covUc?pcol(pct(t.cov,t.rep)):'\u2013','covered in the same round',C.good);
+   kpi(s,3.68,1.78,2.90,t.covUc?pcol(pct(t.cov,crp(t))):'\u2013','covered in the same round',C.good);
    kpi(s,6.74,1.78,2.90,t.dUc?fN(t.ll):'\u2013',t.dUc?'digitized \u00b7 '+fN(t.llRep)+' IDIMS-reported':'no digitization exercise here',C.warn);
    kpi(s,9.80,1.78,2.90,t.vUc?fN(t.val):'\u2013',t.vUc?'validated \u00b7 '+fN(t.conf)+' confirmed':'no register rows here',C.sec);
   }
@@ -21880,8 +21881,8 @@ function buildCampDeck(P,camp){
     tbl(s,['District','UCs','Validated','Confirmed'],body,
      0.62,2.94,7.60,[3.3,1.2,1.5,1.6],0.28,8.4);
    }else{
-    body=ds.map(function(o){return [dn(o.d),fN(o.repUc),fN(o.rep),o.covUc?fN(o.cov):'\u2013',pcol(pct(o.cov,o.rep)),o.dUc?fN(o.ll):'\u2013',o.vUc?fN(o.val):'\u2013'];});
-    body.push(['Division total',fN(t.uc),fN(t.rep),t.covUc?fN(t.cov):'\u2013',pcol(pct(t.cov,t.rep)),t.dUc?fN(t.ll):'\u2013',t.vUc?fN(t.val):'\u2013']);
+    body=ds.map(function(o){return [dn(o.d),fN(o.repUc),fN(o.rep),o.covUc?fN(o.cov):'\u2013',pcol(pct(o.cov,crp(o))),o.dUc?fN(o.ll):'\u2013',o.vUc?fN(o.val):'\u2013'];});
+    body.push(['Division total',fN(t.uc),fN(t.rep),t.covUc?fN(t.cov):'\u2013',pcol(pct(t.cov,crp(t))),t.dUc?fN(t.ll):'\u2013',t.vUc?fN(t.val):'\u2013']);
     tbl(s,['District','UCs','Recorded','Covered','Cov %','Digitized','Validated'],body,
      0.62,2.94,7.60,[1.55,0.6,1.1,1.1,0.8,0.98,0.97],0.28,8.2);
    }
@@ -21892,7 +21893,7 @@ function buildCampDeck(P,camp){
     return b.rep-a.rep;});
    s.addText(valOnly?'Largest register counts in the division':digS?'Largest linelist gaps in the division':'Largest UC counts in the division',{x:8.44,y:2.66,w:4.2,h:0.24,fontSize:8,bold:true,color:C.pri,fontFace:FF});
    tbl(s,valOnly?['UC \u00b7 district','Valid.','Conf.']:digS?['UC \u00b7 district','Recorded','Gap']:['UC \u00b7 district','Recorded','Cov %'],
-    tu.slice(0,9).map(function(x){return valOnly?[x.u+' \u00b7 '+dn(x.d),fN(x.val),fN(x.conf)]:digS?[x.u+' \u00b7 '+dn(x.d),fN(x.rep),ucGap(x)==null?'\u2013':fN(ucGap(x))]:[x.u+' \u00b7 '+dn(x.d),fN(x.rep),pcol(pct(x.cov,x.rep))];}),
+    tu.slice(0,9).map(function(x){return valOnly?[x.u+' \u00b7 '+dn(x.d),fN(x.val),fN(x.conf)]:digS?[x.u+' \u00b7 '+dn(x.d),fN(x.rep),ucGap(x)==null?'\u2013':fN(ucGap(x))]:[x.u+' \u00b7 '+dn(x.d),fN(x.rep),pcol(pct(x.cov,crp(x)))];}),
     8.44,2.94,4.27,valOnly?[2.15,1.0,1.12]:[2.15,1.05,1.07],0.27,7.8);
   }else{
    var gu=us.slice();
@@ -21906,20 +21907,21 @@ function buildCampDeck(P,camp){
      0.62,2.94,7.60,[3.3,1.9,1.2,1.2],0.27,8.2);
    }else{
     tbl(s,digS?['UC','Tehsil','Recorded','Covered','Digitized']:['UC','Tehsil','Recorded','Covered','Cov %'],
-     gu.slice(0,12).map(function(x){return digS?[x.u,x.t||'\u2013',fN(x.rep),x.cov==null?'\u2013':fN(x.cov),x.ll==null?'\u2013':fN(x.ll)]:[x.u,x.t||'\u2013',fN(x.rep),x.cov==null?'\u2013':fN(x.cov),pcol(pct(x.cov,x.rep))];}),
+     gu.slice(0,12).map(function(x){return digS?[x.u,x.t||'\u2013',fN(x.rep),x.cov==null?'\u2013':fN(x.cov),x.ll==null?'\u2013':fN(x.ll)]:[x.u,x.t||'\u2013',fN(x.rep),x.cov==null?'\u2013':fN(x.cov),pcol(pct(x.cov,crp(x)))];}),
      0.62,2.94,7.60,[2.55,1.55,1.3,1.15,1.05],0.27,8.2);
    }
    var tm={};
-   us.forEach(function(x){var k=x.t||'\u2014',g=tm[k]||(tm[k]={t:k,n:0,rep:0,cov:0,ll:0,dUc:0,val:0,conf:0});
-    g.n++;g.rep+=x.rep||0;g.cov+=x.cov||0;if(x.ll!=null){g.ll+=x.ll;g.dUc++;}g.val+=x.val||0;g.conf+=x.conf||0;});
+   us.forEach(function(x){var k=x.t||'\u2014',g=tm[k]||(tm[k]={t:k,n:0,rep:0,cov:0,covRep:0,ll:0,dUc:0,val:0,conf:0});
+    g.n++;g.rep+=x.rep||0;g.cov+=x.cov||0;if(x.cov!=null)g.covUc=(g.covUc||0)+1;if(x.ll!=null){g.ll+=x.ll;g.dUc++;}g.val+=x.val||0;g.conf+=x.conf||0;});
+   Object.keys(tm).forEach(function(k){var g=tm[k];g.covRep=g.covUc?g.rep:0;});
    var tl=Object.keys(tm).map(function(k){return tm[k];}).sort(function(a,b){return valOnly?(b.val-a.val):(b.rep-a.rep);}).slice(0,9);
    s.addText(valOnly?'Tehsils by register count':'Tehsils by recorded',{x:8.44,y:2.66,w:4.2,h:0.24,fontSize:8,bold:true,color:C.pri,fontFace:FF});
    tbl(s,valOnly?['Tehsil','UCs','Validated','Confirmed']:digS?['Tehsil','UCs','Recorded','Digitized']:['Tehsil','UCs','Recorded','Cov %'],
-    tl.map(function(g){return valOnly?[g.t,g.n,fN(g.val),fN(g.conf)]:digS?[g.t,g.n,fN(g.rep),g.dUc?fN(g.ll):'\u2013']:[g.t,g.n,fN(g.rep),pcol(pct(g.cov,g.rep))];}),
+    tl.map(function(g){return valOnly?[g.t,g.n,fN(g.val),fN(g.conf)]:digS?[g.t,g.n,fN(g.rep),g.dUc?fN(g.ll):'\u2013']:[g.t,g.n,fN(g.rep),pcol(pct(g.cov,crp(g)))];}),
     8.44,2.94,4.27,valOnly?[1.95,0.6,0.9,0.82]:[1.95,0.6,0.9,0.82],0.27,7.8);
   }
   var lines=[];
-  if(t.rep)lines.push(fN(t.rep)+' zero-dose children recorded and '+fN(t.cov)+' covered ('+pcol(pct(t.cov,t.rep))+') in '+camp+'.');
+  if(t.rep)lines.push(fN(t.rep)+' zero-dose children recorded and '+(t.covUc?fN(t.cov)+' covered ('+pcol(pct(t.cov,crp(t)))+')':'no covered figure yet')+' in '+camp+'.');
   if(t.dUc)lines.push(fN(t.ll)+' linelist entries against '+fN(t.llRep)+' IDIMS-reported children, a gap of '+fN(Math.max(0,t.llRep-t.ll))+'.');
   if(t.vUc)lines.push(fN(t.val)+' validated, '+fN(t.conf)+' confirmed vaccinated.');
   if(!lines.length)lines.push('No data for this round in this scope.');
@@ -21931,7 +21933,7 @@ function buildCampDeck(P,camp){
  s=pptx.addSlide();head(s,'Data notes','What this deck covers and what it leaves out','');
  var notes=[
   ['This deck','One campaign only: '+camp+' ('+rr.y+'). It follows the page scope, '+scopeTxt+'. Pick another round, or all rounds, in the deck list to rebuild; the Year and Campaign pickers on the page are not read by the deck.'],
-  ['Recorded and covered',rr.adv>=0?'IDIMS advance report for this round.'+(rr.y>=2026?' The 2026 covered figures come from the dashboard\u2019s own zero-dose dataset because those advance exports leave the covered columns blank.':'')+(camp==='SNID Sept 2026'?' SNID Sept-26 covered is that round\u2019s own UC-wise export (39,176 of 62,128, self-reported, not reconciled by a later round).':''):'This activity has no IDIMS advance report, so recorded and covered stay empty by source.'],
+  ['Recorded and covered',rr.adv>=0?((ADV.sm&&ADV.sm[camp])?'UC-wise summary coverage export for this round ('+ADV.sm[camp].d+'): the recorded count only, because that export\u2019s covered column is the next-round figure and no round has followed.':'IDIMS advance report for this round.'+(rr.y>=2026?' The 2026 covered figures come from the dashboard\u2019s own zero-dose dataset because those advance exports leave the covered columns blank.':''))+(camp==='SNID Sept 2026'?' SNID Sept-26 covered is that round\u2019s own UC-wise export (39,176 of 62,128, self-reported, not reconciled by a later round).':''):'This activity has no IDIMS advance report, so recorded and covered stay empty by source.'],
   ['Digitized and validated',(rr.dig?'Digitized: Sept-26 linelist-vs-IDIMS exercise, nine districts and 421 UCs province-wide. ':'No digitization figure exists for this round. ')+(rr.val?'Validated: zero-dose validation register activity '+rr.val+', a separate exercise whose entries are not a subset of the recorded count.':'The validation register carries no rows for this round.')]
  ];
  notes.push(['Freshness','Snapshot '+STAMP+' PKT. The digitized column prints the 08-Nov-2026 export of the Sept-26 exercise: 30,963 linelist entries against 31,762 IDIMS-reported children. A newer export would move only that column.']);
@@ -21996,7 +21998,7 @@ async function buildChartDeck(P){
  head(s,'Zero-dose register','Where the zero-dose burden sits',vizHeaderText());
  kpi(s,0.62,1.72,2.90,fN(t.rep),'zero-dose children recorded',C.pri);
  kpi(s,3.71,1.72,2.90,t.covUc?fN(t.cov):'\u2013','covered in the same round',C.good);
- kpi(s,6.80,1.72,2.90,t.rep?pcol(pct(t.cov,t.rep)):'\u2013','covered \u00f7 recorded',C.pri);
+ kpi(s,6.80,1.72,2.90,t.covUc?pcol(pct(t.cov,t.covRep)):'\u2013','covered \u00f7 recorded, rounds that report covered',C.pri);
  kpi(s,9.89,1.72,2.90,fN(DT.length),'districts in scope',C.sec);
  var shot=await zrMapPng(DT);
  if(shot){
@@ -22030,12 +22032,12 @@ async function buildChartDeck(P){
  /* district detail */
  var TOP=DTS.slice(0,22),REST=DTS.slice(22);
  s=pptx.addSlide();head(s,'District detail',REST.length?'Top 22 districts by recorded, then the rest':'Every district in scope',vizHeaderText()+' \u00b7 a dash means no covered figure for that district, not a zero');
- var body=TOP.map(function(o){return [dn(o.d),divLabel(o.dv),o.repUc?fN(o.repUc):'\u2013',fN(o.rep),o.covUc?fN(o.cov):'\u2013',o.covUc&&o.rep?pcol(pct(o.cov,o.rep)):'\u2013'];});
+ var body=TOP.map(function(o){return [dn(o.d),divLabel(o.dv),o.repUc?fN(o.repUc):'\u2013',fN(o.rep),o.covUc?fN(o.cov):'\u2013',o.covUc&&o.covRep?pcol(pct(o.cov,o.covRep)):'\u2013'];});
  if(REST.length){
-  var r={repUc:0,rep:0,cov:0,covUc:0};REST.forEach(function(o){r.repUc+=o.repUc;r.rep+=o.rep;r.cov+=o.cov;r.covUc+=o.covUc;});
-  body.push(['All other districts ('+REST.length+')','',fN(r.repUc),fN(r.rep),r.covUc?fN(r.cov):'\u2013',r.covUc&&r.rep?pcol(pct(r.cov,r.rep)):'\u2013']);
+  var r={repUc:0,rep:0,cov:0,covUc:0,covRep:0};REST.forEach(function(o){r.repUc+=o.repUc;r.rep+=o.rep;r.cov+=o.cov;r.covUc+=o.covUc;r.covRep+=o.covRep;});
+  body.push(['All other districts ('+REST.length+')','',fN(r.repUc),fN(r.rep),r.covUc?fN(r.cov):'\u2013',r.covUc&&r.covRep?pcol(pct(r.cov,r.covRep)):'\u2013']);
  }
- body.push(['All districts in scope ('+DT.length+')','',fN(t.repUc),fN(t.rep),t.covUc?fN(t.cov):'\u2013',t.covUc&&t.rep?pcol(pct(t.cov,t.rep)):'\u2013']);
+ body.push(['All districts in scope ('+DT.length+')','',fN(t.repUc),fN(t.rep),t.covUc?fN(t.cov):'\u2013',t.covUc&&t.covRep?pcol(pct(t.cov,t.covRep)):'\u2013']);
  tbl(s,['District','Division','UCs reporting','ZD recorded','ZD covered','Covered %'],body,0.62,1.80,12.10,[3.05,2.55,1.70,1.60,1.60,1.60],0.20,7.6);
  pg(s,page++);
  return pptx;
