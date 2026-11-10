@@ -517,6 +517,9 @@ body.zregmod .content .topbar{display:none}
 <style>
 /* ================= (9) missed children + surveillance quality ================= */
 .ngrp.gm{--gc:#c2410c}.tab[data-tab="c3"],#p-c3{--tc:#c2410c}
+#p-c3 .c3pk{display:inline-flex;flex:1 1 150px;align-items:center;gap:5px;min-width:0;font-size:10.5px;color:var(--color-text-muted);letter-spacing:.04em}
+#p-c3 .c3pk b{font-weight:700}
+#p-c3 .c3pk select{flex:1 1 auto;min-width:0;width:auto;max-width:210px;font-size:12.5px;padding:4px 7px}
 .tab[data-tab="hrd"],#p-hrd{--tc:#9a3412}
 .tab[data-tab="hrat"],#p-hrat{--tc:#86198f}
 #p-hrat .cqbar{flex-wrap:wrap}
@@ -1138,7 +1141,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 09-Nov-2026 10:49</span>
+  <span class="hupd" id="hUpd">Updated 10-Nov-2026 15:24</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -2478,12 +2481,12 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <section class="pane" id="p-c3">
 <div class="cqbar"><b>Campaign comparison &amp; monitoring</b><span class="c3seg"><button type="button" class="on" data-sub="a">Last 3 campaigns comparison</button><button type="button" data-sub="b">Field monitoring analysis</button></span></div>
 <div class="c3sub" id="c3A" data-sub="a">
-<div class="cqbar"><b>Last 3 campaigns</b><span class="cnt">NID Apr-26 · SNID May-26 · SNID Sept-26</span><span class="cnt" id="c3Note"></span></div>
+<div class="cqbar"><b>Compare</b><span class="c3pk"><b>1</b><select id="c3s1" aria-label="First campaign to compare"></select></span><span class="c3pk"><b>2</b><select id="c3s2" aria-label="Second campaign to compare"></select></span><span class="c3pk"><b>3</b><select id="c3s3" aria-label="Third campaign to compare"></select></span><span class="cnt" id="c3Note"></span></div>
 <div class="hint" id="c3Hint"></div>
 <div class="hubchips" style="margin-top:10px"><button data-hl="cpost">Post-campaign analysis — ICM &amp; ops vs outcome</button><button data-sub="b">Monitoring analysis (ICM · LQAS · PCM/PCHS)</button><button data-hl="mis">Missed children &amp; refusals</button><button data-hl="ch">Campaign history 2017–26</button></div>
 <div class="kpis">
 <div class="card"><div class="kl">Campaign coverage</div><div class="kv" id="c3k1">–</div><div class="ks" id="c3k1s"></div></div>
-<div class="card"><div class="kl">Children still missed · Sept</div><div class="kv" id="c3k2" style="color:#c2410c">–</div><div class="ks" id="c3k2s"></div></div>
+<div class="card"><div class="kl">Children still missed · latest</div><div class="kv" id="c3k2" style="color:#c2410c">–</div><div class="ks" id="c3k2s"></div></div>
 <div class="card"><div class="kl">ZD children reported</div><div class="kv" id="c3k3">–</div><div class="ks" id="c3k3s"></div></div>
 <div class="card"><div class="kl">ZD children covered</div><div class="kv" id="c3k4">–</div><div class="ks" id="c3k4s"></div></div>
 <div class="card"><div class="kl">UCs needing focus</div><div class="kv" id="c3k5" style="color:#b91c1c">–</div><div class="ks" id="c3k5s"></div></div>
@@ -7963,50 +7966,167 @@ function c3UC(){ if(_C3U)return _C3U;
  const cut=Math.ceil(_C3U.length*0.10);
  ord.forEach((r,i)=>{r.top=i<cut&&r.w>0;});
  return _C3U; }
-function c3Sum(rows){ const S={n:rows.length,focus:0,camps:CPS.map(k=>({k,l:CAMP[k],n:0,tg:0,vc:0,st:0,rf:0}))};
- rows.forEach(r=>{ S.camps.forEach(c=>{ if(r['tg'+c.k]!=null){c.n++;c.tg+=r['tg'+c.k];c.vc+=r['vc'+c.k]||0;c.st+=r['st'+c.k]||0;c.rf+=r['rf'+c.k]||0;} }); if(r.top)S.focus++; });
- S.camps.forEach(c=>c.vp=c.tg?c.vc/c.tg*100:null);
- CPS.forEach(k=>{ const rs=rows.filter(r=>r['r'+k]!=null), cs=rows.filter(r=>r['c'+k]!=null);
-  S['r'+k]=sum_(rs,r=>r['r'+k]); S['c'+k]=sum_(cs,r=>r['c'+k]); S['cn'+k]=cs.length; });
- return S; }
+// ---------- campaign picker: any three rounds ----------
+const c3N=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const C3MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let _C3CAL=null,_C3NM=null,_C3V=null,_C3VK='',C3SEL=null;
+function c3Cal(){ if(_C3CAL)return _C3CAL; const A=[],seen={};
+ const add=o=>{const k=o.y+'|'+o.m+'|'+o.t+'|'+String(o.l).replace(/[^A-Za-z0-9]/g,'').toUpperCase(); if(seen[k])return; seen[k]=1; A.push(o);};
+ add({id:'N26',l:'SNID Nov-26',sh:'SNID Nov-26',y:2026,m:11,t:'SNID',src:'nov',adv:42});
+ add({id:'S26',l:'SNID Sept-26',sh:'SNID Sept-26',y:2026,m:9,t:'SNID',src:'mis',mk:'S',adv:41});
+ add({id:'M26',l:'SNID May-26',sh:'SNID May-26',y:2026,m:5,t:'SNID',src:'mis',mk:'M',adv:40});
+ add({id:'A26',l:'NID Apr-26',sh:'NID Apr-26',y:2026,m:4,t:'NID',src:'mis',mk:'A',adv:39});
+ const ac=(typeof ADV!=='undefined'&&ADV.c)||[];
+ for(let i=0;i<CHD.c.length;i++){ const c=CHD.c[i];
+  if(!c.m)continue; if(c.y===2026&&(c.m===4||c.m===5))continue;
+  let ai=-1,hit=0; ac.forEach((a,j)=>{if(a.y===c.y&&a.m===c.m&&a.t===c.t){ai=j;hit++;}});
+  if(hit!==1)ai=-1;
+  if(ai<0){ const nm=String(c.n).toUpperCase().replace(/\s+/g,' ').trim();
+   const cd=ac.filter(a=>String(a.n).toUpperCase().replace(/\s+/g,' ').trim()===nm);
+   if(cd.length===1)ai=ac.indexOf(cd[0]); }
+  const yy=String(c.y).slice(2),mn=C3MO[c.m-1];
+  let sh=((c.t==='NID'||c.t==='SNID'||c.t==='OBR'||c.t==='CR')?c.t+' ':'')+mn+'-'+yy;
+  if(/Bordering/i.test(c.n))sh='Border '+mn+'-'+yy;
+  add({id:'H'+i,l:String(c.n).replace(/\s+/g,' '),sh:sh,y:c.y,m:c.m,t:c.t,src:'chd',ci:i,adv:ai});
+ }
+ A.sort((a,b)=>(b.y-a.y)||((b.m||0)-(a.m||0))||((b.adv==null?-1:b.adv)-(a.adv==null?-1:a.adv)));
+ return _C3CAL=A; }
+function c3Maps(){ if(_C3NM)return _C3NM; const nm={},no={},zc={};
+ ZD.forEach(z=>{const k=String(z.c); zc[k]=z; nm[c3N(z.d)+'|'+c3N(z.u)]=k; const q=c3N(z.u); (no[q]=no[q]||[]).push(k);});
+ return _C3NM={nm:nm,no:no,zc:zc}; }
+function c3Key(d,u){ const M=c3Maps(),k=M.nm[c3N(d)+'|'+c3N(u)]; if(k)return k;
+ const a=M.no[c3N(u)]; return a&&a.length===1?a[0]:'~'+c3N(d)+'|'+c3N(u); }
+function c3In(r){ if(r.t)return matchG(r);
+ if(!dvOK(r.dv)||!dOK(r.d))return false; if(!ucOK(r.c))return false;
+ const qq=q.value.trim().toLowerCase(); if(!qq)return true;
+ return (r.u+' '+r.c+' '+r.d).toLowerCase().indexOf(qq)>=0; }
+function c3View(){ const ids=C3SEL||[],vk=ids.join('|');
+ if(_C3V&&_C3VK===vk)return _C3V;
+ const sel=ids.map(id=>c3Cal().find(o=>o.id===id)).filter(Boolean);
+ const R={},M=c3Maps();
+ const base=(k,o)=>{ let r=R[k];
+  if(!r){ r=R[k]={c:k.charAt(0)==='~'?'':k,dv:o.dv||'',d:o.d||'',t:o.t||'',u:o.u||'',x:[]}; }
+  else{ if(!r.dv&&o.dv)r.dv=o.dv; if(!r.d&&o.d)r.d=o.d; if(!r.t&&o.t)r.t=o.t; if(!r.u&&o.u)r.u=o.u; }
+  return r; };
+ sel.forEach((E,i)=>{
+  const put=(k,o,met)=>{ const r=base(k,o); r.x[i]=met; };
+  if(E.src==='mis'){
+   const ci=(MISM.camps||[]).findIndex(l=>CQK(l)===CQK(CAMP[E.mk]));
+   MIS.forEach(r=>{ if(r.ci!==ci||!r.c)return; const z=M.zc[r.c]; if(!z||!z.d)return;
+    put(r.c,{dv:z.dv,d:z.d,t:z.t,u:z.u},{tg:r.tg||0,vc:r.vc||0,st:misSt(r),rf:r.srf||0,lo:r.slo||0,na:r.sna||0}); });
+  }else if(E.src==='nov'){
+   const K=NOVUC.k||[],rows=NOVUC.r||[];
+   rows.forEach(a=>{ const o={}; K.forEach((k,j)=>o[k]=a[j]); if(!o.c||!o.d)return;
+    put(String(o.c),{dv:o.dv,d:o.d,t:o.t,u:o.u},{tg:o.tg||0,vc:o.vac||0,st:(o.sna||0)+(o.srf||0)+(o.slo||0),rf:o.srf||0,lo:o.slo||0,na:o.sna||0}); });
+  }else{
+   const c=CHD.c[E.ci]||{r:[]};
+   c.r.forEach(a=>{ const un=CHD.u[a[0]]; if(!un)return;
+    const d=CHD.ds[un[1]],u=un[0],k=c3Key(d,u),z=M.zc[k];
+    put(k,{dv:z?z.dv:(CHD.dv[un[1]]||''),d:z?z.d:d,t:z?z.t:'',u:z?z.u:u},
+     {tg:a[1]||0,vc:a[2]||0,st:a[5]||0,rf:a[4]||0,lo:Math.max(0,(a[5]||0)-(a[3]||0)-(a[4]||0)),na:a[3]||0}); });
+  }
+ });
+ sel.forEach((E,i)=>{ if(E.adv==null)return; const rows=((typeof ADV!=='undefined'&&ADV.r)||[])[E.adv]||[];
+  rows.forEach(a=>{ const un=ADV.u[a[0]]; if(!un)return;
+   const d=ADV.ds[un[0]],u=un[2],k=c3Key(d,u),z=M.zc[k];
+   let r=R[k]; if(!r)r=base(k,{dv:z?z.dv:'',d:z?z.d:d,t:z?z.t:'',u:z?z.u:u});
+   if(!r.x[i])r.x[i]={tg:null,vc:null,st:null,rf:null,lo:null,na:null};
+   r.x[i].rep=a[1]; r.x[i].cov=a[2]; });
+ });
+ const ord=sel.map((E,i)=>i).sort((a,b)=>((sel[a].y-sel[b].y)||((sel[a].m||0)-(sel[b].m||0))));
+ const iN=ord[ord.length-1],rows=Object.values(R),cut=Math.ceil(rows.length*0.10);
+ rows.forEach(r=>{
+  for(let i=0;i<sel.length;i++){ const x=r.x[i]; if(!x)continue;
+   x.vp=x.tg?x.vc/x.tg*100:null; x.zp=(x.rep!=null&&x.cov!=null&&x.rep>0)?x.cov/x.rep*100:null; }
+  const L=r.x[iN]||{},f=[];
+  if(L.tg&&L.lo!=null&&L.lo>=0.5*L.tg)f.push('lo');
+  r.pers=true; for(let i=0;i<3;i++){ const x=r.x[i]; if(!x||(x.rf||0)<20){r.pers=false;break;} }
+  if(r.pers)f.push('rf');
+  if(L.tg&&L.st!=null&&L.st/L.tg>=0.03)f.push('ms');
+  if(L.vp!=null&&L.vp<90)f.push('cv');
+  let zL=null,zF=null;
+  for(let j=ord.length-1;j>=0;j--){ const x=r.x[ord[j]]; if(x&&x.rep!=null){zL=x;break;} }
+  for(let j=0;j<ord.length;j++){ const x=r.x[ord[j]]; if(x&&x.rep!=null){zF=x;break;} }
+  if(zL&&zL.zp!=null&&zL.rep>0&&zL.zp<50)f.push('zd');
+  if(zL&&zF&&zL.rep>=20&&zL.rep>zF.rep)f.push('zb');
+  r.f=f; r.w=f.reduce((a,k)=>a+(C3W[k]||0),0);
+ });
+ const sr=rows.slice().sort((a,b)=>((b.w-a.w)||(((b.x[iN]||{}).st||0)-((a.x[iN]||{}).st||0))||(((b.x[iN]||{}).rep||0)-((a.x[iN]||{}).rep||0))));
+ sr.forEach((r,i)=>{ r.top=i<cut&&r.w>0; });
+ _C3VK=vk; return _C3V={sel:sel,rows:rows,iN:iN,iO:ord[0]};
+}
+function c3Pick(){
+ const bx=[el('c3s1'),el('c3s2'),el('c3s3')];
+ if(!bx[0]||!bx[1]||!bx[2])return false;
+ const C=c3Cal();
+ if(!C3SEL||C3SEL.length!==3||C3SEL.some(id=>!C.some(o=>o.id===id))){
+  C3SEL=['M26','S26','N26'].filter(id=>C.some(o=>o.id===id));
+  while(C3SEL.length<3){ const x=C.find(o=>C3SEL.indexOf(o.id)<0); if(!x)break; C3SEL.push(x.id); }
+ }
+ const yrs=[...new Set(C.map(o=>o.y))].sort((a,b)=>b-a);
+ bx.forEach((b,i)=>{ const cur=C3SEL[i];
+  b.innerHTML=yrs.map(y=>'<optgroup label="'+y+'">'+C.filter(o=>o.y===y).map(o=>{
+   const used=C3SEL.some((id,j)=>j!==i&&id===o.id);
+   return '<option value="'+o.id+'"'+(o.id===cur?' selected':'')+(used?' disabled':'')+'>'+esc(o.l)+'</option>';
+  }).join('')+'</optgroup>').join('');
+  b.onchange=()=>{ if(b.value===C3SEL[i])return; C3SEL[i]=b.value; renderC3(); };
+ });
+ return true;
+}
 function renderC3(){
- const R0=c3UC().filter(r=>r.d&&matchG(r)), S=c3Sum(R0);
- const sc=S.camps.find(c=>c.k==='S')||S.camps[S.camps.length-1];
- el('c3Note').textContent=S.n+' UCs · '+new Set(R0.map(r=>r.d)).size+' districts';
- el('c3Hint').innerHTML='<b>The last three campaigns side by side — campaign coverage, missed children and zero-dose children recorded and covered.</b> Campaign coverage is vaccinated ÷ target from the EOC summary coverage report (UC-wise, the same data as Missed children &amp; refusals). Zero-dose children reported, and the children covered against that same campaign list, come from the same summary coverage report; the '+CAMP.S+' covered figure is that round\u2019s own UC-wise zero-dose covered export, measured against the recorded SNID Sept-26 reported counts, and the round that follows it (SNID Nov-26) has not run yet. UCs score focus points for: half the target left over (not reached), 20+ children refusing in every campaign, 3%+ of the target still missed, campaign coverage under 90%, critical zero-dose coverage (under 50%) in the latest campaign with a figure, or 20+ zero-dose children in September rising from April. The <b>top 10% of KP UCs by score</b> are the priority focus list (marked “focus” in the table); the ranking is province-wide, so filters only change what is shown. Follows the Division, District, Tehsil and search filters.';
- el('c3k1').innerHTML=S.camps.map(c=>pcol(c.vp)).join('<small> → </small>');
- el('c3k1s').textContent=sc.l+': '+fmt(sc.vc)+' of '+fmt(sc.tg)+' vaccinated';
- el('c3k2').textContent=fN(sc.st); el('c3k2s').textContent=(sc.tg?pc(sc.st/sc.tg*100)+' of target · ':'')+fmt(sc.rf)+' still refusing';
- el('c3k3').innerHTML=CPS.map(k=>fN(S['r'+k])).join('<small> → </small>');
- el('c3k3s').textContent='zero-dose children reported, '+CPS.map(k=>CS[k]).join(' → ');
- const zp=k=>S['r'+k]&&S['cn'+k]?S['c'+k]/S['r'+k]*100:null;
- el('c3k4').innerHTML=CPS.map(k=>pcol(zp(k))).join('<small> → </small>');
- el('c3k4s').textContent='zero-dose children covered, in each campaign\'s own report · '+(SCOV?'Apr → May → Sept':'Apr → May, '+CAMP.S+' not compiled yet');
- el('c3k5').textContent=fmt(S.focus); el('c3k5s').textContent='top 10% of KP UCs by focus score · of '+fmt(S.n)+' UCs shown';
+ if(!c3Pick())return;
+ const V=c3View(),sel=V.sel,iN=V.iN;
+ if(!sel.length)return;
+ const R0=V.rows.filter(r=>r.d&&c3In(r));
+ const S=sel.map(()=>({n:0,tg:0,vc:0,st:0,rf:0,lo:0,na:0,rep:0,cov:0,cn:0,rn:0,zn:0}));
+ R0.forEach(r=>sel.forEach((E,i)=>{ const x=r.x[i]; if(!x)return; const s=S[i]; s.n++;
+  if(x.tg!=null){s.tg+=x.tg;s.vc+=x.vc||0;s.st+=x.st||0;s.rf+=x.rf||0;s.lo+=x.lo||0;s.na+=x.na||0;}
+  if(x.rep!=null){s.rep+=x.rep;s.zn++;}
+  if(x.cov!=null){s.cov+=x.cov;s.cn++;s.rn+=x.rep||0;} }));
+ S.forEach(s=>{ s.vp=s.tg?s.vc/s.tg*100:null; s.zp=(s.cn&&s.rn)?s.cov/s.rn*100:null; });
+ const SRC={}; sel.forEach(E=>{SRC[E.src==='chd'?'chd':'eoc']=1;});
+ const mix=SRC.chd&&SRC.eoc;
+ el('c3Note').textContent=fmt(R0.length)+' UCs · '+new Set(R0.map(r=>r.d)).size+' district'+(new Set(R0.map(r=>r.d)).size===1?'':'s')+' · '+(SRC.chd&&!SRC.eoc?'campaign-history workbook':'EOC summary report'+(SRC.chd?' + campaign-history workbook':''));
+ el('c3Hint').innerHTML='<b>Pick any three campaigns above — every KPI, chart, table and download follows the pickers, on top of the Division, District, Tehsil and search filters.</b> '
+ +(SRC.eoc&&SRC.chd?'Coverage is vaccinated ÷ target: the 2026 rounds come from the EOC summary coverage report (household target), earlier rounds from the campaign-history workbook (micro-plan target), so a mixed selection compares percentages drawn from two target bases. ':SRC.chd?'Coverage is vaccinated ÷ target from the campaign-history workbook, whose target is the micro-plan.':'Coverage is vaccinated ÷ target from the EOC summary coverage report. ')
+ +'Still missed and refusing children sit in the same rows. Zero-dose children reported and covered come from the IDIMS advance reports, with covered measured against the list recorded in that same campaign; a round whose covered figure is not compiled shows –. '
+ +'UCs score focus points for: half the target left over (not reached), 20+ children refusing in all three selected campaigns, 3%+ of the target still missed, campaign coverage under 90%, critical zero-dose coverage (under 50%) in the latest selected campaign with a figure, or 20+ zero-dose children in the latest selected campaign, above the earliest. The <b>top 10% of KP UCs by score</b> are the priority focus list (marked “focus” in the table); the ranking is province-wide, so filters only change what is shown.'
+ +(fTeh.value&&SRC.chd?' <b>Tehsil filter:</b> campaign-history rounds carry no tehsil split, so those rows ignore the tehsil filter.':'');
+ el('c3k1').innerHTML=S.map(s=>pcol(s.vp)).join('<small> → </small>');
+ el('c3k1s').textContent=sel[iN].sh+': '+fmt(S[iN].vc)+' of '+fmt(S[iN].tg)+' vaccinated';
+ el('c3k2').textContent=fN(S[iN].st);
+ el('c3k2s').textContent=(S[iN].tg?pc(S[iN].st/S[iN].tg*100)+' of target · ':'')+fmt(S[iN].rf)+' still refusing · '+sel[iN].sh;
+ el('c3k3').innerHTML=S.map(s=>s.zn?fN(s.rep):'–').join('<small> → </small>');
+ el('c3k3s').textContent='zero-dose children reported, '+sel.map(E=>E.sh).join(' → ');
+ el('c3k4').innerHTML=S.map(s=>pcol(s.zp)).join('<small> → </small>');
+ const noCov=sel.filter((E,i)=>S[i].zn>0&&!S[i].cn).map(E=>E.sh);
+ el('c3k4s').textContent='covered ÷ reported in each campaign\'s own advance report'+(noCov.length?' · '+noCov.join(', ')+': covered not compiled yet':'');
+ el('c3k5').textContent=fmt(R0.filter(r=>r.top).length);
+ el('c3k5s').textContent='top 10% of KP UCs by focus score · of '+fmt(R0.length)+' UCs shown';
  const G={}; R0.forEach(r=>{ const g=G[r.d]=G[r.d]||{k:r.d,n:0,t:{},v:{}}; g.n++;
-  CPS.forEach(k=>{ if(r['tg'+k]!=null){g.t[k]=(g.t[k]||0)+r['tg'+k]; g.v[k]=(g.v[k]||0)+(r['vc'+k]||0);} }); });
- const Gs=Object.values(G).map(g=>{const o={k:g.k,n:g.n}; CPS.forEach(k=>o['vp'+k]=g.t[k]?g.v[k]/g.t[k]*100:null); return o;})
-  .sort((a,b)=>{const x=a.vpS==null?1e9:a.vpS,y=b.vpS==null?1e9:b.vpS;return x-y;});
+  sel.forEach((E,i)=>{ const x=r.x[i]; if(x&&x.tg!=null){g.t[i]=(g.t[i]||0)+x.tg; g.v[i]=(g.v[i]||0)+(x.vc||0);} }); });
+ const Gs=Object.values(G).map(g=>{const o={k:g.k,n:g.n}; sel.forEach((E,i)=>{o['p'+i]=g.t[i]?g.v[i]/g.t[i]*100:null;}); return o;})
+  .sort((a,b)=>{const x=a['p'+iN]==null?1e9:a['p'+iN],y=b['p'+iN]==null?1e9:b['p'+iN];return x-y;});
  el('c3g1').style.height=hFor(Gs.length,24)+'px';
- const hm=[]; Gs.forEach((g,y)=>CPS.forEach((k,x)=>hm.push({x,y,value:g['vp'+k]==null?null:+g['vp'+k].toFixed(1)})));
+ const hm=[]; Gs.forEach((g,y)=>sel.forEach((E,x)=>hm.push({x:x,y:y,value:g['p'+x]==null?null:+g['p'+x].toFixed(1)})));
  HC('c3g1',{chart:{type:'heatmap',marginTop:74},title:{text:'Campaign coverage % by district'},
-  xAxis:{categories:CATSH,opposite:true,labels:{autoRotation:false,style:{fontSize:'11px'}}},yAxis:{categories:Gs.map(g=>g.k),title:{text:null},reversed:true,gridLineWidth:0},
+  xAxis:{categories:sel.map(E=>E.sh),opposite:true,labels:{autoRotation:false,style:{fontSize:'11px'}}},yAxis:{categories:Gs.map(g=>g.k),title:{text:null},reversed:true,gridLineWidth:0},
   colorAxis:{dataClasses:[{to:50,color:C.crit,name:'<50%'},{from:50,to:80,color:C.low,name:'50–80%'},{from:80,to:90,color:C.mod,name:'80–90%'},{from:90,to:110,color:C.high,name:'90–110%'},{from:110,color:C.over,name:'>110%'}]},
   legend:{align:'left',verticalAlign:'bottom'},
-  tooltip:{formatter(){const g=Gs[this.point.y];return '<b>'+esc(g.k)+'</b><br>'+CATS[this.point.x]+': <b>'+(this.point.value==null?'no data':this.point.value+'%')+'</b>';}},
+  tooltip:{formatter(){const g=Gs[this.point.y];return '<b>'+esc(g.k)+'</b><br>'+sel[this.point.x].sh+': <b>'+(this.point.value==null?'no data':this.point.value+'%')+'</b>';}},
   series:[{name:'Coverage %',borderWidth:1,borderColor:C.bg2,nullColor:C.grid,data:hm,dataLabels:{enabled:true,style:{textOutline:'none',fontWeight:'500',fontSize:'10.5px'},formatter(){return this.point.value==null?'–':Math.round(this.point.value)+'%';}}}]});
- el('c3c1').textContent=CAMP.S+' coverage under 90% in '+Gs.filter(g=>g.vpS!=null&&g.vpS<90).length+' of '+Gs.length+' districts · lowest: '+(Gs.length&&Gs[0].vpS!=null?Gs[0].k+' '+pc(Gs[0].vpS):'–')+'. Rows run worst '+CAMP.S+' at the top; grey = that district did not take part in the campaign.';
- const rep=CPS.map(k=>S['r'+k]), cov=CPS.map(k=>S['cn'+k]?S['c'+k]:null), zpl=CPS.map(k=>{const v=zp(k);return v==null?null:+v.toFixed(1);});
- HC('c3g2',{chart:{type:'column'},title:{text:'Zero-dose children reported and covered'},subtitle:{text:'Bars = children · line = covered %'+(SCOV?'':' · '+CAMP.S+' covered not compiled yet')},
-  xAxis:{categories:CATS},yAxis:[{title:{text:'Zero-dose children'}},{title:{text:'Covered %'},opposite:true,min:0,max:120,gridLineWidth:0,plotLines:[{value:90,color:C.high,dashStyle:'Dash',width:1.5,zIndex:5,label:{text:'90%',align:'right',style:{color:C.high}}}]}],tooltip:{shared:true},
+ el('c3c1').textContent=sel[iN].sh+' coverage under 90% in '+Gs.filter(g=>g['p'+iN]!=null&&g['p'+iN]<90).length+' of '+Gs.length+' districts · lowest: '+(Gs.length&&Gs[0]['p'+iN]!=null?Gs[0].k+' '+pc(Gs[0]['p'+iN]):'–')+'. Rows run worst '+sel[iN].sh+' at the top; grey = that district has no figure for the round.';
+ const rep=S.map(s=>s.zn?Math.round(s.rep):null), cov=S.map(s=>s.cn?Math.round(s.cov):null), zpl=S.map(s=>s.zp==null?null:+s.zp.toFixed(1));
+ HC('c3g2',{chart:{type:'column'},title:{text:'Zero-dose children reported and covered'},subtitle:{text:'Bars = children · line = covered %'+(noCov.length?' · '+noCov.join(', ')+' covered not compiled':'')},
+  xAxis:{categories:sel.map(E=>E.sh)},yAxis:[{title:{text:'Zero-dose children'}},{title:{text:'Covered %'},opposite:true,min:0,max:120,gridLineWidth:0,plotLines:[{value:90,color:C.high,dashStyle:'Dash',width:1.5,zIndex:5,label:{text:'90%',align:'right',style:{color:C.high}}}]}],tooltip:{shared:true},
   series:[{name:'Reported',data:rep,color:C.prim},{name:'Covered',data:cov,color:C.high},{name:'Covered %',type:'line',yAxis:1,data:zpl,color:C.crit,marker:{radius:4}}]});
- el('c3c2').textContent=fmt(S.rS)+' zero-dose children reported in '+CAMP.S+' · '+(zp('S')!=null?pc(zp('S'))+' of them covered ('+fmt(S.cS)+' children, the round that follows has not run yet)':'no '+CS.S+' covered figure in this selection')+'.';
- const MS={}; R0.forEach(r=>{ if(r.stS==null)return; const g=MS[r.d]=MS[r.d]||{k:r.d,st:0,rf:0,lo:0,na:0}; g.st+=r.stS; g.rf+=r.rfS||0; g.lo+=r.loS||0; g.na+=r.stS-(r.rfS||0)-(r.loS||0); });
+ el('c3c2').textContent=S[iN].zn?(fmt(S[iN].rep)+' zero-dose children reported in '+sel[iN].sh+(S[iN].zp!=null?' · '+pc(S[iN].zp)+' of them covered ('+fmt(S[iN].cov)+' children)':' · covered not compiled yet in this round')+'.'):'No zero-dose reported figure for '+sel[iN].sh+' in the advance reports.';
+ const MS={}; R0.forEach(r=>{ const x=r.x[iN]; if(!x||x.st==null)return; const g=MS[r.d]=MS[r.d]||{k:r.d,st:0,rf:0,lo:0,na:0}; g.st+=x.st; g.rf+=x.rf||0; g.lo+=x.lo||0; g.na+=x.na||0; });
  const Mt=Object.values(MS).sort((a,b)=>b.st-a.st).slice(0,12);
- HC('c3g3',{chart:{type:'column'},title:{text:'Children still missed after '+CAMP.S},subtitle:{text:'Top 12 districts · why they were missed'},
+ HC('c3g3',{chart:{type:'column'},title:{text:'Children still missed after '+sel[iN].sh},subtitle:{text:'Top '+Mt.length+' district'+(Mt.length===1?'':'s')+' · why they were missed'},
   xAxis:{categories:Mt.map(g=>g.k)},yAxis:{title:{text:'Children'}},plotOptions:{column:{stacking:'normal'}},
   series:[{name:'Not available',data:Mt.map(g=>g.na),color:C.mod},{name:'Refused',data:Mt.map(g=>g.rf),color:C.crit},{name:'Left over',data:Mt.map(g=>g.lo),color:C.low}]});
- el('c3c3').textContent=Mt.length?('These 12 districts hold '+fmt(Mt.reduce((a,g)=>a+g.st,0))+' of the '+fmt(sc.st)+' children still missed · refusals '+fmt(Mt.reduce((a,g)=>a+g.rf,0))+'.'):'No Sept missed-children data in this selection.';
+ el('c3c3').textContent=Mt.length?((Mt.length===1?'This district holds ':'These '+Mt.length+' districts hold ')+fmt(Mt.reduce((a,g)=>a+g.st,0))+' of the '+fmt(S[iN].st)+' children still missed after '+sel[iN].sh+' · refusals '+fmt(Mt.reduce((a,g)=>a+g.rf,0))+'.'):'No missed-children data for '+sel[iN].sh+' in this selection.';
  const FD={}; R0.forEach(r=>{ if(!r.top)return; const g=FD[r.d]=FD[r.d]||{k:r.d,n:0,w:0}; g.n++; g.w+=r.w; });
  const Fs=Object.values(FD).sort((a,b)=>b.n-a.n||b.w-a.w);
  el('c3g4').style.height=hFor(Fs.length,26)+'px';
@@ -8015,18 +8135,26 @@ function renderC3(){
   series:[{name:'Focus UCs',data:Fs.map(g=>g.n),color:C.crit,dataLabels:{enabled:true,style:{textOutline:'none'}}}]});
  el('c3c4').textContent=Fs.length?('Most priority UCs: '+Fs.slice(0,3).map(g=>g.k+' ('+g.n+')').join(', ')+'. All of them are at the top of the table below.'):'No priority UCs in this selection.';
  el('cntC3').textContent=R0.length+' UCs';
- drawTable('tC3',[{k:'u',l:'UC'},{k:'c',l:'Code',f:r=>'<span style="font-family:var(--font-mono)">'+r.c+'</span>'},{k:'d',l:'District',f:r=>dz(r.d)},{k:'t',l:'Tehsil'},critCol(r=>r.d,r=>r.u,r=>r.c),
-  zn('vpA','Cov % Apr',r=>pcol(r.vpA)),zn('vpM','Cov % May',r=>pcol(r.vpM)),zn('vpS','Cov % Sept',r=>pcol(r.vpS)),
-  zn('stS','Missed Sept',r=>fN(r.stS)),zn('rfS','Refusing',r=>r.rfS?fN(r.rfS):'–'),
-  zn('rA','ZD Apr',r=>fN(r.rA)),zn('rM','ZD May',r=>fN(r.rM)),zn('rS','ZD Sept',r=>fN(r.rS)),
-  ...[PPV,LCP].filter((k,i,a)=>a.indexOf(k)===i).map(k=>zn('p'+k,'ZD cov % '+CS[k],r=>pcol(r['p'+k]))),
-  {k:'w',l:'Focus',n:1,sv:r=>(r.top?1e6:0)+(r.w||0),f:r=>(r.top?tag('t-crit','focus')+' ':'')+(r.f.length?r.f.map(k=>tag(C3TAG[k][0],C3TAG[k][1])).join(' '):'–')}],R0,'w',-1);
- el('c3c5').textContent='Coverage = vaccinated ÷ target (EOC summary coverage report). ZD cov % = zero-dose children covered against the list reported in that campaign\'s own report. Focus points: not reached = half the target left over · persistent refusals = 20+ refusing in every campaign · 3%+ still missed · coverage <90% · ZD coverage <50% · ZDs rising = 20+ ZDs in Sept, above April. The red “focus” mark = top 10% of KP UCs by score, ranked province-wide. Click a column header to sort; click a district to filter to it.';
- const zK=[PPV,LCP].filter((k,i,a)=>a.indexOf(k)===i);
- const C3H=['UC','Code','District','Tehsil','UC criteria','Coverage % Apr','Coverage % May','Coverage % Sept','Still missed Sept','Still refusing Sept','ZD reported Apr','ZD reported May','ZD reported Sept'].concat(zK.map(k=>'ZD covered % '+CS[k]),['Focus flags','Priority focus']);
- el('btnC3CSV').onclick=()=>csvDownload('Last3Campaigns_'+(fDist.value||'All_districts').replace(/\s+/g,'_')+'.csv',C3H,R0.map(r=>[r.u,r.c,r.d,r.t,critLab(r.d,r.u,r.c),r.vpA==null?'':+r.vpA.toFixed(1),r.vpM==null?'':+r.vpM.toFixed(1),r.vpS==null?'':+r.vpS.toFixed(1),r.stS==null?'':r.stS,r.rfS||'',r.rA==null?'':r.rA,r.rM==null?'':r.rM,r.rS==null?'':r.rS].concat(zK.map(k=>r['p'+k]==null?'':+r['p'+k].toFixed(1)),[r.f.join('; '),r.top?'yes':''])));
+ const T=[{k:'u',l:'UC'},{k:'c',l:'Code',f:r=>'<span style="font-family:var(--font-mono)">'+esc(r.c||'–')+'</span>'},{k:'d',l:'District',f:r=>dz(r.d)},{k:'t',l:'Tehsil'},critCol(r=>r.d,r=>r.u,r=>r.c)];
+ sel.forEach((E,i)=>T.push(zn('vp'+i,'Cov % '+E.sh,r=>pcol(r.x[i]?r.x[i].vp:null),r=>r.x[i]?r.x[i].vp:null)));
+ T.push(zn('st'+iN,'Missed '+sel[iN].sh,r=>fN(r.x[iN]?r.x[iN].st:null),r=>r.x[iN]?r.x[iN].st:null));
+ T.push(zn('rf'+iN,'Refusing '+sel[iN].sh,r=>{const v=r.x[iN]?r.x[iN].rf:null;return v?fN(v):'–';},r=>r.x[iN]?r.x[iN].rf:null));
+ sel.forEach((E,i)=>T.push(zn('rep'+i,'ZD '+E.sh,r=>fN(r.x[i]?r.x[i].rep:null),r=>r.x[i]?r.x[i].rep:null)));
+ sel.forEach((E,i)=>T.push(zn('zp'+i,'ZD cov % '+E.sh,r=>pcol(r.x[i]?r.x[i].zp:null),r=>r.x[i]?r.x[i].zp:null)));
+ T.push({k:'w',l:'Focus',n:1,sv:r=>(r.top?1e6:0)+(r.w||0),f:r=>(r.top?tag('t-crit','focus')+' ':'')+(r.f.length?r.f.map(k=>tag(C3TAG[k][0],C3TAG[k][1])).join(' '):'–')});
+ drawTable('tC3',T,R0,'w',-1);
+ el('c3c5').textContent='Coverage = vaccinated ÷ target (EOC summary report for the 2026 rounds; campaign-history workbook, micro-plan target, for earlier rounds). ZD cov % = zero-dose children covered against the list reported in that campaign\'s own advance report. Focus points: not reached = half the target left over · persistent refusals = 20+ refusing in all three selected campaigns · 3%+ still missed in the latest selected campaign · coverage <90% · ZD coverage <50% · ZDs rising = 20+ in the latest selected campaign, above the earliest. The red “focus” mark = top 10% of KP UCs by score, ranked province-wide. Click a column header to sort; click a district to filter to it.';
+ const C3H=['UC','Code','District','Tehsil','UC criteria'].concat(sel.map(E=>'Coverage % '+E.sh),['Still missed '+sel[iN].sh,'Still refusing '+sel[iN].sh],sel.map(E=>'ZD reported '+E.sh),sel.map(E=>'ZD covered % '+E.sh),['Focus flags','Priority focus']);
+ el('btnC3CSV').onclick=()=>csvDownload('Campaigns_'+sel.map(E=>E.sh.replace(/[^A-Za-z0-9-]+/g,'')).join('_')+'_'+(fDist.value||'KP').replace(/\s+/g,'_')+'.csv',C3H,R0.map(r=>[r.u,r.c||'',r.d,r.t,critLab(r.d,r.u,r.c)].concat(
+  sel.map((E,i)=>r.x[i]&&r.x[i].vp!=null?+r.x[i].vp.toFixed(1):''),
+  [r.x[iN]&&r.x[iN].st!=null?r.x[iN].st:'',r.x[iN]&&r.x[iN].rf?r.x[iN].rf:''],
+  sel.map((E,i)=>r.x[i]&&r.x[i].rep!=null?r.x[i].rep:''),
+  sel.map((E,i)=>r.x[i]&&r.x[i].zp!=null?+r.x[i].zp.toFixed(1):''),
+  [r.f.join('; '),r.top?'yes':''])));
+ c3Badge();
 }
-function c3Badge(){const b=el('bC3'); if(b){const U=c3UC().filter(r=>r.d&&matchG(r)); b.textContent=U.length?U.filter(r=>r.top).length+' focus':'–';}}
+function c3Badge(){const b=el('bC3'); if(!b)return; c3Pick(); const U=c3View().rows.filter(r=>r.d&&c3In(r)); b.textContent=U.length?U.filter(r=>r.top).length+' focus':'–';}
+
 // ---------- Campaigns: post-campaign monitoring (ICM during, PCM/PCHS after) ----------
 const PMSRC=['ICM · during campaign','PCM · after campaign','PCHS · household checks'];
 const PMCLR=['#4338ca','#0e7490','#9333ea'];

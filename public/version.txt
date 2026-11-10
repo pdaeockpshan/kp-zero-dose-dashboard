@@ -202,3 +202,4 @@ Zero Dose overview: SNID Nov-26 recorded zero dose (42,653 children, 996 UCs) wi
 Zero Dose overview filters: label the division and district pickers and fix single-area plurals in the Nov-26 strip.
 Zero Dose side-by-side: a dash in the covered column means the post-campaign return is awaited, not missing data.
 Zero Dose overview: the IDIMS digitization and validation cards stay blank and awaited on the SNID Nov-26 view instead of carrying Sept-26 figures; they fill, Nov-scoped, when the Nov returns are compiled.
+Pushed the hand-edited index.html master to preview / public / internal builds (+8326 chars). Timestamp refresh 10-Nov-2026 15:24 PKT

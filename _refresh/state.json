@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-08T22:08:37+05:00",
-  "chars": 23263779,
-  "internal_md5": "85f920589131307aa2e6f5f9abc85368",
-  "master_md5": "4dfb9a09c4eef9f20bdf6519bbb7356b",
-  "note": "WPV line list 06-Nov-2026: KP 7 confirmed WPV1 cases (+1 Khyber, onset 16-Oct); AFP pending 309->308; internal EPID payload rebuilt. Timestamp refresh 08-Nov-2026 22:08 PKT",
-  "stamp": "08-Nov-2026 22:08"
+  "at": "2026-11-10T15:24:25+05:00",
+  "chars": 23269670,
+  "internal_md5": "c2c7535c56e71208e3a8c4f2d2bd7add",
+  "master_md5": "31c7f0656a765845b2c9f6a92ef40b25",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+8326 chars). Timestamp refresh 10-Nov-2026 15:24 PKT",
+  "stamp": "10-Nov-2026 15:24"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
