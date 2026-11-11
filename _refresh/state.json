@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-11T16:48:39+05:00",
-  "chars": 23314456,
-  "internal_md5": "ed8adbf7831b96cd12bf6c63fd353374",
-  "master_md5": "1ba1613a962a488f335ec2a4f86958a0",
-  "note": "Last-3-campaigns deck: corrected province wording and the surveillance benchmark claim; 20-slide deck with PPTX download. Timestamp refresh 11-Nov-2026 16:48 PKT",
-  "stamp": "11-Nov-2026 16:48"
+  "at": "2026-11-11T16:51:01+05:00",
+  "chars": 23314699,
+  "internal_md5": "d95fdb4c69673ddc6989a42ff280751d",
+  "master_md5": "dd890fcb1ec323a41b229ad9e3ae69c4",
+  "note": "Last-3-campaigns deck: EPI coverage range now computed from the antigen table (47.0-54.5%), not a hardcoded 46-51%. Timestamp refresh 11-Nov-2026 16:50 PKT",
+  "stamp": "11-Nov-2026 16:50"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

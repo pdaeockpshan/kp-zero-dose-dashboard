@@ -205,3 +205,4 @@ Zero Dose overview: the IDIMS digitization and validation cards stay blank and a
 Pushed the hand-edited index.html master to preview / public / internal builds (+8326 chars). Timestamp refresh 10-Nov-2026 15:24 PKT
 Last 3 campaigns: PPTX download button + 20-slide campaign review deck (Nov-26 final, ICM, LQAS, MS, PCM, surveillance, EPI, zero dose, triggers). Timestamp refresh 11-Nov-2026 16:38 PKT
 Last-3-campaigns deck: corrected province wording and the surveillance benchmark claim; 20-slide deck with PPTX download. Timestamp refresh 11-Nov-2026 16:48 PKT
+Last-3-campaigns deck: EPI coverage range now computed from the antigen table (47.0-54.5%), not a hardcoded 46-51%. Timestamp refresh 11-Nov-2026 16:50 PKT

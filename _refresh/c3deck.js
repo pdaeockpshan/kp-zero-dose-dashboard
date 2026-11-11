@@ -336,8 +336,11 @@ function renderC3Deck(P){
    {x:0.5,y:2.9,w:7.0,h:3.4,title:'Coverage % by antigen — Oct 2026',min:0,max:70,cols:['0B7285']});
   table(s,['Antigen','Doses','%'],AG.slice(0,9).map(a=>[a[0],n0(EA[a[1].replace('p_','')]),{t:p1(EA[a[1]]),c:rag(EA[a[1]]),b:true}]),
    {x:7.8,y:2.9,w:5.0,colW:[2.1,1.4,1.5],rh:0.3,fs:9});
-  note(s,'Contact coverage compares doses with the monthly surviving-infant target. At 46–51% the routine system is not reaching half of the cohort, and MR-2 at 40.1% is the widest gap. '+
-   'Campaigns can close the OPV gap but not the routine antigens — this is the integration case for the next round.',{x:0.5,y:6.3,w:12.3,fs:9.5});}
+  const av=AG.filter(a=>a[1]!=='p_mr2').map(a=>EA[a[1]]).filter(v=>v!=null);
+  const lo=av.length?Math.min.apply(null,av):null, hi=av.length?Math.max.apply(null,av):null;
+  note(s,'Contact coverage compares doses with the monthly surviving-infant target. Outside MR-2 it runs '+p1(lo)+' to '+p1(hi)+
+   ', so routine reaches about half the monthly cohort; fully immunized is '+p1(fi)+' and MR-2 at '+p1(EA.p_mr2)+' is the widest gap. '+
+   'Campaigns can close the OPV gap but not the routine antigens — the integration case for the next round.',{x:0.5,y:6.3,w:12.3,fs:9.5});}
 
  // 17 — zero dose
  {const s=base('Zero dose — 43,484 recorded, none yet covered','Children with no OPV dose recorded in the November round');
