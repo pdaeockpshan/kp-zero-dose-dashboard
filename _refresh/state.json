@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-11T16:51:01+05:00",
-  "chars": 23314699,
-  "internal_md5": "d95fdb4c69673ddc6989a42ff280751d",
-  "master_md5": "dd890fcb1ec323a41b229ad9e3ae69c4",
-  "note": "Last-3-campaigns deck: EPI coverage range now computed from the antigen table (47.0-54.5%), not a hardcoded 46-51%. Timestamp refresh 11-Nov-2026 16:50 PKT",
-  "stamp": "11-Nov-2026 16:50"
+  "at": "2026-11-11T17:54:03+05:00",
+  "chars": 23314813,
+  "internal_md5": "d2fd54b49895d6c1ddce4a08e9773c0c",
+  "master_md5": "e74f285c396c233c9c73e599ad9f4ce0",
+  "note": "Last-3-campaigns deck: slide 19 now quotes the same computed 47.0-54.5% EPI range as slide 16. Timestamp refresh 11-Nov-2026 17:54 PKT",
+  "stamp": "11-Nov-2026 17:54"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

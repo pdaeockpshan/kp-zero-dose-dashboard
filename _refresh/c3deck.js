@@ -94,6 +94,8 @@ function renderC3Deck(P){
  const WPVL=(typeof WPV!=='undefined'&&WPV)||[]; const WD={};
  WPVL.forEach(w=>{if(!w.d)return;WD[w.d]=(WD[w.d]||0)+1;});
  const EA=(typeof EPIM!=='undefined'&&typeof aggE==='function')?aggE(EPIM.filter(r=>r.mo==='2026-10')):{};
+ const AGV=['p_bcg','p_opv1','p_opv2','p_opv3','p_p1','p_p2','p_p3','p_pcv3','p_ipv2','p_rota2','p_mr1'].map(k=>EA[k]).filter(v=>v!=null);
+ const ELO=AGV.length?Math.min.apply(null,AGV):null, EHI=AGV.length?Math.max.apply(null,AGV):null;
  const TG=(typeof TRIG!=='undefined'&&TRIG.t)?TRIG.t:[];
  const TGi=id=>TG.find(t=>t.id===id)||null;
  const rec=T.rec||0,covd=(T.cam||0)+(T.cu||0)+(T.ex||0);
@@ -336,9 +338,7 @@ function renderC3Deck(P){
    {x:0.5,y:2.9,w:7.0,h:3.4,title:'Coverage % by antigen — Oct 2026',min:0,max:70,cols:['0B7285']});
   table(s,['Antigen','Doses','%'],AG.slice(0,9).map(a=>[a[0],n0(EA[a[1].replace('p_','')]),{t:p1(EA[a[1]]),c:rag(EA[a[1]]),b:true}]),
    {x:7.8,y:2.9,w:5.0,colW:[2.1,1.4,1.5],rh:0.3,fs:9});
-  const av=AG.filter(a=>a[1]!=='p_mr2').map(a=>EA[a[1]]).filter(v=>v!=null);
-  const lo=av.length?Math.min.apply(null,av):null, hi=av.length?Math.max.apply(null,av):null;
-  note(s,'Contact coverage compares doses with the monthly surviving-infant target. Outside MR-2 it runs '+p1(lo)+' to '+p1(hi)+
+  note(s,'Contact coverage compares doses with the monthly surviving-infant target. Outside MR-2 it runs '+p1(ELO)+' to '+p1(EHI)+
    ', so routine reaches about half the monthly cohort; fully immunized is '+p1(fi)+' and MR-2 at '+p1(EA.p_mr2)+' is the widest gap. '+
    'Campaigns can close the OPV gap but not the routine antigens — the integration case for the next round.',{x:0.5,y:6.3,w:12.3,fs:9.5});}
 
@@ -382,7 +382,7 @@ function renderC3Deck(P){
    '3. Equip transit teams: only 19% carry a carrier per member, 41% a marker each and 21% a tally sheet each.',
    '4. Trace the 68,460 leftover children UC by UC; they were unreached before the round and remain the zero-dose core.',
    '5. Close the zero-dose loop: 43,484 recorded, no covered figure compiled, validation confirming 97.5% of those checked.',
-   '6. Protect routine EPI: 46–51% contact coverage and MR-2 at 40.1% will not be closed by campaigns alone.',
+   '6. Protect routine EPI: contact coverage runs '+p1(ELO)+' to '+p1(EHI)+' and MR-2 sits at '+p1(EA.p_mr2)+' — campaigns alone will not close that gap.',
    '7. Keep the quality floor visible: LQAS 84.2% of lots passed and ICM recall 89.0% — both under the 90% line before the next round.'],
    {x:0.6,y:1.4,w:12.1,h:4.6,fs:13.5,gap:12,nb:true});
   note(s,'Every number in this deck is drawn from the dashboard payloads listed on the next slide; none is rounded up or carried over from an earlier read.',
