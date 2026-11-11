@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-10T15:24:25+05:00",
-  "chars": 23269670,
-  "internal_md5": "c2c7535c56e71208e3a8c4f2d2bd7add",
-  "master_md5": "31c7f0656a765845b2c9f6a92ef40b25",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+8326 chars). Timestamp refresh 10-Nov-2026 15:24 PKT",
-  "stamp": "10-Nov-2026 15:24"
+  "at": "2026-11-11T16:38:10+05:00",
+  "chars": 23314428,
+  "internal_md5": "8eea4af05996177dd785d1c357bbd8e3",
+  "master_md5": "e669b52d22ca8473e3cf9a59027dfe37",
+  "note": "Last 3 campaigns: PPTX download button + 20-slide campaign review deck (Nov-26 final, ICM, LQAS, MS, PCM, surveillance, EPI, zero dose, triggers). Timestamp refresh 11-Nov-2026 16:38 PKT",
+  "stamp": "11-Nov-2026 16:38"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
