@@ -168,7 +168,7 @@ function renderC3Deck(P){
   const top=NR.filter(r=>r.rec).sort((a,b)=>b.rec-a.rec).slice(0,10);
   bars(s,top.map(r=>r.d),top.map(r=>r.rec),{x:0.5,y:2.9,w:6.6,h:3.4,title:'Recorded missed children — top 10 districts',cols:['B45309']});
   bullets(s,['Recorded missed is what teams entered, not the true number of unvaccinated children. Children never visited do not appear here.',
-   'Nationally 90.9% of recorded misses were "not available" and 9.1% refusals — the mix, not the total, decides the response.',
+   'Province-wide '+p1(T.rna/rec*100)+' of recorded misses were "not available" and '+p1(T.rrf/rec*100)+' refusals — the mix, not the total, decides the response.',
    'The chain on the next two slides shows how many were recovered and how many remained at the end.'],{x:7.4,y:2.95,w:5.4,h:3.4,fs:11.5});}
 
  // 6 — covered
@@ -310,18 +310,19 @@ function renderC3Deck(P){
    {l:'Zero-dose AFP',v:n0(AF.zd),s:p1(AF.n?AF.zd/AF.n*100:null)+' of AFP cases',c:AMB},
    {l:'Pending',v:n0(AF.cp),s:'awaiting classification'}],1.35);
   const wp=Object.keys(WD).map(d=>[d,WD[d]]).sort((a,b)=>b[1]-a[1]);
+  const adP=AF.n?AF.ad/AF.n*100:null, n7P=AF.n?AF.n7/AF.n*100:null, i48P=AF.n?AF.i48/AF.n*100:null;
   table(s,['District','WPV1'],[...wp.map(a=>[a[0],{t:String(a[1]),c:['FEE2E2','991B1B'],b:true}]),['All KP',{t:String(AF.c1),b:true}]],
    {x:0.5,y:2.9,w:4.6,colW:[3.3,1.3],rh:0.32,fs:10});
   table(s,['Surveillance indicator','2026'],[
-   ['Stool adequacy',{t:p1(AF.n?AF.ad/AF.n*100:null),b:true}],
-   ['Notified within 7 days',{t:p1(AF.n?AF.n7/AF.n*100:null),b:true}],
-   ['Investigated within 48 h',{t:p1(AF.n?AF.i48/AF.n*100:null),b:true}],
+   ['Stool adequacy',{t:p1(adP),b:true}],
+   ['Notified within 7 days',{t:p1(n7P),b:true}],
+   ['Investigated within 48 h',{t:p1(i48P),b:true}],
    ['Discarded (non-polio)',{t:n0(AF.c3)}],
    ['Positive (WPV1)',{t:n0(AF.cw)}],
    ['Pending classification',{t:n0(AF.cp)}]],
    {x:5.35,y:2.9,w:4.1,colW:[2.7,1.4],rh:0.34,fs:9.5});
   bullets(s,['Seven WPV1 cases with onset in 2026: Khyber 3, Bannu 3 and Wazir-N 1; the latest onset is 28-Oct-2026.',
-   'Stool adequacy '+p1(AF.n?AF.ad/AF.n*100:null)+' and investigation within 48 hours '+p1(AF.n?AF.i48/AF.n*100:null)+' are at target; notification within 7 days ('+p1(AF.n?AF.n7/AF.n*100:null)+') is the weak link.',
+   'Only investigation within 48 hours ('+p1(i48P)+') clears the 90% benchmark; stool adequacy '+p1(adP)+' and notification within 7 days '+p1(n7P)+' both sit below it.',
    'Ninety-one AFP cases were zero-dose — the surveillance system keeps finding the same unvaccinated children the campaign is trying to reach.'],{x:9.8,y:2.9,w:3.0,h:3.6,fs:10.5});}
 
  // 16 — EPI

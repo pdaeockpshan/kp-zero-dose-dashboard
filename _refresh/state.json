@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-11T16:38:10+05:00",
-  "chars": 23314428,
-  "internal_md5": "8eea4af05996177dd785d1c357bbd8e3",
-  "master_md5": "e669b52d22ca8473e3cf9a59027dfe37",
-  "note": "Last 3 campaigns: PPTX download button + 20-slide campaign review deck (Nov-26 final, ICM, LQAS, MS, PCM, surveillance, EPI, zero dose, triggers). Timestamp refresh 11-Nov-2026 16:38 PKT",
-  "stamp": "11-Nov-2026 16:38"
+  "at": "2026-11-11T16:48:39+05:00",
+  "chars": 23314456,
+  "internal_md5": "ed8adbf7831b96cd12bf6c63fd353374",
+  "master_md5": "1ba1613a962a488f335ec2a4f86958a0",
+  "note": "Last-3-campaigns deck: corrected province wording and the surveillance benchmark claim; 20-slide deck with PPTX download. Timestamp refresh 11-Nov-2026 16:48 PKT",
+  "stamp": "11-Nov-2026 16:48"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
