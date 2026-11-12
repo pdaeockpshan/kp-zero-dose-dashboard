@@ -208,3 +208,4 @@ Last-3-campaigns deck: corrected province wording and the surveillance benchmark
 Last-3-campaigns deck: EPI coverage range now computed from the antigen table (47.0-54.5%), not a hardcoded 46-51%. Timestamp refresh 11-Nov-2026 16:50 PKT
 Last-3-campaigns deck: slide 19 now quotes the same computed 47.0-54.5% EPI range as slide 16. Timestamp refresh 11-Nov-2026 17:54 PKT
 Surveillance refresh 12-Nov-2026: active visits to week 44 (14,269 done / 15,473 expected), zero reports weeks 1-44 with W45 held out as a 2-district stub, new ERC case-file documentation card (39 tracked / 16 documented / 23 open at 11-Nov); pendency and VPD unchanged. Timestamp refresh 12-Nov-2026 10:32 PKT
+ERC table sorts worst district first (largest outstanding file count) rather than smallest. Timestamp refresh 12-Nov-2026 10:36 PKT

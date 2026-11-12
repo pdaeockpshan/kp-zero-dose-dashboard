@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-12T10:32:27+05:00",
-  "chars": 23319514,
-  "internal_md5": "57e08bc2523f6275f822cff50a42bcd5",
-  "master_md5": "0790395825347540dcf4b9e167b58912",
-  "note": "Surveillance refresh 12-Nov-2026: active visits to week 44 (14,269 done / 15,473 expected), zero reports weeks 1-44 with W45 held out as a 2-district stub, new ERC case-file documentation card (39 tracked / 16 documented / 23 open at 11-Nov); pendency and VPD unchanged. Timestamp refresh 12-Nov-2026 10:32 PKT",
-  "stamp": "12-Nov-2026 10:32"
+  "at": "2026-11-12T10:36:49+05:00",
+  "chars": 23319515,
+  "internal_md5": "be252472fb615b0b78f9629927970df3",
+  "master_md5": "cac0325393bdaeb34400bf7252c6bacb",
+  "note": "ERC table sorts worst district first (largest outstanding file count) rather than smallest. Timestamp refresh 12-Nov-2026 10:36 PKT",
+  "stamp": "12-Nov-2026 10:36"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

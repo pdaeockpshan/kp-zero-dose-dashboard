@@ -1141,7 +1141,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 12-Nov-2026 10:32</span>
+  <span class="hupd" id="hUpd">Updated 12-Nov-2026 10:36</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -9995,7 +9995,7 @@ function renderERC(){
   {k:'n',l:'Files tracked',n:1,tt:'AFP case files on the ERC documentation list for this district'},
   {k:'got',l:'Documented',n:1,tt:'Files whose documentation status is received'},
   {k:'pend',l:'Still open',n:1,f:x=>x.pend?'<span style="color:#b91c1c;font-weight:600">'+fmt(x.pend)+'</span>':'<span style="color:#047857;font-weight:600">0</span>',tt:'Files with no documentation status yet'}],
-  rows,'pend',1);
+  rows,'pend',-1);
  el('capERC').textContent=fmt(n)+' AFP case files on the ERC documentation list as at '+E.at+': '+fmt(got)+' received and '+fmt(pend)+' still open, '+fmt(E.b[0])+' waiting under 90 days after onset, '+fmt(E.b[1])+' for 90\u2013150 days and '+fmt(E.b[2])+' for more than 150 (median '+fmt(E.dmed)+', oldest '+fmt(E.dmax)+' days). '+
   'This is the ERC team\u2019s working list of files awaiting documentation, not every AFP case in the province, so the share received is a share of the list and is not an AFP documentation rate. '+
   'Counts only \u2014 no case identifiers. Source: '+esc(E.src)+'.';
