@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-11T17:54:03+05:00",
-  "chars": 23314813,
-  "internal_md5": "d2fd54b49895d6c1ddce4a08e9773c0c",
-  "master_md5": "e74f285c396c233c9c73e599ad9f4ce0",
-  "note": "Last-3-campaigns deck: slide 19 now quotes the same computed 47.0-54.5% EPI range as slide 16. Timestamp refresh 11-Nov-2026 17:54 PKT",
-  "stamp": "11-Nov-2026 17:54"
+  "at": "2026-11-12T10:32:27+05:00",
+  "chars": 23319514,
+  "internal_md5": "57e08bc2523f6275f822cff50a42bcd5",
+  "master_md5": "0790395825347540dcf4b9e167b58912",
+  "note": "Surveillance refresh 12-Nov-2026: active visits to week 44 (14,269 done / 15,473 expected), zero reports weeks 1-44 with W45 held out as a 2-district stub, new ERC case-file documentation card (39 tracked / 16 documented / 23 open at 11-Nov); pendency and VPD unchanged. Timestamp refresh 12-Nov-2026 10:32 PKT",
+  "stamp": "12-Nov-2026 10:32"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

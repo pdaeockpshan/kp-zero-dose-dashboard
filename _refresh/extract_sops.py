@@ -19,6 +19,11 @@ Sources (newest of each under the configured roots, all manual EOC downloads):
   * `Zero_Report_Cases_ONLY.xlsx` / `Zero_Report_Cases - ONLY.xlsx` - `Sumamy`: per district
       per week, AFP / measles / NNT case counts for 2026, with the three annual totals as the
       last columns. Both spellings are accepted; the newest file wins.
+  * `ERC Cases Documentation status*.xlsx` - one row per AFP case awaiting ERC case-file
+      documentation: district, EPID, onset, days after onset and the status cell (blank or
+      `Received`). The EPID is the key the ERC team works from and is read only to count rows;
+      nothing but district labels and counts reaches the payload. The snapshot date is implied
+      by onset + days-after-onset, so every row has to imply the same date or the script stops.
 
 Nothing here carries a name, address, CNIC, phone, email or EPID into the payload: district
 and week/month labels and counts only. District spelling is normalised to the dashboard's own
@@ -176,6 +181,18 @@ def parse_zr(path, dkey):
             sites[k] = max(sites.get(k, 0), num(r[4]) or 0)
             weeks.add(w)
         wl = sorted(weeks)
+        # A week is only a week once most districts have filed. The export is pulled mid-week, so
+        # the last week often holds a handful of early filers: counting it would print a 100%
+        # timeliness point on a two-district base. Stubs are reported, not silently merged.
+        dcnt = {w: sum(1 for k in d if d[k].get(w)) for w in wl}
+        full = max(dcnt.values()) if dcnt else 0
+        zx = []
+        while len(wl) > 1 and dcnt[wl[-1]] < 0.5 * full:
+            zx.append((wl[-1], dcnt[wl[-1]]))
+            wl.pop()
+        for w, n in reversed(zx):
+            print('CHK zr stub        week %d dropped: %d of %d districts filed, last week kept %d'
+                  % (w, n, full, wl[-1]))
         dd = {k: [d[k].get(w, [0, 0, 0]) for w in wl] for k in d}
         kp = [[sum(d[k].get(w, [0, 0, 0])[j] for k in d) for j in (0, 1, 2)] for w in wl]
         tot = {k: [sum(x[j] for x in dd[k]) for j in (0, 1, 2)] for k in dd}
@@ -187,7 +204,8 @@ def parse_zr(path, dkey):
                 for j in (0, 1, 2):
                     m[mi][j] += dd[k][i][j]
             mon[k] = m
-        return {'w': wl, 'd': dd, 'kp': kp, 'tot': tot, 'sites': sites, 'mon': mon}
+        return {'w': wl, 'd': dd, 'kp': kp, 'tot': tot, 'sites': sites, 'mon': mon,
+                'zx': [w for w, _ in reversed(zx)]}
     finally:
         wb.close()
 
@@ -374,6 +392,97 @@ def parse_vp(path, dkey):
         wb.close()
 
 
+# ------------------------------------------------------------------ ERC case files
+ERC_HDR = ['SR#', 'DISTRICT', 'EPID', 'DONSET', 'DAYS AFTER ONSET', 'DOCUMENTATION STATUS']
+
+
+def parse_erc(path, dkey, dists):
+    """Counts only: the ERC team's list of AFP cases whose case file is not yet documented.
+
+    Each row carries an EPID, an onset date and a days-after-onset figure; blank status means the
+    file is still outstanding. onset + days is the snapshot date, so a single disagreeing row is a
+    signal that the workbook mixes vintages - that stops the script rather than skewing the ages.
+    District cells are pasted in from another sheet and arrive truncated at 12 characters, so a
+    label that is a unique prefix of one dashboard district is accepted and reported.
+    """
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    try:
+        ws = wb['Sheet1']
+        rows = [r for r in ws.iter_rows(values_only=True)]
+        hi = None
+        for i, r in enumerate(rows[:10]):
+            got = [str(v).strip().upper() for v in r if isinstance(v, str) and v.strip()]
+            if got[:2] == ERC_HDR[:2]:
+                hi = i
+                cols = {v: j for j, v in enumerate(str(x).strip().upper() if x is not None else ''
+                                                  for x in r)}
+                break
+        if hi is None:
+            raise SystemExit('ERR sops ERC: header row not found')
+        need = [h for h in ERC_HDR[1:] if h not in cols]
+        if need:
+            raise SystemExit('ERR sops ERC: header missing %s' % need)
+        cd, cep, cdt, cdy, cst = (cols['DISTRICT'], cols['EPID'], cols['DONSET'],
+                                  cols['DAYS AFTER ONSET'], cols['DOCUMENTATION STATUS'])
+        nz = lambda v: re.sub(r'[^A-Z0-9]', '', str(v).upper())
+        pd_, ages, onsets, snaps, unknown, fixed = {}, [], [], [], 0, []
+        for r in rows[hi + 1:]:
+            if not r or len(r) <= cdy:
+                continue
+            lab, epid = r[cd], r[cep]
+            if not isinstance(lab, str) or not str(lab).strip():
+                continue
+            k = dkey(lab.strip())
+            if not k:  # truncated paste, e.g. "WAZIR-S UPPE"
+                u = nz(lab)
+                hit = [d for d in dists if len(u) >= 10 and nz(d).startswith(u)]
+                if len(hit) == 1:
+                    k = hit[0]
+                    fixed.append((lab.strip(), k))
+            if not k:
+                unknown += 1
+                continue
+            onset, days = r[cdt], num(r[cdy])
+            st = str(r[cst]).strip().lower() if cst < len(r) and r[cst] is not None else ''
+            if st not in ('', 'received'):
+                raise SystemExit('ERR sops ERC: unexpected status %r for a row in %s' % (st, k))
+            got = st == 'received'
+            a = pd_.setdefault(k, [0, 0])
+            a[0] += 1
+            a[1] += 1 if got else 0
+            if isinstance(onset, (dt.datetime, dt.date)) and days is not None:
+                o = onset.date() if isinstance(onset, dt.datetime) else onset
+                onsets.append(o)
+                ages.append(int(days))
+                snaps.append((o + dt.timedelta(days=int(days))).isoformat())
+        for lab, k in fixed:
+            print('CHK erc spelling   %r read as %s' % (lab, k))
+        if unknown:
+            raise SystemExit('ERR sops ERC: %d case rows carry a district outside the dashboard '
+                             'list - the tracked total would understate the workbook' % unknown)
+        if not pd_:
+            raise SystemExit('ERR sops ERC: no rows matched a dashboard district')
+        if not snaps:
+            raise SystemExit('ERR sops ERC: no row carried both an onset date and a day count')
+        if len(set(snaps)) != 1:
+            raise SystemExit('ERR sops ERC: rows imply %d different snapshot dates (%s)'
+                             % (len(set(snaps)), sorted(set(snaps))[:4]))
+        ages.sort()
+        n = sum(v[0] for v in pd_.values())
+        got = sum(v[1] for v in pd_.values())
+        b = [sum(1 for a in ages if a < 90), sum(1 for a in ages if 90 <= a <= 150),
+             sum(1 for a in ages if a > 150)]
+        print('CHK erc status     %d cases: %d received, %d outstanding across %d districts; '
+              'onset %s to %s, %d-%d days after onset (median %d); snapshot %s'
+              % (n, got, n - got, len(pd_), min(onsets), max(onsets), ages[0], ages[-1],
+                 ages[len(ages) // 2], snaps[0]))
+        return {'at': snaps[0], 'src': os.path.basename(path), 'n': n, 'got': got,
+                'pend': n - got, 'dist': len(pd_), 'dmin': ages[0], 'dmax': ages[-1],
+                'dmed': ages[len(ages) // 2], 'b': b, 'd': pd_}
+    finally:
+        wb.close()
+
+
 # ------------------------------------------------------------------ cross-checks
 def survw_indicators(repo):
     s = srcutil.read_text(os.path.join(repo, 'index.html'))
@@ -411,6 +520,7 @@ def main():
     ap.add_argument('--zr')
     ap.add_argument('--pn')
     ap.add_argument('--vp')
+    ap.add_argument('--erc')
     ap.add_argument('--source', help='accepted for refresh.py run; routed to a slot by filename')
     ap.add_argument('--out')
     ap.add_argument('--dry', action='store_true')
@@ -437,13 +547,15 @@ def main():
 
     av, zr, pn, vp = (pick(a.av, 'Active-visit (20??).xlsx'), pick(a.zr, 'Zero Reporting IDIMS*.xlsx'),
                       pick(a.pn, 'Pendency Status on *.xlsx'), pick(a.vp, 'Zero_Report_Cases*ONLY.xlsx'))
-    for p in (av, zr, pn, vp):
+    erc = pick(a.erc, 'ERC Cases Documentation status*.xlsx')
+    for p in (av, zr, pn, vp, erc):
         print('SRC %s' % p)
 
     AV = parse_av(av, dkey)
     ZR = parse_zr(zr, dkey)
     PN, LAST = parse_pn(pn, dkey)
     VP = parse_vp(vp, dkey)
+    ERC = parse_erc(erc, dkey, dists)
 
     # geography coverage: which district rows did each source actually carry
     seen = {'av': set(AV['tp']), 'zr': set(ZR['d']), 'vp': set(VP['d'])}
@@ -515,14 +627,16 @@ def main():
     payload = {
         'asof': asof(LAST['stool']['at']),
         'src': {'av': os.path.basename(av), 'zr': os.path.basename(zr),
-                'pn': os.path.basename(pn), 'vp': os.path.basename(vp)},
+                'pn': os.path.basename(pn), 'vp': os.path.basename(vp),
+                'erc': os.path.basename(erc)},
         'av': {'w': AV['wlabel'], 'wk': AV['wk'], 'fw': AV['fwlabel'], 'fwk': AV['fwk'],
                'mon': AV['mon'], 'mt': AV['mon_tot'], 'tp': AV['tp'], 'kp': AV['kp']},
         'zr': {'w': ZR['w'], 'd': ZR['d'], 'kp': ZR['kp'], 'tot': ZR['tot'], 'sites': ZR['sites'],
-               'mon': ZR['mon']},
+               'mon': ZR['mon'], 'zx': ZR['zx']},
         'pn': PN,
         'last': {st: {'at': asof(LAST[st]['at']), 'd': LAST[st]['d']} for st in Streams},
         'vp': {'w': VP['w'], 'kp': VP['kp'], 'tot': VP['tot']},
+        'erc': ERC,
     }
     js = srcutil.dumps(payload)
     dest = a.out or os.path.join(srcutil.OUT, 'sops.json')
@@ -540,7 +654,8 @@ def main():
     print('OK sops %d %d active visits %s/%s done (%s%%) across %d districts; '
           '%d zero-report rows over weeks %d-%d, %d/%s received (%s%%), %s%% in time; '
           'pendency to %s: stool %s%% (%s/%s), case validation %s%% (%s/%s), geolocation %s%%; '
-          'VPD 2026 wk1-%d: %d AFP / %d measles / %d NNT in %d districts; snapshots %s'
+          'VPD 2026 wk1-%d: %d AFP / %d measles / %d NNT in %d districts; ERC %d files tracked '
+          'to %s, %d outstanding; snapshots %s'
           % (len(js), av_kp[1], '{:,}'.format(int(av_kp[1])), '{:,}'.format(int(av_kp[0])),
              pc(av_kp[1], av_kp[0]), len(AV['tp']),
              len(ZR['w']), ZR['w'][0], ZR['w'][-1], z_kp[1], '{:,}'.format(int(z_kp[0])),
@@ -554,6 +669,7 @@ def main():
              pc(sum(v[1] for v in l26['geo'].values()), sum(v[0] for v in l26['geo'].values())),
              ZR['w'][-1], sum(x[0] for x in VP['kp']), sum(x[1] for x in VP['kp']),
              sum(x[2] for x in VP['kp']), len(VP['d']),
+             ERC['n'], ERC['at'], ERC['pend'],
              ', '.join('%s %d' % (st, len(PN[st]['at'])) for st in Streams)))
 
 
