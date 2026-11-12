@@ -4,6 +4,11 @@
 Rows are keyed by absolute UC index into INDIC.ucs, whose 4th element is the portal UC code.
 975 of 996 codes are on the live 11-Nov UC-wise table; the other 21 (Kurram) keep the 06-Nov read.
 
+Only columns 0-6 (admin) are touched here; the LQAS columns 11-16 are joined by
+patch_lqas_views.py - re-run that after this script if CINN is rebuilt from an
+older state, but never let the `src` prose go back to the "LQAS cells stay dashes"
+wording: the Nov lots are on the plate.
+
 Usage: python _refresh/patch_cinn_uu.py [--write]
 """
 import argparse
@@ -70,9 +75,11 @@ def main():
                 '975 matched UCs read 11-Nov-2026 16:01 from the live UC-Wise table; 21 UCs absent '
                 'from that table keep the 06-Nov-2026 20:47 row and still re-add to the district '
                 'totals; ICM columns from the IDIMS form 11 '
-                'cluster download 04-Nov-2026 20:14; LQAS lots are on the post-campaign '
-                'page from the 12-Nov-2026 export, but this compiled sheet carries no '
-                'Nov-26 LQAS column, so its LQAS cells stay dashes')
+                'cluster download 04-Nov-2026 20:14; LQAS columns joined from the EOC '
+                'post-campaign E-LQAS UC-wise export read 12-Nov-2026 03:03 '
+                '(lqas_2026-11-12_03-03-54.xls) by patch_lqas_views.py, reconciled lot '
+                'for lot with that round\'s district summary, so the plate and the '
+                'E-LQAS card read the same lots')
     print('updated', upd, 'kept', len(kept), kept[:6], 'decreases', drops)
     print('sum tg', sum(v[0] for _, v in c['uu']), 'sum vac', sum(v[1] for _, v in c['uu']))
 

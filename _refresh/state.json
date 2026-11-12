@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-12T17:01:51+05:00",
-  "chars": 23334672,
-  "internal_md5": "dd48c0dd71f665afe40c2b4de185c56b",
-  "master_md5": "bde981e629077ec2af19d0f1f2f2f5ca",
-  "note": "LQAS: SNID Nov-26 lots ingested from the 12-Nov-2026 UC and district exports (80 lots, 67 pass / 9 intermediate / 4 fail, 157 missed); post-campaign page, home cards, deck and UC risk now read Nov-26; latest-round inversion in the UC risk LQAS flag fixed. Timestamp refresh 12-Nov-2026 17:01 PKT",
-  "stamp": "12-Nov-2026 17:01"
+  "at": "2026-11-12T17:33:15+05:00",
+  "chars": 23339682,
+  "internal_md5": "daa0a2ee5710733b8d994c3b96b76cde",
+  "master_md5": "9cf73a8ae6c542de3fcfc070f997ef26",
+  "note": "LQAS Nov-26 joined into the campaign indicators plate and the E-LQAS card. Timestamp refresh 12-Nov-2026 17:33 PKT",
+  "stamp": "12-Nov-2026 17:33"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
