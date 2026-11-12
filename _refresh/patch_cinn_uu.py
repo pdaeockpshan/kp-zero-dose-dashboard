@@ -70,7 +70,9 @@ def main():
                 '975 matched UCs read 11-Nov-2026 16:01 from the live UC-Wise table; 21 UCs absent '
                 'from that table keep the 06-Nov-2026 20:47 row and still re-add to the district '
                 'totals; ICM columns from the IDIMS form 11 '
-                'cluster download 04-Nov-2026 20:14; LQAS not yet posted')
+                'cluster download 04-Nov-2026 20:14; LQAS lots are on the post-campaign '
+                'page from the 12-Nov-2026 export, but this compiled sheet carries no '
+                'Nov-26 LQAS column, so its LQAS cells stay dashes')
     print('updated', upd, 'kept', len(kept), kept[:6], 'decreases', drops)
     print('sum tg', sum(v[0] for _, v in c['uu']), 'sum vac', sum(v[1] for _, v in c['uu']))
 

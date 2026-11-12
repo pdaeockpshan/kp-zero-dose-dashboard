@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-12T10:36:49+05:00",
-  "chars": 23319515,
-  "internal_md5": "be252472fb615b0b78f9629927970df3",
-  "master_md5": "cac0325393bdaeb34400bf7252c6bacb",
-  "note": "ERC table sorts worst district first (largest outstanding file count) rather than smallest. Timestamp refresh 12-Nov-2026 10:36 PKT",
-  "stamp": "12-Nov-2026 10:36"
+  "at": "2026-11-12T17:01:51+05:00",
+  "chars": 23334672,
+  "internal_md5": "dd48c0dd71f665afe40c2b4de185c56b",
+  "master_md5": "bde981e629077ec2af19d0f1f2f2f5ca",
+  "note": "LQAS: SNID Nov-26 lots ingested from the 12-Nov-2026 UC and district exports (80 lots, 67 pass / 9 intermediate / 4 fail, 157 missed); post-campaign page, home cards, deck and UC risk now read Nov-26; latest-round inversion in the UC risk LQAS flag fixed. Timestamp refresh 12-Nov-2026 17:01 PKT",
+  "stamp": "12-Nov-2026 17:01"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

@@ -209,3 +209,4 @@ Last-3-campaigns deck: EPI coverage range now computed from the antigen table (4
 Last-3-campaigns deck: slide 19 now quotes the same computed 47.0-54.5% EPI range as slide 16. Timestamp refresh 11-Nov-2026 17:54 PKT
 Surveillance refresh 12-Nov-2026: active visits to week 44 (14,269 done / 15,473 expected), zero reports weeks 1-44 with W45 held out as a 2-district stub, new ERC case-file documentation card (39 tracked / 16 documented / 23 open at 11-Nov); pendency and VPD unchanged. Timestamp refresh 12-Nov-2026 10:32 PKT
 ERC table sorts worst district first (largest outstanding file count) rather than smallest. Timestamp refresh 12-Nov-2026 10:36 PKT
+LQAS: SNID Nov-26 lots ingested from the 12-Nov-2026 UC and district exports (80 lots, 67 pass / 9 intermediate / 4 fail, 157 missed); post-campaign page, home cards, deck and UC risk now read Nov-26; latest-round inversion in the UC risk LQAS flag fixed. Timestamp refresh 12-Nov-2026 17:01 PKT
