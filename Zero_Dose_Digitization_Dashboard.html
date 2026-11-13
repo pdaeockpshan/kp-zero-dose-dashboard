@@ -54,6 +54,8 @@ td.n{font-family:var(--font-mono);text-align:right;white-space:nowrap} th.n{text
 td.act{min-width:280px;color:var(--color-text-secondary)}
 td.empty{color:var(--color-text-muted);text-align:center;padding:18px}
 tr:hover td{background:var(--color-surface-hover)}
+tfoot tr.tot td{font-weight:700;background:var(--color-bg-secondary);border-top:2px solid var(--color-border);border-bottom:none;padding-top:8px}
+tbody tr.tot td,tfoot tr.tot:hover td{background:var(--color-bg-secondary)}
 .scroll{max-height:440px;overflow:auto}
 .gg td{padding:3px 4px;text-align:center;font-size:11px;font-family:var(--font-mono);white-space:nowrap}
 .gg th{padding:5px 4px;font-size:10.5px;text-align:center}
@@ -1141,7 +1143,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 12-Nov-2026 17:33</span>
+  <span class="hupd" id="hUpd">Updated 13-Nov-2026 11:59</span>
   <span id="hSnChip" style="cursor:pointer" title="SNID Nov-26 countdown — click to dismiss. The countdown and the district map stay available via the SNID Nov-26 button below.">SNID Nov-26 · starts 2 Nov · 4.81M children</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
@@ -3230,14 +3232,17 @@ let cur=[], TAB='overview';
 // ---------- generic sortable table ----------
 const SORT={};
 const cmpv=(x,y)=>{const nx=(x==null||x===''),ny=(y==null||y==='');if(nx&&ny)return 0;if(nx)return -1;if(ny)return 1;return typeof x==='string'?x.localeCompare(y):x-y;};
-function drawTable(id,cols,rows,defK,defD,empty){
+function drawTable(id,cols,rows,defK,defD,empty,tot){
  const st=SORT[id]||(SORT[id]={k:defK,d:defD});
  const col=cols.find(c=>c.k===st.k)||cols[0], sv=col.sv||(r=>r[col.k]);
  const rs=rows.slice().sort((a,b)=>cmpv(sv(a),sv(b))*st.d);
  const t=el(id);
+ // A total row is passed pre-computed for the scope in view and pinned below the sort,
+ // so it keeps reading as the subtotal of what is shown rather than as another row.
+ const tf=tot?'<tfoot><tr class="tot">'+cols.map(c=>`<td class="${c.n?'n':''}">${tot.cell&&tot.cell[c.k]!=null?tot.cell[c.k]:''}</td>`).join('')+'</tr></tfoot>':'';
  t.innerHTML='<thead><tr>'+cols.map(c=>`<th class="${c.n?'n':''}${c.ns?' ns':''}" data-k="${c.k}"${c.tt?' title="'+esc(c.tt)+'"':''}>${c.l}${st.k===c.k&&!c.ns?(st.d>0?' ▲':' ▼'):''}</th>`).join('')+'</tr></thead><tbody>'+
-  (rs.length?rs.map((r,i)=>'<tr>'+cols.map(c=>`<td class="${c.n?'n':''}${c.cls?' '+c.cls:''}">${c.f?c.f(r,i):(r[c.k]==null?'':esc(r[c.k]))}</td>`).join('')+'</tr>').join(''):`<tr><td colspan="${cols.length}" class="empty">${empty||'No UCs match the current filters'}</td></tr>`)+'</tbody>';
- t.querySelectorAll('th').forEach(th=>{const c=cols.find(x=>x.k===th.dataset.k);if(!c||c.ns)return;th.onclick=()=>{if(st.k===c.k)st.d*=-1;else{st.k=c.k;st.d=c.n?-1:1;}drawTable(id,cols,rows,defK,defD,empty);};});
+  (rs.length?rs.map((r,i)=>'<tr>'+cols.map(c=>`<td class="${c.n?'n':''}${c.cls?' '+c.cls:''}">${c.f?c.f(r,i):(r[c.k]==null?'':esc(r[c.k]))}</td>`).join('')+'</tr>').join(''):`<tr><td colspan="${cols.length}" class="empty">${empty||'No UCs match the current filters'}</td></tr>`)+'</tbody>'+tf;
+ t.querySelectorAll('th').forEach(th=>{const c=cols.find(x=>x.k===th.dataset.k);if(!c||c.ns)return;th.onclick=()=>{if(st.k===c.k)st.d*=-1;else{st.k=c.k;st.d=c.n?-1:1;}drawTable(id,cols,rows,defK,defD,empty,tot);};});
  bindNoteLinks(t); if(typeof bindZ==='function')bindZ(t);
 }
 function bindNoteLinks(root){root.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>openNote(b.dataset.note));}
@@ -8149,8 +8154,15 @@ function renderC3(){
  sel.forEach((E,i)=>T.push(zn('rep'+i,'ZD '+E.sh,r=>fN(r.x[i]?r.x[i].rep:null),r=>r.x[i]?r.x[i].rep:null)));
  sel.forEach((E,i)=>T.push(zn('zp'+i,'ZD cov % '+E.sh,r=>pcol(r.x[i]?r.x[i].zp:null),r=>r.x[i]?r.x[i].zp:null)));
  T.push({k:'w',l:'Focus',n:1,sv:r=>(r.top?1e6:0)+(r.w||0),f:r=>(r.top?tag('t-crit','focus')+' ':'')+(r.f.length?r.f.map(k=>tag(C3TAG[k][0],C3TAG[k][1])).join(' '):'–')});
- drawTable('tC3',T,R0,'w',-1);
- el('c3c5').textContent='Coverage = vaccinated ÷ target (EOC summary report for the 2026 rounds; campaign-history workbook, micro-plan target, for earlier rounds). ZD cov % = zero-dose children covered against the list reported in that campaign\'s own advance report. Focus points: not reached = half the target left over · persistent refusals = 20+ refusing in all three selected campaigns · 3%+ still missed in the latest selected campaign · coverage <90% · ZD coverage <50% · ZDs rising = 20+ in the latest selected campaign, above the earliest. The red “focus” mark = top 10% of KP UCs by score, ranked province-wide. Click a column header to sort; click a district to filter to it.';
+ const c3Tot={cell:{u:esc(fmt(R0.length)+' UCs'),c:'',d:esc('Total \u2014 '+pptScope()),t:'',cr:''}};
+ sel.forEach((E,i)=>{c3Tot.cell['vp'+i]=S[i].vp==null?'\u2013':pcol(S[i].vp);});
+ c3Tot.cell['st'+iN]=S[iN].st==null?'\u2013':fN(S[iN].st);
+ c3Tot.cell['rf'+iN]=S[iN].rf==null?'\u2013':fN(S[iN].rf);
+ sel.forEach((E,i)=>{c3Tot.cell['rep'+i]=S[i].zn?fN(S[i].rep):'\u2013';});
+ sel.forEach((E,i)=>{c3Tot.cell['zp'+i]=S[i].zp==null?'\u2013':pcol(S[i].zp);});
+ c3Tot.cell.w=fmt(R0.filter(r=>r.top).length)+' focus';
+ drawTable('tC3',T,R0,'w',-1,null,c3Tot);
+ el('c3c5').textContent='Coverage = vaccinated ÷ target (EOC summary report for the 2026 rounds; campaign-history workbook, micro-plan target, for earlier rounds). ZD cov % = zero-dose children covered against the list reported in that campaign\'s own advance report. Focus points: not reached = half the target left over · persistent refusals = 20+ refusing in all three selected campaigns · 3%+ still missed in the latest selected campaign · coverage <90% · ZD coverage <50% · ZDs rising = 20+ in the latest selected campaign, above the earliest. The red “focus” mark = top 10% of KP UCs by score, ranked province-wide. Click a column header to sort; click a district to filter to it. The bold bottom line totals the UCs in view: children are summed per campaign and every percentage is recomputed from those sums, never averaged; the focus cell counts the priority UCs shown.';
  const C3H=['UC','Code','District','Tehsil','UC criteria'].concat(sel.map(E=>'Coverage % '+E.sh),['Still missed '+sel[iN].sh,'Still refusing '+sel[iN].sh],sel.map(E=>'ZD reported '+E.sh),sel.map(E=>'ZD covered % '+E.sh),['Focus flags','Priority focus']);
  el('btnC3CSV').onclick=()=>csvDownload('Campaigns_'+sel.map(E=>E.sh.replace(/[^A-Za-z0-9-]+/g,'')).join('_')+'_'+(fDist.value||'KP').replace(/\s+/g,'_')+'.csv',C3H,R0.map(r=>[r.u,r.c||'',r.d,r.t,critLab(r.d,r.u,r.c)].concat(
   sel.map((E,i)=>r.x[i]&&r.x[i].vp!=null?+r.x[i].vp.toFixed(1):''),
@@ -8680,8 +8692,12 @@ dataLabels:{enabled:true,style:{textOutline:'none'},formatter(){return this.y==n
  if(D.fk)cols.push(zn('fk','Fake FM',r=>r.fk?tag('t-crit',r.fk):'0'));
  if(D.vb)cols.push(zn('vb','VBNFM',r=>fN(r.vb)),zn('dm','Doors',r=>fN(r.dm)));
  cols.push({k:'w',l:'Flags',n:1,sv:r=>r.f.length*100+(100-(r.fmp||0)),f:r=>r.f.length?r.f.map(k=>tag(PMTAG[k][0],PMTAG[k][1])).join(' '):'–'});
- drawTable('tPCM',cols,R0,'fmp',1);
- el('pcmc5').textContent='For ICM the critical reading is recall %: children verified vaccinated among recall-checked children — under 90% is failing and flagged red. FM % = children with a finger mark among all children checked by monitors (ICM seen-checks, PCHS and PCM household checks); missed % uses the same base, and for ICM the missed count includes children found unvaccinated during recall checks, so FM % and missed % need not add to 100. Flags: recall under 90% · FM under 90% (red under 80%) · 5%+ of checked children missed · no-team misses = 30%+ of misses with no team visit · refusal-driven = 20%+ refusals · fake FM = finger mark with no vaccination. ICM rows aggregate the spotting workbook’s monitor entries per UC. Click a column header to sort; click a district to filter to it.';
+ const pcmTot={cell:{u:esc(fmt(S.n)+' UCs'),c:'',d:esc('Total \u2014 '+pptScope()),t:'',cr:'',
+  cl:fmt(S.cl),chk:fmt(S.chk),fm:fmt(S.fm),fmp:S.fmp==null?'\u2013':pmPct(S.fmp),rp:S.rcp==null?'\u2013':pmPct(S.rcp),
+  ms:fmt(S.ms),msp:S.msp==null?'\u2013':pmPct(S.msp),nt:fmt(S.nt),tv:fmt(S.tv),na:fmt(S.na),rf:fmt(S.rf),
+  zd:fmt(S.zd),fk:R0.filter(r=>r.fk>0).length+' UC(s)',vb:fmt(S.vb),dm:fmt(S.dm),w:R0.filter(r=>r.f.length).length+' flagged'}};
+ drawTable('tPCM',cols,R0,'fmp',1,null,pcmTot);
+ el('pcmc5').textContent='For ICM the critical reading is recall %: children verified vaccinated among recall-checked children — under 90% is failing and flagged red. FM % = children with a finger mark among all children checked by monitors (ICM seen-checks, PCHS and PCM household checks); missed % uses the same base, and for ICM the missed count includes children found unvaccinated during recall checks, so FM % and missed % need not add to 100. Flags: recall under 90% · FM under 90% (red under 80%) · 5%+ of checked children missed · no-team misses = 30%+ of misses with no team visit · refusal-driven = 20%+ refusals · fake FM = finger mark with no vaccination. ICM rows aggregate the spotting workbook’s monitor entries per UC. Click a column header to sort; click a district to filter to it. The bold bottom line totals the UCs in view: households, children checked, missed, visits and refusals are summed and every percentage is recomputed from those sums, never averaged; the flag cells count the UCs behind them.';
  const H=['UC','Code','District','Tehsil','UC criteria','Campaign','Method','Clusters','Households checked','Children checked','Children FM','FM %','Recall %','Children missed','Missed %','No team visit','Team missed child','Child away','Refusal','Zero dose found','Fake FM','VBNFM','Doors marked','Flags'];
  el('btnPCMCSV').onclick=()=>csvDownload('Monitoring_'+D.q.replace(/[^\w]+/g,'_')+'.csv',H,R0.map(r=>[r.u,r.c,r.d,r.t,critLab(r.d,r.u,r.c),D.q,PMSRC[D.s],r.cl||'',r.hh||'',r.chk,r.fm,r.fmp==null?'':+r.fmp.toFixed(1),r.rp==null?'':+r.rp.toFixed(1),r.ms,r.msp==null?'':+r.msp.toFixed(1),r.nt,r.tv,r.na,r.rf,D.zd?r.zd:'',D.fk?r.fk:'',D.vb?r.vb:'',D.vb?r.dm:'',r.f.map(k=>PMTAG[k][1]).join('; ')]));
 }
@@ -9073,9 +9089,15 @@ function renderCH(){
   {k:'msp',l:'MS %',n:1,f:x=>pf(x.msp)},
   {k:'lqp',l:'LQAS %',n:1,f:x=>pf(x.lqp)},
   {k:'pcmp',l:'PCM %',n:1,f:x=>pf(x.pcmp)});
- drawTable('tCHD',colsD,Ds,'stot',-1);
+ const chDTot={cell:{d:esc('Total \u2014 '+pptScope()),dv:'',cr:'',n:'',
+  t:fmt(A.t),cov:fmt(A.cov),covp:pf(A.t?A.cov/A.t*100:null),
+  rec:fmt(A.recN+A.recR),recN:fmt(A.recN),recR:fmt(A.recR),sdc:fmt(A.sdc),
+  sdcp:pf(A.rec?A.sdc/A.rec*100:null),stot:fmt(A.stot),sna:fmt(A.sna),srf:fmt(A.srf),
+  stp:pf(A.t?A.stot/A.t*100:null),rcp:pf(A.chk?A.ver/A.chk*100:null),miss:fmt(A.miss),
+  msp:pf(A.msC?A.msV/A.msC*100:null),lqp:pf((A.lqP+A.lqF)?A.lqP/(A.lqP+A.lqF)*100:null),pcmp:pf(A.pcmK?A.pcmF/A.pcmK*100:null)}};
+ drawTable('tCHD',colsD,Ds,'stot',-1,null,chDTot);
  el('cntCHD').textContent=Ds.length+' districts'+(multi?' \u00b7 '+sel.length+' campaigns':'');
- el('capchD').textContent='Compiled from the same campaign selection and division / district filters as the charts. Camps = how many of the selected campaigns reported the district; percentage columns re-average the selected campaigns by their checks.';
+ el('capchD').textContent='Compiled from the same campaign selection and division / district filters as the charts. Camps = how many of the selected campaigns reported the district; percentage columns re-average the selected campaigns by their checks. The bold bottom line totals the districts in view: children are summed and every percentage is recomputed from those sums, never averaged, so the Camps cell stays blank because campaigns are not additive across districts.';
  const base='campaign-'+(multi?'multi-compile':cps.n.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase());
  el('chDCSV').onclick=()=>csvDownload(base+'-districts.csv',
   ['District','Division','Category'].concat(multi?['Campaigns']:[]).concat(['Target','Vaccinated','Coverage %','Recorded missed','Recorded NA','Recorded refusals','Same-day covered','Same-day %','Still missed','Still NA','Still refusals','Still % of target','ICM recall %','ICM found missed','MS %','LQAS %','PCM %']),
@@ -9109,9 +9131,18 @@ function renderCH(){
   {k:'lqp',l:'LQAS %',n:1,f:x=>pf(x.lqp)},
   {k:'pcmp',l:'PCM %',n:1,f:x=>pf(x.pcmp)},
   {k:'zd',l:'Zero-dose',n:1,f:x=>fmt(x.zd)});
- drawTable('tCH',colsU,U,'sm',-1);
+ const uS=(f)=>U.reduce((a,x)=>a+(f(x)||0),0);
+ const chUTot={cell:{d:esc('Total \u2014 '+pptScope()),u:esc(fmt(U.length)+' UCs'),cr:'',n:'',
+  t:fmt(uS(x=>x.t)),cov:fmt(uS(x=>x.cov)),covp:pf(uS(x=>x.t)?uS(x=>x.cov)/uS(x=>x.t)*100:null),
+  rec:fmt(uS(x=>x.recN+x.recR)),recN:fmt(uS(x=>x.recN)),recR:fmt(uS(x=>x.recR)),
+  sdc:fmt(uS(x=>x.sdc)),sdcp:pf(uS(x=>x.recN+x.recR)?uS(x=>x.sdc)/uS(x=>x.recN+x.recR)*100:null),
+  sm:fmt(uS(x=>x.sm)),sna:fmt(uS(x=>x.sna)),srf:fmt(uS(x=>x.srf)),
+  stp:pf(uS(x=>x.t)?uS(x=>x.sm)/uS(x=>x.t)*100:null),
+  clu:fmt(uS(x=>x.clu)),zd:fmt(uS(x=>x.zd)),
+  rcp:'\u2013',snp:'\u2013',msp:'\u2013',lqp:'\u2013',pcmp:'\u2013'}};
+ drawTable('tCH',colsU,U,'sm',-1,null,chUTot);
  el('cntCH').textContent=U.length+' UCs'+(multi?' \u00b7 '+sel.length+' campaigns':'');
- el('capch3').textContent=(multi?'Compiled across the selection \u2014 the monitoring percentage columns need a single campaign. ':'')+'Sorted by children still missed. Coverage above 100% means more children were vaccinated than the recorded target.';
+ el('capch3').textContent=(multi?'Compiled across the selection \u2014 the monitoring percentage columns need a single campaign. ':'')+'Sorted by children still missed. Coverage above 100% means more children were vaccinated than the recorded target. The bold bottom line totals the UCs in view: children, clusters and zero-dose are summed and coverage, same-day and still-missed percentages are recomputed from those sums; the monitoring percentages have no rolled-up denominator at this grain, so they print \u2013.';
  el('chCSV').onclick=()=>csvDownload(base+'.csv',
   ['District','UC','UC criteria'].concat(multi?['Campaigns']:[]).concat(['Target','Vaccinated','Coverage %','Recorded missed','Recorded NA','Recorded refusals','Same-day covered','Same-day %','Still missed','Still NA','Still refusals','Still % of target','ICM clusters','ICM recall %','ICM seen %','MS %','LQAS %','PCM %','Zero-dose']),
   U.map(x=>[CHD.ds[x.di],x.u,critLab(CHD.ds[x.di],x.u)].concat(multi?[x.n]:[]).concat([x.t,x.cov,r10(x.covp),x.recN+x.recR,x.recN,x.recR,x.sdc,r10(x.sdcp),x.sm,x.sna,x.srf,r10(x.stp),x.clu,r10(x.rcp),r10(x.snp),r10(x.msp),r10(x.lqp),r10(x.pcmp),x.zd])));
@@ -9133,23 +9164,31 @@ function renderCH(){
  el('cntCHS').textContent=SM.filter(g=>g.n).length+' months with campaigns';
  el('capchS').textContent='Children-weighted across every campaign since 2017 under the current filters. CR, OBR and bordering-UC activities (partial-province catch-ups) sit inside their months and stretch the ranges \u2014 the Jul-2025 bordering-UCs activity is the outlier \u2014 so read the ranges, not just the bars. Ramadan drifts across the calendar, so treat month effects as pattern, not cause.';
  const LG=chLeague(sel);
+ const worstL=LG.reduce((a,x)=>(x.worst!=null&&(a==null||x.worst>a.worst)?x:a),null);
  drawTable('tCHL',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'dv',l:'Division',f:x=>esc(x.dv)},critDCol(x=>x.d),
   {k:'abv',l:'Above 5%',n:1,sv:x=>x.abv*10000+(x.avg||0),f:x=>x.abv+'\u2044'+x.n+(x.abv===x.n&&x.n>1?' every':'')},
   {k:'avg',l:'Avg still %',n:1,f:x=>(x.avg==null?'–':rgNL(x.avg,2,4)+'%')},
   {k:'worst',l:'Worst still %',n:1,f:x=>(x.worst==null?'–':rgNL(x.worst,2,4)+'%')},
-  {k:'wc',l:'Worst in',f:x=>esc(x.wc)}],LG,'abv',-1);
+  {k:'wc',l:'Worst in',f:x=>esc(x.wc)}],LG,'abv',-1,null,LG.length?{cell:{
+   d:esc('Total \u2014 '+fmt(LG.length)+' districts'),dv:'',cr:'',
+   abv:LG.filter(x=>x.abv).length+'\u2044'+LG.length+' above',avg:'\u2013',
+   worst:worstL&&worstL.worst!=null?rgNL(worstL.worst,2,4)+'%':'\u2013',wc:worstL?esc(worstL.d):''}}:null);
  el('cntCHL').textContent=LG.filter(x=>x.abv).length+' districts ever above 5% \u00b7 '+sel.length+(sel.length===1?' campaign':' campaigns');
- el('capchL').textContent=(multi?'Compiled across the '+sel.length+' selected campaigns. ':'Single campaign \u2014 pick several in the campaign picker to see persistence. ')+'Above 5% = the district still-missed share of target reached the flag level (top decile of district-rounds) in that campaign; "every" = in all of them. District-rounds with targets under 1,000 are ignored.';
+ el('capchL').textContent=(multi?'Compiled across the '+sel.length+' selected campaigns. ':'Single campaign \u2014 pick several in the campaign picker to see persistence. ')+'Above 5% = the district still-missed share of target reached the flag level (top decile of district-rounds) in that campaign; "every" = in all of them. District-rounds with targets under 1,000 are ignored. The bottom line counts the districts in view and reports how many were ever above 5%; an average of averages would misstate the share, so it prints \u2013, and the worst cell carries the single worst district-round in view.';
  el('chLCsv').onclick=()=>csvDownload(base+'-league-districts.csv',['District','Division','Category','Campaigns in selection','Above 5%','Avg still-missed %','Worst still-missed %','Worst campaign'],
   LG.map(x=>[x.d,x.dv,critLab(x.d),x.n,x.abv,r10(x.avg),r10(x.worst),x.wc]));
  const LU=chLeagueU(sel).filter(x=>x.abv>=2);
+ const worstU=LU.reduce((a,x)=>(x.worst!=null&&(a==null||x.worst>a.worst)?x:a),null);
  drawTable('tCHLU',[{k:'d',l:'District',f:x=>'<b>'+esc(CHD.ds[x.di])+'</b>'},{k:'u',l:'UC',f:x=>esc(x.u)},critCol(x=>CHD.ds[x.di],x=>x.u),
   {k:'abv',l:'Above 5%',n:1,sv:x=>x.abv*10000+(x.avg||0),f:x=>x.abv+'\u2044'+x.n+(x.abv===x.n&&x.n>1?' every':'')},
   {k:'avg',l:'Avg still %',n:1,f:x=>(x.avg==null?'–':rgNL(x.avg,2,4)+'%')},
   {k:'worst',l:'Worst still %',n:1,f:x=>(x.worst==null?'–':rgNL(x.worst,2,4)+'%')},
-  {k:'wc',l:'Worst in',f:x=>esc(x.wc)}],LU,'abv',-1);
+  {k:'wc',l:'Worst in',f:x=>esc(x.wc)}],LU,'abv',-1,null,LU.length?{cell:{
+   d:esc('Total \u2014 '+fmt(LU.length)+' UCs'),u:'',cr:'',
+   abv:LU.filter(x=>x.abv).length+'\u2044'+LU.length+' above',avg:'\u2013',
+   worst:worstU&&worstU.worst!=null?rgNL(worstU.worst,2,4)+'%':'\u2013',wc:worstU?esc(worstU.u):''}}:null);
  el('cntCHLU').textContent=LU.length+' UCs above 5% in 2+ campaigns';
- el('capchLU').textContent='UCs whose still-missed share of target crossed 5% in at least two of the selected campaigns \u2014 the repeat offenders behind the district league. A UC missing from one selected campaign (no target recorded) simply counts fewer rounds; rounds with targets under 1,000 are ignored.';
+ el('capchLU').textContent='UCs whose still-missed share of target crossed 5% in at least two of the selected campaigns \u2014 the repeat offenders behind the district league. A UC missing from one selected campaign (no target recorded) simply counts fewer rounds; rounds with targets under 1,000 are ignored. The bottom line counts the UCs listed and how many crossed 5% in every selected round; an average of averages would misstate the share, so it prints \u2013, and the worst cell carries the single worst UC-round in view.';
  el('chLUCsv').onclick=()=>csvDownload(base+'-league-ucs.csv',['District','UC','UC criteria','Campaigns in selection','Above 5%','Avg still-missed %','Worst still-missed %','Worst campaign'],
   LU.map(x=>[CHD.ds[x.di],x.u,critLab(CHD.ds[x.di],x.u),x.n,x.abv,r10(x.avg),r10(x.worst),x.wc]));
  // ---------- monitoring triangulation: ICM recall vs LQAS pass ----------
@@ -9205,9 +9244,12 @@ function renderCH(){
   {k:'na',l:'Not accessible',n:1,f:function(x){return fmt(x.na);}},
   {k:'nap',l:'NA %',n:1,sv:function(x){return x.t?x.na/x.t:0;},f:function(x){return x.t?pc(x.na/x.t*100):'\u2013';}},
   {k:'rf',l:'Refusals',n:1,f:function(x){return fmt(x.rf);}},
-  {k:'rfp',l:'Refusal %',n:1,sv:function(x){return x.t?x.rf/x.t:0;},f:function(x){return x.t?pc(x.rf/x.t*100):'\u2013';}}],DMs,'t',-1);
+  {k:'rfp',l:'Refusal %',n:1,sv:function(x){return x.t?x.rf/x.t:0;},f:function(x){return x.t?pc(x.rf/x.t*100):'\u2013';}}],DMs,'t',-1,null,{cell:(function(){
+   let t=0,na=0,rf=0;DMs.forEach(function(x){t+=x.t;na+=x.na;rf+=x.rf;});
+   return{dv:'',d:esc('Total \u2014 '+pptScope()),t:fmt(t),na:fmt(na),rf:fmt(rf),
+    nap:t?pc(na/t*100):'\u2013',rfp:t?pc(rf/t*100):'\u2013'};})()});
  el('cntCHM').textContent=DMs.length+' district rows across the selection';
- el('capchM').textContent='The chart reads across every campaign since 2017 under the current filters (drag to zoom); the table compiles the selected campaigns by district. Divisions where refusals run hot while NA falls deserve a register-chain check before the next round.';
+ el('capchM').textContent='The chart reads across every campaign since 2017 under the current filters (drag to zoom); the table compiles the selected campaigns by district. Divisions where refusals run hot while NA falls deserve a register-chain check before the next round. The bold bottom line totals the district rows in view: recorded-missed children are summed and both shares are recomputed from those sums, never averaged.';
  el('chMCsv').onclick=()=>csvDownload(base+'-missed-mix.csv',['Division','District','Recorded missed','Not accessible','NA %','Refusals','Refusal %'],
   DMs.map(function(x){return[x.dv,x.d,x.t,x.na,x.t?Math.round(x.na/x.t*1000)/10:'',x.rf,x.t?Math.round(x.rf/x.t*1000)/10:''];}));
  // ---------- zero-dose cross-source: spotting workbook vs advance reports ----------
@@ -9225,9 +9267,12 @@ function renderCH(){
   {k:'zd',l:'Zero dose \u2014 workbook',n:1,f:function(x){return fmt(x.zd);}},
   {k:'rep',l:'Zero dose \u2014 advance report',n:1,f:function(x){return fmt(x.rep);}},
   {k:'df',l:'Difference',n:1,sv:function(x){return Math.abs(x.df);},f:function(x){return (x.df>0?'+':'')+fmt(x.df);}},
-  {k:'dp',l:'Diff %',n:1,sv:function(x){return x.dp==null?0:Math.abs(x.dp);},f:function(x){return x.dp==null?'\u2013':pc(x.dp);}}],XR,'df',-1);
+  {k:'dp',l:'Diff %',n:1,sv:function(x){return x.dp==null?0:Math.abs(x.dp);},f:function(x){return x.dp==null?'\u2013':pc(x.dp);}}],XR,'df',-1,null,{cell:(function(){
+   let zd=0,rep=0;XR.forEach(function(x){zd+=x.zd;rep+=x.rep;});
+   return{n:esc('Total \u2014 '+XR.length+' campaigns'),an:'',zd:fmt(zd),rep:fmt(rep),
+    df:(zd-rep>0?'+':'')+fmt(zd-rep),dp:rep?pc((zd-rep)/rep*100):'\u2013'};})()});
  el('cntCHX').textContent=XR.length+' campaigns in both sources'+(XR.length?(' \u00b7 largest gap '+(XR[0].df>0?'+':'')+fmt(XR[0].df)+' ('+esc(XR[0].n)+')'):'');
- el('capchX').textContent='Two independent sources for the same rounds: zero-dose children recorded in the KP+TD spotting workbook vs the IDIMS advance-report totals, matched by campaign name and year (Feb 26 \u2194 FEB 2026, phase suffixes collapsed). Differences are expected from timing and UC coverage; a large one-sided gap is a data-quality flag \u2014 check which source missed UCs. SNID Sept 2026 sits in the advance reports but is not yet in the spotting workbook. Follows the Division / District filters; campaigns present in only one source are not listed.';
+ el('capchX').textContent='Two independent sources for the same rounds: zero-dose children recorded in the KP+TD spotting workbook vs the IDIMS advance-report totals, matched by campaign name and year (Feb 26 \u2194 FEB 2026, phase suffixes collapsed). Differences are expected from timing and UC coverage; a large one-sided gap is a data-quality flag \u2014 check which source missed UCs. SNID Sept 2026 sits in the advance reports but is not yet in the spotting workbook. Follows the Division / District filters; campaigns present in only one source are not listed. The bottom line sums both sources across the campaigns in view and recomputes the difference share from those totals.';
  el('chXCsv').onclick=()=>csvDownload(base+'-zd-cross-source.csv',
   ['Campaign (spotting workbook)','Advance-report name','Zero dose - workbook','Zero dose - advance report','Difference','Diff %'],
   XR.map(function(x){return[x.n,x.an,x.zd,x.rep,x.df,x.dp==null?'':Math.round(x.dp*10)/10];}));
@@ -9384,13 +9429,13 @@ function renderSN(){
    {type:'spline',name:'Cumulative expected',data:dC,yAxis:1,color:'#be123c'}]});
  el('capsn2').innerHTML='Days 1–'+SND.n3+' cover every in-scope district; days '+(SND.n3+1)+'–'+SND.n5+' cover only '+esc(SND.d5.join(' and '))+', so the daily requirement drops after day '+SND.n3+'.';
  const colsSN=[{k:'n',l:'District'},{k:'dv',l:'Division'},{k:'cat',l:'Category',ns:true,f:r=>snCat(r.cat)},{k:'uc',l:'UCs',n:true,f:r=>fmt(r.uc)},{k:'tg',l:'Target',n:true,f:r=>fmt(r.tg)},{k:'dy',l:'Campaign days',n:true},{k:'dt',l:'Daily target',n:true,f:r=>fmt(Math.round(r.dt))},{k:'sh',l:'% of scope',n:true,f:r=>pc(r.sh)}];
- drawTable('tSN',colsSN,R,'tg',-1);
+ drawTable('tSN',colsSN,R,'tg',-1,null,{cell:{n:esc('Total \u2014 '+pptScope()),dv:'',cat:'',uc:fmt(T.uc),tg:fmt(T.tg),dy:'',dt:fmt(Math.round(T.dt)),sh:pc(100)}});
  el('cntSN').textContent=R.length+' districts · '+fmt(T.tg)+' children';
- el('capsn3').innerHTML='Daily target = district target ÷ campaign days ('+SND.n5+' for '+esc(SND.d5.join(' and '))+', '+SND.n3+' for the rest of KP). Click any column head to re-sort.';
+ el('capsn3').innerHTML='Daily target = district target ÷ campaign days ('+SND.n5+' for '+esc(SND.d5.join(' and '))+', '+SND.n3+' for the rest of KP). Click any column head to re-sort. The bold bottom line totals the districts in view: UCs and targets are summed and the daily target is recomputed from them, never averaged, so the day count stays blank because the two campaign lengths do not add.';
  const colsSNU=[{k:'d',l:'District'},{k:'dv',l:'Division'},{k:'t',l:'Tehsil'},{k:'u',l:'Union council'},{k:'c',l:'UC code'},critCol(o=>o.d,o=>o.u,o=>o.c),{k:'tg',l:'Target',n:true,f:r=>fmt(r.tg)},{k:'dy',l:'Days',n:true},{k:'dt',l:'Daily target',n:true,f:r=>fmt(Math.round(r.dt))}];
- drawTable('tSNU',colsSNU,U,'tg',-1);
+ drawTable('tSNU',colsSNU,U,'tg',-1,null,{cell:{d:esc('Total \u2014 '+pptScope()),dv:'',t:'',u:esc(fmt(U.length)+' UCs'),c:'',cr:'',tg:fmt(U.reduce((a,o)=>a+o.tg,0)),dy:'',dt:fmt(Math.round(U.reduce((a,o)=>a+o.dt,0)))}});
  el('cntSNU').textContent=fmt(U.length)+' of '+fmt(SND.u.length)+' UCs';
- el('capsn4').innerHTML='Full-district scope — every UC in the selected districts is part of '+esc(SND.n)+'. Use the division, district, tehsil, UC and search filters at the top to narrow the list.';
+ el('capsn4').innerHTML='Full-district scope — every UC in the selected districts is part of '+esc(SND.n)+'. Use the division, district, tehsil, UC and search filters at the top to narrow the list. The bold bottom line totals the UCs in view: targets and daily targets are summed, and the day column stays blank because the two campaign lengths do not add.';
  el('snCSV').onclick=()=>csvDownload('SNID_Nov26_district_scope.csv',['District','Division','Category','UCs','Target','Campaign days','Daily target','% of scope'],R.map(o=>[o.n,o.dv,o.cat,o.uc,o.tg,o.dy,Math.round(o.dt),o.sh==null?'':o.sh.toFixed(2)]));
  el('snuCSV').onclick=()=>csvDownload('SNID_Nov26_uc_scope.csv',['District','Division','Tehsil','Union council','UC code','UC criteria','Target','Campaign days','Daily target'],U.map(o=>[o.d,o.dv,o.t,o.u,o.c,critLab(o.d,o.u,o.c),o.tg,o.dy,Math.round(o.dt)]));
  renderNOVR();
@@ -9410,11 +9455,15 @@ function renderNOVR(){
   {k:'mtm',l:'MT members',n:true,f:r=>fmt(r.mtm)},{k:'mtt',l:'MT transit',n:true,f:r=>fmt(r.mtt)},{k:'mtf',l:'MT fixed-site',n:true,f:r=>fmt(r.mtf)},{k:'mta',l:'MT AICs',n:true,f:r=>fmt(r.mta)},{k:'mtu',l:'MT UCMOs',n:true,f:r=>fmt(r.mtu)},{k:'mtfa',l:'MT female AICs',n:true,f:r=>fmt(r.mtfa)},{k:'mtfu',l:'MT female UCMOs',n:true,f:r=>fmt(r.mtfu)},
   {k:'smm',l:'SMT members',n:true,f:r=>fmt(r.smm)},{k:'smt',l:'SMT transit',n:true,f:r=>fmt(r.smt)},{k:'smf',l:'SMT fixed',n:true,f:r=>fmt(r.smf)},{k:'sma',l:'SMT AICs',n:true,f:r=>fmt(r.sma)},{k:'smu',l:'SMT UCMOs',n:true,f:r=>fmt(r.smu)},{k:'smfa',l:'SMT female AICs',n:true,f:r=>fmt(r.smfa)},{k:'smfu',l:'SMT female UCMOs',n:true,f:r=>fmt(r.smfu)},
   {k:'cbm',l:'CBV members',n:true,f:r=>fmt(r.cbm)},{k:'cba',l:'CBV AICs',n:true,f:r=>fmt(r.cba)}];
- drawTable('tNOVR',cols,rows,'tg',-1);
+ const nrSum={}; ['uc','tg','mtm','mtt','mtf','mta','mtu','mtfa','mtfu','smm','smt','smf','sma','smu','smfa','smfu','cbm','cba'].forEach(k=>nrSum[k]=rows.reduce((a,r)=>a+(r[k]||0),0));
+ const nrDD=rows.reduce((a,r)=>a+(r.dd||0),0);
+ const nrTot={cell:{n:esc('Total \u2014 '+rows.length+' districts in the '+NOVR.camp+' plan'),dd:(nrDD>0?'+':'')+fmt(nrDD)}};
+ Object.keys(nrSum).forEach(k=>nrTot.cell[k]=fmt(nrSum[k]));
+ drawTable('tNOVR',cols,rows,'tg',-1,null,nrTot);
  el('cntNR').textContent=rows.length+' districts';
  const big=rows.filter(r=>r.dd).sort((a,b)=>Math.abs(b.dd)-Math.abs(a.dd))[0];
  el('capNR').innerHTML=big?('Largest admin-target difference vs the Final Scope: <b>'+esc(big.n)+'</b> ('+(big.dd>0?'+':'')+fmt(big.dd)+' children). '):'Admin targets match the Final Scope workbook. ';
- el('capNR').innerHTML+='Click any column head to re-sort. Plan totals: '+fmt(T[ix('uc')])+' UCs \u00b7 '+fmt(T[ix('tg')])+' children.';
+ el('capNR').innerHTML+='Click any column head to re-sort. This table is the plan\u2019s own scope, so it does not follow the top filter bar: the bold bottom line sums every column for all '+rows.length+' planned districts, including the plan-versus-scope difference. Plan totals: '+fmt(T[ix('uc')])+' UCs \u00b7 '+fmt(T[ix('tg')])+' children.';
  el('btnNRcsv').onclick=()=>csvDownload('SNID_Nov26_resource_plan.csv',['District','UCs','Admin target (plan)','\u0394 vs scope','MT members','MT transit','MT fixed-site','MT AICs','MT UCMOs','MT female AICs','MT female UCMOs','SMT members','SMT transit','SMT fixed','SMT AICs','SMT UCMOs','SMT female AICs','SMT female UCMOs','CBV members','CBV AICs'],rows.map(r=>[r.n,r.uc,r.tg,r.dd==null?'':r.dd,r.mtm,r.mtt,r.mtf,r.mta,r.mtu,r.mtfa,r.mtfu,r.smm,r.smt,r.smf,r.sma,r.smu,r.smfa,r.smfu,r.cbm,r.cba]));
 }
 
@@ -9470,19 +9519,23 @@ function renderFIPV(){
  CKEY('fi2',[['#0d9488',fipvDN(0)+' groups'],['#7c3aed',fipvDN(1)+' groups']]);
  el('capfi2').innerHTML='Bar colour = district (teal Peshawar, purple Khyber). Border groups follow the scope workbook; <b>other UCs</b> do not border the neighbouring district or Afghanistan.';
  const D=[0,1].map(di=>{const x=R.filter(r=>r.di===di),s=fipvSum(x);return {d:fipvDN(di),uc:s.uc,nv:s.nv,sv:s.sv,hh:s.hh,tg:s.tg,sch:s.sch,sh:T.tg?s.tg/T.tg*100:null};}).filter(x=>x.uc>0);
- drawTable('tFI',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'uc',l:'UCs',n:1,f:x=>fmt(x.uc)},{k:'nv',l:'New to fIPV',n:1,f:x=>fmt(x.nv)},{k:'sv',l:'Already in fIPV',n:1,f:x=>fmt(x.sv)},{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)},{k:'sh',l:'% of fIPV target',n:1,f:x=>pc(x.sh)}],D,'tg',-1);
+ drawTable('tFI',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'uc',l:'UCs',n:1,f:x=>fmt(x.uc)},{k:'nv',l:'New to fIPV',n:1,f:x=>fmt(x.nv)},{k:'sv',l:'Already in fIPV',n:1,f:x=>fmt(x.sv)},{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)},{k:'sh',l:'% of fIPV target',n:1,f:x=>pc(x.sh)}],D,'tg',-1,null,{cell:{
+  d:esc('Total \u2014 '+D.length+' district'+(D.length===1?'':'s')),uc:fmt(T.uc),nv:fmt(T.nv),sv:fmt(T.sv),hh:fmt(T.hh),tg:fmt(T.tg),sch:fmt(T.sch),sh:T.tg?'100%':'\u2013'}});
  el('cntFI').textContent=D.length+' districts · '+fmt(T.tg)+' fIPV target';
- el('capFI').innerHTML='Total in view: <b>'+fmt(T.uc)+' UCs</b> · '+fmt(T.hh)+' households &lt;5 · '+fmt(T.tg)+' fIPV target · '+fmt(T.sch)+' school target. fIPV target = 94% of the under-10 OPV estimate; integer allocation uses largest remainder within each district–border group so every group total matches the scope slide exactly.';
+ el('capFI').innerHTML='Total in view: <b>'+fmt(T.uc)+' UCs</b> · '+fmt(T.hh)+' households &lt;5 · '+fmt(T.tg)+' fIPV target · '+fmt(T.sch)+' school target. fIPV target = 94% of the under-10 OPV estimate; integer allocation uses largest remainder within each district–border group so every group total matches the scope slide exactly. The bold bottom line adds the district rows in view; the share is 100% because it is measured against the same rows.';
  el('fiCSV').onclick=()=>csvDownload('fIPV_Peshawar_Khyber_districts.csv',['District','UCs','New to fIPV scope','Already in fIPV scope','HH target (<5)','fIPV target','School target','% of fIPV target'],D.map(x=>[x.d,x.uc,x.nv,x.sv,x.hh,x.tg,x.sch,x.sh==null?'':x.sh.toFixed(2)]));
  const B=FIPV.b.map((b,i)=>{const x=R.filter(r=>r.bv===i),s=fipvSum(x);return {i,di:b[0],d:fipvDN(b[0]),b:b[1],uc:s.uc,nv:s.nv,sv:s.sv,hh:s.hh,tg:s.tg,sch:s.sch};}).filter(x=>x.uc>0);
- drawTable('tFIB',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'b',l:'Border group',f:x=>esc(x.b)},{k:'uc',l:'UCs',n:1,f:x=>fmt(x.uc)},{k:'nv',l:'New',n:1,f:x=>fmt(x.nv)},{k:'sv',l:'Existing',n:1,f:x=>fmt(x.sv)},{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)}],B,'tg',-1);
+ const bS=B.reduce((a,x)=>{['uc','nv','sv','hh','tg','sch'].forEach(k=>a[k]+=x[k]||0);return a;},{uc:0,nv:0,sv:0,hh:0,tg:0,sch:0});
+ drawTable('tFIB',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'b',l:'Border group',f:x=>esc(x.b)},{k:'uc',l:'UCs',n:1,f:x=>fmt(x.uc)},{k:'nv',l:'New',n:1,f:x=>fmt(x.nv)},{k:'sv',l:'Existing',n:1,f:x=>fmt(x.sv)},{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)}],B,'tg',-1,null,{cell:{
+  d:esc('Total \u2014 '+B.length+' border groups'),b:'',uc:fmt(bS.uc),nv:fmt(bS.nv),sv:fmt(bS.sv),hh:fmt(bS.hh),tg:fmt(bS.tg),sch:fmt(bS.sch)}});
  el('cntFIB').textContent=B.length+' border groups';
- el('capFIB').innerHTML='Border group as listed in the scope workbook. Peshawar has 9 UCs bordering Khyber and 39 other UCs; Khyber has 12 bordering Peshawar, 8 bordering Afghanistan and 10 other UCs.';
+ el('capFIB').innerHTML='Border group as listed in the scope workbook. Peshawar has 9 UCs bordering Khyber and 39 other UCs; Khyber has 12 bordering Peshawar, 8 bordering Afghanistan and 10 other UCs. The bold bottom line adds the border groups in view.';
  el('fibCSV').onclick=()=>csvDownload('fIPV_Peshawar_Khyber_border_groups.csv',['District','Border group','UCs','New to fIPV scope','Already in fIPV scope','HH target (<5)','fIPV target','School target'],B.map(x=>[x.d,x.b,x.uc,x.nv,x.sv,x.hh,x.tg,x.sch]));
  const U=R.map(r=>({d:r.d,t:r.t,b:r.b,nv:r.nv,u:r.u,hh:r.hh,tg:r.tg,sch:r.sch}));
- drawTable('tFIU',[{k:'d',l:'District'},{k:'t',l:'Tehsil'},{k:'b',l:'Border group'},{k:'nv',l:'Scope',ns:1,f:x=>x.nv?'<span class="fnew">New</span>':'<span class="fexist">Existing</span>'},{k:'u',l:'Union council',f:x=>'<b>'+esc(x.u)+'</b>'},critCol(x=>x.d,x=>x.u),{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)}],U,'tg',-1);
+ drawTable('tFIU',[{k:'d',l:'District'},{k:'t',l:'Tehsil'},{k:'b',l:'Border group'},{k:'nv',l:'Scope',ns:1,f:x=>x.nv?'<span class="fnew">New</span>':'<span class="fexist">Existing</span>'},{k:'u',l:'Union council',f:x=>'<b>'+esc(x.u)+'</b>'},critCol(x=>x.d,x=>x.u),{k:'hh',l:'HH target (<5)',n:1,f:x=>fmt(x.hh)},{k:'tg',l:'fIPV target',n:1,f:x=>fmt(x.tg)},{k:'sch',l:'School target',n:1,f:x=>fmt(x.sch)}],U,'tg',-1,null,{cell:{
+  d:'',t:'',b:'',nv:'',cr:'',u:esc('Total \u2014 '+fmt(U.length)+' UCs'),hh:fmt(T.hh),tg:fmt(T.tg),sch:fmt(T.sch)}});
  el('cntFIU').textContent=fmt(U.length)+' of '+fmt(FIPV.tot.uc)+' UCs';
- el('capFIU').innerHTML='All 78 fIPV UCs are already inside the SNID Nov-26 full-district scope (Peshawar 103 UCs, Khyber 53 UCs) — fIPV is an additional activity, not a change to SNID coverage. <b>New</b> means newly added to the fIPV scope, not new to SNID. Tehsil names are resolved from the SNID scope table. The local filters above apply only to this page.';
+ el('capFIU').innerHTML='All 78 fIPV UCs are already inside the SNID Nov-26 full-district scope (Peshawar 103 UCs, Khyber 53 UCs) — fIPV is an additional activity, not a change to SNID coverage. <b>New</b> means newly added to the fIPV scope, not new to SNID. Tehsil names are resolved from the SNID scope table. The local filters above apply only to this page; the bold bottom line adds the UCs in view.';
  el('fiuCSV').onclick=()=>csvDownload('fIPV_Peshawar_Khyber_UCs.csv',['District','Tehsil','Border group','Scope','Union council','UC criteria','HH target (<5)','fIPV target','School target'],U.map(x=>[x.d,x.t,x.b,x.nv?'New':'Existing',x.u,critLab(x.d,x.u),x.hh,x.tg,x.sch]));
 }
 
@@ -9593,13 +9646,14 @@ function erSheetDraw(R,T){
   g.nd++;g.tg+=o.tg;g.dt+=o.dt;g.exp+=o.exp;g.td+=o.td;g.v+=o.v;g.m+=o.m;g.rf+=o.rf;
   if(o.st==='behind')g.beh++;if(o.st==='no')g.nod++;});
  const gs=Object.keys(G).sort().map(x=>G[x]);
+ const erTotLbl=()=>fTeh.value?(fTeh.value+' tehsil total'):fDist.value?(dLbl()+' total'):fDiv.value?(fDiv.value+' division total'):(DVSEL&&DVSEL.size?'selected divisions total':'KP total');
  el('tERDiv').innerHTML=erTbl(['Division','Dist','Target','Expected','Today','Cumulative','Cov %','Pace %','Behind','No data'],
   gs.map(g=>[esc(g.dv),String(g.nd),nfmt(g.tg),nfmt(g.exp),nfmt(g.td),nfmt(g.v),pfmt(g.tg?g.v/g.tg*100:null),(g.exp?rgN(g.v/g.exp*100,95,80)+'%':'–'),String(g.beh),String(g.nod)]),
-  ['KP total',String(T.nd),nfmt(T.tg),nfmt(T.exp),nfmt(T.td),nfmt(T.v),pfmt(T.cov),(T.pace==null?'–':rgN(T.pace,95,80)+'%'),String(T.beh),String(T.nod)]);
+  [erTotLbl(),String(T.nd),nfmt(T.tg),nfmt(T.exp),nfmt(T.td),nfmt(T.v),pfmt(T.cov),(T.pace==null?'–':rgN(T.pace,95,80)+'%'),String(T.beh),String(T.nod)]);
  const rs=R.slice().sort((a,b)=>(a.pace==null?-1:a.pace)-(b.pace==null?-1:b.pace));
  el('tERSum').innerHTML=erTbl(['District','Category','Days','Target','Daily target','Expected','Today','Cumulative','Cov %','Pace %','Missed','Refusals','Status'],
   rs.map(o=>[esc(o.n),snCat(o.cat),String(o.dy),nfmt(o.tg),nfmt(o.dt),nfmt(o.exp),nfmt(o.td),nfmt(o.v),pfmt(o.cov),(o.pace==null?'–':rgN(o.pace,95,80)+'%'),nfmt(o.m),nfmt(o.rf),stTag(o.st)]),
-  ['KP total',String(T.nd)+' districts','',nfmt(T.tg),nfmt(T.dt),nfmt(T.exp),nfmt(T.td),nfmt(T.v),pfmt(T.cov),(T.pace==null?'–':rgN(T.pace,95,80)+'%'),nfmt(T.m),nfmt(T.rf),String(T.beh)+' behind']);
+  [erTotLbl(),String(T.nd)+' districts','',nfmt(T.tg),nfmt(T.dt),nfmt(T.exp),nfmt(T.td),nfmt(T.v),pfmt(T.cov),(T.pace==null?'–':rgN(T.pace,95,80)+'%'),nfmt(T.m),nfmt(T.rf),String(T.beh)+' behind']);
  el('erBN').innerHTML=erBottlenecks(R,T);
 }
 function erBuildIn(){
@@ -12383,18 +12437,27 @@ function renderMis(){
  const pN=v=>v==null?'–':pc(v), bad=(v,t)=>v==null?'–':`<span style="color:${v>=t?'#b91c1c':'inherit'};font-weight:${v>=t?700:400}">${pc(v)}</span>`, low=(v,t)=>v==null?'–':`<span style="color:${v<t?'#b91c1c':'inherit'};font-weight:${v<t?700:400}">${pc(v)}</span>`;
  const cols=[{k:'k',l:L.Lvl,f:x=>'<b>'+esc(x.k)+'</b>'},{k:'tg',l:'Target',n:1,f:x=>fmt(x.tg)},{k:'stp',l:'Still missed %',n:1,f:x=>bad(x.stp,3)},{k:'st',l:'Still missed',n:1,f:x=>fmt(x.st)},{k:'srf',l:'Refusing',n:1,f:x=>x.srf?'<b>'+fmt(x.srf)+'</b>':'0'},{k:'slo',l:'Left over',n:1,f:x=>fmt(x.slo)},{k:'recov',l:'Recovered %',n:1,f:x=>pN(x.recov)},{k:'pers',l:'Persistent refusal UCs',n:1,f:x=>x.pers||''}];
  if(byK)cols.push({k:'idn',l:'ICM: team did not visit',n:1,f:x=>bad(x.idn,10)},{k:'itm',l:'ICM: team missed child',n:1,f:x=>bad(x.itm,10)},{k:'irf',l:'ICM: refusal',n:1,f:x=>bad(x.irf,10)},{k:'fem',l:'Teams with a woman',n:1,f:x=>low(x.fem,80)},{k:'loc',l:'Teams with local member',n:1,f:x=>low(x.loc,80)},{k:'pca',l:'Poorly covered areas',n:1,f:x=>x.pca==null?'–':x.pca});
- drawTable('tMD',cols,rows,'st',-1);
+ const mdTot={cell:{k:esc('Total \u2014 '+pptScope()),tg:fmt(S.tg),stp:S.stp==null?'\u2013':bad(S.stp,3),st:fmt(S.st),
+  srf:S.srf?'<b>'+fmt(S.srf)+'</b>':'0',slo:fmt(S.slo),recov:S.recov==null?'\u2013':pN(S.recov),
+  pers:fmt(rows.reduce((a,x)=>a+(x.pers||0),0)),idn:'\u2013',itm:'\u2013',irf:'\u2013',fem:'\u2013',loc:'\u2013',
+  pca:fmt(rows.reduce((a,x)=>a+(x.pca||0),0))}};
+ drawTable('tMD',cols,rows,'st',-1,null,mdTot);
  el('cntMD').textContent=rows.length+' '+L.pl;
- el('capMD').textContent=byK?`ICM = independent intra-campaign monitoring (% of children checked); red = 10% or more. "Teams with a woman" and "local member" target 80%. ICM and readiness columns are from the District Profile Card for ${(DPROF.camps||[])[0]||''}; blank = not reported.`:'ICM and team-composition columns are shown at district level (clear the District filter).';
+ el('capMD').textContent=(byK?'ICM = independent intra-campaign monitoring (% of children checked); red = 10% or more. "Teams with a woman" and "local member" target 80%. ICM and readiness columns are from the District Profile Card for '+((DPROF.camps||[])[0]||'')+'; blank = not reported.':'ICM and team-composition columns are shown at district level (clear the District filter).')+' The bold bottom line totals the '+rows.length+' '+L.pl+' in view: target, children and poorly covered areas are summed and the still-missed and recovery percentages are recomputed from those sums; the ICM shares and team-composition percentages have no rolled-up denominator at this grain, so they print \u2013.';
  // UC table
  const PL=[['top','Most still missed'],['ref','Most refusals'],['pers','Persistent refusals'],['u5','5%+ still missed'],['all','All UCs']];
  el('mPills').innerHTML=PL.map(([k,l])=>`<button data-f="${k}" class="${MSF===k?'on':''}">${l}</button>`).join('');
  el('mPills').querySelectorAll('button').forEach(b=>b.onclick=()=>{MSF=b.dataset.f;renderMis();});
  let U=S.U.slice(); if(MSF==='ref')U=U.filter(r=>r.srf>0); else if(MSF==='pers')U=U.filter(r=>r.pers); else if(MSF==='u5')U=U.filter(r=>r.stp>=5); else if(MSF==='top')U=U.filter(r=>r.st>0).sort((a,b)=>b.st-a.st).slice(0,100);
  const rk=riskAll(), rkc={}; rk.forEach(r=>rkc[r.c]=r);
+ const muS=U.reduce((a,r)=>{['tg','vc','rec','sna','srf','slo','st'].forEach(k=>a[k]+=r[k]||0); return a;},{tg:0,vc:0,rec:0,sna:0,srf:0,slo:0,st:0});
+ const muTot={cell:{d:esc('Total \u2014 '+pptScope()),u:esc(U.length+' UCs'),tg:fmt(muS.tg),vp:muS.tg?pN(muS.vc/muS.tg*100):'\u2013',
+  rec:fmt(muS.rec),recov:muS.rec?pN(Math.max(0,muS.rec-muS.sna-muS.srf)/muS.rec*100):'\u2013',sna:fmt(muS.sna),
+  srf:muS.srf?'<b style="color:#b91c1c">'+fmt(muS.srf)+'</b>':'0',slo:fmt(muS.slo),stp:muS.tg?bad(muS.st/muS.tg*100,3):'\u2013',
+  pers:fmt(U.filter(r=>r.pers).length)+' UCs',lq:'\u2013'}};
  drawTable('tMU',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil'},{k:'u',l:'UC'},critCol(x=>x.d,x=>x.u,x=>x.c),{k:'tg',l:'Target',n:1,f:x=>fmt(x.tg)},{k:'vp',l:'Reported vacc. %',n:1,f:x=>pN(x.vp)},{k:'rec',l:'Recorded missed',n:1,f:x=>fmt(x.rec)},{k:'recov',l:'Recovered %',n:1,f:x=>pN(x.recov)},
   {k:'sna',l:'Still NA',n:1,f:x=>fmt(x.sna)},{k:'srf',l:'Still refusing',n:1,f:x=>x.srf?'<b style="color:#b91c1c">'+fmt(x.srf)+'</b>':'0'},{k:'slo',l:'Left over',n:1,f:x=>fmt(x.slo)},{k:'stp',l:'Still missed %',n:1,f:x=>bad(x.stp,3)},
-  {k:'pers',l:'Persistent refusals',sv:x=>x.pers?1:0,f:x=>x.pers?'<span class="crtag">Yes</span>':''},{k:'lq',l:'LQAS (latest)',sv:x=>{const q=(rkc[x.c]||{}).lq;return q?({F:0,I:1,P:2})[q.last]:3;},f:x=>{const q=(rkc[x.c]||{}).lq;return q?`<span style="color:${q.last==='F'?'#dc2626':q.last==='I'?'#d97706':'#16a34a'};font-weight:600">${lqR[q.last]}</span>`:'–';}}],U,MSF==='ref'||MSF==='pers'?'srf':'st',-1);
+  {k:'pers',l:'Persistent refusals',sv:x=>x.pers?1:0,f:x=>x.pers?'<span class="crtag">Yes</span>':''},{k:'lq',l:'LQAS (latest)',sv:x=>{const q=(rkc[x.c]||{}).lq;return q?({F:0,I:1,P:2})[q.last]:3;},f:x=>{const q=(rkc[x.c]||{}).lq;return q?`<span style="color:${q.last==='F'?'#dc2626':q.last==='I'?'#d97706':'#16a34a'};font-weight:600">${lqR[q.last]}</span>`:'–';}}],U,MSF==='ref'||MSF==='pers'?'srf':'st',-1,null,muTot);
  el('cntMU').textContent=U.length+' UC'+(U.length===1?'':'s')+(MSF==='top'?' (top 100)':'');
  const r1=v=>v==null?'':Math.round(v*10)/10;
  el('btnMU').onclick=()=>csvDownload('Missed_children_'+_slug()+'.csv',['Division','District','Tehsil','UC','UC code','UC criteria','Campaign','Target (under 5)','Reported vaccinated','Reported vaccinated %','Recorded missed','Recovered %','Still NA','Still refusing','Left over','Still missed','Still missed %','Persistent refusals'],
@@ -12925,7 +12988,12 @@ function renderHRD(){
     +[1,2,3,4,5,6].map(v=>'<option value="'+v+'"'+((AS[o.d]||0)===v?' selected':'')+'>'+v
     +(v===6?'+' :'')+'</option>').join('')+'</select>'},
   {k:'wd',l:'Why it is here',ns:1,f:o=>o.wd.length?o.wd.join('<br>'):'<span class="cnt">no channel flags it</span>'}],
-  D,'ord',-1);
+  D,'ord',-1,null,{cell:(function(){
+   const nT=R0.filter(o=>o.rdn!=null);
+   return{d:esc('Total \u2014 '+pptScope()),ord:['A','B','C','D'].map(t=>R0.filter(o=>o.tier===t).length+' '+t).join(' \u00b7 '),
+    n:'',hi:fmt(hiS),me:fmt(meS),hp:'\u2013',vp:'\u2013',stp:'\u2013',zpc:'\u2013',
+    rdn:nT.length?pc(nT.reduce((s,o)=>s+o.rdn,0)/nT.length):'\u2013',ep:'\u2013',cat:'',
+    sug:fmt(sugS),as:fmt(adS),wd:''};})()});
  el('tHRD').querySelectorAll('.hrdas').forEach(s=>{s.onchange=()=>{hrdSave(s.dataset.d,+s.value);renderHRD();};});
  el('hrdCap').textContent='Sorted by tier, then by channels flagged, then by High-Risk councils. '
   +CAMP[LCP]+' coverage, still missed and zero-dose columns are rolled from the same UC rows as the '
@@ -12933,7 +13001,10 @@ function renderHRD(){
   +'and MPQA the assigned sample, which is problem-selected on purpose so its bands are not a '
   +'micro-plan quality rate. '+fmt(A.length)+' districts sit in tier A ('+HRDTR.A[1].toLowerCase()+'), '
   +fmt(B.length)+' in tier B. Follows the division / district filter and the campaign picker above, '
-  +'which changes the Monitoring channel only.';
+  +'which changes the Monitoring channel only. The bold bottom line totals the districts in view: HRA '
+  +'council counts and suggested / assigned monitors are summed, readiness is their mean, and coverage, '
+  +'still-missed, zero-dose and OPV-3 percentages have no rolled-up denominator at this grain, so they '
+  +'print \u2013; the Tier cell counts the districts in each tier.';
  const GD=D.slice(0,24);
  el('hrdg1').style.height=hFor(GD.length,24)+'px';
  const hm=[]; GD.forEach((g,y)=>HRDCH.forEach((c,x)=>hm.push(
@@ -12962,7 +13033,9 @@ function renderHRD(){
   +'Medium Risk councils inside tiers A and B \u2014 the named targets a monitor should be sent to. '
   +'"Scored 0 of 3" columns are the portal\u2019s own indicator rows that came out worst for that council; '
   +(HW_?'the template leaves '+fmt(HW_.nx.length)+' criteria un-scored across the file and those carry no points either way. ':'')
-  +'Coverage and missed children are the same council in '+CAMP[LCP]+', from the campaign data.';
+  +'Coverage and missed children are the same council in '+CAMP[LCP]+', from the campaign data. The bold '
+  +'bottom line totals the councils in view: still missed, children not reached and zero-dose children are '
+  +'summed, while the HRA score is a council-level rating with no rolled-up value, so it prints \u2013.';
  drawTable('tHRDU',[
   {k:'tier',l:'Tier',sv:x=>'DCBA'.indexOf(x.tier),
    f:x=>'<span class="tag '+HRDTR[x.tier][0]+'">'+x.tier+'</span>'},
@@ -12991,7 +13064,10 @@ function renderHRD(){
   {k:'zr',l:'ZD reported',n:1,f:x=>fmt(x.zr)},
   {k:'zc',l:'ZD covered',n:1,tt:SCOV?CAMP[LCP]+'\u2019s own covered figure for this council, same-round self-reported':'',
    f:x=>x.zc==null?'<span class="cnt">no figure</span>':(x.zc?fmt(x.zc):'<b class="dn">0</b>')}],
-  UC,'pct',1);
+  UC,'pct',1,null,{cell:{tier:['A','B','C','D'].map(t=>UC.filter(o=>o.tier===t).length+' '+t).join(' \u00b7 '),
+   d:esc('Total \u2014 '+pptScope()),uc:esc(fmt(UC.length)+' councils'),code:'',band:'',pct:'\u2013',dr:'',vin:'',
+   vp:'\u2013',st:fmt(UC.reduce((s,o)=>s+o.st,0)),lo:fmt(UC.reduce((s,o)=>s+o.lo,0)),
+   zr:fmt(UC.reduce((s,o)=>s+o.zr,0)),zc:fmt(UC.reduce((s,o)=>s+(o.zc||0),0))}});
  el('btnHRDx').onclick=()=>csvDownload('hrd_districts_'+_slug()+'.csv',
   ['Division','District','Tier','Channels flagged (of 6)','No-data channels',
    'HRA councils scored','HRA High Risk','HRA Medium Risk','HRA Low Risk','HRA achieved points',
@@ -15164,12 +15240,23 @@ function renderHCamp(){ cqSel(); hubCards('p-hcamp'); const {X,R}=cqScopeR(), S=
  const cell=(r,k,dg)=>rgS(r[k],r.B[k],dg);
  drawTable('tPerf',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>cell(x,'rd')},{k:'rec',l:'ICM recall',n:1,f:x=>cell(x,'rec')},{k:'fmp',l:'Finger-marked',n:1,f:x=>cell(x,'fmp')},
   {k:'lqp',l:'LQAS passed',n:1,f:x=>cell(x,'lqp')+(x.l?` <small>(${x.l.n})</small>`:'')},{k:'stp',l:'Still missed',n:1,f:x=>cell(x,'stp')},{k:'srp',l:'Still refusing',n:1,f:x=>cell(x,'srp',2)},{k:'zc',l:'ZD covered',n:1,f:x=>cell(x,'zc')},
-  {k:'sc',l:'Score',n:1,f:x=>x.sc==null?'–':'<b>'+Math.round(x.sc)+'%</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'why',l:'Why needs focus',ns:1,f:x=>x.cls==='f'?esc(x.why.join(', ')):''}],R,'sc',1);
+  {k:'sc',l:'Score',n:1,f:x=>x.sc==null?'–':'<b>'+Math.round(x.sc)+'%</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'why',l:'Why needs focus',ns:1,f:x=>x.cls==='f'?esc(x.why.join(', ')):''}],R,'sc',1,null,{cell:{
+   d:esc('Total \u2014 '+pptScope()),
+   rd:S.rd==null?'\u2013':pc(S.rd), rec:S.rec==null?'\u2013':pc(S.rec), fmp:S.fmp==null?'\u2013':pc(S.fmp),
+   lqp:S.lqp==null?'\u2013':pc(S.lqp)+(S.l_n?' <small>('+fmt(S.l_n)+')</small>':''),
+   stp:S.stp==null?'\u2013':pc(S.stp), srp:S.srp==null?'\u2013':pc(S.srp), zc:S.zc==null?'\u2013':pc(S.zc), sc:'\u2013',
+   cls:['g','a','r','f','n'].filter(k=>S.cls[k].length).map(k=>S.cls[k].length+' '+CLS[k][0].toLowerCase()).join(' \u00b7 '), why:''}});
+ el('capPerfM').innerHTML+=' The bold bottom line totals the districts in view: readiness is their mean and every other rate is recomputed from the summed children, never averaged; the performance score has no rolled-up value, so it prints &ldquo;&ndash;&rdquo; and the class cell counts the districts instead.';
  el('btnPerfCSV').onclick=()=>cqCSV('Campaign_performance_'+lab,['District','Division','Category','Readiness %','ICM recall %','Finger-marked %','LQAS lots','LQAS passed %','Still missed %','Still refusing %','ZD covered %','Indicators','Score %','Class','Polio case / sewage / watch'],R.map(r=>[r.d,r.dv,critLab(r.d),rnd(r.rd),rnd(r.rec),rnd(r.fmp),r.l?r.l.n:'',rnd(r.lqp),rnd(r.stp),rnd(r.srp,2),rnd(r.zc),r.ni,rnd(r.sc),CLS[r.cls][0],r.why.join('; ')]));
  el('btnPCR2').onclick=()=>runPCR(CQI,fDiv.value&&!fDist.value?fDiv.value:'KP',el('btnPCR2'));
  el('cntCTri').textContent=S.tri.length+' districts';
- el('capCTri').textContent='Pre-campaign readiness, intra-campaign monitoring (ICM), LQAS and the admin missed-children data are compared district by district. A flag means the sources tell different stories, so check them in the field before relying on either. Red = serious disagreement.'+(S.l_n?'':' LQAS has not reported for this round yet, so the flags compare readiness, ICM and admin data only.');
- drawTable('tCTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'F',l:'What disagrees',ns:1,f:x=>x.F.map(f=>`<span class="trf ${f[1]==='a'?'a':''}">${esc(f[0])}</span>`).join('')}],S.tri,'cls',1);
+ el('capCTri').textContent='Pre-campaign readiness, intra-campaign monitoring (ICM), LQAS and the admin missed-children data are compared district by district. A flag means the sources tell different stories, so check them in the field before relying on either. Red = serious disagreement.'+(S.l_n?'':' LQAS has not reported for this round yet, so the flags compare readiness, ICM and admin data only.')+' The bold bottom line is the '+pptScope()+' count: it tallies the districts in each class and the flags behind them, because a disagreement count cannot be summed into a rate.';
+ const triC={}; S.tri.forEach(r=>triC[r.cls]=(triC[r.cls]||0)+1);
+ const triF=S.tri.reduce((a,r)=>a+r.F.length,0), triR=S.tri.reduce((a,r)=>a+r.F.filter(f=>f[1]==='r').length,0);
+ drawTable('tCTri',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'cls',l:'Class',sv:x=>['f','r','a','g','n'].indexOf(x.cls),f:x=>clsTag(x.cls)},{k:'F',l:'What disagrees',ns:1,f:x=>x.F.map(f=>`<span class="trf ${f[1]==='a'?'a':''}">${esc(f[0])}</span>`).join('')}],S.tri,'cls',1,null,{cell:{
+  d:esc('Total \u2014 '+pptScope()),
+  cls:['f','r','a','g','n'].filter(k=>triC[k]).map(k=>triC[k]+' '+CLS[k][0].toLowerCase()).join(' \u00b7 '),
+  F:esc(fmt(triF)+' flags across '+S.tri.length+' districts \u00b7 '+fmt(triR)+' serious')}});
 }
 const rnd=(v,dg)=>v==null?'':+v.toFixed(dg==null?1:dg);
 
@@ -15431,6 +15518,12 @@ function renderMPQ(){
  const stU=v=>v==null?'<span class="cnt">\u2013</span>':rgP(v,100,70);
  const pU=v=>v==null?'<span class="cnt">\u2013</span>':rgP(v,90,70);
  const cnt=(v,bad2)=>v?'<span class="rg '+(bad2?'r':'a')+'">'+fmt(v)+'</span>':'<span class="rg g">0</span>';
+ const mq={mp:0,pl:0,sc:0,un:0,ps:0,ni:0,si:0};
+ rows.forEach(r=>['mp','pl','sc','un','ps','ni','si'].forEach(k=>{if(r[k]!=null)mq[k]+=r[k];}));
+ const mqU=mq.sc?(mq.ni+mq.si)/mq.sc*100:null;
+ const mqTot={cell:{d:esc('Total \u2014 all '+M.n+' MPQA districts (this round)'),mp:fmt(mq.mp),pl:fmt(mq.pl),sc:fmt(mq.sc),
+  sp:mq.pl?stU(mq.sc/mq.pl*100):'\u2013',un:fmt(mq.un),ps:fmt(mq.ps),pp:mq.sc?pU(mq.ps/mq.sc*100):'\u2013',
+  ni:fmt(mq.ni),si:fmt(mq.si),under:mqU==null?'\u2013':'<span class="rg '+(mqU<=5?'g':mqU<=15?'a':'r')+'">'+pc(mqU)+'</span>'}};
  drawTable('tMPQ',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},
   {k:'dv',l:'Division',f:x=>esc(x.dv||'\u2013')},critDCol(x=>x.d),
   {k:'mp',l:'Campaign UCs',n:1,tt:'UCs in the campaign scope, shown for context only \u2014 MPQA does not have to cover them',f:x=>x.mp==null?'\u2013':fmt(x.mp)},
@@ -15442,9 +15535,9 @@ function renderMPQ(){
   {k:'pp',l:'Pass % of reported',n:1,f:x=>pU(x.pp)},
   {k:'ni',l:'Needs improvement',n:1,f:x=>cnt(x.ni,false)},
   {k:'si',l:'Serious issues',n:1,f:x=>cnt(x.si,true)},
-  {k:'under',l:'Under 90 % of reported',n:1,f:x=>x.under==null?'\u2013':'<span class="rg '+(x.under<=5?'g':x.under<=15?'a':'r')+'">'+pc(x.under)+'</span>'}],rows,'un',-1);
+  {k:'under',l:'Under 90 % of reported',n:1,f:x=>x.under==null?'\u2013':'<span class="rg '+(x.under<=5?'g':x.under<=15?'a':'r')+'">'+pc(x.under)+'</span>'}],rows,'un',-1,null,mqTot);
  el('cntMPQ').textContent=M.n+' districts \u00b7 '+fmt(scored)+' of '+fmt(picked)+' assigned UCs reported \u00b7 '+esc(M.gen);
- el('capMPQ').textContent='Counts, not rates. UCs assigned is the targeted sample the Federal office picked for this district \u2014 low-performing UCs or UCs flagged on another indicator \u2014 not a duty to assess every UC, so the Campaign UCs column is context and the assigned share of them is not a coverage target. Reported is what the district has filed, and the three band columns split only those reported UCs. Reported % of assigned = filed / assigned and is the one figure owed, while Pass % and Under 90 % are of reported UCs and \u2014 the sample being problem-selected by design \u2014 are not a province-wide micro-plan quality rate. A district can pass everything it has looked at and still owe the most reports (grey bar above). Reported % of assigned green at 100%, amber from 70%; pass share green at 90+, amber from 70; under 90 % of reported is better near zero. Course correction for failed UCs is due 23\u201324-Oct-2026 and re-MPQA 26-Oct on the countdown calendar.';
+ el('capMPQ').textContent='Counts, not rates. UCs assigned is the targeted sample the Federal office picked for this district \u2014 low-performing UCs or UCs flagged on another indicator \u2014 not a duty to assess every UC, so the Campaign UCs column is context and the assigned share of them is not a coverage target. Reported is what the district has filed, and the three band columns split only those reported UCs. Reported % of assigned = filed / assigned and is the one figure owed, while Pass % and Under 90 % are of reported UCs and \u2014 the sample being problem-selected by design \u2014 are not a province-wide micro-plan quality rate. A district can pass everything it has looked at and still owe the most reports (grey bar above). Reported % of assigned green at 100%, amber from 70%; pass share green at 90+, amber from 70; under 90 % of reported is better near zero. Course correction for failed UCs is due 23\u201324-Oct-2026 and re-MPQA 26-Oct on the countdown calendar. The bold bottom line adds the sample counts for all '+M.n+' districts in this round and re-derives Reported % of assigned, Pass % and Under 90 % from those sums; it is the round\u2019s whole sample and does not follow the top filter bar.';
  el('btnMPQcsv').onclick=()=>cqCSV('MPQA_'+M.camp,['District','Division','Category','Campaign UCs','UCs assigned for MPQA','UCs reported','Reported % of assigned','Assigned not yet reported','Pass 90+','Pass % of reported','Needs improvement 70-89','Serious issues under 70','Under 90 % of reported'],
   rows.map(x=>[x.d,x.dv,critLab(x.d),x.mp==null?'':x.mp,x.pl,x.sc,x.sp==null?'':rnd(x.sp),x.un,x.ps,x.pp==null?'':rnd(x.pp),x.ni,x.si,x.under==null?'':rnd(x.under)]));
  const MU=M.u, TR=M.thr||[90,70], dnU=Object.keys(M.d).sort();
@@ -15463,15 +15556,20 @@ function renderMPQ(){
   const FU=MPQUD>=0?SU.filter(x=>x.d===dnU[MPQUD]):SU;
   const scU=v=>v==null?'<span class="cnt">–</span>':'<span class="rg '+(v>=TR[0]?'g':v>=TR[1]?'a':'r')+'">'+rnd(v,1)+'</span>';
   const stTag=x=>x.st===2?'<span class="rg r">Not reported</span>':(x.st===1?'<span class="rg a">Partial</span>':'<span class="rg g">Reported</span>');
+  const rpU=FU.filter(x=>x.st!==2).length, ovU=FU.filter(x=>x.ov!=null);
+  const meanS=k=>{const a=FU.map(x=>x[k]).filter(v=>v!=null&&!isNaN(v));return a.length?rnd(a.reduce((p,q)=>p+q,0)/a.length,1)+'%':'\u2013';};
+  const bdC={}; FU.forEach(x=>{bdC[x.bd]=(bdC[x.bd]||0)+1;});
+  const mpqUTot={cell:{d:'',t:'',c:'',cr:'',u:esc('Total \u2014 '+fmt(FU.length)+' UCs'),st:esc(rpU+' of '+FU.length+' reported'),
+   ov:meanS('ov'),dk:meanS('dk'),fv:meanS('fv'),
+   bd:esc(Object.keys(bdC).map(k=>bdC[k]+' '+k.toLowerCase()).join(' \u00b7 '))}};
   drawTable('tMPQU',(MPQUD<0?[{k:'d',l:'District',f:x=>esc(x.d)}]:[]).concat([
    {k:'t',l:'Tehsil'},{k:'u',l:'UC',f:x=>'<b>'+esc(x.u)+'</b>'},{k:'c',l:'UC code'},critCol(x=>x.d,x=>x.u),
    {k:'st',l:'MPQA state',sv:x=>x.st,f:stTag,tt:'Whether this UC’s review has been filed. The list is a targeted sample, so Not reported is an outstanding review, not a missing score.'},
    {k:'ov',l:'Over-all %',n:1,tt:'The banded MPQA score: '+TR[0]+'+ pass, '+TR[1]+'-'+(TR[0]-1)+' needs improvement, under '+TR[1]+' serious',f:x=>scU(x.ov)},
    {k:'dk',l:'Desk review %',n:1,f:x=>scU(x.dk)},{k:'fv',l:'Field validation %',n:1,f:x=>scU(x.fv)},
-   {k:'bd',l:'Band',f:x=>esc(x.bd)}]),FU,'st',-1);
-  const rpU=FU.filter(x=>x.st!==2).length, ovU=FU.filter(x=>x.ov!=null);
+   {k:'bd',l:'Band',f:x=>esc(x.bd)}]),FU,'st',-1,null,mpqUTot);
   el('cntMPQU').textContent=fmt(FU.length)+' assigned UCs'+(MPQUD>=0?' · '+dnU[MPQUD]:' province-wide')+' · '+fmt(rpU)+' reported · '+fmt(FU.length-rpU)+' still to report';
-  el('capMPQU').textContent='These '+fmt(FU.length)+' rows are the UCs assigned for micro-plan assessment in this view — a targeted sample of low-performing and flagged UCs, not every UC of the district. Read from '+esc(MU.src)+' (as of '+esc(MU.asof)+'): MPQA state is whether the review has been filed, and desk / field / over-all % are the scores as reported to the portal. A filed row can still carry no over-all score, which the portal counts as a serious issue. Sorted with the outstanding reviews on top, because filing the assigned list is the obligation; click a district row above to narrow to it. The same export carries per-checklist-item scores, but its header lists 20 questions over 17 score columns, so those are not published.'+(ovU.length?' Mean over-all of the '+fmt(ovU.length)+' scored UCs here: '+rnd(ovU.reduce((a,x)=>a+x.ov,0)/ovU.length,1)+'%.':'');
+  el('capMPQU').textContent='These '+fmt(FU.length)+' rows are the UCs assigned for micro-plan assessment in this view — a targeted sample of low-performing and flagged UCs, not every UC of the district. Read from '+esc(MU.src)+' (as of '+esc(MU.asof)+'): MPQA state is whether the review has been filed, and desk / field / over-all % are the scores as reported to the portal. A filed row can still carry no over-all score, which the portal counts as a serious issue. Sorted with the outstanding reviews on top, because filing the assigned list is the obligation; click a district row above to narrow to it. The same export carries per-checklist-item scores, but its header lists 20 questions over 17 score columns, so those are not published.'+(ovU.length?' Mean over-all of the '+fmt(ovU.length)+' scored UCs here: '+rnd(ovU.reduce((a,x)=>a+x.ov,0)/ovU.length,1)+'%.':'')+' The bold bottom line counts the UCs and the filed rows in view, shows the mean of each score across the UCs that carry one, and counts the bands rather than blending them.';
   el('btnMPQUcsv').onclick=()=>cqCSV('MPQA_assigned_UCs_'+M.camp,['District','Tehsil','UC','UC code','UC criteria','MPQA state','Desk review %','Field validation %','Over-all %','Band'],
    FU.map(x=>[x.d,x.t,x.u,x.c,critLab(x.d,x.u),x.stl,x.dk==null?'':rnd(x.dk,1),x.fv==null?'':rnd(x.fv,1),x.ov==null?'':rnd(x.ov,1),x.bd]));
  }
@@ -15918,12 +16016,16 @@ function renderNEP(){
  const fbtn=el('nepFipvBtn'); if(fbtn)fbtn.onclick=()=>setTab('fipv');
  const st=v=>v==null?'<span class="cnt">–</span>':rgN(v,100,0.05,v%1?1:0);
  const cp=(v,g,w)=>v==null?'<span class="cnt">–</span>':rgN(v,g,w,v%1?1:0);
+ const nepAvg=k=>{const a=R.map(r=>r[k]).filter(v=>v!=null&&!isNaN(v));return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;};
+ const nepTot={cell:{d:esc('Total \u2014 all '+n+' NEAP districts')}};
+ ['rd','dpec','dc','dho','must','ucmo','ucsec','aic','trn','mpv','adult','loc','gov','fem'].forEach(k=>{const m=nepAvg(k);nepTot.cell[k]=m==null?'\u2013':pc(m);});
+ nepTot.cell.inacc=fmt(R.reduce((a,r)=>a+(r.inacc||0),0));
  drawTable('tNEP',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Ready',n:1,f:x=>rgS(x.rd,x.rd>=95?'g':x.rd>=85?'a':'r')},
   {k:'dpec',l:'DPEC on time',n:1,f:x=>st(x.dpec)},{k:'dc',l:'DC attended',n:1,f:x=>st(x.dc)},{k:'dho',l:'DHO attended',n:1,f:x=>st(x.dho)},
   {k:'must',l:'Must members %',n:1,f:x=>st(x.must)},{k:'ucmo',l:'UCMO present',n:1,f:x=>st(x.ucmo)},{k:'ucsec',l:'UC secretary',n:1,f:x=>st(x.ucsec)},
   {k:'aic',l:'AICs trained %',n:1,f:x=>st(x.aic)},{k:'trn',l:'Teams trained %',n:1,f:x=>st(x.trn)},{k:'mpv',l:'Microplans validated %',n:1,f:x=>st(x.mpv)},
   {k:'adult',l:'Members 18+ %',n:1,f:x=>cp(x.adult,95,85)},{k:'loc',l:'Local member %',n:1,f:x=>cp(x.loc,75,50)},{k:'gov',l:'Govt accountable %',n:1,f:x=>cp(x.gov,75,50)},{k:'fem',l:'Female member %',n:1,f:x=>cp(x.fem,75,50)},
-  {k:'inacc',l:'Inaccessible areas',n:1,f:x=>x.inacc==null?'<span class="cnt">–</span>':(x.inacc<=0?'<span class="rg g">0</span>':'<span class="rg a">'+rnd(x.inacc,0)+'</span>')}],R,'rd',1);
+  {k:'inacc',l:'Inaccessible areas',n:1,f:x=>x.inacc==null?'<span class="cnt">–</span>':(x.inacc<=0?'<span class="rg g">0</span>':'<span class="rg a">'+rnd(x.inacc,0)+'</span>')}],R,'rd',1,null,nepTot);
  el('cntNEP').textContent=n+' districts · '+ad;
  const G=R.filter(r=>r.rd!=null).sort((a,b)=>a.rd-b.rd);
  el('ccpN').style.height=Math.max(320,G.length*21+110)+'px';
@@ -15932,7 +16034,7 @@ function renderNEP(){
  CKEY('ccpN',[['#16a34a','95%+, at the NEAP target'],['#f59e0b','85-95%'],['#dc2626','under 85%']]);
  const nf=R.filter(r=>r.fem!=null).sort((a,b)=>a.fem-b.fem).slice(0,3);
  el('capcpN').textContent=(G.length?`Lowest readiness: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rd)+')').join(', ')}.`:'')+(nf.length?` Fewest female team members: ${nf.map(r=>r.d+' '+Math.round(r.fem)+'%').join(', ')}.`:'')+' Readiness is the same five indicators used in the table below.';
- el('capNEP').textContent='Benchmarks: status columns green at 100% (reported complete), amber when under way, red at 0 (not yet reported); composition columns use the programme bands (female / local / govt-accountable 75-50, members 18+ 95-85) and Inaccessible areas are better at zero. Ready = mean of DPEC held on time, must-members attended, AICs trained, teams trained and microplans validated (the same five as the readiness column below).'+(G.length?' Lowest readiness: '+G.slice(0,3).map(r=>r.d+' ('+rnd(r.rd)+'%)').join(', ')+'.':'');
+ el('capNEP').textContent='Benchmarks: status columns green at 100% (reported complete), amber when under way, red at 0 (not yet reported); composition columns use the programme bands (female / local / govt-accountable 75-50, members 18+ 95-85) and Inaccessible areas are better at zero. Ready = mean of DPEC held on time, must-members attended, AICs trained, teams trained and microplans validated (the same five as the readiness column below).'+(G.length?' Lowest readiness: '+G.slice(0,3).map(r=>r.d+' ('+rnd(r.rd)+'%)').join(', ')+'.':'')+' The bold bottom line averages all '+n+' NEAP districts: the portal publishes each district\u2019s percentage without the counts behind it, so every percentage there is a mean of district values rather than a rate re-derived from a denominator, and Inaccessible areas is the only column added up.';
  el('btnNEPcsv').onclick=()=>cqCSV('NEAP_'+N.camp,['District','Category','Ready %'].concat(NEAP.k.map(x=>x[1])),R.map(r=>[r.d,critLab(r.d),rnd(r.rd)].concat(NEPK.map(k=>r[k]==null?'':r[k]))));
  const U=NEAP.u, dns=Object.keys(NEAP.d);
  if(!U){ el('cardNEPU').style.display='none'; }
@@ -15955,10 +16057,15 @@ function renderNEP(){
    {k:'aic',l:'AICs trained %',n:1,f:x=>stU(x.aic)},{k:'trn',l:'Teams trained %',n:1,f:x=>stU(x.trn)},{k:'mpv',l:'Microplans validated %',n:1,f:x=>stU(x.mpv)},
    {k:'adult',l:'Members 18+ %',n:1,f:x=>cpU(x.adult,95,85)},{k:'loc',l:'Local member %',n:1,f:x=>cpU(x.loc,75,50)},{k:'gov',l:'Govt accountable %',n:1,f:x=>cpU(x.gov,75,50)},{k:'fem',l:'Female member %',n:1,f:x=>cpU(x.fem,75,50)},
    {k:'inacc',l:'Inaccessible areas',n:1,f:x=>x.inacc==null?'<span class="cnt">\u2013</span>':(x.inacc<=0?'<span class="rg g">0</span>':'<span class="rg a">'+rnd(x.inacc,0)+'</span>')});
-  drawTable('tNEPU',cols,F,'rd',1);
+  const uAvg=k=>{const a=F.map(x=>x[k]).filter(v=>v!=null&&!isNaN(v));return a.length?a.reduce((p,q)=>p+q,0)/a.length:null;};
+  const uTot={cell:{d:'',t:'',cr:''}};
+  uTot.cell[NEPUD>=0?'u':'d']=esc('Total \u2014 '+(NEPUD>=0?dns[NEPUD]+' \u00b7 ':'')+F.length+' UCs');
+  ['rd','dpec','dc','dho','must','ucmo','ucsec','aic','trn','mpv','adult','loc','gov','fem'].forEach(k=>{const m=uAvg(k);uTot.cell[k]=m==null?'\u2013':pc(m);});
+  uTot.cell.inacc=fmt(F.reduce((a,x)=>a+(x.inacc||0),0));
+  drawTable('tNEPU',cols,F,'rd',1,null,uTot);
   const held=F.filter(x=>x.dpec!=null&&x.dpec>=100).length, aicN=F.filter(x=>x.aic!=null&&x.aic>0).length, trnN=F.filter(x=>x.trn!=null&&x.trn>0).length;
   el('cntNEPU').textContent=F.length+' UCs'+(NEPUD>=0?' \u00b7 '+dns[NEPUD]:' province-wide')+' \u00b7 DPEC held '+held+' \u00b7 AIC training under way '+aicN+' \u00b7 teams trained '+trnN;
-  el('capNEPU').textContent='UC-wise status from '+U.src+' (as of '+U.asof+'), same indicators and colour rules as the district table. Click a district row in the table above to open its UCs; the dropdown selects a district or returns to all. UC names are as reported to the NEAP portal.';
+  el('capNEPU').textContent='UC-wise status from '+U.src+' (as of '+U.asof+'), same indicators and colour rules as the district table. Click a district row in the table above to open its UCs; the dropdown selects a district or returns to all. UC names are as reported to the NEAP portal. The bold bottom line averages the UCs in view on the same rule as the district table \u2014 percentages are means of the UC values, not rates re-derived from a denominator \u2014 and adds Inaccessible areas.';
   el('btnNEPUcsv').onclick=()=>cqCSV('NEAP_UC_'+N.camp,['District','Tehsil','UC','UC criteria','Ready %'].concat(NEAP.k.map(x=>x[1])),F.map(x=>[x.d,x.t,x.u,critLab(x.d,x.u),rnd(x.rd)].concat(NEPK.map(k=>x[k]==null?'':x[k]))));
  }
  const DNb=d=>{const M={DIKHAN:'DI Khan',LAKKIMRWT:'Lakki Marwat',KOHISTANUPPER:'Kohistan Upper',KOHISTANLOWER:'Kohistan Lower',KOLAIPALAS:'Kohistan Palas',TORGHAR:'Tor Ghar',DIRLOWER:'Dir Lower',DIRUPPER:'Dir Upper',ABOTABAD:'Abbottabad','CHITRALUPPER':'Chitral Upper','CHITRALLOWER':'Chitral Lower','WAZIR-N':'Wazir-N','WAZIR-S Lower':'Wazir-S Lower','WAZIR-S Upper':'Wazir-S Upper'}; if(M[d])return M[d]; return d.replace(/^WAZIR-S/,'Wazir-S').split(' ').map(w=>w.charAt(0)+w.slice(1).toLowerCase()).join(' ');};
@@ -16120,8 +16227,11 @@ function renderCPre(){ cqSel();
  const low=k=>RR.filter(r=>r.p[k]!=null).sort((a,b)=>a.p[k]-b.p[k]).slice(0,3).map(r=>r.d+' '+Math.round(r.p[k])+'%').join(', ');
  el('capcp1').textContent=G.length?`Lowest readiness: ${G.slice(0,3).map(r=>r.d+' ('+pc(r.rd)+')').join(', ')}. Fewest female team members: ${low('fem')}.`:'No pre-campaign data for this campaign.';
  const c=(v,g,a)=>v==null?'–':`<span class="rg ${v>=g?'g':v>=a?'a':'r'}">${Math.round(v*10)/10}</span>`;
- drawTable('tPre',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>rgS(x.rd,x.B.rd)},...PRE_COL.map(([k,l])=>({k,l,n:1,sv:x=>x.p[k],f:x=>k==='inacc'?fmt(Math.round(x.p[k]||0)):['fem','loc','gov'].includes(k)?c(x.p[k],75,50):c(x.p[k],95,85)}))],RR,'rd',1);
- el('cntCP').textContent=RR.length+' districts'; el('capCP').textContent='Source: EOC portal, Campaign › Pre Campaign › Pre-campaign Preparatory Indicators (district wise). Values are % unless stated; DC/DHO/UCMO/UC secretary = % of meetings attended.';
+ const pMean=k=>{const a=RR.map(r=>k==='rd'?r.rd:r.p[k]).filter(v=>v!=null&&!isNaN(v));return a.length?a.reduce((x,y)=>x+y,0)/a.length:null;};
+ const pT=RR.length?{cell:(function(){const C={d:esc('Total \u2014 '+pptScope()),rd:pMean('rd')==null?'\u2013':pc(pMean('rd'))};
+  PRE_COL.forEach(([k])=>{C[k]=k==='inacc'?fmt(RR.reduce((a,r)=>a+(r.p.inacc||0),0)):(pMean(k)==null?'\u2013':pc(pMean(k)));}); return C;})()}:null;
+ drawTable('tPre',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rd',l:'Readiness',n:1,f:x=>rgS(x.rd,x.B.rd)},...PRE_COL.map(([k,l])=>({k,l,n:1,sv:x=>x.p[k],f:x=>k==='inacc'?fmt(Math.round(x.p[k]||0)):['fem','loc','gov'].includes(k)?c(x.p[k],75,50):c(x.p[k],95,85)}))],RR,'rd',1,null,pT);
+ el('cntCP').textContent=RR.length+' districts'; el('capCP').textContent='Source: EOC portal, Campaign › Pre Campaign › Pre-campaign Preparatory Indicators (district wise). Values are % unless stated; DC/DHO/UCMO/UC secretary = % of meetings attended. The bold bottom line totals the districts in view: Inaccessible areas are summed, and readiness and every other percentage are the unweighted mean of the districts shown \u2014 the portal publishes these shares without the meeting or team counts needed to re-weight them.';
  el('btnCPcsv').onclick=()=>cqCSV('Pre_campaign_'+lab,['District','Division','Category','Readiness %',...PRE_COL.map(x=>x[1])],RR.map(r=>[r.d,r.dv,critLab(r.d),rnd(r.rd),...PRE_COL.map(([k])=>r.p[k])]));
 }
 // ---------- Intra-campaign ops (monitors) ----------
@@ -16167,7 +16277,8 @@ function ciOper(R,lab){
    {name:'Unwilling to participate',data:D.map(r=>+(dsp(r).dw||0).toFixed(1)),color:'#b91c1c'},
    {name:'Other / locked houses',data:D.map(r=>+(Math.max(0,100-((dsp(r).dm||0)+(dsp(r).nr||0)+(dsp(r).dw||0)))).toFixed(1)),color:'#94a3b8'}]});
  el('capci4').textContent=D.length?'Highest no-response share: '+D.slice(0,3).map(r=>r.d+' ('+pc(ciDiv((r.i.nr||0)*100,r.i.hh))+' of houses)').join(', ')+'.':'No house-level data for this campaign.';
- const OR=IR.map(r=>{const i=r.i;return {d:r.d,dv:r.dv,tuc:i.tuc||0,ruc:i.ruc||0,cl:i.cl||0,hh:i.hh||0,hpc:ciDiv(i.hh,i.cl),doorp:ciDiv((i.door||0)*100,i.hh),nrp:ciDiv((i.nr||0)*100,i.hh),rc:i.rc||0,rv:i.rv||0,rec:r.rec,mi:i.mi||0,tdn:i.tdn||0,tm:i.tm||0,na:i.na||0,rf:i.rf||0,gr:i.gr||0,gvp:ciDiv((i.gv||0)*100,i.gr),seen:i.seen||0,fmp:r.fmp,nvfm:i.nvfm||0,unv:i.unv||0,pca:i.pca||0,ma:i.ma||0,op:i.op==null?null:i.op,sv:i.sv||null,B:r.B};});
+ const OR=IR.map(r=>{const i=r.i;return {d:r.d,dv:r.dv,tuc:i.tuc||0,ruc:i.ruc||0,cl:i.cl||0,hh:i.hh||0,hpc:ciDiv(i.hh,i.cl),door:i.door||0,nr:i.nr||0,dw:i.dw||0,doorp:ciDiv((i.door||0)*100,i.hh),nrp:ciDiv((i.nr||0)*100,i.hh),rc:i.rc||0,rv:i.rv||0,rec:r.rec,mi:i.mi||0,tdn:i.tdn||0,tm:i.tm||0,na:i.na||0,rf:i.rf||0,gr:i.gr||0,gv:i.gv||0,gvp:ciDiv((i.gv||0)*100,i.gr),seen:i.seen||0,fm:i.fm||0,fmp:r.fmp,nvfm:i.nvfm||0,unv:i.unv||0,pca:i.pca||0,ma:i.ma||0,op:i.op==null?null:i.op,sv:i.sv||null,B:r.B};});
+ const oS={}; ['tuc','ruc','cl','hh','door','nr','dw','rc','rv','mi','tdn','tm','na','rf','gr','gv','seen','fm','nvfm','unv','pca','ma'].forEach(k=>oS[k]=OR.reduce((a,x)=>a+(x[k]||0),0));
  drawTable('tICMo',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},
   {k:'tuc',l:'UCs total',n:1,f:x=>fmt(x.tuc)},{k:'ruc',l:'UCs reported',n:1,f:x=>fmt(x.ruc)},
   {k:'cl',l:'Clusters',n:1,f:x=>fmt(x.cl)},{k:'hh',l:'Houses checked',n:1,f:x=>fmt(x.hh)},{k:'hpc',l:'Houses / cluster',n:1,f:x=>ciR1(x.hpc)},
@@ -16177,9 +16288,16 @@ function ciOper(R,lab){
   {k:'na',l:'Child away',n:1,f:x=>fmt(x.na)},{k:'rf',l:'Refusal',n:1,f:x=>fmt(x.rf)},
   {k:'gr',l:'Guest children',n:1,f:x=>fmt(x.gr)},{k:'gvp',l:'Guest vaccinated %',n:1,f:x=>ciR1(x.gvp)},
   {k:'seen',l:'Children seen',n:1,f:x=>fmt(x.seen)},{k:'nvfm',l:'Not vaccinated but finger-marked',n:1,f:x=>fmt(x.nvfm)},
-  {k:'unv',l:'Found unvaccinated',n:1,f:x=>fmt(x.unv)},{k:'pca',l:'Poorly covered areas',n:1,f:x=>fmt(x.pca)},{k:'ma',l:'Missed areas',n:1,f:x=>fmt(x.ma)},{k:'op',l:'Operational issue %',n:1,f:x=>x.op==null?'–':ciPctL(x.op,10,20)}],OR,'cl',-1);
+  {k:'unv',l:'Found unvaccinated',n:1,f:x=>fmt(x.unv)},{k:'pca',l:'Poorly covered areas',n:1,f:x=>fmt(x.pca)},{k:'ma',l:'Missed areas',n:1,f:x=>fmt(x.ma)},{k:'op',l:'Operational issue %',n:1,f:x=>x.op==null?'–':ciPctL(x.op,10,20)}],OR,'cl',-1,null,{cell:{
+  d:esc('Total \u2014 '+pptScope()),
+  tuc:fmt(oS.tuc),ruc:fmt(oS.ruc),cl:fmt(oS.cl),hh:fmt(oS.hh),hpc:oS.cl?ciR1(oS.hh/oS.cl):'\u2013',
+  doorp:oS.hh?ciPct(oS.door/oS.hh*100,90,80):'\u2013',nrp:oS.hh?ciPctL(oS.nr/oS.hh*100,5,10):'\u2013',
+  rc:fmt(oS.rc),rec:oS.rc?ciPct(oS.rv/oS.rc*100,90,85):'\u2013',fmp:oS.seen?ciPct(oS.fm/oS.seen*100,95,90):'\u2013',
+  mi:fmt(oS.mi),tdn:fmt(oS.tdn),tm:fmt(oS.tm),na:fmt(oS.na),rf:fmt(oS.rf),gr:fmt(oS.gr),
+  gvp:oS.gr?ciR1(oS.gv/oS.gr*100):'\u2013',seen:fmt(oS.seen),nvfm:fmt(oS.nvfm),unv:fmt(oS.unv),pca:fmt(oS.pca),ma:fmt(oS.ma),
+  op:oS.mi?ciPctL((oS.tdn+oS.tm)/oS.mi*100,10,20):'\u2013'}});
  el('cntCIO').textContent=OR.length+' districts';
- const MM=cqMeta(lab); el('capCIO').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (Cluster), district wise — the operational-issue % is (team did not visit + team missed the child) over missed children'+(MM?' — campaign day '+MM.day+', read '+MM.asof:'')+' — cluster, house, UC reporting and operational-issue indicators for '+lab+'.';
+ const MM=cqMeta(lab); el('capCIO').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (Cluster), district wise — the operational-issue % is (team did not visit + team missed the child) over missed children'+(MM?' — campaign day '+MM.day+', read '+MM.asof:'')+' — cluster, house, UC reporting and operational-issue indicators for '+lab+'. The bold bottom line totals the districts in view: every count is summed and every rate is recomputed from those sums (houses per cluster, recall, finger-marked, door marking, guest-vaccinated and the operational-issue share), never averaged.';
  el('btnCIOcsv').onclick=()=>cqCSV('ICM_operational_'+lab,['District','Division','Category','Total UCs','Reported UCs','Clusters','Houses checked','Houses per cluster','Door marking %','No-response %','Children checked','Recall vaccinated','Recall %','Finger-marked %','Missed','Team did not visit','Team missed child','Child away','Refusal','Guest children','Guest vaccinated %','Children seen','Not vaccinated but finger-marked','Found unvaccinated','Poorly covered areas','Missed areas','Operational issue %'],
   OR.map(x=>[x.d,x.dv,critLab(x.d),x.tuc,x.ruc,x.cl,x.hh,rnd(x.hpc),rnd(x.doorp),rnd(x.nrp),x.rc,x.rv,rnd(x.rec),rnd(x.fmp),x.mi,x.tdn,x.tm,x.na,x.rf,x.gr,rnd(x.gvp),x.seen,x.nvfm,x.unv,x.pca,x.ma,rnd(x.op)]));
  ooRender(OR,lab);
@@ -16194,10 +16312,13 @@ function ciOper(R,lab){
    {k:'fmk',l:'Carried finger markers',n:1,f:x=>ciPct(x.fmk,90,80)},{k:'ccm',l:'Cold chain maintained',n:1,f:x=>ciPct(x.ccm,90,80)},
    {k:'mpu',l:'Microplan updated',n:1,f:x=>ciPct(x.mpu,90,80)},{k:'vit',l:'Carried vitamin A',n:1,f:x=>ciPct(x.vit,90,80)},
    {k:'nid',l:'Name and ID match',n:1,f:x=>ciPct(x.nid,90,80)},{k:'chk',l:'Checklist completed',n:1,f:x=>ciPct(x.chk,90,80)},
-   {k:'sup',l:'Teams supported',n:1,f:x=>ciPct(x.sup,90,80)},{k:'ipc',l:'IPC quality',n:1,f:x=>ciPct(x.ipc,90,80)}],SV,'chk',1);
+   {k:'sup',l:'Teams supported',n:1,f:x=>ciPct(x.sup,90,80)},{k:'ipc',l:'IPC quality',n:1,f:x=>ciPct(x.ipc,90,80)}],SV,'chk',1,null,{cell:(function(){
+   const C={d:esc('Total \u2014 '+pptScope())}, kn=['vac','opv','fmk','ccm','mpu','vit','nid','chk','sup','ipc'];
+   kn.forEach(k=>{ const a=SV.map(x=>x[k]).filter(v=>v!=null&&!isNaN(v)); C[k]=a.length?ciPct(a.reduce((p,q)=>p+q,0)/a.length,90,80):'\u2013'; });
+   return C;})()});
   el('cntSVO').textContent=SV.length+' districts · supervisor checklists';
   const SM=cqMeta(lab);
-  el('capSVO').textContent='Source: EOC portal, ICM › Supervisor Monitoring, district wise'+(SM?' — campaign day '+SM.day+', read '+SM.asof:'')+'. Each column is the percentage the portal reports for that checklist item.';
+  el('capSVO').textContent='Source: EOC portal, ICM › Supervisor Monitoring, district wise'+(SM?' — campaign day '+SM.day+', read '+SM.asof:'')+'. Each column is the percentage the portal reports for that checklist item. The bold bottom line is the unweighted mean of the '+SV.length+' districts in view, because the portal publishes these shares without the number of checklists behind them \u2014 it is a reading of the districts, not a checklist-weighted rate.';
   el('btnSVOcsv').onclick=()=>cqCSV('Supervisor_monitoring_'+lab,['District','Division','Vaccine carrier %','OPV vials %','Finger markers %','Cold chain maintained %','Microplan updated %','Vitamin A carried %','Name and ID match %','Checklist completed %','Teams supported %','IPC quality %'],
    SV.map(x=>[x.d,x.dv,rnd(x.vac),rnd(x.opv),rnd(x.fmk),rnd(x.ccm),rnd(x.mpu),rnd(x.vit),rnd(x.nid),rnd(x.chk),rnd(x.sup),rnd(x.ipc)]));
  }
@@ -16251,6 +16372,9 @@ function ooRender(OR,lab){
    (tt?' Transit-team monitoring: '+fmt(tt)+' site visits across '+P.filter(p=>p.tr).length+' districts.':'');}
  el('capOVO').textContent=cap+' Monitor counts as of '+(NOCD.asof||'\u2013')+'.';
  el('cntOVO').textContent=P.length+' districts · '+(hasT?'monitor visits embedded':(hasX?'transit counts only':'ICM clusters only'));
+ const oCl=P.reduce((a,x)=>a+x.cl,0), oTr=P.reduce((a,x)=>a+(x.tr||0),0);
+ const oMean=f=>{const a=P.map(f).filter(v=>v!=null&&!isNaN(v));return a.length?a.reduce((p,q)=>p+q,0)/a.length:null;};
+ const oChk=oMean(x=>x.sp?x.sp.chk:null), oSup=oMean(x=>x.sp?x.sp.sup:null);
  drawTable('tOVO',[
   {k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},
   {k:'dv',l:'Division',f:x=>esc(x.dv)},
@@ -16262,7 +16386,12 @@ function ooRender(OR,lab){
   {k:'sup',l:'Teams supported %',n:1,f:x=>x.sp?ciR1(x.sp.sup)+'%':'–',sv:x=>x.sp?x.sp.sup:-1},
   {k:'tr',l:'Transit visits',n:1,f:x=>x.tr?fmt(x.tr):'–',sv:x=>x.tr},
   {k:'cl',l:'Clusters',n:1,f:x=>fmt(x.cl)},
-  {k:'rec',l:'Recall %',n:1,f:x=>x.rec==null?'–':ciPct(x.rec,90,85)}],P,'rec',1);
+  {k:'rec',l:'Recall %',n:1,f:x=>x.rec==null?'–':ciPct(x.rec,90,85)}],P,'rec',1,null,{cell:{
+   d:esc('Total \u2014 '+pptScope()),dv:'',ruc:fmt(ruT),
+   tv:hasT?fmt(vT):'\u2013',vpu:hasT&&ruT?(Math.round(vT/ruT*100)/100)+'':'\u2013',fx:fmt(fT),
+   chk:oChk==null?'\u2013':ciR1(oChk)+'%',sup:oSup==null?'\u2013':ciR1(oSup)+'%',
+   tr:fmt(oTr),cl:fmt(oCl),rec:orec==null?'\u2013':ciPct(orec,90,85)}});
+ el('capOVO').textContent+=' The bold bottom line totals the districts in view: reported UCs, monitor visits, fixed sites, transit visits and clusters are summed; visits per UC and the recall rate are recomputed from those sums; the checklist and support shares are the unweighted mean of the districts that reported them.';
  el('btnOVOcsv').onclick=()=>cqCSV('Monitor_ops_outcome_'+lab,['District','Division','Reported UCs','Monitor visits','Visits/UC','Fixed sites','Checklist done %','Teams supported %','Transit visits','Clusters','Recall %'],
   P.map(x=>[x.d,x.dv,x.ruc,x.tv||'',x.vpu==null?'':Math.round(x.vpu*100)/100,x.fx||'',x.sp?x.sp.chk:'',x.sp?x.sp.sup:'',x.tr||'',x.cl,x.rec==null?'':Math.round(x.rec*10)/10]));
 }
@@ -16301,6 +16430,15 @@ function ciUCblock(){
    {name:'Team visited but missed child',data:M.map(r=>r.tv||0),color:'#7c3aed'}]});
  el('capci6').textContent=M.length?'Largest gaps: '+M.slice(0,3).map(r=>r.uc+' ('+fmt(r.mi)+' missed)').join(', ')+'. Across the export '+pc(ciDiv(S('na')*100,mi))+' of missed children were away and '+pc(ciDiv((S('nt')+S('tv'))*100,mi))+' were team-related misses.':'No missed children recorded in these UCs.';
  const UR=rows.map(r=>({d:r.d,dv:r.dv,t:r.t,uc:r.uc,cl:r.cl,hh:r.hh,rc:r.rc,rv:r.rv,rec:ciDiv(r.rv*100,r.rc),mi:r.mi,mip:ciDiv(r.mi*100,r.rc),nt:r.nt,tv:r.tv,na:r.na,rf:r.rf,gr:r.gr,gv:r.gv,gvp:ciDiv(r.gv*100,r.gr),seen:r.seen,fm:r.fm,fmp:ciDiv(r.fm*100,r.seen),nvfm:r.nvfm,epi:r.epi,mon:r.mon,pca:r.pca,ma:r.ma}));
+ const uS=k=>UR.reduce((a,x)=>a+(x[k]||0),0);
+ const uH=k=>UR.some(x=>x[k]!=null)?fmt(UR.reduce((a,x)=>a+(x[k]||0),0)):'\u2013';
+ const uT=UR.length?{cell:{d:esc('Total \u2014 '+pptScope()),t:'',uc:esc(UR.length+' UCs'),
+  cl:fmt(uS('cl')),hh:fmt(uS('hh')),rc:fmt(uS('rc')),rv:fmt(uS('rv')),
+  rec:uS('rc')?ciPct(uS('rv')/uS('rc')*100,95,90):'\u2013',mi:fmt(uS('mi')),
+  mip:uS('rc')?ciPctL(uS('mi')/uS('rc')*100,5,10):'\u2013',nt:fmt(uS('nt')),tv:fmt(uS('tv')),na:fmt(uS('na')),rf:fmt(uS('rf')),
+  gr:fmt(uS('gr')),gv:fmt(uS('gv')),gvp:uS('gr')?ciR1(uS('gv')/uS('gr')*100):'\u2013',
+  seen:fmt(uS('seen')),fm:fmt(uS('fm')),fmp:uS('seen')?ciPct(uS('fm')/uS('seen')*100,95,90):'\u2013',
+  nvfm:fmt(uS('nvfm')),epi:uH('epi'),mon:uH('mon'),pca:uH('pca'),ma:fmt(uS('ma'))}}:null;
  drawTable('tICMu',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil',f:x=>esc(x.t)},{k:'uc',l:'Union council',f:x=>esc(x.uc)},critCol(x=>x.d,x=>x.uc),
   {k:'cl',l:'Clusters',n:1,f:x=>fmt(x.cl)},{k:'hh',l:'Houses checked',n:1,f:x=>fmt(x.hh)},
   {k:'rc',l:'Children checked',n:1,f:x=>fmt(x.rc)},{k:'rv',l:'Recall vaccinated',n:1,f:x=>fmt(x.rv)},{k:'rec',l:'Recall %',n:1,f:x=>ciPct(x.rec,95,90)},
@@ -16309,9 +16447,9 @@ function ciUCblock(){
   {k:'gr',l:'Guest children',n:1,f:x=>fmt(x.gr)},{k:'gv',l:'Guest vaccinated',n:1,f:x=>fmt(x.gv)},{k:'gvp',l:'Guest vaccinated %',n:1,f:x=>ciR1(x.gvp)},
   {k:'seen',l:'Children seen',n:1,f:x=>fmt(x.seen)},{k:'fm',l:'Finger-marked',n:1,f:x=>fmt(x.fm)},{k:'fmp',l:'Finger-marked %',n:1,f:x=>ciPct(x.fmp,95,90)},
   {k:'nvfm',l:'Not vaccinated but finger-marked',n:1,f:x=>fmt(x.nvfm)},{k:'epi',l:'Routine EPI doses (under 2)',n:1,f:x=>x.epi==null?'\u2013':fmt(x.epi)},{k:'mon',l:'Vaccinated by monitor',n:1,f:x=>x.mon==null?'\u2013':fmt(x.mon)},
-  {k:'pca',l:'Poorly covered areas',n:1,f:x=>x.pca==null?'\u2013':fmt(x.pca)},{k:'ma',l:'Missed areas',n:1,f:x=>fmt(x.ma)}],UR,'rec',1);
+  {k:'pca',l:'Poorly covered areas',n:1,f:x=>x.pca==null?'\u2013':fmt(x.pca)},{k:'ma',l:'Missed areas',n:1,f:x=>fmt(x.ma)}],UR,'rec',1,null,uT);
  el('cntUCI').textContent=UR.length+' union councils';
- el('capUCI').textContent='Source: '+XD.src+', campaign '+XD.camp+'. Merged with the district-level ICM operational indicators above; UC rows follow the division / district filter.';
+ el('capUCI').textContent='Source: '+XD.src+', campaign '+XD.camp+'. Merged with the district-level ICM operational indicators above; UC rows follow the division / district filter. The bold bottom line totals the UCs in view \u2014 every count is summed and recall, missed, guest-vaccinated and finger-marked shares are recomputed from those sums, never averaged.';
  el('btnUCIcsv').onclick=()=>cqCSV('ICM_UC_'+XD.camp,['District','Division','Tehsil','Union council','UC criteria','Clusters','Houses checked','Children checked','Recall vaccinated','Recall %','Missed','Missed %','Team did not visit (NT)','Team visited but missed child','Child away','Refusal','Guest children by recall','Guest children vaccinated','Guest vaccinated %','Children seen','Finger-marked','Finger-marked %','Not vaccinated but finger-marked','Routine EPI doses under 2','Vaccinated by monitor','Poorly covered areas','Missed areas'],
   UR.map(x=>[x.d,x.dv,x.t,x.uc,critLab(x.d,x.uc),x.cl,x.hh,x.rc,x.rv,rnd(x.rec),x.mi,rnd(x.mip),x.nt,x.tv,x.na,x.rf,x.gr,x.gv,rnd(x.gvp),x.seen,x.fm,rnd(x.fmp),x.nvfm,x.epi,x.mon,x.pca,x.ma]));
 }
@@ -16379,9 +16517,10 @@ function neocRender(lab){
   drawTable('tNEOC',NEOC_COLS,[],'t',-1); el('cntNEOC').textContent='0 districts'; el('capNEOC').textContent=''; el('btnNEOCcsv').onclick=null; return;
  }
  const NR=rows;
- drawTable('tNEOC',NEOC_COLS,NR,'t',-1);
+ drawTable('tNEOC',NEOC_COLS,NR,'t',-1,null,NR.length?{cell:{d:esc('Total \u2014 '+pptScope()),aic:fmt(S('aic')),t:fmt(S('t')),u:fmt(S('u')),m:fmt(S('m')),
+  cl:NR.some(r=>r.cl!=null)?fmt(S('cl')):'\u2013',ch:NR.some(r=>r.ch!=null)?fmt(S('ch')):'\u2013',dy:'\u2013'}}:null);
  el('cntNEOC').textContent=NR.length+' districts';
- el('capNEOC').textContent=M?("Source: monitors' Tableau team-monitoring and AIC-monitoring exports, updated "+MOND.asof+'.'):'Source: monitor intra-campaign monitoring, imported '+d.t+' ('+d.src+').';
+ el('capNEOC').textContent=(M?("Source: monitors' Tableau team-monitoring and AIC-monitoring exports, updated "+MOND.asof+'.'):'Source: monitor intra-campaign monitoring, imported '+d.t+' ('+d.src+').')+' The bold bottom line totals the districts in view: AIC visits, teams, UCs, monitors, clusters and children examined are summed as the export reports them \u2014 a team or monitor working in two districts can therefore be counted twice \u2014 and campaign days print \u2013 because a day count cannot be added across districts.';
  el('btnNEOCcsv').onclick=()=>cqCSV('Monitor_operational_'+lab,['District','AIC visits','Teams monitored','UCs monitored','Monitors deployed','Clusters monitored','Children examined','Campaign days'],NR.map(x=>[x.d,x.aic,x.t,x.u,x.m,x.cl==null?'':x.cl,x.ch==null?'':x.ch,x.dy==null?'':x.dy]));
 }
 (function(){
@@ -16531,15 +16670,24 @@ function iqDraw(lab){const inF=crInD(),TM=iqAgg('tm',lab,inF),AI=iqAgg('aic',lab
  [TM,AI].forEach(A=>A.rows.forEach(r=>{if(r.sc!=null&&r.sc<90){nb++;ud[r.d]=1;}}));
  if(el('iq5')){el('iq5').textContent=fmt(Object.keys(ud).length);
   el('iq5s').textContent=nb?(iqPl(nb,'district score')+' under 90% across the two tables'):'every district scores 90% or better';}
- drawTable('tTM',iqCols(TM,'tm'),TM.rows,'n',-1);
+ const iqTot=(A,kind)=>{ if(!A.rows.length)return null; const C={d:esc('Total \u2014 '+pptScope()),n:fmt(iqSum(A,'n'))};
+  if(kind==='tm'){ if(A.wt==='teams')C.cnt=iqSum(A,'cnt')?fmt(iqSum(A,'cnt')):'\u2013';
+   if(A.md){C.tmd=fmt(iqSum(A,'tmd'));C.fv=fmt(iqSum(A,'fv'));C.mon=fmt(iqSum(A,'mon'));C.dy='\u2013';} }
+  else { if(A.wt==='sup')C.cnt=iqSum(A,'cnt')?fmt(iqSum(A,'cnt')):'\u2013'; if(A.md)C.cl=fmt(iqSum(A,'cl')); }
+  if(A.have.length){const w=iqWavg(A); C.sc=w==null?'\u2013':'<b style="color:'+iqCol(w)+'">'+w.toFixed(1)+'%</b>';}
+  A.have.forEach(kk=>{const v=A.prov[kk[0]]; C[kk[0]]=v==null?'\u2013':'<span style="color:'+iqCol(v)+'">'+Math.round(v)+'%</span>';});
+  return {cell:C};};
+ drawTable('tTM',iqCols(TM,'tm'),TM.rows,'n',-1,null,iqTot(TM,'tm'));
  if(el('cntTM'))el('cntTM').textContent=TM.rows.length?iqPl(TM.rows.length,'district')+' · '+iqPl(TM.have.length,'quality indicator'):'no team-monitoring export';
  if(el('fTM'))el('fTM').innerHTML=iqFind(TM,'tm',lab).map(t=>'<li>'+t+'</li>').join('');
  if(el('capTM'))el('capTM').textContent=!TM.rows.length?('No team-monitoring rows for '+lab+' in the embedded exports.'):(TM.q?('Source: '+X.src+' — campaign '+lab+', updated '+X.asof+(TM.md?'; operational counts from the monitors’ Tableau team-monitoring export updated '+MOND.asof:'')+(TM.wt==='teams'?'. Weighted by the number of teams monitored in each UC.':'.')):(TM.md?('Source: monitors’ Tableau team-monitoring export, updated '+MOND.asof+'. No UC-level quality export for this campaign.'):''));
+ if(TM.rows.length&&el('capTM'))el('capTM').textContent+=' The bold bottom line totals the districts in view: UC records and visit forms are summed, the quality score and every indicator share are re-weighted by the same team or UC weights as the district rows, and campaign days print \u2013 because a day count cannot be added across districts.';
  if(el('btnTMcsv'))el('btnTMcsv').onclick=TM.rows.length?(()=>iqCSV(TM,'tm',lab)):null;
- drawTable('tAIC',iqCols(AI,'aic'),AI.rows,'n',-1);
+ drawTable('tAIC',iqCols(AI,'aic'),AI.rows,'n',-1,null,iqTot(AI,'aic'));
  if(el('cntAIC'))el('cntAIC').textContent=AI.rows.length?iqPl(AI.rows.length,'district')+' · '+iqPl(AI.have.length,'supervision indicator'):'no AIC export';
  if(el('fAIC'))el('fAIC').innerHTML=iqFind(AI,'aic',lab).map(t=>'<li>'+t+'</li>').join('');
  if(el('capAIC'))el('capAIC').textContent=!AI.rows.length?('No AIC supervision rows for '+lab+' in the embedded exports.'):(AI.q?('Source: '+X.src+' — campaign '+lab+', updated '+X.asof+(AI.md?'; AIC checklist counts from the monitors’ Tableau AIC-monitoring export updated '+MOND.asof:'')+(AI.wt==='sup'?'. Weighted by the number of supervisors monitored in each UC.':'.')):(AI.md?('Source: monitors’ Tableau AIC-monitoring export, updated '+MOND.asof+'. No UC-level supervision export for this campaign.'):''));
+ if(AI.rows.length&&el('capAIC'))el('capAIC').textContent+=' The bold bottom line totals the districts in view: UC records and AIC checklists are summed and the supervision score and indicator shares are re-weighted exactly as on the district rows.';
  if(el('btnAICcsv'))el('btnAICcsv').onclick=AI.rows.length?(()=>iqCSV(AI,'aic',lab)):null;}
 // ---------- Cross-cutting: intra-campaign monitoring quality across every round ----------
 const HX={min:200,rounds:4};
@@ -16777,19 +16925,26 @@ function renderCPost(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter
  const postCols=[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'}];
  if(S.l_n)postCols.push({k:'ln',l:'Lots',n:1,sv:x=>x.l?x.l.n:-1,f:x=>x.l?x.l.n:'–'},{k:'lP',l:'Passed',n:1,sv:x=>x.l?x.l.P||0:-1,f:x=>x.l?(x.l.P||0):'–'},{k:'lI',l:'Intermediate',n:1,sv:x=>x.l?x.l.I||0:-1,f:x=>x.l?(x.l.I||0):'–'},{k:'lF',l:'Failed',n:1,sv:x=>x.l?x.l.F||0:-1,f:x=>x.l?(x.l.F||0):'–'},{k:'lqp',l:'Passed %',n:1,f:x=>rgS(x.lqp,x.B.lqp)});
  postCols.push({k:'vp',l:'Admin vaccinated % of target',n:1,f:x=>x.vp==null?'–':pc(x.vp)},{k:'stp',l:'Still missed',n:1,f:x=>rgS(x.stp,x.B.stp)},{k:'srp',l:'Still refusing',n:1,f:x=>rgS(x.srp,x.B.srp,2)});
- drawTable('tPost',postCols,RR,S.l_n?'lqp':'vp',1);
+ drawTable('tPost',postCols,RR,S.l_n?'lqp':'vp',1,null,{cell:{
+  d:esc('Total \u2014 '+pptScope()),
+  ln:S.l_n?fmt(S.l_n):'\u2013', lP:S.l_n?fmt(S.l_P||0):'\u2013', lI:S.l_n?fmt(S.l_I||0):'\u2013', lF:S.l_n?fmt(S.l_F||0):'\u2013',
+  lqp:S.lqp==null?'\u2013':pc(S.lqp), vp:S.vp==null?'\u2013':pc(S.vp), stp:S.stp==null?'\u2013':pc(S.stp), srp:S.srp==null?'\u2013':pc(S.srp)}});
  el('cntCL').textContent=RR.length+' districts'; el('capCL').textContent=S.l_n?'Sources: EOC portal post-campaign LQAS (UC wise) and the campaign coverage summary (still NA, still refusing and left over after catch-up, % of the household target).':'No LQAS lots are posted for '+lab+' yet — the admin columns above come from the campaign coverage summary'+(MT?', campaign day '+MT.day:'')+'.';
  el('btnCLcsv').onclick=()=>cqCSV('Post_campaign_'+lab,['District','Division','LQAS lots','Passed','Intermediate','Failed','Passed %','Admin vaccinated % of target','Still missed %','Still refusing %'],RR.map(r=>[r.d,r.dv,r.l?r.l.n:'',r.l?r.l.P||0:'',r.l?r.l.I||0:'',r.l?r.l.F||0:'',rnd(r.lqp),rnd(r.vp),rnd(r.stp),rnd(r.srp,2)]));
  const AD=cqAdm(lab)||{};
  const AR=R.filter(r=>AD[r.d]).map(r=>{const a=AD[r.d];return {d:r.d,dv:r.dv,kidsHH:a.kidsHH,housesP:a.housesP,housesV:a.housesV,target:a.target,vacc:a.vacc,cov:a.cov,na:a.na,ref:a.ref,missed:a.missed,mobile:a.mobile,waste:a.waste};}).sort((a,b)=>(b.cov||0)-(a.cov||0));
  if(el('cardAdmO'))el('cardAdmO').style.display=AR.length?'':'none';
  if(AR.length){
+  const atSum={}; ['kidsHH','housesP','housesV','target','vacc','na','ref','missed','mobile'].forEach(k=>atSum[k]=AR.reduce((a,x)=>a+(x[k]||0),0));
+  const atTot={cell:{d:esc('Total \u2014 '+pptScope())}};
+  Object.keys(atSum).forEach(k=>atTot.cell[k]=fmt(atSum[k]));
+  atTot.cell.cov=atSum.target?ciR1(atSum.vacc/atSum.target*100)+'%':'\u2013'; atTot.cell.waste='\u2013';
   drawTable('tAdmO',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},
    {k:'kidsHH',l:'Target children (HH)',n:1,f:x=>fmt(x.kidsHH)},{k:'housesP',l:'Houses planned',n:1,f:x=>fmt(x.housesP)},
    {k:'housesV',l:'Houses visited',n:1,f:x=>fmt(x.housesV)},{k:'target',l:'Overall target',n:1,f:x=>fmt(x.target)},
    {k:'vacc',l:'Vaccinated',n:1,f:x=>fmt(x.vacc)},{k:'cov',l:'Coverage %',n:1,f:x=>x.cov==null?'–':ciR1(x.cov)+'%'},
    {k:'na',l:'Still NA',n:1,f:x=>fmt(x.na)},{k:'ref',l:'Still refusing',n:1,f:x=>fmt(x.ref)},{k:'missed',l:'Still missed',n:1,f:x=>fmt(x.missed)},
-   {k:'mobile',l:'Mobile children',n:1,f:x=>fmt(x.mobile)},{k:'waste',l:'Wastage %',n:1,f:x=>x.waste==null?'–':ciR1(x.waste)}],AR,'cov',-1);
+   {k:'mobile',l:'Mobile children',n:1,f:x=>fmt(x.mobile)},{k:'waste',l:'Wastage %',n:1,f:x=>x.waste==null?'–':ciR1(x.waste)}],AR,'cov',-1,null,atTot);
   el('cntAdmO').textContent=AR.length+' districts · admin coverage';
   const AM=cqMeta(lab);
   el('capAdmO').textContent='Source: EOC portal, Campaign Coverage district summary for '+lab+(AM?' — campaign day '+AM.day+', read '+AM.asof:'')+'. Target children (HH) is the household-reach target and overall target is the portal target behind the coverage %; still missed is the portal total (still NA, still refusing and not reached). Coverage is shown unbanded because it is a campaign-day reading, not a final result.';
@@ -16814,8 +16969,11 @@ function renderCPost(){ cqSel(); const {X,R}=cqScopeR(), S=cqSum(R), RR=R.filter
  el('capci2').textContent=mi?`${sh(S.i_na)} of missed children were away and ${sh(S.i_rf)} refused; team-related misses (not visited or missed in the house) were ${sh((S.i_tdn||0)+(S.i_tm||0))}.`:'';
  drawTable('tIcm',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'rec',l:'Recall coverage',n:1,f:x=>rgS(x.rec,x.B.rec)},{k:'fmp',l:'Finger-marked',n:1,f:x=>rgS(x.fmp,x.B.fmp)},
   {k:'rc',l:'Children checked',n:1,sv:x=>x.i.rc,f:x=>fmt(x.i.rc||0)},{k:'mi',l:'Missed',n:1,sv:x=>x.i.mi,f:x=>fmt(x.i.mi||0)},{k:'tdn',l:'Team did not visit',n:1,sv:x=>x.i.tdn,f:x=>fmt(x.i.tdn||0)},{k:'tm',l:'Team missed child',n:1,sv:x=>x.i.tm,f:x=>fmt(x.i.tm||0)},
-  {k:'na',l:'Child away',n:1,sv:x=>x.i.na,f:x=>fmt(x.i.na||0)},{k:'rf',l:'Refusal',n:1,sv:x=>x.i.rf,f:x=>fmt(x.i.rf||0)},{k:'pca',l:'Poorly covered areas',n:1,sv:x=>x.i.pca,f:x=>fmt(x.i.pca||0)},{k:'unv',l:'Unvaccinated found',n:1,sv:x=>x.i.unv,f:x=>fmt(x.i.unv||0)}],RRI,'rec',1);
- el('cntCI').textContent=RRI.length+' districts'; el('capCI').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise, all days of work.';
+  {k:'na',l:'Child away',n:1,sv:x=>x.i.na,f:x=>fmt(x.i.na||0)},{k:'rf',l:'Refusal',n:1,sv:x=>x.i.rf,f:x=>fmt(x.i.rf||0)},{k:'pca',l:'Poorly covered areas',n:1,sv:x=>x.i.pca,f:x=>fmt(x.i.pca||0)},{k:'unv',l:'Unvaccinated found',n:1,sv:x=>x.i.unv,f:x=>fmt(x.i.unv||0)}],RRI,'rec',1,null,{cell:{
+   d:esc('Total \u2014 '+pptScope()), rec:S.rec==null?'\u2013':pc(S.rec), fmp:S.fmp==null?'\u2013':pc(S.fmp),
+   rc:fmt(S.i_rc||0), mi:fmt(S.i_mi||0), tdn:fmt(S.i_tdn||0), tm:fmt(S.i_tm||0),
+   na:fmt(S.i_na||0), rf:fmt(S.i_rf||0), pca:fmt(S.i_pca||0), unv:fmt(S.i_unv||0)}});
+ el('cntCI').textContent=RRI.length+' districts'; el('capCI').textContent='Source: EOC portal, ICM › Intra Campaign Monitoring (PCR), district wise, all days of work. The bold bottom line totals the districts in view: children checked, missed and the reasons behind them are summed and both percentages are recomputed from those sums, never averaged.';
  el('btnCIcsv').onclick=()=>cqCSV('ICM_'+lab,['District','Division','Recall coverage %','Finger-marked %','Children checked','Recall vaccinated','Missed','Team did not visit','Team missed child','Child away','Refusal','Poorly covered areas','Missed areas','Unvaccinated found'],RRI.map(r=>[r.d,r.dv,rnd(r.rec),rnd(r.fmp),r.i.rc,r.i.rv,r.i.mi,r.i.tdn,r.i.tm,r.i.na,r.i.rf,r.i.pca,r.i.ma,r.i.unv]));
 
  ciOper(R,lab); ciUCblock(); try{renderNovUC(lab);}catch(e){console.warn('novuc',e);}
@@ -16864,12 +17022,22 @@ function renderNovUC(lab){
  const fl=r=>r.fl.split('').map(x=>'<span class="pcls '+FL[x][1]+'" style="margin:1px 2px;white-space:nowrap">'+FL[x][0]+'</span>').join('');
  const cv=v=>v==null?'\u2013':'<span class="rg '+(v>=95?'g':v>=80?'a':'r')+'">'+v.toFixed(1)+'%</span>';
  const nn=v=>v==null||v<0?'\u2013':fmt(Math.round(v));
+ const pS=f=>R.reduce((a,r)=>{const v=f(r);return a+(v>0?v:0);},0);
+ const pW=(num,den)=>{let n=0,d=0;R.forEach(r=>{if(num(r)>0&&den(r)>0){n+=num(r)*den(r);d+=den(r);}});return d?n/d:null;};
+ const tgT=pS(r=>r.tg), vacT=pS(r=>r.vac), rcT=pS(r=>r.rc), rvT=pS(r=>r.rv), tmT=pS(r=>r.tm), svT=pS(r=>r.sv), femT=pW(r=>r.fem,r=>r.tm), supT=pW(r=>r.sup,r=>r.sv);
+ const nuTot={cell:{d:esc('Total \u2014 '+pptScope()), t:'', u:esc(fmt(R.length)+' UCs'),
+  tg:fmt(tgT), vac:fmt(vacT), cov:tgT?cv(vacT/tgT*100):'\u2013',
+  sna:fmt(S('sna')), srf:fmt(S('srf')), slo:fmt(S('slo')), st:'<b>'+fmt(S('st'))+'</b>',
+  cl:fmt(pS(r=>r.cl)), rec:rcT?cv(rvT/rcT*100):'\u2013',
+  tdn:fmt(pS(r=>r.tdn)), tmc:fmt(pS(r=>r.tmc)), tm:fmt(tmT),
+  fem:femT==null?'\u2013':femT.toFixed(0)+'%', sv:fmt(svT), sup:supT==null?'\u2013':supT.toFixed(0)+'%',
+  fl:R.filter(r=>r.fl.length).length+' flagged'}};
  drawTable('tNU',[{k:'d',l:'District'},{k:'t',l:'Tehsil'},{k:'u',l:'UC',f:r=>'<b>'+esc(r.u)+'</b>'},{k:'tg',l:'HH target',n:1,f:r=>fmt(r.tg)},{k:'vac',l:'Vaccinated',n:1,f:r=>fmt(r.vac)},
   {k:'cov',l:'Coverage',n:1,f:r=>cv(r.cov)},{k:'sna',l:'Still NA',n:1,f:r=>fmt(r.sna)},{k:'srf',l:'Still refusing',n:1,f:r=>fmt(r.srf)},{k:'slo',l:'Left over',n:1,f:r=>fmt(r.slo)},{k:'st',l:'Still missed',n:1,f:r=>'<b>'+fmt(r.st)+'</b>'},
   {k:'cl',l:'ICM clusters',n:1,f:r=>nn(r.cl)},{k:'rec',l:'ICM recall',n:1,f:r=>r.rec==null?'\u2013':cv(r.rec)},{k:'tdn',l:'Team did not visit',n:1,f:r=>r.cl>0?fmt(r.tdn):'\u2013'},{k:'tmc',l:'Team missed child',n:1,f:r=>r.cl>0?fmt(r.tmc):'\u2013'},
   {k:'tm',l:'Team checks',n:1,f:r=>nn(r.tm)},{k:'fem',l:'Teams with a female member',n:1,f:r=>r.fem<0?'\u2013':r.fem.toFixed(0)+'%'},{k:'sv',l:'Supervisor visits',n:1,f:r=>nn(r.sv)},{k:'sup',l:'Supervisors supervising',n:1,f:r=>r.sup<0?'\u2013':r.sup.toFixed(0)+'%'},
-  {k:'fl',l:'Flags',sv:r=>r.fl.length,f:fl}],R,'st',-1);
- el('capNU2').textContent='Coverage = household children vaccinated \u00f7 household target (planning), so it differs from the district coverage above, which uses the overall target. Left over = children in areas the teams have not covered yet. Catch-up has not been reported yet. ICM columns come from IDIMS forms 11 (HH cluster), 24 (team monitoring) and 10 (supervisor monitoring) and are blank where no form was filed. Polio case = WPV1 in the UC since January 2025 (EOC line list). Sorted by children still missed; click a header to sort.';
+  {k:'fl',l:'Flags',sv:r=>r.fl.length,f:fl}],R,'st',-1,null,nuTot);
+ el('capNU2').textContent='Coverage = household children vaccinated \u00f7 household target (planning), so it differs from the district coverage above, which uses the overall target. Left over = children in areas the teams have not covered yet. Catch-up has not been reported yet. ICM columns come from IDIMS forms 11 (HH cluster), 24 (team monitoring) and 10 (supervisor monitoring) and are blank where no form was filed. Polio case = WPV1 in the UC since January 2025 (EOC line list). Sorted by children still missed; click a header to sort. The bold bottom line totals the UCs in view: targets, children and visits are summed, coverage and ICM recall are recomputed from those sums, the two team-composition percentages are weighted by the checks behind them, and the flag cell counts the UCs carrying at least one flag.';
  el('btnNUcsv').onclick=()=>cqCSV('SNID_Nov26_UCs_behind',['District','Division','Tehsil','UC','UC code','HH target','Vaccinated','Coverage %','Still NA','Still refusing','Left over','Still missed','ICM clusters','ICM children checked','ICM recalled vaccinated','ICM recall %','ICM team did not visit','ICM team missed child','ICM child away','ICM refusal','Team checks','Teams with female member %','Supervisor visits','Supervisors supervising %','No data','Zero vaccinated','Polio case since 2025','ICM recall < 80%','Teams not visiting'],
   R.slice().sort((a,b)=>b.st-a.st).map(r=>[r.d,r.dv,r.t,r.u,r.c,r.tg,r.vac,rnd(r.cov),r.sna,r.srf,r.slo,r.st,r.cl<0?'':r.cl,r.cl>0?r.rc:'',r.cl>0?r.rv:'',rnd(r.rec),r.cl>0?r.tdn:'',r.cl>0?r.tmc:'',r.cl>0?r.na:'',r.cl>0?r.rf:'',r.tm<0?'':r.tm,r.fem<0?'':rnd(r.fem,0),r.sv<0?'':r.sv,r.sup<0?'':rnd(r.sup,0),r.nd?'yes':'',r.zv?'yes':'',r.w?'yes':'',r.lr?'yes':'',r.tnv?'yes':'']));
 }
@@ -17903,7 +18071,8 @@ function pkIni(pfx){ if(PKC[pfx])return; if(typeof INDIC==undefined||!INDIC)retu
  });
 }
 function pkSync(pfx){ try{ const st=PKC[pfx]; if(!st)return;
- if(!PKOK[pfx]){ PKOK[pfx]=1; PKSEC.forEach(k=>pkDraw(pfx,k)); PKSEC.forEach(k=>pkSyncSel(pfx,k)); }
+ PKSEC.forEach(k=>pkDraw(pfx,k));
+ if(!PKOK[pfx]){ PKOK[pfx]=1; PKSEC.forEach(k=>pkSyncSel(pfx,k)); }
 }catch(e){ console.warn('data pack',e); } }
 function pkDraw(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
  const S=INDIC.S[k]; if(!S)return;
@@ -17926,7 +18095,15 @@ function pkDraw(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
   cols=CP.concat([{k:'d',l:'District',f:r=>multi?esc(r.d):'<b>'+esc(r.d)+'</b>'}],V);
   sel.forEach(ci=>{ const dd=pkDD(k,ci); Object.keys(dd).forEach(di=>{ const o={cn:CL[ci].l,cs:ci,d:pkDN(+di)}; dd[di].forEach((v,j)=>{o['v'+j]=v;}); rows.push(o); }); });
  }
- drawTable('pkt_'+pfx+'_'+k,cols,rows,multi?'cp':'d',1);
+ const sc=crInD(), scOn=!!(fDiv.value||DVSEL||fDist.value||DSEL||fTeh.value||fUC.value||UCSEL);
+ rows=rows.filter(r=>{ if(!sc(r.d))return false; if(ucm){ if(fTeh.value&&r.t!==fTeh.value)return false; if(UCSEL){if(!UCSEL.has(r.c))return false;} else if(fUC.value&&r.c!==fUC.value)return false; } return true; });
+ let pkTot=null;
+ if(!multi&&rows.length){ const C={d:esc('Total \u2014 '+pptScope())};
+  if(ucm){C.t='';C.u=esc(rows.length+' UCs');C.c='';C.cr='';}
+  K.forEach(x=>{ if(x.t==='p'){C['v'+x.j]='\u2013';return;}
+   C['v'+x.j]=fmt(Math.round(rows.reduce((a,r)=>{const v=r['v'+x.j];return a+(v==null||v===-1?0:v);},0))); });
+  pkTot={cell:C}; }
+ drawTable('pkt_'+pfx+'_'+k,cols,rows,multi?'cp':'d',1,null,pkTot);
  const lab=multi?(((ucm?ucSel:sel).length)+' campaigns'):pkCampLab(CL[sel[0]]);
  const pxs=pkXS(k), inIN=k==='admin'&&typeof INDA!=='undefined'&&INDA&&(multi?sel:[sel[0]]).some(i=>pxs[i]&&pxs[i].camp===INDA.camp);
  el('pkcnt_'+pfx+'_'+k).textContent=lab+' \u00b7 '+rows.length+(ucm?' UC rows':(multi?' district rows':' districts'))+' \u00b7 as of '+(multi?INDIC.asof:(sel[0]<pxs.length?pkStamp(k,sel[0]):INDIC.asof))+(inIN?' (SNID Sept 2026: '+INDA.asof+')':'');
@@ -17935,6 +18112,9 @@ function pkDraw(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
    :(sel[0]<pxs.length?('Source: the EOC portal record for '+esc(lab)+'; the note below names the export this table was read from. District rows are the portal\u2019s own district figures; percent columns are as reported. \u201c\u2013\u201d = not reported.')
     :('Source: EOC portal compiled campaign indicators export \u00b7 '+CL[CL.length-1].y+'\u2013'+CL[0].y+' \u00b7 '+fmt(INDIC.rows+(k==='admin'&&typeof INDA!=='undefined'&&INDA?INDA.n:0))+' UC rows, '+fmt(INDIC.ucs.length+(k==='admin'&&typeof INDA!=='undefined'&&INDA?INDA.ucs.length:0))+' UCs. District rows sum the UC rows; percentages are recomputed from their counts; Same Day coverage and ICM Seen % are the mean of the UC values. '+(ucOK?'Switch to UC detail for the raw UC rows.':'UC detail is embedded for the 2025 and 2026 campaigns only.')+' \u201c\u2013\u201d = not reported.')));
  el('pkcap_'+pfx+'_'+k).innerHTML=CAP;
+ if(pkTot)el('pkcap_'+pfx+'_'+k).innerHTML+=' The bold bottom line totals the rows in view: count columns are summed and percentage columns print \u201c\u2013\u201d, because the portal\u2019s percentages are per-row values and are not re-derived by adding them up.';
+ else if(multi)el('pkcap_'+pfx+'_'+k).innerHTML+=' Counts are never summed across campaigns, so a multi-campaign compilation carries no total line.';
+ if(scOn)el('pkcap_'+pfx+'_'+k).innerHTML+=' <b>Filtered to '+esc(pptScope())+'</b> by the filter bar'+(ucm?'':' (district grain \u2014 a tehsil or UC pick shows in the UC detail only)')+'.';
  {const X=pkXS(k),nt=sel.filter(ci=>ci<X.length&&X[ci].note).map(ci=>' <b>'+esc(X[ci].camp.l)+'</b>: '+esc(X[ci].note)); if(nt.length)el('pkcap_'+pfx+'_'+k).innerHTML+=nt.join('');}
  if(inIN)el('pkcap_'+pfx+'_'+k).innerHTML+=' <b>SNID Sept 2026</b> is added from the EOC summary coverage report ('+esc(INDA.src)+', '+esc(INDA.asof)+'): Total Adm Covered and AdmTotalCoverage % are the report\'s total children vaccinated (household coverage, the same definition as the Missed children tab); MP target, same-day coverage, guest, HRMP-mobile and school columns are not reported for that round.';
  {const IPC=(CQ.camps||[]).find(c=>(CQ.meta||{})[c.v]);
@@ -17945,13 +18125,15 @@ function pkCSV(pfx,k){ const st=PKC[pfx]&&PKC[pfx][k]; if(!st)return;
  const S=INDIC.S[k]; if(!S)return;
  const sel=pkSel(st), multi=sel.length>1, ucSel=pkUCsel(st,k), CL=pkCL(k);
  const K=S.k.map((x,j)=>({l:x[0],t:x[1],j:j}));
+ const sc=crInD(), ucm=st.lvl==='u', scOn=!!(fDiv.value||DVSEL||fDist.value||DSEL||fTeh.value||fUC.value||UCSEL);
+ const keep=(d,t,c)=>sc(d)&&(!ucm||((!fTeh.value||t===fTeh.value)&&(UCSEL?UCSEL.has(c):(!fUC.value||c===fUC.value))));
  let H,rows=[];
  if(st.lvl==='u'){ H=(multi?['Campaign']:[]).concat(['District','Tehsil','UC','UC Code','UC criteria'],K.map(x=>x.l));
-  ucSel.forEach(ci=>{ pkUU(k,ci).forEach(pr=>{ const u=pkUC(pr[0]); rows.push((multi?[CL[ci].l]:[]).concat([pkDN(u[1]),pkTEH(u[2]),u[0],u[3],critLab(pkDN(u[1]),u[0],u[3])],K.map(x=>pkNum(pr[1][x.j],x.t)))); }); });
+  ucSel.forEach(ci=>{ pkUU(k,ci).forEach(pr=>{ const u=pkUC(pr[0]),dn=pkDN(u[1]),tt=pkTEH(u[2]); if(!keep(dn,tt,u[0]))return; rows.push((multi?[CL[ci].l]:[]).concat([dn,tt,u[0],u[3],critLab(dn,u[0],u[3])],K.map(x=>pkNum(pr[1][x.j],x.t)))); }); });
  }else{ H=(multi?['Campaign']:[]).concat(['District'],K.map(x=>x.l));
-  sel.forEach(ci=>{ const dd=pkDD(k,ci); Object.keys(dd).forEach(di=>{ rows.push((multi?[CL[ci].l]:[]).concat([pkDN(+di)],K.map(x=>pkNum(dd[di][x.j],x.t)))); }); });
+  sel.forEach(ci=>{ const dd=pkDD(k,ci); Object.keys(dd).forEach(di=>{ const dn=pkDN(+di); if(!keep(dn))return; rows.push((multi?[CL[ci].l]:[]).concat([dn],K.map(x=>pkNum(dd[di][x.j],x.t)))); }); });
  }
- cqCSV(PKNM[k]+'_'+(multi?((st.lvl==='u'?ucSel.length:sel.length)+' campaigns'):(CL[sel[0]]||{l:'campaign'}).l),H,rows);
+ cqCSV(PKNM[k]+'_'+(multi?((st.lvl==='u'?ucSel.length:sel.length)+' campaigns'):(CL[sel[0]]||{l:'campaign'}).l)+(scOn?'_'+_slug():''),H,rows);
 }
 try{ pkIni('hc'); pkIni('pc'); }catch(e){ console.warn('data pack init',e); }
 {const _f=renderHCamp; renderHCamp=function(){_f(); pkSync('hc');};}
@@ -18261,9 +18443,30 @@ function cinDraw(){
  const r=cinRows(),sel=r.sel,multi=r.multi,onD=r.onD,ucSel=r.ucSel;
  pkSeg(el('cinLD'),onD,false);pkSeg(el('cinLU'),!onD,!r.ucOK);
  if(el('cinLU'))el('cinLU').title=r.ucOK?'':'UC rows are embedded for the 2025-26 campaigns only';
- drawTable('cinT',r.cols,r.rows,multi?'cp':'d',1);
  const lab=multi?(sel.length+' campaigns'):pkCampLab(CINCL[sel[0]]||{l:''});
  const sc=cinScope();
+ // Total for the scope in view. Counts are summed; a percentage is recomputed from those sums,
+ // never averaged across rows. ICM recall is the one column without a denominator on this row.
+ let T=null;
+ if(!multi){
+  T={cell:{}};
+  T.cell[r.cols[0].k]=esc('Total \u2014 '+(sc||'all KP'));
+  const sj=j=>{let s=null;r.rows.forEach(x=>{const v=x.v[j];if(v!=null&&v>-1)s=(s||0)+v;});return s;};
+  const nu=v=>v==null?'\u2013':fmt(Math.round(v));
+  const pt=(a,b)=>a==null||!b?'\u2013':pc(a/b*100);
+  const V=(j,v)=>{if(r.keep[j])T.cell['v'+j]=v;};
+  const tg=sj(0),cov=sj(1),sm=(sj(3)==null&&sj(4)==null&&sj(5)==null)?null:(sj(3)||0)+(sj(4)||0)+(sj(5)||0);
+  V(0,nu(tg));V(1,nu(cov));V(2,pt(cov,tg));
+  V(3,nu(sj(3)));V(4,nu(sj(4)));V(5,nu(sj(5)));V(6,pt(sm,tg));V(7,'\u2013');
+  V(8,nu(sj(8)));V(9,nu(sj(9)));V(10,nu(sj(10)));
+  V(11,nu(sj(11)));V(12,nu(sj(12)));V(13,nu(sj(13)));
+  V(14,pt(sj(11),(sj(11)||0)+(sj(12)||0)+(sj(13)||0)));
+  V(15,nu(sj(15)));V(16,nu(sj(16)));
+  if(r.mqCols.length&&r.onD){
+   for(let i=0;i<5;i++){let s=null;r.rows.forEach(x=>{const m=cinMQd(x.cn,x.d);if(m&&m[i]!=null)s=(s||0)+m[i];});T.cell['mq'+(i+1)]=nu(s);}
+  }
+ }
+ drawTable('cinT',r.cols,r.rows,multi?'cp':'d',1,null,T);
  const nInd=CIN.k.length-r.drop.length;
  el('cinCnt').textContent=lab+(sc?' \u00b7 '+sc:'')+' \u00b7 '+fmt(r.rows.length)+' '+(onD?'district':'UC')+(r.rows.length===1?' row':' rows');
  el('cinHd').textContent=nInd+' indicators'+(r.mqCols.length?' + MPQA':'')+' \u00b7 district and UC grain \u00b7 as of '+CIN.asof;
@@ -18288,6 +18491,7 @@ function cinDraw(){
  }
  else if(r.mqOff&&r.rows.length)cap+=' MPQA columns are left out because '+
   (r.mqNoRound?'no campaign in this selection has an MPQA round':'no row in this scope is in that round&rsquo;s assigned sample')+'.';
+ if(T)cap+=' The bold bottom line totals the scope in view: counts are summed and every percentage is recomputed from those sums, never averaged across rows; ICM recall has no denominator on that line, so it prints &ldquo;&ndash;&rdquo;.';
  el('cinCap').innerHTML=cap;
 }
 function cinGrid(){
@@ -18996,8 +19200,10 @@ function mdpBlockCard(){
   {k:'mins',l:'Duration',n:1,f:o=>mdpHrs(o.mins)+(o.open&&o.mins!=null?' (open)':''),sv:o=>o.mins},
   {k:'esc',l:'Escalated to',f:o=>o.esc?esc(MDP_ESC[o.esc]||o.esc):'–',sv:o=>o.esc},
   {k:'open',l:'Status',f:o=>o.open?'<span class="st st-behind">Open</span>':'<span class="st st-on">Cleared</span>',sv:o=>o.open?0:1}
- ],rows,'mins',-1,'No UC is blocked for this day in the current filter');
- if(cap)cap.innerHTML='One row per blocked UC and campaign day, as filed in the Blockers tab: counts, the reason and the time only — <b>no person is named</b>. A cleared row keeps its clearing time, so how long the block lasted and a UC blocked twice both survive. Duration runs to the clearing time, or to the row\u2019s own filing time while it is still open; the median is over the rows shown. '+mdpBlkWhen()+'.';
+ ],rows,'mins',-1,'No UC is blocked for this day in the current filter',B.length?{cell:{
+  n:esc('Total \u2014 '+T.uc+' UC'+(T.uc===1?'':'s')+' \u00b7 '+T.n+' row'+(T.n===1?'':'s')),dv:'',uc:'',day:'',rsn:'',sub:'',
+  ta:fmt(T.ta),taw:fmt(T.tawOpen),t0:'',t1:'',mins:'\u2013',esc:'',open:esc(T.open+' open')}}:null);
+ if(cap)cap.innerHTML='One row per blocked UC and campaign day, as filed in the Blockers tab: counts, the reason and the time only — <b>no person is named</b>. A cleared row keeps its clearing time, so how long the block lasted and a UC blocked twice both survive. Duration runs to the clearing time, or to the row\u2019s own filing time while it is still open; the median is over the rows shown. '+mdpBlkWhen()+'. The bold bottom line counts distinct blocked UCs and rows, adds the teams affected and still awaited, and shows the open rows; duration has no single additive total, so it prints \u2013.';
 }
 function mdpBlockXlsx(){
  const B=mdpBlkScope();
@@ -19228,6 +19434,11 @@ function mdpHeat(R){
  el('capmdpH').innerHTML='Deployed ÷ planned for each team type in '+esc(mdpDayLbl().toLowerCase())+'; <b>Field</b> is the four field-team types behind the headline %. Grey means no plan or no report.';
 }
 function mdpTable(R){
+ const MT=mdpTot(R);
+ const stTx=[[MT.good,'on plan'],[MT.watch,'watch'],[MT.low,'short'],[MT.crit,'critical'],[MT.no,'no report'],[MT.nplan,'plan missing']].filter(x=>x[0]).map(x=>x[0]+' '+x[1]).join(' \u00b7 ');
+ const mdpT=R.length?{cell:{n:esc('Total \u2014 '+R.length+' district'+(R.length===1?'':'s')),dv:'',last:'',
+  ucr:esc(fmt(MT.ucr)+' / '+fmt(MT.ucp)),fd:esc(fmt(MT.fd)+' / '+fmt(MT.fp)),
+  pct:MT.fp?'<b>'+pc(MT.fd/MT.fp*100)+'</b>':'\u2013',aw:fmt(MT.aw),inc:fmt(MT.inc),rsn:'',st:esc(stTx)}}:null;
  drawTable('tMDP',[
   {k:'n',l:'District',f:o=>'<b>'+esc(DNAME(o.n))+'</b>'},
   {k:'dv',l:'Division',f:o=>esc(o.dv)},
@@ -19239,10 +19450,10 @@ function mdpTable(R){
   {k:'inc',l:'Incidents',n:1,f:o=>o.rep?fmt(o.inc):'–'},
   {k:'rsn',l:'Reason',f:o=>esc(mdpRsnTxt(o))},
   {k:'st',l:'Status',f:o=>'<span class="st '+MDP_ST[o.st][0]+'">'+MDP_ST[o.st][1]+'</span>'}
- ],R,'pct',1,'No district is in scope for this day in the current filter');
+ ],R,'pct',1,'No district is in scope for this day in the current filter',mdpT);
  el('mdpDayLbl').textContent=mdpDayLbl();
  el('mdpCnt2').textContent=R.length+' districts · '+mdpLbl(R);
- el('capMDP').innerHTML='Click a column to sort. A district with no report keeps its plan from the scope but shows <b>–</b> for deployment; reports timed after 12:00 carry ⚠.';
+ el('capMDP').innerHTML='Click a column to sort. A district with no report keeps its plan from the scope but shows <b>–</b> for deployment; reports timed after 12:00 carry ⚠. The bold bottom line sums the UCs, teams, awaited teams and incidents in view, re-derives deployment % as deployed ÷ planned, and counts the districts behind each status rather than averaging statuses.';
 }
 
 // The deployment map is the dashboard's own KP district geometry (KPGEO), not a schematic grid, so a
@@ -19574,6 +19785,11 @@ function mdpHeatXlsx(){
  csvDownload(mdpShareFile('deployment_by_team_type','.xlsx'),H,rows);
 }
 function mdpSmall(R,T){
+ const repsT=R.reduce((a,o)=>a+(o.reps||0),0);
+ const stTx=[[T.good,'on plan'],[T.watch,'watch'],[T.low,'short'],[T.crit,'critical'],[T.no,'no report'],[T.nplan,'plan missing']].filter(x=>x[0]).map(x=>x[0]+' '+x[1]).join(' \u00b7 ');
+ const mdpST=R.length?{cell:{n:esc('Total \u2014 '+R.length+' district'+(R.length===1?'':'s')),dv:'',reps:String(repsT),
+  fd:esc(fmt(T.fd)+' / '+fmt(T.fp)),pct:T.fp?'<b>'+pc(T.fd/T.fp*100)+'</b>':'\u2013',
+  ucr:esc(fmt(T.ucr)+' / '+fmt(T.ucp)),st:esc(stTx)}}:null;
  drawTable('tMDPSmall',[
   {k:'n',l:'District',f:o=>'<b>'+esc(DNAME(o.n))+'</b>'},
   {k:'dv',l:'Division',f:o=>esc(o.dv)},
@@ -19582,14 +19798,14 @@ function mdpSmall(R,T){
   {k:'pct',l:'Deployment %',n:1,f:o=>o.pct==null?'\u2013':'<b style="color:'+MDP_COL[o.st]+'">'+o.pct.toFixed(1)+'%</b>',sv:o=>o.pct},
   {k:'ucr',l:'UCs rep. / planned',n:1,f:o=>fmt(o.ucr)+' / '+fmt(o.ucp),sv:o=>o.ucp?o.ucr/o.ucp:null},
   {k:'st',l:'Status',f:o=>'<span class="st '+MDP_ST[o.st][0]+'">'+MDP_ST[o.st][1]+'</span>'}
- ],R,'pct',1,'No district is in scope for this day in the current filter');
+ ],R,'pct',1,'No district is in scope for this day in the current filter',mdpST);
  const c=el('mdpSmCnt');
  if(c)c.textContent=T.rep+' of '+R.length+' districts reported \u00b7 '
   +(T.pct==null?'no field teams planned yet':T.pct.toFixed(1)+'% deployed');
  const cap=el('capMDPSmall');
  if(cap)cap.innerHTML='One row per district with the numbers a morning call needs; the full board with '
   +'awaited teams, incidents and reasons is below. <b>Days</b> counts the campaign days that district '
-  +'has reported'+(MDD?' (one, for a single day)':'')+'.';
+  +'has reported'+(MDD?' (one, for a single day)':'')+'. The bold bottom line sums the days and teams in view and re-derives deployment % as deployed \u00f7 planned.';
 }
 function mdpCh(id){
  const c=(typeof CH!=='undefined')?CH[id]:null;

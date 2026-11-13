@@ -403,8 +403,10 @@
    ],
    "extractor": "extract_novf.py",
    "label": "SNID Nov-2026 final coverage summary (district grain)",
-   "note": "The 10-Nov-2026 close-out carries 27 district rows and a totals row, no Tehsil / UC columns and no ICM or LQAS figures. The totals row must re-add from the district rows (extract aborts otherwise). It supersedes only the district coverage layer; UC rows of the same round stay at their last UC-wise read.",
+   "note": "The 10-Nov-2026 close-out carries 27 district rows and a totals row, no Tehsil / UC columns and no ICM or LQAS figures. The totals row must re-add from the district rows (extract aborts otherwise). It supersedes only the district coverage layer; UC rows of the same round stay at their last UC-wise read. The 13-Nov-2026 re-download (coverage_SNID Nov 2026_*.xls, district and UC grain) is byte-equivalent to these files: district and UC figures match the embedded NOVF / NOVUC payloads exactly (4,183,183 target, 996 UCs, 4,071,582 vaccinated, 97.33%), so it is a re-read, not a data change.",
    "patterns": [
+    "coverage_*NOV*.xls",
+    "coverage_*Nov*.xls",
     "summary_*NOV*.xls",
     "summary_*Nov*.xls"
    ],

@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-12T17:33:15+05:00",
-  "chars": 23339682,
-  "internal_md5": "daa0a2ee5710733b8d994c3b96b76cde",
-  "master_md5": "9cf73a8ae6c542de3fcfc070f997ef26",
-  "note": "LQAS Nov-26 joined into the campaign indicators plate and the E-LQAS card. Timestamp refresh 12-Nov-2026 17:33 PKT",
-  "stamp": "12-Nov-2026 17:33"
+  "at": "2026-11-13T11:59:09+05:00",
+  "chars": 23368064,
+  "internal_md5": "f9178890415d189cd4b2b6b84f600e1b",
+  "master_md5": "af09a0fe3058c0042adf8d53ca046edb",
+  "note": "Campaign section: every table now carries a bold bottom Total row for the scope in view, so a division- or district-filtered table shows its own subtotal - counts summed, every percentage recomputed from those sums, and the label naming the level it was summed at. Three grids deliberately keep no footer (activity-timeline calendar, deployment heat grid, ER daily-entry grid). The 13-Nov SNID Nov-2026 coverage re-download (coverage_SNID Nov 2026 district + UC) was verified identical to the embedded Nov payloads, so no figure changed; the source patterns now recognise the coverage_* filename. Timestamp refresh 13-Nov-2026 11:59 PKT",
+  "stamp": "13-Nov-2026 11:59"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
