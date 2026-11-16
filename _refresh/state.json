@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-16T12:18:41+05:00",
-  "chars": 23383485,
-  "internal_md5": "a38dcffe06d7549a57f00ac05d52df9a",
-  "master_md5": "c0e78134bba036deaec78659f28f9cb4",
-  "note": "MPQA: district-grain detail for the 2026 rounds. Timestamp refresh 16-Nov-2026 12:18 PKT",
-  "stamp": "16-Nov-2026 12:18"
+  "at": "2026-11-16T12:41:09+05:00",
+  "chars": 23388095,
+  "internal_md5": "52d76dc150dbadc95969fd412c800124",
+  "master_md5": "37879fec74c0083f503a434c8248b1d2",
+  "note": "Insights: SNID Nov-26 folded in (reported ZDs only), double-risk Nov columns, district-note Nov returns. Timestamp refresh 16-Nov-2026 12:41 PKT",
+  "stamp": "16-Nov-2026 12:41"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
