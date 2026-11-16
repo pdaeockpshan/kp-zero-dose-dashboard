@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-16T12:06:43+05:00",
-  "chars": 23379101,
-  "internal_md5": "a6bc4c8f0dbda60d939e4b14e8b5cb5c",
-  "master_md5": "ccec3a74859122e58e2a703613edccae",
-  "note": "Campaign indicators: ICM Total Missed at district grain (SNID Sept 2026, 22,396) and dropped at UC grain; MPQA 2026 round-history card on Pre-campaign; SNID Sept/May MPQA exports re-read 16-Nov and matched. Timestamp refresh 16-Nov-2026 12:06 PKT",
-  "stamp": "16-Nov-2026 12:06"
+  "at": "2026-11-16T12:18:41+05:00",
+  "chars": 23383485,
+  "internal_md5": "a38dcffe06d7549a57f00ac05d52df9a",
+  "master_md5": "c0e78134bba036deaec78659f28f9cb4",
+  "note": "MPQA: district-grain detail for the 2026 rounds. Timestamp refresh 16-Nov-2026 12:18 PKT",
+  "stamp": "16-Nov-2026 12:18"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
