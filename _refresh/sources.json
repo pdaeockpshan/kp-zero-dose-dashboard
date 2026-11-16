@@ -439,13 +439,16 @@
    ],
    "extractor": "extract_pcm.py",
    "label": "Post-campaign monitoring (PCHS + PCM + ICM)",
-   "note": "One payload, three sources: the newest PCHS Data*.xlsx (campaign-wise household checks, currently Feb-Aug 2026), the newest POST CAMPAIGN MONITORING*.xlsx (currently SNID Sept-26) and per-UC ICM for the 2026 campaigns from the spotting workbook. Staleness tracks the newest matching file only - drop a new PCHS or PCM file into D:\\AMAZON DATA and run --only pcm --force. When a campaign's post-campaign file arrives, it becomes the newest PCM dataset automatically. Surveyor names are never extracted (public site).",
+   "note": "One payload, three sources: the newest PCHS Data*.xlsx (campaign-wise household checks, currently Feb-Aug 2026), every readable campaign PCM workbook (newest file per campaign label wins, so Sept-26 and Nov-26 both stay in the series) and per-UC ICM for the 2026 campaigns from the spotting workbook. Each PCM dataset carries the flat PCM sheet only - pivot sheets are skipped. Surveyor names are never extracted (public site). SNID Nov 2026 (read 16-Nov-2026) is `PCM - SNID Nov 2026.xlsx`, sheet `PCM`: 82 UCs over 8 districts, 4 921 children checked, 4 728 finger-marked (96.1 %) and 193 not marked; that workbook carries no `# of PCM MS` and no spot-check columns, so those print a dash rather than 0. `python _refresh/patch_ms_pcm_pack.py --write` refreshes `PKX.pcm` and swaps `const PCM` from the same extractor output in one run (run `--only pcm` first so `_refresh/out/pcm.json` exists).",
    "patterns": [
     "PCHS Data*.xlsx",
-    "POST CAMPAIGN MONITORING*.xlsx"
+    "POST CAMPAIGN MONITORING*.xlsx",
+    "PCM - *.xlsx",
+    "PCM *.xlsx"
    ],
-   "portal": "PCHS household-check sheets + EOC post-campaign monitoring export (D:\\AMAZON DATA), plus ICM columns of the KP+TD spotting workbook (reuses the chd cache)",
+   "portal": "PCHS household-check sheets (D:\\AMAZON DATA) + one EOC post-campaign monitoring export per campaign (PCM - SNID <round>.xlsx in Downloads), plus ICM columns of the KP+TD spotting workbook (reuses the chd cache)",
    "roots": [
+    "C:\\Users\\HD\\Downloads",
     "D:\\AMAZON DATA"
    ]
   },
@@ -807,6 +810,19 @@
    "portal": "EOC dashboard > Campaign > Pre Campaign > MPQA (NEW) for Sept-2026 onward, MPQA (OLD) for May-2026 and earlier",
    "roots": [
     "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\cache"
+   ]
+  },
+  "ms": {
+   "const": "PKX.ms",
+   "extractor": "patch_ms_pcm_pack.py",
+   "howto": "Drop the UC-wise market-survey export as `MS.xlsx` in C:\\Users\\HD\\Downloads and run `python _refresh/patch_ms_pcm_pack.py --write`. The same run also refreshes `PKX.pcm` from `PCM - SNID <round>.xlsx` and swaps `const PCM` from the same extractor output, so the Campaign-section market-survey/PCM tables and the Monitoring tab are written together; there is no `extract_ms.py` and `refresh.py` cannot drive this payload. One row per UC; district rows are the sum of the UC rows and their percentages are recomputed from the counts (the pack entry carries `ud: 1`, which drives the table caption). The build asserts the workbook totals before writing - 85 UC rows / 25 districts / 103 surveys / 6 739 checked / 6 205 verified / 534 missed for SNID Nov 2026 (read 16-Nov-2026) - and the four named reasons plus the export’s \"Other\" bucket must re-add to the missed total; the 534 includes the 21 children the export files under \"Other\". There is no child-asleep column and the two trailing reason columns (mark washed away, mark not applied - both 0) sit outside the eleven compiled columns, so asleep and VBNFM print a dash and the table note names it. A revised export for the same round replaces its entry rather than appending a second one.",
+   "label": "Market survey (post-campaign, UC wise)",
+   "patterns": [
+    "MS.xlsx"
+   ],
+   "portal": "EOC dashboard > post-campaign market survey, UC-wise export (MS.xlsx, login required)",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
    ]
   },
   "neoc": {

@@ -202,30 +202,61 @@ def read_pchs(path):
     return out
 
 
-def read_pcm26(path):
-    rows = read_xlsx_rows(path)
-    hi = None
-    for i, r in enumerate(rows[:6]):
-        h = _hdrlist(r)
-        hits = sum(1 for x in h if x and ('district' in x or x == 'uc' or 'camp' in x or 'tehsil' in x))
-        if hits >= 3:
-            hi = i
+PCM_IX = ('camp', 'd', 't', 'u', 'chk', 'fm', 'ms', 'nt', 'tv', 'na', 'rf')
+
+
+def _pcm_cols(hdr):
+    return {'camp': _find(hdr, 'camp'), 'd': _find(hdr, 'district'), 't': _find(hdr, 'tehsil'),
+            'u': _find(hdr, 'uc', exact=True), 'chk': _find(hdr, 'check'),
+            'fm': _find(hdr, 'fm'), 'ms': _find(hdr, 'not f'),
+            'nt': _find(hdr, 'team did not'), 'tv': _find(hdr, 'team missed'),
+            'na': _find(hdr, 'away'), 'rf': _find(hdr, 'refus')}
+
+
+def _pcm_header(rows):
+    """(header, first data row, column index) for the flat campaign-PCM sheet."""
+    for hi in range(min(6, len(rows))):
+        h0 = _hdrlist(rows[hi])
+        hits = sum(1 for x in h0 if x and ('district' in x or x == 'uc' or 'camp' in x or 'tehsil' in x))
+        if hits < 4:
+            continue
+        ix = _pcm_cols(h0)
+        # a single header row names the reason columns itself; otherwise the group
+        # cells sit on row hi and the real names on row hi+1 (Sept-26 export layout)
+        if all(ix[k] is not None for k in PCM_IX):
+            return h0, hi + 1, ix
+        if hi + 1 < len(rows):
+            h1 = _hdrlist(rows[hi + 1])
+            hdr = [(h1[i] if i < len(h1) and h1[i] else h0[i]) for i in range(max(len(h0), len(h1)))]
+            ix = _pcm_cols(hdr)
+            if all(ix[k] is not None for k in PCM_IX):
+                return hdr, hi + 2, ix
+    return None
+
+
+def read_campaign_pcm(path):
+    """One campaign's PCM rows from whichever sheet holds the flat table (pivot sheets skipped)."""
+    import openpyxl
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    names = wb.sheetnames
+    order, seen = [], set()
+    for n in [x for x in names if x.strip().lower() == 'pcm'] + names:
+        if n not in seen:
+            seen.add(n)
+            order.append(n)
+    found = None
+    for n in order:
+        rows = [list(r) for r in wb[n].iter_rows(values_only=True)]
+        hp = _pcm_header(rows)
+        if hp:
+            found = (rows,) + hp
             break
-    if hi is None:
-        raise SystemExit('ERR pcm no header row found in %s' % os.path.basename(path))
-    # two-row header: merged group cells on row hi, real names on row hi+1
-    h0, h1 = _hdrlist(rows[hi]), (_hdrlist(rows[hi + 1]) if hi + 1 < len(rows) else [])
-    hdr = [(h1[i] if i < len(h1) and h1[i] else h0[i]) for i in range(max(len(h0), len(h1)))]
-    ix = {'camp': _find(hdr, 'camp'), 'd': _find(hdr, 'district'), 't': _find(hdr, 'tehsil'),
-          'u': _find(hdr, 'uc', exact=True), 'chk': _find(hdr, 'check'),
-          'fm': _find(hdr, 'fm'), 'ms': _find(hdr, 'not f'),
-          'nt': _find(hdr, 'team did not'), 'tv': _find(hdr, 'team missed'),
-          'na': _find(hdr, 'away'), 'rf': _find(hdr, 'refus')}
-    missing = [k for k, v in ix.items() if v is None]
-    if missing:
-        raise SystemExit('ERR pcm PCM-26 sheet missing columns %s (has %s)' % (missing, hdr))
+    wb.close()
+    if not found:
+        raise ValueError('no flat PCM sheet (sheets: %s)' % ', '.join(names))
+    rows, _hdr, start, ix = found
     out = []
-    for r in rows[hi + 1:]:
+    for r in rows[start:]:
         g = lambda k: clean(r[ix[k]]) if ix[k] < len(r) else ''
         n = lambda k: num(r[ix[k]]) if ix[k] < len(r) else 0
         camp, d, u = g('camp'), g('d'), g('u')
@@ -236,6 +267,8 @@ def read_pcm26(path):
         out.append({'camp': camp, 'd': d, 't': g('t'), 'u': u,
                     'chk': n('chk'), 'fm': n('fm'), 'ms': n('ms'),
                     'nt': n('nt'), 'tv': n('tv'), 'na': n('na'), 'rf': n('rf')})
+    if not out:
+        raise ValueError('no data rows')
     return out
 
 
@@ -361,26 +394,42 @@ def main():
     ds = cfg['auto'][DS]
 
     pchs_pat = {'roots': ds['roots'], 'patterns': ['PCHS Data*.xlsx', 'PCHS*.xlsx']}
-    pcm_pat = {'roots': ds['roots'], 'patterns': ['POST CAMPAIGN MONITORING*.xlsx', '*POST CAMPAIGN*.xlsx']}
-    pchs_rec = pcm_rec = None
+    # one workbook per campaign; the newest file for a campaign label wins (discover is
+    # newest-first), so Sept-26 and Nov-26 both stay in the series
+    pcm_pat = {'roots': ds['roots'], 'patterns': ds['patterns']}
+    pchs_rec = None
+    pcm_recs = srcutil.discover(pcm_pat)
     if a.source:
         rec = srcutil.stat_rec(a.source)
         if fnmatch_pchs(a.source):
             pchs_rec = rec
         else:
-            pcm_rec = rec
+            pcm_recs = [rec] + [r for r in pcm_recs
+                                if os.path.abspath(r['path']) != os.path.abspath(rec['path'])]
     if not pchs_rec:
         pchs_rec = srcutil.newest(pchs_pat)
-    if not pcm_rec:
-        pcm_rec = srcutil.newest(pcm_pat)
     if not pchs_rec:
         raise SystemExit('ERR pcm no PCHS file found under %s' % ds['roots'])
-    if not pcm_rec:
-        raise SystemExit('ERR pcm no POST CAMPAIGN MONITORING file found under %s' % ds['roots'])
-    srcutil.say('# pcm: PCHS=%s / PCM=%s' % (pchs_rec['name'], pcm_rec['name']))
+    if not pcm_recs:
+        raise SystemExit('ERR pcm no POST CAMPAIGN MONITORING / PCM workbook found under %s' % ds['roots'])
 
     pchs = read_pchs(pchs_rec['path'])
-    pcm26 = read_pcm26(pcm_rec['path'])
+    pcm_camps, seen_camps = [], set()
+    for rec in pcm_recs:
+        try:
+            rows_c = read_campaign_pcm(rec['path'])
+        except Exception as e:
+            srcutil.say('# pcm: skip %s (%s)' % (rec['name'], e))
+            continue
+        kk = norm(rows_c[0]['camp'])
+        if kk in seen_camps:
+            continue
+        seen_camps.add(kk)
+        pcm_camps.append({'rec': rec, 'camp': rows_c[0]['camp'], 'rows': rows_c})
+    if not pcm_camps:
+        raise SystemExit('ERR pcm no readable campaign PCM workbook under %s' % ds['roots'])
+    srcutil.say('# pcm: PCHS=%s / campaign PCM=%s'
+                % (pchs_rec['name'], ', '.join('%s (%d UCs)' % (p['rec']['name'], len(p['rows'])) for p in pcm_camps)))
 
     import extract_chd
     chde = cfg['auto']['chd']
@@ -441,9 +490,10 @@ def main():
         mo = lab_month(r['camp'])
         y = lab_year(r['camp'], 2026)
         pk[r['camp']] = key(y, mo, keylab(y, mo, r['camp']))
-    mo26 = lab_month(pcm26[0]['camp'])
-    ck = key(lab_year(pcm26[0]['camp'], 2026), mo26,
-             keylab(lab_year(pcm26[0]['camp'], 2026), mo26, pcm26[0]['camp']))
+    for pcmc in pcm_camps:
+        mo = lab_month(pcmc['camp'])
+        y = lab_year(pcmc['camp'], 2026)
+        pcmc['key'] = key(y, mo, keylab(y, mo, pcmc['camp']))
     order = sorted(keys)
     xof = {k: i for i, k in enumerate(order)}
     tc = [k[2] for k in order]
@@ -469,11 +519,14 @@ def main():
         mo = lab_month(camp)
         y = lab_year(camp, 2026)
         tr.append([xof[pk[camp]], 2, s[0], s[1], s[2], s[3], s[4], s[5], camp_label(camp, y, mo), 0, 0])
-    s26 = [0] * 6
-    for r in pcm26:
-        s26[0] += r['chk']; s26[1] += r['fm']; s26[2] += r['ms']
-    c26lab = camp_label(pcm26[0]['camp'], lab_year(pcm26[0]['camp'], 2026), mo26)
-    tr.append([xof[ck], 1, 0, s26[0], s26[1], s26[2], 0, 0, c26lab, 0, 0])
+    for pcmc in pcm_camps:
+        t_ = [0, 0, 0]
+        for r in pcmc['rows']:
+            t_[0] += r['chk']; t_[1] += r['fm']; t_[2] += r['ms']
+        mo = lab_month(pcmc['camp'])
+        y = lab_year(pcmc['camp'], 2026)
+        tr.append([xof[pcmc['key']], 1, 0, t_[0], t_[1], t_[2], 0, 0,
+                   camp_label(pcmc['camp'], y, mo), 0, 0])
     tr.sort(key=lambda t: (t[0], t[1]))
 
     # ---- LQAS lots per campaign: [x, lots, P, I, F, tmiss, nt, tv, na, sl, mg, bn, rf, vb, fw, in, ot] ----
@@ -550,14 +603,18 @@ def main():
         for r in rws:
             rows.append([di] + r)
 
-    # SNID Sept-26 PCM
-    r26 = []
-    for r in pcm26:
-        d = RENAME.get(r['d'], r['d'])
-        r26.append([d, r['t'], r['u'], umap.code(d, r['u']),
-                    0, 0, r['chk'], r['fm'], r['ms'], r['nt'], r['tv'], r['na'], r['rf'],
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0][:RLEN])
-    add_ds(c26lab + ' · post-campaign monitoring (PCM)', c26lab, 1, len(r26), {}, r26)
+    # campaign PCM workbooks, one dataset per round
+    for pcmc in pcm_camps:
+        mo = lab_month(pcmc['camp'])
+        y = lab_year(pcmc['camp'], 2026)
+        lab = keylab(y, mo, pcmc['camp'])
+        rp = []
+        for r in pcmc['rows']:
+            d = RENAME.get(r['d'], r['d'])
+            rp.append([d, r['t'], r['u'], umap.code(d, r['u']),
+                       0, 0, r['chk'], r['fm'], r['ms'], r['nt'], r['tv'], r['na'], r['rf'],
+                       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0][:RLEN])
+        add_ds(lab + ' · post-campaign monitoring (PCM)', lab, 1, len(rp), {}, rp)
 
     # PCHS campaigns, newest campaign first
     by_camp = collections.defaultdict(list)
@@ -618,14 +675,17 @@ def main():
         srcutil.say('#   %-52s %4d UCs chk=%-7s fm=%-7s (%5.1f%%) ms=%-5s (nt %s tv %s na %s rf %s sl %s ot %s gap %s) zd=%s fk=%s'
                     % (d['n'], d['u'], chk, fm, (fm / chk * 100 if chk else 0), ms, nt, tv, na, rf, sl, ot,
                        ms - nt - tv - na - rf - sl - ot, zd, fk))
-    wn = [r for r in rows if r[0] == 0 and r[1] == 'WAZIR-N']
+    sep = next((i for i, d in enumerate(ds_out)
+                if d['s'] == 1 and re.search(r'\bSep\b', d['q'])), None)
+    wn = [r for r in rows if r[0] == sep and r[1] == 'WAZIR-N'] if sep is not None else []
     if wn:
         srcutil.say('#   WAZIR-N Sept-26 PCM: %d UCs, chk=%s fm=%s ms=%s no-team=%s'
                     % (len(wn), sum(r[7] for r in wn), sum(r[8] for r in wn),
                        sum(r[9] for r in wn), sum(r[10] for r in wn)))
     summary = '%d trend pts (%d campaigns), %d LQAS campaigns, %d with coverage (%d with advance-report chain), %d datasets, %d UC rows' % (
         len(tr), len(tc), len(lq), len(cv), len(ad), len(ds_out), len(rows))
-    print('SRC pcm %s | %s' % (pchs_rec['path'], pcm_rec['path']))
+    print('SRC pcm %s | %s' % (pchs_rec['path'],
+                               ' + '.join(p['rec']['path'] for p in pcm_camps)))
     print('OK pcm %d %s' % (len(js), summary))
 
 
