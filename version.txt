@@ -223,3 +223,4 @@ Campaign indicators gain an LQAS Total Missed column at index 15, before LQAS_NT
 Campaign indicators: ICM Total Missed at district grain (SNID Sept 2026, 22,396) and dropped at UC grain; MPQA 2026 round-history card on Pre-campaign; SNID Sept/May MPQA exports re-read 16-Nov and matched. Timestamp refresh 16-Nov-2026 12:06 PKT
 MPQA: district-grain detail for the 2026 rounds. Timestamp refresh 16-Nov-2026 12:18 PKT
 Insights: SNID Nov-26 folded in (reported ZDs only), double-risk Nov columns, district-note Nov returns. Timestamp refresh 16-Nov-2026 12:41 PKT
+Three-questions block refreshed for the closed SNID Nov-26 round: Q1 now carries Nov's own still-missed return (162,874, 3.9% of the 4,183,183 household target, composition 72,897 / 21,517 / 68,460); Q1 footer no longer says 'not yet covered'; Q3 shows Nov's still-missed beside the Sept-basis trend and labels the closure read as SNID Sept-26. Timestamp refresh 16-Nov-2026 12:54 PKT

@@ -1121,7 +1121,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 16-Nov-2026 12:41</span>
+  <span class="hupd" id="hUpd">Updated 16-Nov-2026 12:54</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -1151,7 +1151,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 </div>
 
 
-<div class="hsec"><h2>Immunity gap: three questions for leadership</h2><span>All of KP · SNID Nov-26 has concluded — its LQAS is in; its coverage and validation are the post-campaign returns still awaited · click a question to show or hide its details<button class="hqall" id="hQall" type="button">Show all details</button></span></div>
+<div class="hsec"><h2>Immunity gap: three questions for leadership</h2><span>All of KP · SNID Nov-26 has concluded — its LQAS and still-missed return are in; its zero-dose covered figure and validation are the post-campaign returns still awaited · click a question to show or hide its details<button class="hqall" id="hQall" type="button">Show all details</button></span></div>
  <div class="hqleg"><span><i style="background:#be123c"></i>Red: where the gap is</span><span><i style="background:#b45309"></i>Amber: why children are missed</span><span><i style="background:#15803d"></i>Green: whether the gap has closed</span></div>
  <div class="hq3">
   <div class="hq" style="--qc:#be123c" data-go="gap" role="button" tabindex="0" aria-expanded="false"><span class="qwm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span><span class="qn"><span class="qnum">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Question 1 · Where</span><span class="qst">Find the gap</span></span><h3>Where are the susceptible children?</h3><div class="qb" id="hQ1b"></div><div class="qf" id="hQ1f"></div><div class="halarm" id="hQ1a"></div><span class="qgo">Open the full page: where →</span></div>
@@ -17367,9 +17367,11 @@ function gapBadge(){const b=el('bGP'); if(!b)return; const S=gapStats(matchG,gpI
 function renderHomeQ(){ if(!el('hQ1b'))return; const P=el('p-home');
  const S=gapStats(()=>true,()=>true), mc=(MISM.camps||[])[0]||'', cK=SCOV?'S':ZD.some(r=>r.cM!=null)?'M':'A';
  const NVr=(typeof ADV!=='undefined'&&ADV&&ADV.r&&ADV.r.length)?ADV.r[ADV.r.length-1]:null,NVn=NVr?NVr.length:0,NVrep=NVr?NVr.reduce((a,x)=>a+(x[1]||0),0):0,NVopen=!!NVr&&!NVr.some(x=>x[2]!=null),NVlbl=(typeof ADV!=='undefined'&&ADV&&ADV.c&&ADV.c.length)?ADV.c[ADV.c.length-1].n:'SNID Nov 2026';
- el('hQ1b').innerHTML=(NVopen&&NVrep)?`<b>${fmt(NVrep)}</b><span>zero-dose children recorded in ${esc(NVlbl)} (${fmt(NVn)} UCs) — the round has concluded; LQAS is in, and coverage and validation are the post-campaign returns still awaited, so the last measured still-missed is ${fmt(S.st)} after ${esc(mc)} (${pc(S.stp)} of target)</span>`:`<b>${fmt(S.st)}</b><span>children still missed after ${esc(mc)} (${pc(S.stp)} of target)</span>`;
- el('hQ1f').innerHTML=`<div><b>${fmt(S.T.P1.length)} Priority 1 UCs</b> (big gap + polio risk) in ${new Set(S.T.P1.map(r=>r.d)).size} districts · ${S.h50||'–'} UCs hold half of the missed children</div>`+
-  `<div><b>${fmt(S.zun)}</b> zero-dose children not yet covered in ${esc(CAMP[cK])} · <b>${fmt(S.nr)}</b> estimated Penta-1 gap · <b>${fmt(S.dd)}</b> estimated Penta-1–3 dose gap · <b>${fmt(S.rf)}</b> still refusing${S.old?` · ${S.old} UCs on earlier rounds excluded`:''}</div><div>Routine figures are target/dose proxies, not linked children (${esc(GP_EPI_PERIOD)}). ${esc(NVlbl)} concluded with ${fmt(NVrep)} zero-dose children recorded and no covered figure yet; LQAS is in, and its coverage and validation are the post-campaign returns awaited. UC AFP risk signals retain the ${esc(AMETA.asof)} snapshot, not the current master cohort.</div>`;
+ const NVs=(typeof NOVF!=='undefined'&&NOVF&&NOVF.tot&&NOVF.k)?(()=>{const g=k=>NOVF.tot[NOVF.k.indexOf(k)-3];return {stl:g('stl'),stp:g('stp'),tgt:g('tgt'),sna:g('sna'),srf:g('srf'),slo:g('slo')};})():null;
+ const NVsm=NVs?`Its own still-missed return is in: <b>${fmt(NVs.stl)}</b> (${pc(NVs.stp)} of the ${fmt(NVs.tgt)} household target); the zero-dose covered figure and validation are the post-campaign returns still awaited`:'LQAS is in; coverage and validation are the post-campaign returns still awaited';
+ el('hQ1b').innerHTML=(NVopen&&NVrep)?`<b>${fmt(NVrep)}</b><span>zero-dose children recorded in ${esc(NVlbl)} (${fmt(NVn)} UCs) — the round has concluded. ${NVsm}</span>`:`<b>${fmt(S.st)}</b><span>children still missed after ${esc(mc)} (${pc(S.stp)} of target)</span>`;
+ el('hQ1f').innerHTML=`<div><b>${fmt(S.T.P1.length)} Priority 1 UCs</b> (big gap + polio risk) in ${new Set(S.T.P1.map(r=>r.d)).size} districts · ${S.h50||'–'} UCs hold half of the ${esc(mc)} missed children</div>`+
+  `<div><b>${fmt(S.zun)}</b> zero-dose children reported but not covered in ${esc(CAMP[cK])} · <b>${fmt(S.nr)}</b> estimated Penta-1 gap · <b>${fmt(S.dd)}</b> estimated Penta-1–3 dose gap · <b>${fmt(S.rf)}</b> still refusing${S.old?` · ${S.old} UCs on earlier rounds excluded`:''}</div><div>Routine figures are target/dose proxies, not linked children (${esc(GP_EPI_PERIOD)}). ${esc(NVlbl)} concluded with ${fmt(NVrep)} zero-dose children recorded and no covered figure yet${NVs?' — its own still-missed return is '+fmt(NVs.stl)+' ('+fmt(NVs.sna)+' not available, '+fmt(NVs.srf)+' refusals, '+fmt(NVs.slo)+' left over from earlier rounds, against a '+fmt(NVs.tgt)+' household target)':''}. LQAS is in; the covered figure and validation are the post-campaign returns awaited. UC AFP risk signals retain the ${esc(AMETA.asof)} snapshot, not the current master cohort.</div>`;
  hAlarm('hQ1a','Alarm',[[S.T.P1.length,'Priority 1 UCs','Gap index 50%+ and on the polio watch list or in a watch district','gap'],[S.T.P2.length,'Priority 2 UCs','Gap index 50%+, or 25%+ with polio risk','gap']]);
  // why
  const XD=cqDist(0), X=cqSum(XD.R), mi=X.i_mi||0, lt=X.l_tt||0;
@@ -17390,10 +17392,10 @@ function renderHomeQ(){ if(!el('hQ1b'))return; const P=el('p-home');
  if(z0!=null&&z1!=null)sg.push(z1>z0+1?1:z1<z0-1?-1:0);
  const up=sg.filter(x=>x>0).length, dn=sg.filter(x=>x<0).length, vd=!sg.length?null:dn===0&&up>0?['Narrowing','#15803d']:up===0&&dn>0?['Widening','#b91c1c']:['Mixed','#b45309'];
  el('hQ3b').innerHTML=vd?`<b style="color:${vd[1]}">${vd[0]}</b><span>${up} of ${sg.length} signals improving, ${dn} getting worse · not yet a UC-level closure measure</span>`:'<b>–</b><span>not enough campaigns yet</span>';
- el('hQ3f').innerHTML=`<div class="qtr"><span>Still missed after catch-up</span><span>${cs.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')}</span>`+
+ el('hQ3f').innerHTML=`<div class="qtr"><span>Still missed after catch-up (% of UC target)</span><span>${cs.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')}</span>`+
   `<span>LQAS lots passed</span><span>${LC.map(c=>`${esc(c.l)} <b>${pc(c.p)}</b>`).join(' → ')||'–'}</span>`+
   `<span>Zero-dose children covered, per campaign</span><span>${CPS.map(k=>`${esc(CAMP[k])} <b>${pc(z['p'+k])}</b>`).join(' → ')}</span>`+
-  `<span>${esc(NVlbl)}</span><span><b>${fmt(NVrep)}</b> recorded · LQAS in; covered and validation awaited</span>`+
+  `<span>${esc(NVlbl)}</span><span><b>${fmt(NVrep)}</b> recorded · <b>${NVs?fmt(NVs.stl):'–'}</b> still missed (${NVs?pc(NVs.stp):'–'} of household target) · LQAS in; covered and validation awaited</span>`+
   `<span>Polio cases 2026</span><span><b style="color:${WPV.length?'#b91c1c':'#15803d'}">${WPV.length}</b> WPV1 · last onset ${esc(AMETA.wlast||AMETA.last||((WPV.slice().sort((a,b)=>String(b.on).localeCompare(String(a.on)))[0]||{}).mo||'–'))}</span></div>`;
  P.querySelectorAll('.hq').forEach(h=>{h.onclick=()=>setTab(h.dataset.go); h.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setTab(h.dataset.go);}}; h.querySelectorAll('[data-hgo]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();setTab(b.dataset.hgo);});});
 }
@@ -17630,8 +17632,8 @@ function closeBadge(){const b=el('bIGC'); if(!b)return; try{const S=closeStats(m
 {const _rd=render; render=function(){_rd(); closeBadge();};}
 {const _q=renderHomeQ; renderHomeQ=function(){_q(); try{const S=closeStats(()=>true), wd=S.wd||1, C=S.C;
  const bar=`<div class="qbar">${['cl','cg','op','ro','nd'].map(k=>`<i style="width:${C[k]/(S.U.length||1)*100}%;background:${CL_ST[k][1]}" title="${CL_ST[k][0]}: ${fmt(C[k])}"></i>`).join('')}</div><div class="qleg">${['cl','cg','op','ro','nd'].map(k=>`<span><i style="background:${CL_ST[k][1]}"></i>${CL_ST[k][0]} ${fmt(C[k])}</span>`).join('')}</div>`;
- const old=el('hQ3b').innerHTML; el('hQ3b').innerHTML=`<b>${pc(S.pc)}</b><span>of evaluable UCs have closed the gap (${fmt(C.cl)} of ${fmt(S.wd)}) · ${fmt(C.nd)} with incomplete evidence · ${fmt(C.ro)} reopened</span>`;
- el('hQ3f').insertAdjacentHTML('afterbegin',bar+`<div>KP signals: ${old.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').replace(/·\s*not yet a UC-level closure measure/,'').trim()}</div>`+(S.top&&S.top[1]?`<div>Main thing keeping UCs open: <b>${esc(CL_F[S.top[0]])}</b> (${fmt(S.top[1])} UCs)</div>`:''));}catch(e){console.warn('closed home',e);}};}
+ const old=el('hQ3b').innerHTML; el('hQ3b').innerHTML=`<b>${pc(S.pc)}</b><span>of evaluable UCs had closed the gap by ${esc((MISM.camps||[])[0]||'the last validated round')} (${fmt(C.cl)} of ${fmt(S.wd)}) · ${fmt(C.nd)} with incomplete evidence · ${fmt(C.ro)} reopened · SNID Nov-26 is not yet in this check; its zero-dose covered return is awaited</span>`;
+ el('hQ3f').insertAdjacentHTML('afterbegin',bar+`<div>KP signals: ${old.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').replace(/·\s*not yet a UC-level closure measure/,'').trim()}. Nov's own still-missed return is on the household target and is shown separately, not folded into these signals.</div>`+(S.top&&S.top[1]?`<div>Main thing keeping UCs open: <b>${esc(CL_F[S.top[0]])}</b> (${fmt(S.top[1])} UCs)</div>`:''));}catch(e){console.warn('closed home',e);}};}
 Object.assign(HMNEW,{closed(){const S=closeStats(()=>true), G={}; S.G.forEach(g=>{g.wd=g.n-g.nd; g.p=g.wd?g.cl/g.wd*100:null; G[g.k]=g;});
  const bd=x=>!x||x.p==null?'n':x.p>=50?'g':x.p>=20?'a':'r';
  hmGen({go:'closed',cols:HMG,val:d=>G[d],band:bd,tip:(d,x)=>x?`<span class="v" style="color:#86efac">${pc(x.p)} of evaluable UCs closed</span><br>${x.cl} closed · ${x.cg} closing · ${x.op} open · ${x.ro} reopened · ${x.nd} incomplete`:'No data',
