@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-16T12:54:56+05:00",
-  "chars": 23389079,
-  "internal_md5": "de3a16c0218fb1fac708eb33ef007342",
-  "master_md5": "309034babb533df643d4c837c90bc3a6",
-  "note": "Three-questions block refreshed for the closed SNID Nov-26 round: Q1 now carries Nov's own still-missed return (162,874, 3.9% of the 4,183,183 household target, composition 72,897 / 21,517 / 68,460); Q1 footer no longer says 'not yet covered'; Q3 shows Nov's still-missed beside the Sept-basis trend and labels the closure read as SNID Sept-26. Timestamp refresh 16-Nov-2026 12:54 PKT",
-  "stamp": "16-Nov-2026 12:54"
+  "at": "2026-11-16T13:06:46+05:00",
+  "chars": 23390134,
+  "internal_md5": "6f331a8a46352b2dfd4a808bd3f1e8e2",
+  "master_md5": "06ec9a77d2dd990d362fb4e44b7fe521",
+  "note": "Insights & Notes: SNID Nov-26 added to this section's own campaign picker and side-by-side table on its reported zero-dose return; the coverage tabs keep their three rounds; side-by-side caption now shows partly covered campaigns instead of calling them no data. Timestamp refresh 16-Nov-2026 13:06 PKT",
+  "stamp": "16-Nov-2026 13:06"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
