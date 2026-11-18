@@ -42,7 +42,8 @@ button.btn.pri{background:var(--color-primary);border-color:var(--color-primary)
 .kv{font-size:26px;font-weight:600;font-family:var(--font-mono);margin:6px 0 2px}
 .kv small{font-size:14px;color:var(--color-text-muted);font-weight:400}
 .ks{font-size:12px;color:var(--color-text-secondary)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+.grid2>*{min-width:0}
 .ch{height:340px}
 .cap{font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.45}
 h3{font-size:14px;margin:0 0 8px;font-weight:600}
@@ -1122,7 +1123,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 18-Nov-2026 12:01</span>
+  <span class="hupd" id="hUpd">Updated 18-Nov-2026 12:30</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -1530,8 +1531,8 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 
 <!-- ZD REPORTED & COVERED: ADVANCE REPORTS 2023-2026 -->
 <section class="pane" id="p-adv">
-<div class="cqbar"><b>Recorded &amp; covered</b><span class="cnt">IDIMS advance reports</span><div class="hmcwrap"><button type="button" class="hmcbtn" id="fADCb" aria-haspopup="true" aria-expanded="false" title="Choose one or more campaigns — every KPI, chart and table compiles across the selection"><span id="fADCt">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="fADCp" hidden></div></div><span style="display:flex;gap:6px;align-items:center"><button type="button" class="btn" id="adXL" title="Compiled UC results and district summary as a formatted Excel workbook - two sheets, frozen header and filters"><span data-ic="download"></span>Excel</button><button type="button" class="btn" id="adCSVc" title="Compiled UC zero-dose results as CSV at the current campaign and geography scope"><span data-ic="download"></span>CSV</button></span><span class="cnt" id="adNote"></span></div>
-<div class="hint" id="adHint">Every campaign from 2022 to SNID Nov 2026: zero-dose children reported per UC and how many were covered during the same round, straight from the IDIMS advance reports. Pick one campaign or compile many with the campaign picker — every KPI, chart and table follows the selection, on top of the Division, District, Tehsil and search filters, and the district summary compiles it all. Covered here means vaccinated during that campaign — the covered-by-next-round figures on the other Reported &amp; Covered pages are compiled differently. The 2026 campaigns (NID Apr-26, SNID May-26, SNID Sept-26) do carry covered-in-round figures: their advance-report exports leave those columns blank or half-filled, so both figures are taken from the dashboard's own zero-dose dataset, and SNID Sept-26's covered figure is that round's own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded) — self-reported for the round, not yet reconciled. SNID Nov 2026 has no advance report yet: its recorded figure comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026, and its covered column stays a dash until a round follows. Where a selected campaign or UC carries no covered figure, the covered share and the not-covered count are computed over the UCs that do carry one, and the captions say how many sit outside. Excel exports the compiled UC table and district summary as one formatted workbook; CSV exports the same tables at the current campaign and geography scope.</div>
+<div class="cqbar"><b>Recorded &amp; covered</b><span class="cnt">IDIMS advance reports</span><div class="hmcwrap"><button type="button" class="hmcbtn" id="fADCb" aria-haspopup="true" aria-expanded="false" title="Choose one or more campaigns — every KPI, chart and table compiles across the selection"><span id="fADCt">Campaign</span><svg width="10" height="7" viewBox="0 0 10 7" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="hmcpop" id="fADCp" hidden></div></div><span style="display:flex;gap:6px;align-items:center"><button type="button" class="btn" id="adXL" title="Campaign-wise UC results and district summary as a formatted Excel workbook - one row per UC and per district per selected campaign, two sheets, frozen header"><span data-ic="download"></span>Excel</button><button type="button" class="btn" id="adCSVc" title="Campaign-wise UC zero-dose rows as CSV - one row per UC per selected campaign at the current geography scope"><span data-ic="download"></span>CSV</button></span><span class="cnt" id="adNote"></span></div>
+<div class="hint" id="adHint">Every campaign from 2022 to SNID Nov 2026: zero-dose children reported per UC and how many were covered during the same round, straight from the IDIMS advance reports. Pick one campaign or compile many with the campaign picker — every KPI, chart and table follows the selection, on top of the Division, District, Tehsil and search filters, and the district summary compiles it all. Covered here means vaccinated during that campaign — the covered-by-next-round figures on the other Reported &amp; Covered pages are compiled differently. The 2026 campaigns (NID Apr-26, SNID May-26, SNID Sept-26) do carry covered-in-round figures: their advance-report exports leave those columns blank or half-filled, so both figures are taken from the dashboard's own zero-dose dataset, and SNID Sept-26's covered figure is that round's own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded) — self-reported for the round, not yet reconciled. SNID Nov 2026 has no advance report yet: its recorded figure comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026, and its covered column stays a dash until a round follows. Where a selected campaign or UC carries no covered figure, the covered share and the not-covered count are computed over the UCs that do carry one, and the captions say how many sit outside. Excel and CSV export campaign-wise rows - one row per UC and per district for every selected campaign, at the current geography scope - so a multi-campaign selection no longer collapses into one compiled row.</div>
 <div class="kpis">
 <div class="card"><div class="kl">ZD children reported</div><div class="kv" id="adk1">–</div><div class="ks" id="adk1s"></div></div>
 <div class="card"><div class="kl">Covered in round</div><div class="kv" id="adk2" style="color:#15803d">–</div><div class="ks" id="adk2s"></div></div>
@@ -9299,9 +9300,9 @@ function renderADV(){
  el('adk4').textContent=fmt(R.filter(r=>r.rep>0).length);el('adk4s').textContent='of '+fmt(R.length)+' UCs in the report';
  el('adk5').textContent=new Set(R.filter(r=>r.rep>0).map(r=>r.d)).size;el('adk5s').textContent='districts reporting zero-dose children';
  const T=ADV.c.map((c,i)=>{const rows=adRows(i).filter(adVis);const has=rows.some(r=>r.cov!=null);const rp=sum_(rows,r=>r.rep),cv=has?sum_(rows,r=>r.cov):null;return{i,n:c.n,rp,cv,sel:sel.indexOf(i)>=0};});
- el('ad1').style.height='380px';
- HC('ad1',{chart:{type:'column',zoomType:'x'},title:{text:'Zero-dose children reported & covered, '+ADV.c[0].y+' \u2013 '+ADV.c[ADV.c.length-1].y},subtitle:{text:'IDIMS advance reports \u00b7 click a campaign to open it \u00b7 selected campaigns in full colour'+(fDist.value||fDiv.value?' \u00b7 '+(fDist.value||fDiv.value+' division'):'')},
-  xAxis:{categories:T.map(x=>x.n),labels:{rotation:-45,style:{fontSize:'9px'}}},
+ el('ad1').style.height='520px';
+ HC('ad1',{chart:{type:'column',zoomType:'x',height:520},title:{text:'Zero-dose children reported & covered, '+ADV.c[0].y+' \u2013 '+ADV.c[ADV.c.length-1].y},subtitle:{text:'IDIMS advance reports \u00b7 click a campaign to open it \u00b7 selected campaigns in full colour'+(fDist.value||fDiv.value?' \u00b7 '+(fDist.value||fDiv.value+' division'):'')},
+  xAxis:{categories:T.map(x=>x.n),labels:{rotation:-90,align:'right',y:-4,step:((el('ad1').clientWidth||480)/Math.max(1,T.length))>=8?1:0,style:{fontSize:((el('ad1').clientWidth||480)/Math.max(1,T.length))>=8?'8px':'9px'}}},
   yAxis:{title:{text:'Children'},allowDecimals:false,min:0},
   tooltip:{shared:true,headerFormatter:function(){const p=this.points&&this.points[0]&&this.points[0].point;return p&&p.full?p.full:(this.x||'');}},
   plotOptions:{series:{point:{events:{click:function(){if(this.ai!=null){ADS=this.ai;ADSM=null;renderADV();}}}}}},
@@ -9334,7 +9335,7 @@ function renderADV(){
  const Gs=Object.values(G).sort((a,b)=>b.rep-a.rep);
  drawTable('tADD',[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'dv',l:'Division',f:x=>esc(x.dv)},{k:'n',l:'Campaigns',n:1,f:x=>x.n>1?x.n:'\u2013'},{k:'rep',l:'ZD reported',n:1,f:x=>fmt(x.rep)},{k:'cov',l:'Covered in round',n:1,f:x=>x.cn?fmt(x.cov):'\u2013'},{k:'p',l:'Covered %',n:1,f:x=>!x.rc?'\u2013':rgN(x.cov/x.rc*100,90,80)+'%'},{k:'nc',l:'Not covered',n:1,f:x=>x.rc?fmt(Math.max(0,x.rc-x.cov)):'\u2013'}],Gs,'rep',-1);
  el('cntADD').textContent=Gs.length+' districts';
- el('capadD').textContent='District summary compiled from the same campaign selection and Division / District / Tehsil filters as the UC table. Campaigns = how many of the selected campaigns reported zero-dose children in the district; covered-in-round sums only the selected campaigns whose export carries coverage. Covered % and Not covered count only the UCs that carry a covered figure, so they do not add up against ZD reported.';
+ el('capadD').textContent='District summary compiled from the same campaign selection and Division / District / Tehsil filters as the UC table. Campaigns = how many of the selected campaigns reported zero-dose children in the district; covered-in-round sums only the selected campaigns whose export carries coverage. Covered % and Not covered count only the UCs that carry a covered figure, so they do not add up against ZD reported. The Excel and CSV downloads carry one row per district per selected campaign, not this compiled row.';
  const cols=[{k:'d',l:'District',f:x=>'<b>'+esc(x.d)+'</b>'},{k:'t',l:'Tehsil',f:x=>esc(x.t)},{k:'u',l:'UC',f:x=>esc(x.u)},critCol(x=>x.d,x=>x.u)];
  if(multi)cols.push({k:'n',l:'Campaigns',n:1,f:x=>x.n>1?x.n:'\u2013'});
  cols.push({k:'rep',l:'ZD reported',n:1,f:x=>fmt(x.rep)},{k:'cov',l:'Covered in round',n:1,f:x=>x.cov==null?'\u2013':fmt(x.cov)},{k:'p',l:'Covered %',n:1,f:x=>x.cov==null?'\u2013':(x.rc?rgN(x.cov/x.rc*100,90,80)+'%':'\u2013')},{k:'nc',l:'Not covered',n:1,f:x=>x.nc==null?'\u2013':fmt(x.nc)});
@@ -9343,22 +9344,33 @@ function renderADV(){
  el('adNote').textContent=ADV.c.length+' campaigns \u00b7 '+ADV.c[0].y+'\u2013'+ADV.c[ADV.c.length-1].y+' \u00b7 export '+ADV.asof;
  const slug=s=>String(s||'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase();
  const gseg=[fDiv.value,fDist.value,fTeh.value].filter(Boolean).map(slug).join('-');
- const scope=(multi?'compiled-'+sel.length+'-campaigns':slug(cp.n))+(gseg?'-'+gseg:'');
- const UH=['District','Tehsil','UC','UC criteria'].concat(multi?['Campaigns']:[]).concat(['ZD reported','Covered in round','Covered %','Not covered']);
- const DH=['District','Division','Category','Campaigns in selection','ZD reported','Covered in round','Covered %','Not covered'];
- const Urows=()=>R.map(x=>[x.d,x.t,x.u,critLab(x.d,x.u)].concat(multi?[x.n>1?x.n:'']:[]).concat([x.rep,x.cov==null?'':x.cov,x.cov==null?'':(x.rc?Math.round(x.cov/x.rc*1000)/10:''),x.nc==null?'':x.nc]));
- const Drows=()=>Gs.map(x=>[x.d,x.dv,critLab(x.d),multi?x.n:'',x.rep,x.rc?x.cov:'',x.rc?Math.round(x.cov/x.rc*1000)/10:'',x.rc?Math.max(0,x.rc-x.cov):'']);
+ const scope=(multi?'by-campaign-'+sel.length+'-campaigns':slug(cp.n))+(gseg?'-'+gseg:'');
+ // campaign-wise rows: every selected campaign keeps its own line, never folded into a compiled row
+ const cvis=r=>adVis(r)&&(!qq||(r.u+' '+r.t+' '+r.d).toLowerCase().indexOf(qq)>=0);
+ const cwPct=(cov,den)=>cov==null?'':(den?Math.round(cov/den*1000)/10:'');
+ const cwUc=()=>{const out=[];
+  sel.forEach(ci=>{const c=ADV.c[ci];adRows(ci).filter(cvis).forEach(r=>out.push({c:c.n,y:c.y,m:c.m,d:r.d,dv:r.dv,t:r.t,u:r.u,rep:r.rep,cov:r.cov}));});
+  return out;};
+ const cwD=()=>{const out=[];
+  sel.forEach(ci=>{const c=ADV.c[ci],G={};
+   adRows(ci).filter(cvis).forEach(r=>{if(!r.rep&&r.cov==null)return;
+    const g=G[r.d]||(G[r.d]={dv:r.dv,rep:0,cov:0,rc:0,cn:0});g.rep+=r.rep;if(r.cov!=null){g.cov+=r.cov;g.rc+=r.rep;g.cn=1;}});
+   Object.keys(G).sort().forEach(k=>{const g=G[k];out.push({c:c.n,y:c.y,m:c.m,d:k,dv:g.dv,rep:g.rep,cov:g.cn?g.cov:null,rc:g.rc});});});
+  return out;};
+ const UH=['Campaign','Campaign year','Campaign month','District','Tehsil','UC','UC criteria','ZD reported','Covered in round','Covered %','Not covered'];
+ const DH=['Campaign','Campaign year','Campaign month','District','Division','Category','ZD reported','Covered in round','Covered %','Not covered'];
+ const Urows=()=>cwUc().map(x=>[x.c,x.y,x.m,x.d,x.t,x.u,critLab(x.d,x.u),x.rep,x.cov==null?'':x.cov,cwPct(x.cov,x.rep),x.cov==null?'':Math.max(0,x.rep-x.cov)]);
+ const Drows=()=>cwD().map(x=>[x.c,x.y,x.m,x.d,x.dv,critLab(x.d,''),x.rep,x.cov==null?'':x.cov,cwPct(x.cov,x.rc),x.cov==null?'':Math.max(0,x.rc-x.cov)]);
  el('adXL').onclick=()=>{const u=Urows(),d=Drows();
   xlWrite('advance-'+scope+'.xlsx',[{sheet:'UC zero-dose results',H:UH,rows:u},{sheet:'District summary',H:DH,rows:d}],false)
-   .then(()=>toast('Excel downloaded: 2 sheets, '+u.length+' UCs and '+d.length+' districts'))
+   .then(()=>toast('Excel downloaded: '+fmt(u.length)+' campaign-wise UC rows and '+fmt(d.length)+' district rows'))
    .catch(()=>{csvRaw('advance-'+scope+'.csv',UH,u);csvRaw('advance-districts-'+scope+'.csv',DH,d);
     toast('Excel library did not load, so both tables went out as CSV');});};
  el('adCSVc').onclick=()=>csvDownload('advance-'+scope+'.csv',UH,Urows());
- el('adCSV').onclick=()=>csvDownload('advance-'+scope+'.csv',UH,Urows());
+ el('adCSV').onclick=()=>csvDownload('advance-'+scope+'-uc.csv',UH,Urows());
  el('adDCSV').onclick=()=>csvDownload('advance-districts-'+scope+'.csv',DH,Drows());
  ['adXL','adCSVc','adCSV','adDCSV'].forEach(id=>{const b=el(id);const i=b&&b.querySelector('[data-ic]');if(i&&!i.innerHTML)i.innerHTML=SVGI(ICO.download);});
- el('capad3').textContent='Source: IDIMS advance reports ('+esc(ADV.src)+'). Same-round coverage (vaccinated during that campaign) is compiled differently from the reported-and-covered figures on the Reported vs Covered pages, so the two can differ for the same campaign. For NID Apr 26, SNID May 2026 and SNID Sept 2026 the newest advance report carries no usable coverage column, so their covered figures are taken from the Reported & Covered page — for SNID Sept 2026 that is the round\u2019s own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded). SNID Nov 2026 is recorded-only: its count comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026 and it carries no covered figure yet. '+(multi?('Compiled across '+sel.length+' selected campaigns'+(covMiss?(' \u2014 covered-in-round is available for '+(sel.length-covMiss)+' of them'):'')+'. '):'')+'Campaigns before 2022 are on the Campaign history tab.';
- el('adCSV').onclick=()=>csvDownload('advance-'+(multi?'compiled-'+sel.length+'-campaigns':cp.n.replace(/[^A-Za-z0-9]+/g,'-').toLowerCase())+'.csv',['District','Tehsil','UC','UC criteria'].concat(multi?['Campaigns']:[]).concat(['ZD reported','Covered in round','Covered %','Not covered']),R.map(x=>[x.d,x.t,x.u,critLab(x.d,x.u)].concat(multi?[x.n>1?x.n:'']:[]).concat([x.rep,x.cov==null?'':x.cov,x.cov==null?'':(x.rep?Math.round(x.cov/x.rep*1000)/10:''),x.nc==null?'':x.nc])));
+ el('capad3').textContent='Source: IDIMS advance reports ('+esc(ADV.src)+'). Same-round coverage (vaccinated during that campaign) is compiled differently from the reported-and-covered figures on the Reported vs Covered pages, so the two can differ for the same campaign. For NID Apr 26, SNID May 2026 and SNID Sept 2026 the newest advance report carries no usable coverage column, so their covered figures are taken from the Reported & Covered page — for SNID Sept 2026 that is the round\u2019s own UC-wise zero-dose covered export (39,176 covered against 62,128 recorded). SNID Nov 2026 is recorded-only: its count comes from that round\u2019s own UC-wise summary coverage export of 06-Nov-2026 and it carries no covered figure yet. '+(multi?('Compiled across '+sel.length+' selected campaigns'+(covMiss?(' \u2014 covered-in-round is available for '+(sel.length-covMiss)+' of them'):'')+'. '):'')+'Campaigns before 2022 are on the Campaign history tab. Every download is campaign-wise: one row per UC (Excel and CSV) and per district (Excel) for each selected campaign.';
 }
 // ---------- campaign scope dataset + evening review one-pager ----------
 const SNCOL={'Core District':'#be123c','High Risk':'#ea580c','Endemic':'#d97706','Afg Bordering':'#0369a1','Rest of KP':'#15803d'};
@@ -22902,6 +22914,7 @@ if(nav)nav.onclick=function(){setTab('zreg');document.body.classList.add('zregmo
 .synmsf{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
 .synmsf .synok{background:#0e7490;color:#fff;border-color:#0e7490}
 .synsbs{margin-bottom:12px}
+.synsbs .grid2{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)}
 .hzbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 10px;padding:8px 12px;border:1px solid var(--color-border);border-radius:12px;background:#f8fafc}
 .hzbar .hzbl{font:600 12px var(--font-sans);color:#0e7490}
 .hzbar .hzbn{font:12px var(--font-sans);color:var(--color-text-secondary);flex:1;min-width:180px}
@@ -23032,15 +23045,33 @@ function sbsData(g){
    add(lk==='u'?u[2]+' ('+d+')':lk==='t'?u[1]:d,x.k,t[1],t[2]);});});return {ll,D,acc,m:['Recorded','Covered','% covered']};}
  return {ll,D,acc,m:['','','']};
 }
+const SBSCOL=['#0e7490','#7c3aed','#ea580c','#15803d','#be123c','#2563eb','#b45309','#0f766e'];
+function sbsExport(box,k){
+ const st=box&&box._sbs; if(!st){toast('Table not ready');return;}
+ const S=st.S,rows=[];
+ st.areas.forEach(a=>S.D.forEach(x=>{const c=S.acc[a][x.k];if(!c)return;const p=st.pc(c);rows.push([S.ll,a,x.l,c.rep,c.uk?'':c.num,p==null?'':+p.toFixed(1)]);}));
+ S.D.forEach(x=>{const t=st.tot[x.k],p=st.pc(t);rows.push([S.ll,'Total \u2014 every area listed',x.l,t.rep,t.uk?'':t.num,p==null?'':+p.toFixed(1)]);});
+ const H=['Level','Area','Campaign',S.m[0],S.m[1],S.m[2]];
+ const fn='KP_'+slug(pageTitle())+'_campaigns_by_'+slug(S.ll)+'_'+stamp();
+ if(k==='csv'){const q_=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const L=[H.map(q_).join(',')];rows.forEach(r=>L.push(r.map(q_).join(',')));
+  dlBlob(new Blob(['\ufeff'+L.join('\r\n')],{type:'text/csv;charset=utf-8'}),fn+'.csv');
+  toast('CSV downloaded ('+fmt(rows.length)+' campaign-wise rows)');return;}
+ xlWrite(fn+'.xlsx',[{sheet:'By campaign',H,rows},{sheet:'Filters',H:['Item','Value'],rows:synMeta('Selected campaigns side by side')}],false)
+  .then(()=>toast('Excel downloaded ('+fmt(rows.length)+' campaign-wise rows)'))
+  .catch(()=>{toast('Excel library did not load, so the table went out as CSV');sbsExport(box,'csv');});
+}
 function sbsRender(pane,g){
  let box=pane.querySelector(':scope > .synsbs');
  if(!box){box=document.createElement('div');box.className='card synsbs';
-  box.innerHTML='<div class="tblhdr"><h3 style="margin:0" class="synsbsh"></h3><span class="cnt synsbsc"></span></div><div class="cap synsbsn" style="margin:2px 0 6px"></div>'
+  box.innerHTML='<div class="tblhdr"><h3 style="margin:0" class="synsbsh"></h3><span style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="cnt synsbsc"></span><span class="syndl synsbsdl" style="margin:0"><span>Download table:</span><button type="button" data-k="csv">CSV</button><button type="button" data-k="xlsx">Excel</button></span></span></div><div class="cap synsbsn" style="margin:2px 0 6px"></div>'
    +'<div class="grid2" style="margin-top:6px"><div><div class="ch" id="sbsCh_'+TAB+'"></div><div class="cap synsbscap"></div></div><div><div class="scroll" style="max-height:420px"><table id="sbsT_'+TAB+'"></table></div></div></div>';
-  if(g==='hz')pane.appendChild(box); else pane.querySelector(':scope > .syncp').insertAdjacentElement('afterend',box);}
+  if(g==='hz')pane.appendChild(box); else pane.querySelector(':scope > .syncp').insertAdjacentElement('afterend',box);
+  box.querySelector('.synsbsdl').onclick=e=>{const b=e.target.closest('button');if(b)sbsExport(box,b.dataset.k);};}
  const S=sbsData(g),areas=Object.keys(S.acc).sort((a,b)=>a.localeCompare(b)),pc=c=>c&&!c.uk&&c.rep?c.num/c.rep*100:null,tot={};
  const covD=S.D.filter(x=>areas.some(a=>{const c=S.acc[a][x.k];return c&&!c.uk&&c.rep;})),recOnly=!covD.length,seriesD=recOnly?S.D:S.D.filter(x=>covD.indexOf(x)>=0);
  S.D.forEach(x=>{const t=tot[x.k]={rep:0,num:0,uk:false,ukN:0};areas.forEach(a=>{const c=S.acc[a][x.k];if(c){t.rep+=c.rep;t.num+=c.num;if(c.uk){t.uk=true;t.ukN++;}}});});
+ box._sbs={S,areas,tot,pc};
  box.querySelector('.synsbsh').textContent='Selected campaigns side by side \u2014 by '+(S.ll==='UC'?'UC':S.ll.toLowerCase());
  box.querySelector('.synsbsc').textContent=fmt(areas.length)+' '+S.ll.toLowerCase()+(areas.length===1?'':'s')+' \u00b7 '+S.D.length+' campaign'+(S.D.length===1?'':'s');
  box.querySelector('.synsbsn').textContent=(g==='zi'?'SNID Nov-26 carries its own recorded zero-dose return only: the covered figure and digitization are the post-campaign returns still awaited, and validation is coming in. ':'')+(g==='hz'?'SNID Nov-26 carries recorded zero dose and LQAS: its covered figure arrives with the post-campaign return; its validation is in. ':'')+(g==='a'&&(UCSEL||fUC.value)?'The 2022\u201326 advance reports carry no UC codes, so the UC filter is not applied here. ':'')+'Each campaign keeps its own columns \u2014 nothing is added across rounds. '+((g==='hz'||g==='zi')?'A dash in the covered column means the return is awaited, not that no child was covered.':'A dash means the area has no data for that round.');
@@ -23050,12 +23081,17 @@ function sbsRender(pane,g){
   +(areas.length?areas.map(a=>'<tr><td>'+esc(a)+'</td>'+S.D.map(x=>cell(S.acc[a][x.k])).join('')+'</tr>').join(''):'<tr><td colspan="'+(1+3*S.D.length)+'" class="empty">No data for the selected filters</td></tr>')
   +'</tbody><tfoot><tr class="tot"><td>Total</td>'+S.D.map(x=>cell(tot[x.k])).join('')+'</tr></tfoot>';
  const rep=a=>S.D.reduce((s,x)=>s+((S.acc[a][x.k]||{}).rep||0),0);
- const ca=areas.length>40?areas.slice().sort((a,b)=>rep(b)-rep(a)).slice(0,40):areas;
- Highcharts.chart(box.querySelector('#sbsCh_'+TAB),{chart:{type:'column'},title:{text:(recOnly?'Recorded zero dose by ':'Covered share by ')+S.ll.toLowerCase()+' and campaign'},
-  subtitle:{text:'One bar per selected campaign'+(areas.length>40?' \u00b7 40 largest of '+fmt(areas.length)+' shown':'')+(seriesD.length<S.D.length?' \u00b7 coverage not yet reported for '+S.D.filter(x=>seriesD.indexOf(x)<0).map(x=>x.l).join(', '):'')},
-  xAxis:{categories:ca,labels:{rotation:ca.length>8?-45:0}},yAxis:{title:{text:recOnly?'Recorded children':S.m[2]+' (%)'},min:0},
-  tooltip:{shared:true,valueDecimals:1,valueSuffix:recOnly?'':'%'},plotOptions:{column:{borderRadius:2}},
-  series:seriesD.map(x=>({name:x.l,data:ca.map(a=>{const c=S.acc[a][x.k];if(!c)return null;const v=recOnly?c.rep:pc(c);return v==null?null:+v.toFixed(recOnly?0:1);})}))});
+ // the panel has to stay readable with all 43 rounds selected: cap the chart (not the table) and
+ // keep the colour key outside the SVG, where it cannot eat the plot
+ const caMax=areas.slice().sort((a,b)=>rep(b)-rep(a)).slice(0,18).reverse();
+ const sMax=seriesD.slice(0,8), h3=Math.max(360,caMax.length*22+150);
+ el('sbsCh_'+TAB).style.height=h3+'px';
+ HC('sbsCh_'+TAB,{chart:{type:'bar',height:h3},title:{text:(recOnly?'Recorded zero dose by ':'Covered share by ')+S.ll.toLowerCase()+' and campaign'},
+  subtitle:{text:'One bar per selected campaign'+(areas.length>caMax.length?' \u00b7 '+caMax.length+' largest of '+fmt(areas.length)+' '+S.ll.toLowerCase()+(areas.length===1?'':'s')+' shown, full list in the table':'')+(seriesD.length>sMax.length?' \u00b7 '+sMax.length+' most recent of '+seriesD.length+' campaigns with a figure':'')+(seriesD.length<S.D.length?' \u00b7 no figure yet: '+S.D.filter(x=>seriesD.indexOf(x)<0).map(x=>x.l).join(', '):'')},
+  xAxis:{categories:caMax,labels:{style:{fontSize:'10px'}}},yAxis:{title:{text:recOnly?'Recorded children':S.m[2]+' (%)'},min:0},
+  tooltip:{shared:true,valueDecimals:1,valueSuffix:recOnly?'':'%'},plotOptions:{bar:{borderRadius:2}},legend:{enabled:false},
+  series:sMax.map((x,i)=>({name:x.l,color:SBSCOL[i%SBSCOL.length],data:caMax.map(a=>{const c=S.acc[a][x.k];if(!c)return null;const v=recOnly?c.rep:pc(c);return v==null?null:+v.toFixed(recOnly?0:1);})}))});
+ CKEY('sbsCh_'+TAB,sMax.map((x,i)=>[SBSCOL[i%SBSCOL.length],x.l]));
  box.querySelector('.synsbscap').textContent=S.D.map(x=>{const t=tot[x.k],pv=pc(t);return x.l+': '+(pv!=null?pv.toFixed(1)+'% ('+fmt(t.num)+' of '+fmt(t.rep)+')':t.uk&&!t.num?'recorded '+fmt(t.rep)+' \u00b7 coverage awaited':t.uk?'coverage partly reported: '+fmt(t.num)+' covered of '+fmt(t.rep)+' \u00b7 no figure in '+t.ukN+' of '+areas.length+' '+S.ll.toLowerCase()+(areas.length===1?'':'s'):'no data');}).join(' \u00b7 ');
 }
 // ---------- hide other campaigns in the page's own tables and charts ----------
@@ -23147,7 +23183,7 @@ function tblExport(tb,k){
   .catch(()=>{toast('Excel library did not load, so the table went out as CSV');tblExport(tb,'csv');});
 }
 function addTblDl(tb){
- if(tb.closest('.synms'))return;
+ if(tb.closest('.synms,.synsbs'))return;
  let w=tb.closest('.scroll');if(!w||w.querySelectorAll('table').length>1)w=tb;
  const pv=w.previousElementSibling;if(pv&&pv.classList.contains('syndl')&&!pv.classList.contains('syndlc'))return;
  const ps=w.parentNode?getComputedStyle(w.parentNode).display:'block';
