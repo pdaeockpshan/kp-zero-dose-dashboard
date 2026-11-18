@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-18T12:30:11+05:00",
+  "at": "2026-11-18T12:41:20+05:00",
   "chars": 23448419,
-  "internal_md5": "d7dc7cea3ea10d07c41aa04311268a4a",
-  "master_md5": "26164e8264f3eb1d6cef8e9a345ba066",
-  "note": "Fix Synergy chart overlap, campaign-wise downloads on adv + side-by-side. Timestamp refresh 18-Nov-2026 12:30 PKT",
-  "stamp": "18-Nov-2026 12:30"
+  "internal_md5": "4f064d4b6c8a55b4980b7b0c7ae6f9ce",
+  "master_md5": "63478346cb64c210cf0817a03d9351ab",
+  "note": "Enlarge side-by-side bars: 6 campaigns, taller district groups. Timestamp refresh 18-Nov-2026 12:41 PKT",
+  "stamp": "18-Nov-2026 12:41"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",

@@ -221,3 +221,4 @@ Three-questions block refreshed for the closed SNID Nov-26 round: Q1 now carries
 Insights & Notes: SNID Nov-26 added to this section's own campaign picker and side-by-side table on its reported zero-dose return; the coverage tabs keep their three rounds; side-by-side caption now shows partly covered campaigns instead of calling them no data. Timestamp refresh 16-Nov-2026 13:06 PKT
 18-Nov-2026: SNID Nov-26 validation return refreshed (2,580 children on 336 forms through 18-Nov); covered-share denominator fixed on Recorded & Covered; Excel/CSV downloads added to that section. Timestamp refresh 18-Nov-2026 12:01 PKT
 Fix Synergy chart overlap, campaign-wise downloads on adv + side-by-side. Timestamp refresh 18-Nov-2026 12:30 PKT
+Enlarge side-by-side bars: 6 campaigns, taller district groups. Timestamp refresh 18-Nov-2026 12:41 PKT

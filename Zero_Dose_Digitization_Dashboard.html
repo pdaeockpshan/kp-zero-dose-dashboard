@@ -1123,7 +1123,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 18-Nov-2026 12:30</span>
+  <span class="hupd" id="hUpd">Updated 18-Nov-2026 12:41</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -23084,7 +23084,7 @@ function sbsRender(pane,g){
  // the panel has to stay readable with all 43 rounds selected: cap the chart (not the table) and
  // keep the colour key outside the SVG, where it cannot eat the plot
  const caMax=areas.slice().sort((a,b)=>rep(b)-rep(a)).slice(0,18).reverse();
- const sMax=seriesD.slice(0,8), h3=Math.max(360,caMax.length*22+150);
+ const sMax=seriesD.slice(0,6), h3=Math.max(380,caMax.length*34+160);
  el('sbsCh_'+TAB).style.height=h3+'px';
  HC('sbsCh_'+TAB,{chart:{type:'bar',height:h3},title:{text:(recOnly?'Recorded zero dose by ':'Covered share by ')+S.ll.toLowerCase()+' and campaign'},
   subtitle:{text:'One bar per selected campaign'+(areas.length>caMax.length?' \u00b7 '+caMax.length+' largest of '+fmt(areas.length)+' '+S.ll.toLowerCase()+(areas.length===1?'':'s')+' shown, full list in the table':'')+(seriesD.length>sMax.length?' \u00b7 '+sMax.length+' most recent of '+seriesD.length+' campaigns with a figure':'')+(seriesD.length<S.D.length?' \u00b7 no figure yet: '+S.D.filter(x=>seriesD.indexOf(x)<0).map(x=>x.l).join(', '):'')},
