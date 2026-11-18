@@ -520,12 +520,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-16T13:06:46+05:00",
-  "chars": 23390134,
-  "internal_md5": "6f331a8a46352b2dfd4a808bd3f1e8e2",
-  "master_md5": "06ec9a77d2dd990d362fb4e44b7fe521",
-  "note": "Insights & Notes: SNID Nov-26 added to this section's own campaign picker and side-by-side table on its reported zero-dose return; the coverage tabs keep their three rounds; side-by-side caption now shows partly covered campaigns instead of calling them no data. Timestamp refresh 16-Nov-2026 13:06 PKT",
-  "stamp": "16-Nov-2026 13:06"
+  "at": "2026-11-18T12:01:12+05:00",
+  "chars": 23445077,
+  "internal_md5": "06edf28a94ab3cb0824edbf79ca2c508",
+  "master_md5": "83a1083cc837a53eebdf7f751eeb9592",
+  "note": "18-Nov-2026: SNID Nov-26 validation return refreshed (2,580 children on 336 forms through 18-Nov); covered-share denominator fixed on Recorded & Covered; Excel/CSV downloads added to that section. Timestamp refresh 18-Nov-2026 12:01 PKT",
+  "stamp": "18-Nov-2026 12:01"
  },
  "last_run": {
   "at": "2026-11-05T18:38:55+05:00",
