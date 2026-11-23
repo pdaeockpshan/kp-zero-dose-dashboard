@@ -1147,7 +1147,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <section class="pane on" id="p-home">
  <div class="hero">
   <span id="hNdChip" style="cursor:pointer" title="NID Dec-2026 countdown — click to dismiss. The countdown and the district map stay available from the NID Dec-2026 button below and on the NID page.">NID Dec-2026 · starts 12 Dec · 8.16M children</span>
-  <span class="hupd" id="hUpd">Updated 23-Nov-2026 13:29</span>
+  <span class="hupd" id="hUpd">Updated 23-Nov-2026 14:12</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -4082,14 +4082,17 @@ function updateBadges(){
  const z=agg(ZD.filter(matchG)), dR=DATA.filter(matchG), v=aggV(VAL.filter(matchG)), vc=VCHR.filter(matchG).length;
  const drep=S_(dR,r=>r.rep), dll=S_(dR,r=>r.ll), drp=S_(dR,r=>r.rp), dlp=S_(dR,r=>r.lp);
  const zl=zLatest(z), dp=drep?dll/drep*100:null;
+ const nRB=(typeof novDigRows==='function')?novDigRows().filter(matchG):[];
+ const nrepB=S_(nRB,r=>r.rep), nllB=S_(nRB,r=>r.ll), npB=nrepB?nllB/nrepB*100:null;
+ const dpN=npB==null?dp:npB, drepN=nrepB||drep, dllN=nrepB?nllB:dll;
  const tn=(cls,lab,val)=>`<span class="tn ${cls}"><i>${lab}</i>${val}</span>`;
- el('bS').innerHTML=tn('z','Covered',zl.p==null?'–':zl.p.toFixed(1)+'%')+tn('d','Digitized',dp==null?'–':dp.toFixed(1)+'%')+tn('v','Vaccinated',v.p==null?'–':v.p.toFixed(1)+'%')+(EPI.length?tn('e','Penta-3',(()=>{const e=aggE(EPI.filter(matchE));return e.p_p3==null?'–':e.p_p3.toFixed(1)+'%';})()):'')+(MIS.length?tn('c','Missed',(()=>{const m=misStats(matchG);return m.stp==null?'–':m.stp.toFixed(1)+'%';})()):'');
+ el('bS').innerHTML=tn('z','Covered',zl.p==null?'–':zl.p.toFixed(1)+'%')+tn('d','Digitized',dpN==null?'–':dpN.toFixed(1)+'%')+tn('v','Vaccinated',v.p==null?'–':v.p.toFixed(1)+'%')+(EPI.length?tn('e','Penta-3',(()=>{const e=aggE(EPI.filter(matchE));return e.p_p3==null?'–':e.p_p3.toFixed(1)+'%';})()):'')+(MIS.length?tn('c','Missed',(()=>{const m=misStats(matchG);return m.stp==null?'–':m.stp.toFixed(1)+'%';})()):'');
  {const eR=EPI.filter(matchE), e=aggE(eR); el('bE1').textContent=e.p_p3==null?'–':`Penta-3 ${e.p_p3.toFixed(1)}%`; el('bE2').textContent=`${eR.filter(r=>/LP|O3|BO/.test(r.fl)).length} UCs`;} el('bE3').textContent=(ESUP.rows||[]).length?`${fk(S_(ESUP.rows,r=>r.f+r.o))} visits`:'–';
  el('bZ1').textContent=`Rep ${fk(z['rc'+LCP]||z.rcM||z.rcA)} · Cov ${fk(zl.c)}`;
  el('bZ2').textContent=(SCOV?(z.lf3A==null||z.lf3S==null):((z.lfA==null||z.lfM==null)))?'–':`${(SCOV?z.lf3A:z.lfA).toFixed(0)}→${(SCOV?z.lf3S:z.lfM).toFixed(0)}%`;
  el('bZ3').textContent=`${ZD.filter(matchG).filter(r=>r.tr==='Persistent low').length} low`;
  el('bZ4').textContent=`${fk(ZSAME?z.rM:z.rS)} ZDs`;
- el('bD1').textContent=dp==null?'–':`${dp.toFixed(1)}% · ${fk(dll)}/${fk(drep)}`;
+ el('bD1').textContent=dpN==null?'–':`${dpN.toFixed(1)}% · ${fk(dllN)}/${fk(drepN)}`;
  el('bD2').textContent=(drp&&drep)?`${(dlp/drp*100).toFixed(0)}→${dp.toFixed(0)}%`:'–';
  el('bV1').textContent=v.p==null?'–':`${v.p.toFixed(1)}% · ${fk(v.n)}`;
  el('bV2').textContent=fk(vc);
@@ -4226,7 +4229,7 @@ function renderSummary(){
  if(!ZSAME&&z.lsA)I.push(`<b>SNID Sept reported ${fmt(z.rS)} zero-dose children</b>; in the same UCs that is ${sgn((z.lsS/z.lsA-1)*100,0)}% vs NID April. ${SCOV?`Sept coverage was reported for ${z.ncS} of ${z.nS} of those UCs and came to ${pc(z.pS)} (the round's own zero-dose covered export, not yet confirmed by the next round), leaving ${fmt(gapNet(z,'S'))} of the ${fmt(z.rcS)} children those UCs counted uncovered.`:'Coverage for Sept has not been reported yet.'}`);
  if(nv1.rep)I.push(`<b>SNID Nov-26, the concluded round, recorded ${fmt(nv1.rep)} zero-dose children</b> in ${fmt(nv1.n)} UCs across ${fmt(nv1.dists)} districts; its covered figure is the post-campaign return awaited, while its LQAS and still-missed returns are in and validation has not started.`);
  if(nR.length){
-  I.push(`<b>② Linelist digitization is ${pc(np)}</b> for SNID Nov 2026 (${fmt(nll)} of ${fmt(nrep)} reported, the return of 23-Nov-2026). ${fmt(S_(nR,gapOf))} children are still to be entered and ${nz0.length} UCs have no entries`+(nTop&&nTop[1]&&!fDist.value?`; ${nTop[0]} has the largest backlog (${fmt(nTop[1])}).`:'')+(dR.length?` SNID Sept 2026, the last complete return, stands at ${pc(dp)}.`:''));}
+  I.push(`<b>② Linelist digitization is ${pc(np)}</b> for SNID Nov 2026 (${fmt(nll)} of ${fmt(nrep)} reported, the return of 23-Nov-2026). ${fmt(S_(nR,gapOf))} children are still to be entered and ${nz0.length} UCs have no entries`+(nTop&&nTop[1]&&!fDist.value?`; ${nTop[0]} has the largest backlog (${fmt(nTop[1])}).`:'.')+(dR.length?` SNID Sept 2026, the last complete return, stands at ${pc(dp)}.`:''));}
  else if(dR.length){
   const gd={};dR.forEach(r=>{gd[r.d]=(gd[r.d]||0)+gapOf(r);});const top=Object.entries(gd).sort((a,b)=>b[1]-a[1])[0];
   I.push(`<b>② Linelist digitization is ${pc(dp)}</b> for SNID Sept 2026 (${fmt(dll)} of ${fmt(drep)} reported). ${fmt(Math.max(0,drep-dll))} children are still to be entered and ${dz0.length} UCs have no entries`+(top&&top[1]&&!fDist.value?`; ${top[0]} has the largest backlog (${fmt(top[1])}).`:'.'));}
@@ -23320,7 +23323,7 @@ function campDefs(g){
  if(g==='zi')return CPS.map(k=>({k,l:CAMP[k],tok:{A:/\bApr(il)?\b/i,M:/\bMay\b/i,S:/\bSept?(ember)?\b/i}[k]})).concat([{k:'N',l:novLabel(),tok:/\bNov(ember)?\b/i}]);
  if(g==='hz')return CPS.map(k=>({k,l:CAMP[k],tok:{A:/\bApr(il)?\b/i,M:/\bMay\b/i,S:/\bSept?(ember)?\b/i}[k]})).concat([{k:'N',l:novLabel(),tok:/\bNov(ember)?\b/i}]);
  if(g==='d')return [{k:'M',l:'SNID May-26',tok:/\bMay\b/i},{k:'S',l:'SNID Sept-26',tok:/\bSept?(ember)?\b/i}]
-   .concat(typeof DNOV!=='undefined'&&DNOV?[{k:'N',l:'SNID Nov-26 (entry in progress)',tok:/\bNov(ember)?\b/i}]:[]);
+   .concat(typeof DNOV!=='undefined'&&DNOV?[{k:'N',l:'SNID Nov-26',tok:/\bNov(ember)?\b/i}]:[]);
  if(g==='v')return VCAMP.map(c=>({k:c.l,l:c.l}));
  if(g==='a')return ADV.c.map((c,i)=>({k:String(i),l:c.n})).reverse();
  return [];
