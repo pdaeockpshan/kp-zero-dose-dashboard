@@ -230,3 +230,4 @@ Fix Synergy chart overlap, campaign-wise downloads on adv + side-by-side. Timest
 Enlarge side-by-side bars: 6 campaigns, taller district groups. Timestamp refresh 18-Nov-2026 12:41 PKT
 Pushed the hand-edited index.html master to preview / public / internal builds (+260415 chars). Timestamp refresh 23-Nov-2026 10:57 PKT
 EPI Oct-2026 coverage + fixed/outreach visit mix (agency & designation), NID Dec-26 resource micro-plan and countdown calendar (12-18 Dec). Timestamp refresh 23-Nov-2026 11:08 PKT
+Pushed the hand-edited index.html master to preview / public / internal builds (+10397 chars). Timestamp refresh 23-Nov-2026 11:34 PKT

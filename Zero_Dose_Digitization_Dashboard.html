@@ -292,6 +292,7 @@ body.zregmod .content .topbar{display:none}
 .hero h1{font-size:40px;line-height:1.08;margin:0 0 10px;font-weight:800;letter-spacing:-.01em;color:#fff;background:none;-webkit-text-fill-color:#fff}
 .hero h1 span{background:linear-gradient(90deg,#67e8f9,#86efac);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:15px;line-height:1.5;margin:0 0 16px;color:#e2e8f0}
+#hNdChip{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:2;font-size:13px;font-weight:600;padding:7px 16px;border-radius:22px;background:rgba(124,58,237,.9);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(4px);box-shadow:0 6px 18px rgba(0,0,0,.35);white-space:nowrap}
 .hupd{position:absolute;top:14px;right:16px;z-index:2;font-size:11.5px;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(3px)}
 .hbtns{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .hql{display:flex;flex-wrap:wrap;gap:8px}
@@ -429,7 +430,7 @@ body.zregmod .content .topbar{display:none}
 @keyframes hring{0%{transform:scale(.7);opacity:.95}100%{transform:scale(3.2);opacity:0}}
 
 @media (max-width:1150px){.hgrid{grid-template-columns:1fr}.hphotos{grid-template-columns:1fr 1fr}}
-@media (max-width:700px){.hupd{top:10px;right:10px}.hero{min-height:440px;align-items:flex-end}.hero::before{width:100%;height:65%;bottom:auto;background-position:center 30%;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
+@media (max-width:700px){.hupd{top:10px;right:10px}#hNdChip{top:10px;left:10px;right:185px;transform:none;white-space:normal;font-size:12px;padding:6px 12px}.hero{min-height:440px;align-items:flex-end}.hero::before{width:100%;height:65%;bottom:auto;background-position:center 30%;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
  .hero .htxt{width:100%;padding:24px}.hero h1{font-size:30px}.hphotos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:82%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;gap:12px;padding-bottom:8px;margin-top:20px}.hphotos figure{scroll-snap-align:center}}
 </style>
 
@@ -644,6 +645,28 @@ body.zregmod .content .topbar{display:none}
 .snpopsub{font-size:12px;line-height:1.45;color:var(--color-text-muted);margin-top:3px}
 .snpopx{margin-left:auto;flex:0 0 auto;width:27px;height:27px;border-radius:var(--radius-sm);border:1px solid var(--color-border-light);background:var(--color-bg-secondary);color:var(--color-text-muted);font:600 17px/1 var(--font-sans);cursor:pointer}
 .snpopx:hover{color:var(--color-text);border-color:var(--color-border)}
+/* ---------- NID Dec-2026 launch bubble: countdown + schematic scope map ---------- */
+.sncd{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}
+.sncd .cd{background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-sm);padding:7px 5px;text-align:center}
+.sncd .cd b{display:block;font:700 25px/1.15 var(--font-mono);color:#7c3aed;font-variant-numeric:tabular-nums}
+.sncd .cd span{display:block;margin-top:2px;font:10px var(--font-sans);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.4px}
+.sncd .cd.wide{grid-column:1/-1;display:flex;align-items:baseline;gap:9px;text-align:left;padding:9px 12px}
+.sncd .cd.wide b{font-size:17px;color:#15803d}
+.sncd .cd.wide span{margin:0;text-transform:none;letter-spacing:0;font-size:12px}
+.snmap{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.snmapl{flex:0 0 254px;width:254px}
+.snmapl svg{display:block}
+.snmapl rect{cursor:default}
+.snmapl .cap{font-size:10.5px;text-align:center;margin-top:5px}
+.snmapr{flex:1 1 220px;min-width:200px}
+.snpk{display:grid;gap:6px}
+.snpk .pk{display:flex;align-items:baseline;gap:8px;padding:6px 8px;background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-sm)}
+.snpk .pk b{flex:0 0 auto;min-width:62px;font:700 14px var(--font-mono);color:var(--color-text)}
+.snpk .pk span{font:11.5px var(--font-sans);color:var(--color-text)}
+.snpk .pk i{display:block;font:10.5px var(--font-sans);font-style:normal;color:var(--color-text-muted)}
+.snleg{display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:10px;font:11px var(--font-sans);color:var(--color-text-muted)}
+.snleg span{display:inline-flex;align-items:center;gap:4px}
+.snleg i{width:9px;height:9px;border-radius:2px;display:inline-block;flex:0 0 auto}
 .snpopft{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
 .nidcd{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:440px;margin-bottom:10px}
 .nidcd .cd{background:var(--color-bg-secondary);border:1px solid var(--color-border-light);border-radius:var(--radius-sm);padding:9px 5px;text-align:center}
@@ -768,7 +791,7 @@ body.zregmod .content .topbar{display:none}
 .erdaybar button small{display:block;font-weight:400;font-size:9.5px;opacity:.85}
 @media print{
  body{background:#fff;padding:0}
- .hdr,.sidenav,.topbar,#toast,.noprint,.hbtns,.hupd{display:none!important}
+ .hdr,.sidenav,.topbar,#toast,.noprint,.hbtns,.hupd,#hNdChip{display:none!important}
  .layout{display:block}
  .pane{display:none!important}
  .pane.on{display:block!important;border:0;background:none;padding:0;border-radius:0}
@@ -1123,7 +1146,8 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= HOME (landing page) ================= -->
 <section class="pane on" id="p-home">
  <div class="hero">
-  <span class="hupd" id="hUpd">Updated 23-Nov-2026 11:08</span>
+  <span id="hNdChip" style="cursor:pointer" title="NID Dec-2026 countdown — click to dismiss. The countdown and the district map stay available from the NID Dec-2026 button below and on the NID page.">NID Dec-2026 · starts 12 Dec · 8.16M children</span>
+  <span class="hupd" id="hUpd">Updated 23-Nov-2026 11:34</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -1131,6 +1155,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
    <div class="hbtns">
     
     <div class="hql">
+    <button class="hgo2" id="hNdPop" type="button" title="Countdown to NID Dec-2026 and a map of the 37 districts in scope"><span class="hi" data-ic="clock"></span>NID Dec-2026 countdown &amp; map</button>
     <button class="hgo2" data-hl="c3" title="Campaign comparison and monitoring in one place — coverage, missed children and zero-dose children across the last three rounds, and what ICM, PCM and PCHS monitors found in the same rounds"><span class="hi" data-ic="chart"></span>Comparison &amp; monitoring</button>
     <button class="hgo2" data-hl="zins" title="Plain-English insights and notes on zero-dose reporting and coverage"><span class="hi" data-ic="bulb"></span>Insights</button>
     </div>
@@ -3019,6 +3044,25 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
    <button class="btn" id="remEml" type="button">Download .eml draft</button>
    <button class="btn" id="remCsv" type="button">Download CSV</button>
    <button class="btn" id="remX2" type="button">Close</button>
+  </div>
+ </div>
+</div>
+
+<!-- ============ NID Dec-2026 launch bubble: countdown + schematic scope map ============ -->
+<div class="snpop" id="ndPop" role="dialog" aria-modal="true" aria-labelledby="ndTitle">
+ <div class="snpopbox">
+  <div class="snpophd">
+   <div style="min-width:0"><h3 id="ndTitle">NID Dec-2026 — campaign countdown</h3><div class="snpopsub" id="ndSub"></div></div>
+   <button class="snpopx" id="ndX" type="button" title="Close" aria-label="Close">&times;</button>
+  </div>
+  <div class="sncd" id="ndCd"></div>
+  <div class="snmap">
+   <div class="snmapl" id="ndSvg"></div>
+   <div class="snmapr"><div class="snpk" id="ndKpis"></div><div class="snleg" id="ndLeg"></div><div class="cap" id="ndCap" style="margin:8px 0 0"></div></div>
+  </div>
+  <div class="snpopft">
+   <button class="btn" id="ndGo" type="button">Open the NID Dec-2026 page</button>
+   <button class="btn" id="ndX2" type="button">Close</button>
   </div>
  </div>
 </div>
@@ -9446,18 +9490,98 @@ const SNDALL=SND.d.map((r,i)=>({i,n:r[0],dv:r[1],cat:r[2],uc:r[3],tg:r[4],dy:snD
 const snBase=()=>SNDALL.filter(o=>!(!dvOK(o.dv))&&dOK(o.n));
 const snCat=c=>'<span class="catpill" style="background:'+(SNCOL[c]||'#64748b')+'">'+esc(c)+'</span>';
 // ---------- NID Dec-26 scope: scheduled round, micro-plan still awaited ----------
+const ND_POS={'CHITRALUPPER':[2,0,'CHU'],'KOHISTANUPPER':[5,0,'KOU'],'CHITRALLOWER':[1,1,'CHL'],'DIRUPPER':[2,1,'DIU'],'SWAT':[3,1,'SWT'],'SHANGLA':[4,1,'SHA'],'KOHISTANLOWER':[5,1,'KOL'],'KOLAIPALAS':[6,1,'KPL'],'BAJOUR':[0,2,'BAJ'],'DIRLOWER':[1,2,'DIL'],'BAR SWAT':[3,2,'BSW'],'BUNER':[4,2,'BUN'],'TORGHAR':[5,2,'TRG'],'BATAGRAM':[6,2,'BTG'],'MOHMAND':[0,3,'MOH'],'MALAKAND':[2,3,'MAL'],'MARDAN':[3,3,'MRD'],'SWABI':[4,3,'SWB'],'MANSEHRA':[5,3,'MNS'],'ABOTABAD':[6,3,'ABB'],'KHYBER':[0,4,'KHY'],'CHARSADA':[2,4,'CHA'],'NOWSHERA':[3,4,'NOW'],'HARIPUR':[4,4,'HRP'],'KURRAM':[0,5,'KUR'],'ORAKZAI':[1,5,'ORA'],'PESHAWAR':[3,5,'PES'],'HANGU':[0,6,'HAN'],'KOHAT':[1,6,'KOH'],'KARAK':[2,6,'KAR'],'WAZIR-N':[0,7,'WZN'],'LAKKIMRWT':[1,7,'LAK'],'BANNU':[2,7,'BAN'],'WAZIR-S Upper':[0,8,'WZU'],'DIKHAN':[2,8,'DIK'],'WAZIR-S Lower':[1,9,'WZL'],'TANK':[2,9,'TNK']};
+const ND_WC=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const ND_DVC={'HAZARA':'#0e7490','MALAKAND':'#7c3aed','PESHAWAR':'#be123c','MARDAN':'#ea580c','KOHAT':'#d97706','BANNU':'#0369a1','DIKHAN':'#15803d'};
+const ndPad=n=>(n<10?'0':'')+n;
+const ndRows=()=>(typeof NRMP!=='undefined'&&NRMP&&NRMP.rows)||[];
+const ndDays=()=>{const n=(typeof NACD!=='undefined'&&NACD)?NACD:null;if(!n||!n.st||!n.en)return 7;
+ const a=n.st.split('-'),b=n.en.split('-');
+ return Math.round((Date.UTC(+b[0],+b[1]-1,+b[2])-Date.UTC(+a[0],+a[1]-1,+a[2]))/864e5)+1;};
 function nidStartMs(){return Date.UTC(2026,11,12,0,0,0)-5*3600e3;}
+function nidEndMs(){const n=(typeof NACD!=='undefined'&&NACD)?NACD:null;
+ const p=String((n&&n.en)||'2026-12-18').split('-');
+ return Date.UTC(+p[0]||2026,(+p[1]||12)-1,+p[2]||18,0,0,0)-5*3600e3+864e5;}
+function nidStartLbl(){
+ const d=new Date(nidStartMs()+5*3600e3),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ return ND_WC[d.getUTCDay()]+' '+d.getUTCDate()+'-'+M[d.getUTCMonth()]+'-'+d.getUTCFullYear();}
 function nidTick(){
- const c=el('nidCd'),b=el('nidDays');if(!c||!b)return;
- const ms=nidStartMs()-Date.now(),pad=n=>(n<10?'0':'')+n;
+ const ms=nidStartMs()-Date.now(), end=nidEndMs(), n=ndDays();
+ let h,b,chip;
  if(ms>0){
-  const s=Math.floor(ms/1000),d=Math.floor(s/86400);
-  c.innerHTML=[['days',String(d)],['hours',pad(Math.floor(s%86400/3600))],['minutes',pad(Math.floor(s%3600/60))],['seconds',pad(s%60)]]
+  const t=Math.floor(ms/1000),d=Math.floor(t/86400);
+  h=[['days',String(d)],['hours',ndPad(Math.floor(t%86400/3600))],['minutes',ndPad(Math.floor(t%3600/60))],['seconds',ndPad(t%60)]]
    .map(x=>'<div class="cd"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>').join('');
-  b.textContent=d+' day'+(d===1?'':'s')+' to go';
+  b=d+' day'+(d===1?'':'s')+' to go';chip='starts in '+d+' day'+(d===1?'':'s')+' · 8.16M children';
+ }else if(Date.now()<end){
+  const day=Math.floor((Date.now()-nidStartMs())/864e5)+1;
+  h='<div class="cd wide"><b>Day '+day+' of '+n+'</b><span>The round is running — enter today\'s tallies from the NID page.</span></div>';
+  b='day '+day+' of '+n;chip='Day '+day+' of '+n;
  }else{
-  c.innerHTML='<div class="cap" style="margin:0">Start date reached. Scope figures appear here once the micro-plan is shared.</div>';
-  b.textContent='start date reached';
+  h='<div class="cd wide"><b>Round concluded</b><span>NID Dec-2026 ran 12–18 Dec 2026 — coverage and validation follow.</span></div>';
+  b='round concluded';chip='concluded';
+ }
+ const paint=(c,x)=>{const e=el(c);if(e)e.innerHTML=h;const f=el(x);if(f)f.textContent=b;};
+ paint('nidCd','nidDays');paint('ndCd','ndDays');
+ const cc=el('hNdChip');if(cc){const t='NID Dec-2026 · '+chip;if(cc.textContent!==t)cc.textContent=t;}
+}
+function ndMap(){
+ const R=ndRows(),IN={},CW=34,CH=21,G=2,W=7,H=10,n=ndDays();
+ R.forEach(r=>{IN[r.src]=r;});
+ let b='';
+ Object.keys(ND_POS).forEach(k=>{
+  const c=ND_POS[k][0],r=ND_POS[k][1],ab=ND_POS[k][2],o=IN[k];
+  const x=c*(CW+G)+G,y=r*(CH+G)+G;
+  const f=o?(ND_DVC[String(o.dv||'').toUpperCase()]||'#64748b'):'#e5e9f0';
+  const tip=o?(esc(o.d)+' — '+esc(o.dv)+': '+fmt(o.uc)+' UCs, '+fmt(o.tg)+' children, '+fmt((o.mt||0)+(o.mtt||0)+(o.mtf||0)+(o.smt||0))+' teams, '+o.teh+' tehsils'):esc(k)+' — not in the '+esc((typeof NRMP!=='undefined'&&NRMP&&NRMP.cam)||'')+' plan';
+  b+='<g><title>'+tip+'</title><rect x="'+x+'" y="'+y+'" width="'+CW+'" height="'+CH+'" rx="3" fill="'+f+'" stroke="'+(o?'rgba(255,255,255,.9)':'#cbd5e1')+'"/><text x="'+(x+CW/2)+'" y="'+(y+CH/2+2.5)+'" text-anchor="middle" font-size="7" fill="'+(o?'#fff':'#94a3b8')+'">'+esc(ab)+'</text></g>';
+ });
+ return '<svg viewBox="0 0 '+(W*(CW+G)+G)+' '+(H*(CH+G)+G)+'" width="'+(W*(CW+G)+G)+'" height="'+(H*(CH+G)+G)+'" role="img" aria-label="Schematic map of the Khyber Pakhtunkhwa districts in the NID Dec-2026 scope" style="font-family:var(--font-mono)">'+b+'</svg>'+
+  '<div class="cap">Schematic district map of KP — not to scale. Every district is in scope this round; cells are coloured by the plan\'s division groups. Hover one for its UC, target and team counts.</div>';
+}
+function ndLegend(){
+ const c={};ndRows().forEach(r=>{const k=String(r.dv||'').toUpperCase();c[k]=(c[k]||0)+1;});
+ let h='';
+ Object.keys(ND_DVC).forEach(k=>{if(c[k])h+='<span><i style="background:'+ND_DVC[k]+'"></i>'+esc(k)+' · '+c[k]+'</span>';});
+ return h;
+}
+function nidPopOpen(){
+ const p=el('ndPop');if(!p)return;
+ const R=ndRows(),F=k=>R.reduce((a,r)=>a+(r[k]||0),0),n=(typeof NACD!=='undefined'&&NACD)?NACD:null;
+ const T=R.length?F('tg'):0,U=R.length?F('uc'):0,K=R.length?F('mt')+F('mtt')+F('mtf')+F('smt'):0;
+ el('ndTitle').textContent='NID Dec-2026 — campaign countdown';
+ el('ndSub').innerHTML=R.length
+  ?'Starts <b>'+esc(nidStartLbl())+'</b> at midnight PKT and runs <b>'+ndDays()+' days</b> to 18-Dec · <b>'+R.length+' districts</b>, '+fmt(U)+' union councils and '+fmt(T)+' children are in the plan.'
+  :'Starts <b>'+esc(nidStartLbl())+'</b> at midnight PKT · the resource micro-plan has not been shared yet, so the scope figures are awaited.';
+ el('ndSvg').innerHTML=ndMap();
+ el('ndLeg').innerHTML=ndLegend();
+ el('ndKpis').innerHTML=[
+  [R.length?fmt(R.length):'–','Districts in scope','whole province · all 37 KP districts'],
+  [R.length?fmt(U):'–','Union councils',R.length?'average '+fmt(Math.round(T/(U||1)))+' children per UC':'counts awaited'],
+  [R.length?fmt(T):'–','Children targeted',R.length?(T/1e6).toFixed(2)+'M · administrative plan target':'counts awaited'],
+  [R.length?fmt(K):'–','Vaccination teams',R.length?fmt(F('mt'))+' mobile · '+fmt(F('mtt'))+' transit · '+fmt(F('mtf'))+' fixed · '+fmt(F('smt'))+' SMT':'counts awaited']
+ ].map(k=>'<div class="pk"><b>'+k[0]+'</b><span>'+esc(k[1])+'<i>'+esc(k[2])+'</i></span></div>').join('');
+ el('ndCap').textContent=R.length
+  ?fmt(F('teh'))+' tehsils and '+fmt(F('aic'))+' AICs also carry plan counts'+(n?' · micro-plan of '+n.asof:'')+'.'
+  :'';
+ p.classList.add('on');nidTick();
+ try{sessionStorage.setItem('kpNDPOP.v1','1');}catch(e){}
+}
+function nidPopClose(){const p=el('ndPop');if(p)p.classList.remove('on');}
+{
+ const p=el('ndPop');
+ if(p){
+  el('ndX').onclick=nidPopClose;el('ndX2').onclick=nidPopClose;
+  p.onclick=ev=>{if(ev.target===p)nidPopClose();};
+  el('ndGo').onclick=()=>{nidPopClose();setTab('nid');};
+  const b=el('hNdPop');
+  if(b){const i=b.querySelector('[data-ic]');if(i&&!i.innerHTML)i.innerHTML=SVGI(ICO[i.dataset.ic]);b.onclick=ev=>{ev.stopPropagation();nidPopOpen();};}
+  const c=el('hNdChip');
+  if(c){try{if(sessionStorage.getItem('kpNDFLOAT.v1'))c.style.display='none';}catch(e){}
+   c.onclick=ev=>{ev.stopPropagation();c.style.display='none';try{sessionStorage.setItem('kpNDFLOAT.v1','1');}catch(e){}};}
+  document.addEventListener('keydown',ev=>{if(ev.key==='Escape')nidPopClose();});
+  nidTick();setInterval(nidTick,1000);
+  setTimeout(()=>{try{const on=document.querySelector('.pane.on');if(on&&on.id==='p-home'&&!sessionStorage.getItem('kpNDPOP.v1'))nidPopOpen();}catch(e){}},900);
  }
 }
 function renderNID(){
@@ -9565,7 +9689,6 @@ function renderNACD(){
   NACD.a.map(a=>[a.n,a.t,a.d,a.s,a.e,a.b.map(b=>b[0]+' to '+b[1]+' ('+(KL[b[2]]||b[2])+')').join('; ')]));
 }
 
-setInterval(nidTick,1000);
 
 // ---------- fIPV Peshawar & Khyber ----------
 let FFID='',FFIB='',FFIN='',FFIQ='';
