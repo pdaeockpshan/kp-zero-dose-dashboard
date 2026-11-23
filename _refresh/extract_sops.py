@@ -159,15 +159,54 @@ def parse_av(path, dkey):
 
 
 # ------------------------------------------------------------------ zero reporting
-def parse_zr(path, dkey):
+ZR_BASE = ['Province', 'District', 'Week', 'Year']
+
+
+def zr_header(path):
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    try:
+        rows = sheet_rows(wb, 'ZeroReports_2026', 2)
+        return [str(v).strip() for v in (rows[0] if rows else []) if v]
+    finally:
+        wb.close()
+
+
+def zr_sites(path, dkey):
+    """{district: reporting sites} from an export whose table still carries Total_Sites.
+
+    The 23-Nov-2026 export dropped the column. Site counts are a network fact that does not
+    move week to week, so they are carried from the newest export that still prints them.
+    """
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     try:
         rows = sheet_rows(wb, 'ZeroReports_2026', 4000)
         hdr = [str(v).strip() for v in rows[0] if v]
-        want = ['Province', 'District', 'Week', 'Year', 'Total_Sites',
-                'Total_Expected', 'Total_Received', 'Received_Intime']
-        if hdr != want:
+        if 'Total_Sites' not in hdr or 'District' not in hdr:
+            raise SystemExit('ERR sops %s has no Total_Sites column' % path)
+        si, di = hdr.index('Total_Sites'), hdr.index('District')
+        out = {}
+        for r in rows[1:]:
+            if not r or di >= len(r) or not r[di]:
+                continue
+            k = dkey(str(r[di]).strip())
+            if k:
+                out[k] = max(out.get(k, 0), num(r[si]) or 0)
+        return out
+    finally:
+        wb.close()
+
+
+def parse_zr(path, dkey, sites_src=None):
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    try:
+        rows = sheet_rows(wb, 'ZeroReports_2026', 4000)
+        hdr = [str(v).strip() for v in rows[0] if v]
+        have_sites = hdr == ZR_BASE + ['Total_Sites', 'Total_Expected', 'Total_Received',
+                                       'Received_Intime']
+        flat = hdr == ZR_BASE + ['Total_Expected', 'Total_Received', 'Received_Intime']
+        if not (have_sites or flat):
             raise SystemExit('ERR sops ZeroReports_2026 header changed: %s' % hdr)
+        off = 1 if have_sites else 0
         d, weeks, sites = {}, set(), {}
         for r in rows[1:]:
             if not r or not r[1]:
@@ -177,9 +216,25 @@ def parse_zr(path, dkey):
             if not k or w is None or yr != 2026:
                 continue
             w = int(w)
-            d.setdefault(k, {})[w] = [num(r[5]) or 0, num(r[6]) or 0, num(r[7]) or 0]
-            sites[k] = max(sites.get(k, 0), num(r[4]) or 0)
+            d.setdefault(k, {})[w] = [num(r[4 + off]) or 0, num(r[5 + off]) or 0,
+                                      num(r[6 + off]) or 0]
+            if have_sites:
+                sites[k] = max(sites.get(k, 0), num(r[4]) or 0)
             weeks.add(w)
+        if not have_sites:
+            if not sites_src:
+                raise SystemExit('ERR sops %s carries no Total_Sites and no fallback export was '
+                                 'found' % os.path.basename(path))
+            carried = zr_sites(sites_src, dkey)
+            miss = sorted(set(d) - set(carried))
+            if miss:
+                raise SystemExit('ERR sops site counts missing for %s (from %s)'
+                                 % (miss[:6], os.path.basename(sites_src)))
+            sites = {k: carried[k] for k in d}
+            print('CHK zr sites         Total_Sites absent from %s; carried from %s for the same '
+                  '%d districts (%d sites)'
+                  % (os.path.basename(path), os.path.basename(sites_src), len(sites),
+                     sum(sites.values())))
         wl = sorted(weeks)
         # A week is only a week once most districts have filed. The export is pulled mid-week, so
         # the last week often holds a handful of early filers: counting it would print a 100%
@@ -521,6 +576,7 @@ def main():
     ap.add_argument('--pn')
     ap.add_argument('--vp')
     ap.add_argument('--erc')
+    ap.add_argument('--zsites', help='older zero-report export that still carries Total_Sites')
     ap.add_argument('--source', help='accepted for refresh.py run; routed to a slot by filename')
     ap.add_argument('--out')
     ap.add_argument('--dry', action='store_true')
@@ -545,14 +601,36 @@ def main():
             raise SystemExit('ERR sops no source matching %r' % pat)
         return f
 
-    av, zr, pn, vp = (pick(a.av, 'Active-visit (20??).xlsx'), pick(a.zr, 'Zero Reporting IDIMS*.xlsx'),
-                      pick(a.pn, 'Pendency Status on *.xlsx'), pick(a.vp, 'Zero_Report_Cases*ONLY.xlsx'))
+    av, zr, pn, vp = (pick(a.av, 'Active-visit (20??)*.xlsx'), pick(a.zr, 'Zero Reporting IDIMS*.xlsx'),
+                      pick(a.pn, 'Pendency Status on *.xlsx'), pick(a.vp, 'Zero_Report_Cases*ONLY*.xlsx'))
     erc = pick(a.erc, 'ERC Cases Documentation status*.xlsx')
     for p in (av, zr, pn, vp, erc):
         print('SRC %s' % p)
 
+    zsites = a.zsites
+    if not zsites and 'Total_Sites' not in zr_header(zr):
+        cands = []
+        ex = list(entry.get('exclude') or []) + ['~$*']
+        for root in roots:
+            for dirpath, dirnames, filenames in os.walk(root):
+                dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+                for fn in filenames:
+                    if not fnmatch.fnmatch(fn, 'Zero Reporting IDIMS*.xlsx'):
+                        continue
+                    if any(fnmatch.fnmatch(fn, e) for e in ex):
+                        continue
+                    p = os.path.join(dirpath, fn)
+                    if os.path.abspath(p) != os.path.abspath(zr):
+                        cands.append((os.stat(p).st_mtime, p))
+        for _, p in sorted(cands, reverse=True):
+            if 'Total_Sites' in zr_header(p):
+                zsites = p
+                break
+        if zsites:
+            print('SRC %s (site counts only)' % zsites)
+
     AV = parse_av(av, dkey)
-    ZR = parse_zr(zr, dkey)
+    ZR = parse_zr(zr, dkey, zsites)
     PN, LAST = parse_pn(pn, dkey)
     VP = parse_vp(vp, dkey)
     ERC = parse_erc(erc, dkey, dists)
@@ -628,7 +706,8 @@ def main():
         'asof': asof(LAST['stool']['at']),
         'src': {'av': os.path.basename(av), 'zr': os.path.basename(zr),
                 'pn': os.path.basename(pn), 'vp': os.path.basename(vp),
-                'erc': os.path.basename(erc)},
+                'erc': os.path.basename(erc),
+                'sitesrc': os.path.basename(zsites) if zsites and zsites != zr else None},
         'av': {'w': AV['wlabel'], 'wk': AV['wk'], 'fw': AV['fwlabel'], 'fwk': AV['fwk'],
                'mon': AV['mon'], 'mt': AV['mon_tot'], 'tp': AV['tp'], 'kp': AV['kp']},
         'zr': {'w': ZR['w'], 'd': ZR['d'], 'kp': ZR['kp'], 'tot': ZR['tot'], 'sites': ZR['sites'],

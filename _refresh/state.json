@@ -435,18 +435,18 @@
    "summary": "27 districts, 113 tehsils, 996 UCs, target 4,808,167, day-1 1,459,109"
   },
   "sops": {
-   "at": "2026-10-23T16:20:16+05:00",
-   "chars": 42786,
-   "file_id": "C:\\Users\\HD\\Downloads\\Active-visit (2026).xlsx|1792724920|4209314",
-   "payload_sha1": "031a6b0e6a0269c5",
+   "at": "2026-11-23T15:11:14+05:00",
+   "chars": 45242,
+   "file_id": "C:\\Users\\HD\\Downloads\\Zero Reporting IDIMS -(2026) (2).xlsx|1795428129|146539",
+   "payload_sha1": "3c2f2362ac1686c8",
    "source": {
-    "mtime": 1792724920.0,
-    "name": "Active-visit (2026).xlsx",
-    "path": "C:\\Users\\HD\\Downloads\\Active-visit (2026).xlsx",
-    "size": 4209314
+    "mtime": 1795428129.3446836,
+    "name": "Zero Reporting IDIMS -(2026) (2).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\Zero Reporting IDIMS -(2026) (2).xlsx",
+    "size": 146539
    },
-   "stamp": "23-Oct-2026 16:28",
-   "summary": "13107/14247 active visits 92.0% across 36 districts; 41 zero-report rows wk1-41 91218/91259 received (100.0%) 99.2% in time; pendency to 21-Oct-2026 stool 91.2% (3687/4044), case validation 2.9%, geolocation 99.6%; VPD 2026 wk1-41 2461 AFP / 16258 measles / 93 NNT"
+   "stamp": "23-Nov-2026 15:11",
+   "summary": "14451 active visits 14,451/15,667 done (92.2%) across 36 districts; 45 zero-report rows over weeks 1-45, 98163/100,101 received (98.1%), 97.4% in time; pendency to 18-Nov-2026: stool 97.5% (4,436/4,551), case validation 3.3% (152/4551), geolocation 99.3%; VPD 2026 wk1-45: 2757 AFP / 17412 measles / 103 NNT in 36 districts; ERC 49 files tracked to 2026-11-18, 23 outstanding; snapshots stool 42, case 53, geo 53"
   },
   "sta": {
    "at": "2026-10-27T09:47:23+05:00",
@@ -463,18 +463,18 @@
    "summary": "sact 2023-09..2026-10->26,698 smon 2023-09..2026-10->11,001"
   },
   "surv": {
-   "at": "2026-10-23T16:37:25+05:00",
-   "chars": 103257,
-   "file_id": "C:\\Users\\HD\\Downloads\\LineList-2023-2024-2025-2026.xlsx|1792724920|9284343",
-   "payload_sha1": "a31f81afaa906379",
+   "at": "2026-11-23T15:10:50+05:00",
+   "chars": 103204,
+   "file_id": "C:\\Users\\HD\\Downloads\\LineList-2023-2024-2025-2026 (2).xlsx|1795428153|9539690",
+   "payload_sha1": "d3d4daad18d49731",
    "source": {
-    "mtime": 1792724920.0,
-    "name": "LineList-2023-2024-2025-2026.xlsx",
-    "path": "C:\\Users\\HD\\Downloads\\LineList-2023-2024-2025-2026.xlsx",
-    "size": 9284343
+    "mtime": 1795428153.351,
+    "name": "LineList-2023-2024-2025-2026 (2).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\LineList-2023-2024-2025-2026 (2).xlsx",
+    "size": 9539690
    },
-   "stamp": "23-Oct-2026 16:37",
-   "summary": "36 districts, YTD 21-Oct-2026 (NP-AFP 29.2, SA 86.8%, Notif7d 81.8%), 6 division rows, monthly 2019-2026, pendency 21-Oct-2026, line list cases 2023:4934, 2024:5887, 2025:5410, 2026:4184, last EPID KP/60/26/086, 0 non-KP rows skipped"
+   "stamp": "23-Nov-2026 15:10",
+   "summary": "36 districts, YTD 18-Nov-2026 (NP-AFP 30.1, SA 86.6%, Notif7d 82.0%), 6 division rows, monthly 2019-2026, pendency 18-Nov-2026, line list cases 2023:4934, 2024:5887, 2025:5410, 2026:4733, last EPID KP/30/26/602, 0 non-KP rows skipped"
   },
   "trig": {
    "at": "2026-10-30T09:34:19+05:00",
@@ -520,19 +520,19 @@
   }
  },
  "last_push": {
-  "at": "2026-11-23T14:12:53+05:00",
-  "chars": 23736059,
-  "internal_md5": "48289a0302d6c507f691618918ead7c4",
-  "master_md5": "adc1f3fb2245e82028dcd7c97c8df7ac",
-  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+219 chars). Timestamp refresh 23-Nov-2026 14:12 PKT",
-  "stamp": "23-Nov-2026 14:12"
+  "at": "2026-11-23T15:13:39+05:00",
+  "chars": 23736925,
+  "internal_md5": "669569b1bbb75643ff314b2e031a6421",
+  "master_md5": "db222efdff6f7bae9fdc0913b295c389",
+  "note": "Surveillance refresh 23-Nov-2026: SURVW weekly log + line list to 18/12-Nov, SOPS active-visit/zero-report/pendency/ERC/VPD to week 45. Timestamp refresh 23-Nov-2026 15:13 PKT",
+  "stamp": "23-Nov-2026 15:13"
  },
  "last_run": {
-  "at": "2026-11-05T18:38:55+05:00",
+  "at": "2026-11-23T15:11:14+05:00",
   "datasets": [
-   "epiuc"
+   "sops"
   ],
   "dry_run": false,
-  "stamp": "05-Nov-2026 18:38"
+  "stamp": "23-Nov-2026 15:11"
  }
 }
