@@ -99,7 +99,7 @@
    ],
    "extractor": "extract_epim.py",
    "label": "EPI district-month coverage rows (EPIM) with 2023-2026",
-   "note": "Companion to epm (same parse cache). Every month with an export on disk is rebuilt from it, 2026 included since 28-Oct-2026 (the embedded 2026 rows had been frozen at eleven core doses with a part-report September); a month with no on-disk export keeps the embedded rows rather than vanishing from the year. An EPI district not in the embedded mapping aborts the extract. Every rebuilt month carries the full 19-dose epi_ag panel.",
+   "note": "Companion to epm (same parse cache). Every month with an export on disk is rebuilt from it, 2026 included since 28-Oct-2026 (the embedded 2026 rows had been frozen at eleven core doses with a part-report September); a month with no on-disk export keeps the embedded rows rather than vanishing from the year. A month exported twice is settled on volume: the copy with the larger BCG total wins (a UC-wise copy only overrides a district-level one when they agree within 1%) - which is how the complete October 2026 facility-wise export (BCG 100,728) replaced the mid-month UC-wise part-report (BCG 48,269) on 23-Nov-2026. An EPI district not in the embedded mapping aborts the extract. Every rebuilt month carries the full 19-dose epi_ag panel.",
    "patterns": [
     "Consolidated_Facility_Wise_Vaccination*.xls*"
    ],
@@ -147,7 +147,7 @@
    ],
    "extractor": "extract_esup.py",
    "label": "EPI supervisory checklist visits, fixed + outreach (const ESUP)",
-   "note": "Every Supervisory_Checklist_Report*.xls is loaded (2026 arrives as two exports: fixed-site and outreach). Newest file wins per month x district x site type; per-file cache in _refresh/cache/esumon.pkl. Monitor names/CNICs/designations are never extracted (public site).",
+   "note": "Every Supervisory_Checklist_Report*.xls is loaded (2026 arrives as two exports: fixed-site and outreach). Newest file wins per month x district x site type; per-file cache in _refresh/cache/esumon.pkl. Each row also carries agency (ag) and designation (dg) counts as [fixed, outreach], canonicalised at build time (WHO/PEI/WHO-PEI merge; ~457 free-text role spellings collapse into 24 roles, names/column fragments go to 'Other roles'), and both re-add to the visit total. Monitor names/CNICs are never extracted (public site). 23-Nov-2026 rebuild: 137 files, 109,407 visits (66,221 fixed + 43,186 outreach), through 21-Nov-2026.",
    "patterns": [
     "Supervisory_Checklist_Report*.xls*"
    ],
@@ -340,6 +340,28 @@
     "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Raw IDIMS FIles"
    ]
   },
+  "nacd": {
+   "config": {
+    "campaign": "NID Dec-2026",
+    "start": "2026-12-12"
+   },
+   "const": "NACD",
+   "exclude": [
+    "~$*"
+   ],
+   "extractor": "extract_nacd.py",
+   "label": "NID Dec-2026 countdown calendar (const NACD)",
+   "note": "Copy of NIDs December 2026 ACTIVITY CALENDAR.xlsx, sheet 'NIDs Dec 2026'. Month groups are read from the row-1 merged headers (November C..N, December O..AS) instead of a fixed column split, and each merged fill range counts as one bar (the campaign week Z22:AF22, the communication block I13:Y13, the LQAS/PCM window AD25:AJ25). A merged range spanning rows (AM4:AM31, the Christmas holiday) is a column-wide note, not a bar. The campaign dates in B1 must equal auto.nacd.config.start (12-Dec-2026) and the 28-activity numbering, the Sunday columns and the day numbers are asserted. No NEAP join: the NID Dec-2026 NEAP round has not been issued yet, so the card shows planned windows only.",
+   "patterns": [
+    "*NIDs*ACTIVITY CALENDAR*.xlsx",
+    "*ACTIVITY CALENDAR*Dec*.xlsx"
+   ],
+   "portal": "PEOC/NEOC countdown-of-NIDs activity calendar",
+   "roots": [
+    "C:\\Users\\HD\\Downloads",
+    "D:\\AMAZON DATA"
+   ]
+  },
   "nact": {
    "const": "NACT",
    "exclude": [
@@ -429,6 +451,27 @@
    ],
    "portal": "EOC resource sheet issued with the campaign scope (D:\\AMAZON DATA\\SNID <campaign> folder)",
    "roots": [
+    "D:\\AMAZON DATA"
+   ]
+  },
+  "nrmp": {
+   "config": {
+    "campaign": "NID Dec-2026",
+    "start": "2026-12-12"
+   },
+   "const": "NRMP",
+   "exclude": [
+    "~$*"
+   ],
+   "extractor": "extract_nrmp.py",
+   "label": "NID Dec-2026 resource micro-plan (const NRMP)",
+   "note": "KP RMP Dec.xlsx, Sheet1 A1:Z39 (two header rows, 37 district rows, no total row). Campaign start 12-Dec-2026, whole KP. Columns located by header prefix; numeric cells asserted, unmapped district aborts, row count must be 37. The plan's single KURRAM row (76 UCs) is shown as 'Kurram (Lower, Central & Upper)' under KOHAT. Province totals on the page and in the Excel download are the roll-up of the 37 rows.",
+   "patterns": [
+    "KP RMP*.xlsx"
+   ],
+   "portal": "PEOC/NEOC resource micro-plan issued before each NID round",
+   "roots": [
+    "C:\\Users\\HD\\Downloads",
     "D:\\AMAZON DATA"
    ]
   },

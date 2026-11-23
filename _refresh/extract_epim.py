@@ -65,18 +65,27 @@ def build(cfg):
         if isinstance(rec_o, dict):
             # One month can sit in several exports: the UC-wise one, and older district-level
             # downloads that disagree (Jan 2025: bcg 2,538 over its UCs, 2,119 in a summary).
-            # Discovery is newest-first, so the first UC-wise copy wins; a district-level copy
-            # is only used for a month that has no UC-wise export (all of 2024). Never let a
-            # later, older copy overwrite the month already held.
+            # UC-wise is the better copy when the two describe the same volume, but it is not
+            # always the fuller read: Oct-2026 arrived first as a mid-month UC-wise download
+            # (bcg 48,269) and later as the complete facility-wise month (bcg 100,728), so the
+            # copy with the larger BCG total wins and the note says which and why.
+            bcg = sum(v.get('bcg', 0) for v in rec_o['ed'].values())
+            cand = (bool(rec_o.get('uc')), rec_o['ed'], rec['name'], bcg)
             have = by_mo.get(rec_o['mo'])
-            if have is None or (not have[0] and rec_o.get('uc')):
-                if have is not None:
-                    print('  note: %s replaces %s for %s (UC-wise)' % (
-                        rec['name'], have[2], rec_o['mo']))
-                by_mo[rec_o['mo']] = (bool(rec_o.get('uc')), rec_o['ed'], rec['name'])
-            elif rec['name'] != have[2]:
-                print('  note: %s also carries %s - keeping %s'
-                      % (rec['name'], rec_o['mo'], have[2]))
+            if have is None:
+                by_mo[rec_o['mo']] = cand
+            else:
+                hbcg = have[3]
+                same = max(bcg, hbcg) and abs(bcg - hbcg) <= 0.01 * max(bcg, hbcg)
+                if (same and cand[0] and not have[0]) or (not same and bcg > hbcg):
+                    print('  note: %s replaces %s for %s (%s)'
+                          % (rec['name'], have[2], rec_o['mo'],
+                             'UC-wise, same volume' if same else 'fuller month: bcg %d vs %d'
+                             % (bcg, hbcg)))
+                    by_mo[rec_o['mo']] = cand
+                elif rec['name'] != have[2]:
+                    print('  note: %s also carries %s - keeping %s (bcg %d vs %d)'
+                          % (rec['name'], rec_o['mo'], have[2], hbcg, bcg))
     _epicache.store(cache)
     if not by_mo:
         raise SystemExit('ERR %s no monthly exports found' % DS)
@@ -88,7 +97,7 @@ def build(cfg):
     # every month with an export is rebuilt from it; a month whose export is not on disk
     # keeps the embedded rows rather than disappearing from the year
     rows = [r for r in old if r['mo'] not in by_mo]
-    unknown = sorted({ed for _, eds, _ in by_mo.values() for ed in eds} - set(dmap))
+    unknown = sorted({ed for recs in by_mo.values() for ed in recs[1]} - set(dmap))
     if unknown:
         raise SystemExit('ERR %s districts not in the embedded EPIM mapping: %s' % (DS, unknown))
     added = 0
