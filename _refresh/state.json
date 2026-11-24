@@ -336,6 +336,20 @@
    "stamp": "01-Nov-2026 12:48",
    "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (64).xls)"
   },
+  "nepd": {
+   "at": "2026-11-24T10:27:45+05:00",
+   "chars": 122218,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (66).xls|1795497206|1847913",
+   "payload_sha1": "14f593d100bcf886",
+   "source": {
+    "mtime": 1795497206.335219,
+    "name": "NEAP (66).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (66).xls",
+    "size": 1847913
+   },
+   "stamp": "24-Nov-2026 10:27",
+   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 2 (TANK, WAZIR-S Lower), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 58 (TANK 22, WAZIR-S Lower 36)"
+  },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
    "chars": 2906,
@@ -520,19 +534,19 @@
   }
  },
  "last_push": {
-  "at": "2026-11-23T15:13:39+05:00",
-  "chars": 23736925,
-  "internal_md5": "669569b1bbb75643ff314b2e031a6421",
-  "master_md5": "db222efdff6f7bae9fdc0913b295c389",
-  "note": "Surveillance refresh 23-Nov-2026: SURVW weekly log + line list to 18/12-Nov, SOPS active-visit/zero-report/pendency/ERC/VPD to week 45. Timestamp refresh 23-Nov-2026 15:13 PKT",
-  "stamp": "23-Nov-2026 15:13"
+  "at": "2026-11-24T11:15:48+05:00",
+  "chars": 23919015,
+  "internal_md5": "8c1c1993c04f44c865946ed0075ef719",
+  "master_md5": "02ab3744a93ba1cc6daf5f05c671452c",
+  "note": "NID Dec-26 pre-campaign: live briefing, countdown, chart, map and SITREP; SNID Nov-26 final and fIPV stored on Pre-campaign readiness (all rounds). Timestamp refresh 24-Nov-2026 11:15 PKT",
+  "stamp": "24-Nov-2026 11:15"
  },
  "last_run": {
-  "at": "2026-11-23T15:11:14+05:00",
+  "at": "2026-11-24T10:27:45+05:00",
   "datasets": [
-   "sops"
+   "nepd"
   ],
   "dry_run": false,
-  "stamp": "23-Nov-2026 15:11"
+  "stamp": "24-Nov-2026 10:27"
  }
 }

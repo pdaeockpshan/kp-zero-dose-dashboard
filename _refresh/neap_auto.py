@@ -6,7 +6,10 @@ not touch the portal: it only looks at the Downloads folder. When the newest
 NEAP*.xls/csv is newer than the last refresh and at least MIN_AGE seconds old (so
 both the district-wise and UC-wise exports have landed), it runs:
 
-    _refresh/refresh.py run --only neap --publish
+    _refresh/refresh.py run --only nepd --publish
+
+It drives the live upcoming-round grid (const NEPD) only. const NEAP is the closed
+SNID Nov-26 snapshot and is deliberately not an auto dataset any more.
 
 `refresh.py publish` carries only the lines this route writes - the payload `const` lines and the
 stamp - and refuses (exit 3, nothing committed) when a variant also carries site edits of its own,
@@ -50,14 +53,14 @@ def log(msg):
 def state_mtime():
     try:
         with open(os.path.join(HERE, 'state.json'), encoding='utf-8') as fh:
-            return float(json.load(fh)['datasets']['neap']['source']['mtime'])
+            return float(json.load(fh)['datasets']['nepd']['source']['mtime'])
     except (OSError, ValueError, KeyError, TypeError):
         return 0.0
 
 
 def main():
     cfg = srcutil.load_sources()
-    recs = srcutil.discover(cfg['auto']['neap'])
+    recs = srcutil.discover(cfg['auto']['nepd'])
     if not recs:
         return 0
     newest = recs[0]
@@ -80,13 +83,13 @@ def main():
     try:
         os.write(fd, str(os.getpid()).encode())
         os.close(fd)
-        log('new NEAP export: %s (%s, %d bytes) - refreshing' % (
+        log('new readiness export: %s (%s, %d bytes) - refreshing' % (
             newest['name'],
             datetime.datetime.fromtimestamp(newest['mtime']).strftime('%d-%b-%Y %H:%M'),
             newest['size']))
         p = subprocess.run(
-            [sys.executable, os.path.join(HERE, 'refresh.py'), 'run', '--only', 'neap',
-             '--publish', '--message', 'Auto-refresh NEAP from EOC pre-campaign export'],
+            [sys.executable, os.path.join(HERE, 'refresh.py'), 'run', '--only', 'nepd',
+             '--publish', '--message', 'Auto-refresh NID Dec-26 readiness grid from EOC pre-campaign export'],
             cwd=ROOT, capture_output=True, text=True, timeout=TIMEOUT)
         for ln in ((p.stdout or '') + (p.stderr or '')).splitlines():
             log(ln)
