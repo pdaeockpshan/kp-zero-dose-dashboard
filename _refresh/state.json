@@ -337,18 +337,18 @@
    "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (64).xls)"
   },
   "nepd": {
-   "at": "2026-11-24T10:27:45+05:00",
-   "chars": 122218,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (66).xls|1795497206|1847913",
-   "payload_sha1": "14f593d100bcf886",
+   "at": "2026-11-25T09:17:00+05:00",
+   "chars": 124559,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (68).xls|1795580036|1850161",
+   "payload_sha1": "6a853659c358b7f2",
    "source": {
-    "mtime": 1795497206.335219,
-    "name": "NEAP (66).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (66).xls",
-    "size": 1847913
+    "mtime": 1795580036.5451362,
+    "name": "NEAP (68).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (68).xls",
+    "size": 1850161
    },
-   "stamp": "24-Nov-2026 10:27",
-   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 2 (TANK, WAZIR-S Lower), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 58 (TANK 22, WAZIR-S Lower 36)"
+   "stamp": "25-Nov-2026 09:16",
+   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 10 (BAJOUR, BATAGRAM, DIKHAN, HANGU, HARIPUR, KOHAT, MOHMAND, TANK, WAZIR-S Lower, WAZIR-S Upper), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 339 (BAJOUR 39, BATAGRAM 20, DIKHAN 53, HANGU 19, HARIPUR 45, KOHAT 42, MOHMAND 29, TANK 22, WAZIR-S Lower 36, WAZIR-S Upper 34)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -542,11 +542,11 @@
   "stamp": "24-Nov-2026 11:15"
  },
  "last_run": {
-  "at": "2026-11-24T10:27:45+05:00",
+  "at": "2026-11-25T09:17:00+05:00",
   "datasets": [
    "nepd"
   ],
   "dry_run": false,
-  "stamp": "24-Nov-2026 10:27"
+  "stamp": "25-Nov-2026 09:16"
  }
 }
