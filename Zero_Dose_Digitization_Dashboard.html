@@ -1148,7 +1148,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <section class="pane on" id="p-home">
  <div class="hero">
   <span id="hNdChip" style="cursor:pointer" title="NID Dec-2026 countdown — click to dismiss. The countdown and the district map stay available from the NID Dec-2026 button below and on the NID page.">NID Dec-2026 · starts 12 Dec · 8.16M children</span>
-  <span class="hupd" id="hUpd">Updated 25-Nov-2026 11:38</span>
+  <span class="hupd" id="hUpd">Updated 25-Nov-2026 12:55</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -1714,7 +1714,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <!-- ================= ④ EPI ROUTINE COVERAGE: ANTIGEN COVERAGE ================= -->
 <section class="pane" id="p-eov">
 <div class="cqbar"><b>EPI month</b><select class="emsel" aria-label="EPI month"></select><span class="cnt emnote"></span></div>
-<div class="hint">Data: <b>KP EPI-MIS</b> · UC-wise Vaccination Coverage report · <b>Jan 2026 – Sep 2026</b> (year to date, export saved <span id="eSrc"></span>) · 1,459 UCs in 37 districts, <b>1,167 matched to the polio UC list</b>. Coverage % = doses given ÷ target for the period (newborns for BCG and OPV-0, surviving infants for the other 17 doses). The report carries the <b>full 19-dose panel</b> — OPV-1/2/3, Penta-2, PCV-1/2, Rota-1 and TCV next to the eleven core doses the tables show; click one of those meters to add it there, and the CSV always holds all 19. The month view carries the same 19 doses for every year — 2023, 2025 and 2026 from the UC-wise exports, 2024 from the district-level ones — and the year table below adds each year up. <b>Sep 2026 is now a complete single-month export</b>, not the part-report the archive used to hold: the Jan–Sep months add up exactly to the year-to-date figures above. <span id="eNote"></span></div>
+<div class="hint">Data: <b>KP EPI-MIS</b> · UC-wise Vaccination Coverage report · <b>Jan 2026 – Sep 2026</b> (year to date, export saved <span id="eSrc"></span>) · 1,459 UCs in 37 districts, <b>1,167 matched to the polio UC list</b>. Coverage % = doses given ÷ target for the period (newborns for BCG and OPV-0, surviving infants for the other 17 doses). The report carries the <b>full 19-dose panel</b> — OPV-1/2/3, Penta-2, PCV-1/2, Rota-1 and TCV next to the eleven core doses the tables show; click one of those meters to add it there, and the CSV always holds all 19. The <b>Antigen coverage</b> table below switches between district rows and one row per UC for any period whose UC-wise export is complete; 2024, and October 2026 whose UC-wise export is only a part-report, stay at district grain. The month view carries the same 19 doses for every year — 2023, 2025 and 2026 from the UC-wise exports, 2024 from the district-level ones — and the year table below adds each year up. <b>Sep 2026 is now a complete single-month export</b>, not the part-report the archive used to hold: the Jan–Sep months add up exactly to the year-to-date figures above. <span id="eNote"></span></div>
 <div class="agrid" id="eAG"></div>
 <div class="alegend"><span><b>Click an antigen</b> to show it in the charts and tables below.</span><span><i style="background:#16a34a"></i>90% or more</span><span><i style="background:#d97706"></i>80–90%</span><span><i style="background:#dc2626"></i>below 80%</span><span><i style="background:#7c3aed"></i>over 110% (check target)</span></div>
 <div class="kpis">
@@ -1736,9 +1736,9 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <div class="card" style="margin-bottom:16px"><div id="ce8" class="ch"></div><div class="cap" id="cape8"></div></div>
 <div class="card" style="margin-bottom:16px"><div id="ce9" class="ch"></div><div class="cap" id="cape9"></div></div>
 <div class="card" style="margin-bottom:16px">
-<div class="tblhdr"><h3 style="margin:0" id="eGT">Antigen coverage by district</h3><span class="cnt">Click a district to drill down to its tehsils</span></div>
+<div class="tblhdr"><h3 style="margin:0" id="eGT">Antigen coverage by district</h3><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="cnt" id="eGcnt"></span><div class="pills" id="eGpills"><button class="btn on" data-g="d">District</button><button class="btn" data-g="u">UC</button></div></div></div>
 <div class="scroll" style="max-height:520px"><table id="tEG"></table></div>
-<div class="cap">Coverage % = doses given ÷ target for Jan 2026 – Sep 2026 (newborns for BCG and OPV-0, surviving infants for the rest). Over 100% usually means the target is set too low or children from other areas were vaccinated here. Dropout = share of children who got the first dose but not the later one.</div>
+<div class="cap" id="eGTCap">Coverage % = doses given ÷ target for Jan 2026 – Sep 2026 (newborns for BCG and OPV-0, surviving infants for the rest). Over 100% usually means the target is set too low or children from other areas were vaccinated here. Dropout = share of children who got the first dose but not the later one.</div>
 </div>
 <div class="card" style="margin-bottom:16px">
 <div class="tblhdr"><h3 style="margin:0">Antigen coverage by year</h3><div style="display:flex;gap:10px;align-items:center"><span class="cnt">2023 · 2024 · 2025 · 2026 year to date</span><button class="btn" id="btnEYxls">Download (Excel)</button></div></div>
@@ -1762,7 +1762,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 </div>
 <div class="card">
 <div class="tblhdr"><h3 style="margin:0">Download antigen coverage — pick year, month and rows</h3><span class="cnt" id="cntEX"></span></div>
-<div class="note">Pick a <b>year</b>, tick one or more <b>months</b> (or <b>All months</b>), narrow by <b>division</b> and <b>district</b> if you need to, then choose the rows. Every month becomes its own sheet in the Excel file, so two months are never added together. <b>UC and Tehsil rows exist month by month for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026</b> — the 2024 months stay listed but switched off because that year's export was district-level; the Jan–Sep 2026 year-to-date total is always on offer as its own row.</div>
+<div class="note">Pick a <b>year</b>, tick one or more <b>months</b> (or <b>All months</b>), narrow by <b>division</b> and <b>district</b> if you need to, then choose the rows. Every month becomes its own sheet in the Excel file, so two months are never added together. <b>UC and Tehsil rows exist month by month for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026</b> — the 2024 months stay listed but switched off because that year's export was district-level; the Jan–Sep 2026 year-to-date total is always on offer as its own row. October 2026 has no complete UC-wise export yet, so UC and Tehsil rows are switched off for it and it downloads at district grain only.</div>
 <div class="nbar" style="margin:6px 0;align-items:flex-end">
 <span><span class="cnt" style="display:block">Year</span><select id="exYear" aria-label="Download year" style="font:13px var(--font-sans);padding:5px 8px;border:1px solid var(--color-border);border-radius:8px;background:#fff"></select></span>
 <span><span class="cnt" style="display:block">Division</span><select id="exDiv" aria-label="Download division" style="font:13px var(--font-sans);padding:5px 8px;border:1px solid var(--color-border);border-radius:8px;background:#fff"></select></span>
@@ -3279,7 +3279,7 @@ function bindNoteLinks(root){root.querySelectorAll('[data-note]').forEach(b=>b.o
 // ---------- top bar ----------
 function renderBar(){
  if(TAB==='mdep'){renderMDPBar();return;}
- el('shown').innerHTML=TAB==='fipv'?`fIPV overlay · Peshawar &amp; Khyber · ${FIPV.tot.uc} UCs · ${fmt(FIPV.tot.fipv)} children aged 4 months–10 years · starts 26-Oct-2026`:MODE==='e'?`Showing <b>${fmt(cur.length)}</b> of ${fmt(EPI.length)} EPI-MIS UCs · ${esc(EM?emLab(EM):EPER)}${EM?' · month view (UC coverage table is YTD)':''}`:MODE==='v'?`Showing <b>${cur.length}</b> of ${VAL.length} UC-campaign rows · ${fmt(S_(cur,r=>r.n))} children validated`:MODE==='s'?`Overview · ${cur.length} of ${ZD.length} UCs (ZD Reported &amp; Covered) · ${DATA.filter(matchG).length} digitization UCs · ${fmt(S_(VAL.filter(matchG),r=>r.n))} children validated`:`Showing <b>${cur.length}</b> of ${(ZTAB?ZD:DATA).length} UCs`+(ZTAB?' · 37 districts · NID Apr-26 / SNID May-26 / SNID Sept-26':' · SNID Sept 2026 linelist');
+ el('shown').innerHTML=TAB==='fipv'?`fIPV overlay · Peshawar &amp; Khyber · ${FIPV.tot.uc} UCs · ${fmt(FIPV.tot.fipv)} children aged 4 months–10 years · starts 26-Oct-2026`:MODE==='e'?`Showing <b>${fmt(cur.length)}</b> of ${fmt(EPI.length)} EPI-MIS UCs · ${esc(EM?emLab(EM):EPER)}${EM?' · month view':''}`:MODE==='v'?`Showing <b>${cur.length}</b> of ${VAL.length} UC-campaign rows · ${fmt(S_(cur,r=>r.n))} children validated`:MODE==='s'?`Overview · ${cur.length} of ${ZD.length} UCs (ZD Reported &amp; Covered) · ${DATA.filter(matchG).length} digitization UCs · ${fmt(S_(VAL.filter(matchG),r=>r.n))} children validated`:`Showing <b>${cur.length}</b> of ${(ZTAB?ZD:DATA).length} UCs`+(ZTAB?' · 37 districts · NID Apr-26 / SNID May-26 / SNID Sept-26':' · SNID Sept 2026 linelist');
  const chips=[];
  const add=(sel,label)=>{if(sel.value)chips.push(`<span class="chip">${label}: ${esc(sel.options[sel.selectedIndex].text)}<button title="Clear" data-clr="${sel.id}">×</button></span>`);};
  add(fDiv,'Division');add(fDist,'District');add(fTeh,'Tehsil');if(MODE==='z'){add(fZT,'ZD trend');}else if(MODE==='v'){add(fVC,'Campaign');}else if(MODE==='d'){add(fBand,'Band');add(fTr,'Trend');add(fPri,'Priority');}
@@ -5948,8 +5948,18 @@ const EUCOK=!!EUCM&&!!EUCM.rows&&EUCM.rows.length===EPI.length;
 const EUCI=EUCM?Object.fromEntries(EUCM.k.map((k,i)=>[k,i])):{};
 const eucMi=mo=>EUCM?EUCM.mo.findIndex(m=>m.mo===mo):-1;
 const eucRow=(r,i,mi)=>{const o={...r};if(EUCOK&&mi>=0){const w=EUCM.rows[i];EUCM.k.forEach((k,j)=>{o[k]=w[j][mi];});}return o;};
+// A UC month can be a mid-month snapshot. Its UC rows then add up to well under the district file
+// for the same month, so a per-UC coverage rate would read as a false drop. Such a month is kept
+// at district grain and the reason is shown. Measured on Penta-1, the dose every UC reports.
+const EUCPART=(()=>{const S={};if(!EUCOK||EUCI['p1']==null)return S;const pi=EUCI['p1'];
+ const dt={};(EPIM||[]).forEach(r=>{dt[r.mo]=(dt[r.mo]||0)+(r.p1||0);});
+ (EUCM.mo||[]).forEach((m,mi)=>{const d=dt[m.mo];if(!d)return;let u=0;
+  EUCM.rows.forEach(w=>{const v=w[pi]&&w[pi][mi];if(v!=null)u+=v;});
+  const q=u/d;if(q<0.9)S[m.mo]=Math.round(q*100);});
+ return S;})();
+const eucPart=mo=>EUCPART[mo]||0;
 const eDim='<span style="color:var(--color-text-muted)">–</span>';
-let EN='d', EYD=[];
+let EN='d', EG='d', EYD=[];
 const enNum=(k,l)=>({k,l,n:1,f:r=>r[k]==null?eDim:fmt(r[k])});
 const enRows=()=>{
  if(EN==='u'){
@@ -5977,7 +5987,8 @@ function renderEN(){
  drawTable('tEN',cols,rows,EN==='d'?'k':'d',1);
  el('cntEN').textContent=fmt(rows.length)+(EN==='d'?' districts':' UCs')+' · '+(EM?emLab(EM):EPER);
  if(EN==='u'){
-  cap.textContent='Doses given by each UC for '+(EM?emLab(EM):EPER)+', from the UC-wise '+(EM?'single-month':'year-to-date')+' export.';
+  const pr=eucPart(EM);
+  cap.textContent='Doses given by each UC for '+(EM?emLab(EM):EPER)+', from the UC-wise '+(EM?'single-month':'year-to-date')+' export.'+(pr?' That export is a mid-month part-report (about '+pr+'% of the district total), so these are doses recorded so far, not a full month.':'');
  }else{
   cap.textContent='Doses given in each district for '+(EM?emLab(EM):EPER)+', from '+(!EM?'the UC-wise year-to-date export':(EM.slice(0,4)==='2024'?'the district-level single-month export':(EM.slice(0,4)==='2026'?'the 2026 monthly archive':'the UC-wise single-month exports added up to district')))+'.';
   
@@ -6024,10 +6035,11 @@ let EXY=2026,EXG='d',EXDIV='',EXDIST='',EXPER=new Set(['YTD']);
 const exDvL=d=>EXDV[d]||d;
 const exMonName=mo=>EXMON[+mo.slice(5,7)-1];
 const exYearMonths=y=>(EMETA.months||[]).filter(m=>m.mo.slice(0,4)===''+y);
-const exUCMonthOK=mo=>EUCOK&&eucMi(mo)>=0;
+const exUCMonthOK=mo=>EUCOK&&eucMi(mo)>=0&&!eucPart(mo);
 // EPI-MIS publishes UC rows month by month for 2023, 2025 and every 2026 month on file; 2024 was
 // exported district-level only. A month with no UC export stays in the list but switched off, so
-// choosing the UC grain never makes the month list disappear.
+// choosing the UC grain never makes the month list disappear. A part-report UC month is switched
+// off the same way: its UC rows are a slice of the month, so its percentages are not coverage.
 const exUCYTD=y=>y===2026;
 const exHasUC=y=>exUCYTD(y)||exYearMonths(y).some(m=>exUCMonthOK(m.mo));
 const exUCG=()=>EXG==='t'||EXG==='u';
@@ -6080,15 +6092,16 @@ function renderEX(){
  dd.innerHTML='<option value="">All districts</option>'+dl.map(d=>'<option value="'+esc(d)+'">'+esc(d)+'</option>').join('');
  dd.value=EXDIST;
  const av=exAvail(),box=el('exMonthBox');
- box.innerHTML=av.map(p=>{const k=p.mo||'YTD';
-  return '<label title="'+(p.off?'UC month-wise rows are not published for '+p.lab:'')+'" style="display:flex;align-items:center;gap:6px;cursor:'+(p.off?'not-allowed':'pointer')+(p.off?';opacity:.45;':'')+'"><input type="checkbox" value="'+esc(k)+'"'+(p.off?' disabled':'')+(EXPER.has(k)&&!p.off?' checked':'')+'>'+esc(p.mn)+'</label>';}).join('');
+ box.innerHTML=av.map(p=>{const k=p.mo||'YTD',pt=!!eucPart(p.mo);
+  return '<label title="'+(p.off?(pt?'No complete UC rows for '+p.lab+' — its UC-wise export is a mid-month part-report':'UC month-wise rows are not published for '+p.lab):'')+'" style="display:flex;align-items:center;gap:6px;cursor:'+(p.off?'not-allowed':'pointer')+(p.off?';opacity:.45;':'')+'"><input type="checkbox" value="'+esc(k)+'"'+(p.off?' disabled':'')+(EXPER.has(k)&&!p.off?' checked':'')+'>'+esc(p.mn)+(pt?' · part-report':'')+'</label>';}).join('');
  // Ticking a month only updates the count and the buttons: rebuilding the list here would move
  // the box under the pointer while the reader is still ticking months.
  box.querySelectorAll('input').forEach(c=>c.onchange=()=>{EXPER.clear();box.querySelectorAll('input:checked').forEach(x=>EXPER.add(x.value));exCount();});
  const offN=av.filter(p=>p.off).length,lab=el('exMonthLab'),hint=el('exHint');
  if(lab)lab.textContent=(offN?'Periods':'Months')+' — tick one or more';
- if(hint){hint.style.display=offN?'':'none';
-  hint.textContent=offN?'UC rows are published month by month for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, so the '+EXY+' months above are switched off. Change Year to 2023, 2025 or 2026 for month-by-month UC rows, or tick "Jan–Sep 2026 (year to date)" for the 2026 UC total.':'';}
+ if(hint){const pr=av.filter(p=>p.off&&eucPart(p.mo));
+  hint.style.display=offN?'':'none';
+  hint.textContent=!offN?'':pr.length?'No complete UC rows for '+pr.map(p=>p.lab).join(', ')+' — that UC-wise export is a mid-month part-report (about '+pr.map(p=>eucPart(p.mo)).join('%, ')+'% of the district total), so its UC rates would read as a false drop. District rows stay available for it; UC months run Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, plus the 2026 year-to-date total.':'UC rows are published month by month for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, so the '+EXY+' months above are switched off. Change Year to 2023, 2025 or 2026 for month-by-month UC rows, or tick "Jan–Sep 2026 (year to date)" for the 2026 UC total.';}
  exCount();
 }
 const exCount=()=>{
@@ -6170,6 +6183,9 @@ function exDownload(xls){
  }
 }
 el('eNpills').querySelectorAll('button').forEach(b=>b.onclick=()=>{EN=b.dataset.g;renderEN();});
+if(el('eGpills'))el('eGpills').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+ if(b.disabled||EG===b.dataset.g)return;
+ EG=b.dataset.g;delete SORT.tEG;renderEOv();});
 el('btnENxls').onclick=enExport;
 el('btnEYxls').onclick=eyExport;
 el('btnEXxls').onclick=()=>exDownload(1);
@@ -6211,7 +6227,7 @@ const emLab=mo=>((EMETA.months||[]).find(m=>m.mo===mo)||{}).l||mo;
 const emDist=ed=>{const r=EPIM.find(x=>x.ed===ed); return ((r||{}).ds||[])[0]||'';};
 let EM='';
 function emSel(){document.querySelectorAll('.emsel').forEach(s=>{ if(!s.options.length){s.innerHTML='<option value="">Year to date ('+esc(EPER)+')</option>'+(EMETA.months||[]).map(m=>'<option value="'+m.mo+'">'+esc(m.l)+(m.pt?' · part-report':'')+'</option>').join(''); s.onchange=()=>{EM=s.value;document.querySelectorAll('.emsel').forEach(x=>{x.value=EM;});render();};} s.value=EM;});
- document.querySelectorAll('.emnote').forEach(n=>n.textContent=EM?'Month view uses district-level EPI-MIS monthly data (division and district filters apply). UC doses exist for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, plus the 2026 year to date; the All UCs coverage table stays year-to-date.':'Monthly charts use district-level EPI-MIS data; UC doses exist for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, plus the 2026 year to date.');}
+ document.querySelectorAll('.emnote').forEach(n=>n.textContent=EM?'Month view uses district-level EPI-MIS monthly data (division and district filters apply). The Antigen coverage table switches to one row per UC when the UC-wise export for that month is complete; 2024 and the October part-report stay at district grain. The All UCs table stays year-to-date.':'Monthly charts use district-level EPI-MIS data; UC doses exist for Jan–Dec 2023, Jan–Dec 2025 and Jan–Sep 2026, plus the 2026 year to date.');}
 function renderAgTiles(o){
  el('eAG').innerHTML=EAG.map(a=>{const p=o['p_'+a.k], v=p==null?0:Math.max(0,Math.min(100,p)), col=kxCol('ri',p);
   const tip=`${a.l}: ${pc(p)} · ${nf(o[a.k])} doses of ${fmt(eTg(o,a))} ${a.t==='n'?'newborns':'surviving infants'} · target 90%`+(p==null?' (this export does not report the dose)':p>110?' (over 110%: check the target)':p>=90?' (target met)':` (${(90-p).toFixed(1)} pts to go)`)+(a.core?'':' · not in the tables unless selected')+' · click to show it below';
@@ -6225,7 +6241,7 @@ function renderEOv(){
  const emRows=EM?EPIM.filter(r=>r.mo===EM&&matchEM(r)):cur, o=aggE(emRows), L=EM?{key:'ed',lvl:'district',Lvl:'District',pl:'districts'}:lvlOf(), a=EAGK[EA]||EAG[0], G=groupE(emRows,L.key);
  if(!a){el('eAG').innerHTML='<div class="empty">EPI routine coverage data is not available.</div>';return;}
  renderAgTiles(o);
- el('eNote').innerHTML=EM?('Showing <b>'+esc(emLab(EM))+'</b> only — district-level EPI-MIS monthly data. The All UCs table and the Priority UCs page remain year-to-date; the doses table below has UC numbers for the 2023, 2025 and 2026 months.'):(fTeh.value||q.value.trim())?'<b>Monthly trend shows the whole district</b> (EPI-MIS monthly data is district level).':'';
+ el('eNote').innerHTML=EM?('Showing <b>'+esc(emLab(EM))+'</b> only — district-level EPI-MIS monthly data. The All UCs table and the Priority UCs page remain year-to-date; the doses table below has UC numbers for the 2023, 2025 and 2026 months, and the coverage table switches to UC rows when that month has a complete UC-wise export.'):(fTeh.value||q.value.trim())?'<b>Monthly trend shows the whole district</b> (EPI-MIS monthly data is district level).':'';
  el('e1').textContent=fmt(o.s); el('e1s').textContent=`${fmt(o.n)} newborns · ${fmt(o.u)} ${EM?'districts':'UCs'} · ${EM?esc(emLab(EM)):EPER}`;
  el('e2').textContent=pc(o.d13); el('e2').style.color=o.d13==null?'':o.d13>10?C.crit:o.d13>5?C.low:C.high; el('e2s').textContent=o.p1?`${fmt(Math.max(o.p1-o.p3,0))} Penta-1 doses with no Penta-3 recorded`:'';
  el('e3').textContent=pc(o.dmr); el('e3').style.color=o.dmr==null?'':o.dmr>20?C.crit:o.dmr>10?C.low:C.high; el('e3s').textContent=o.mr1?`${fmt(Math.max(o.mr1-o.mr2,0))} MR-1 doses with no MR-2 recorded`:'';
@@ -6315,15 +6331,36 @@ function renderEOv(){
   series:[{name:'Retained',data:st9.map(x=>({y:+x.v.toFixed(1),color:colR(x.v)}))}]});
  CKEY('ce9',[['#16a34a','95%+ retained'],['#65a30d','90-95%'],['#d97706','80-90%'],['#dc2626','under 80% - the step that loses them'],[C.none,'not measurable in this selection','hollow']]);
  el('cape9').textContent=st9.length?('Each bar is the share of children from the earlier dose who turn up for the next one, so the shortest bar names the visit that loses them; above 100% is catch-up of older children. Worst step: '+esc(st9[0].t)+' at '+pc(st9[0].v)+' — '+fmt(Math.max(st9[0].b-st9[0].a,0))+' fewer doses than the step before.'+(no9.length?(' Not measurable here: '+no9.slice(0,3).join(', ')+(no9.length>3?' and '+(no9.length-3)+' more':'')+' — the 2026 monthly rows carry only the core eleven doses.'):'')):'No multi-dose series can be measured for this selection.';
- var capEG=el('eGT').closest('.card').querySelector('.cap');
- if(capEG){ if(!capEG.dataset.ytd)capEG.dataset.ytd=capEG.innerHTML;
-  capEG.innerHTML=EM?'Coverage % = doses given ÷ target for the selected month (district-level EPI-MIS monthly data). Over 100% usually means the monthly target is too low or children from other areas were vaccinated here. Dropout columns stay year-to-date.':capEG.dataset.ytd;}
- // tables
- el('eGT').textContent=`Antigen coverage by ${L.lvl}`;
+ // tables — district rows, or one row per UC when the UC-wise export covers the period
  const nn=(k,l,f)=>({k,l,n:1,f});
- const agCols=EAG.filter(x=>x.core||x.k===a.k).map(x=>({k:'p_'+x.k,l:x.l,n:1,cls:'ec',f:r=>pE(r['p_'+x.k])}));
- drawTable('tEG',[{k:'k',l:L.Lvl,f:x=>L.key==='d'?dz(x.k):`<b>${esc(x.k)}</b>`},(EM?{k:'u',l:'UCs',n:1,f:()=>'<span style="color:var(--color-text-muted)">YTD</span>'}:nn('u','UCs')),nn('s','Target infants',x=>fmt(x.s)),...agCols,nn('d13','P1→P3 drop',x=>(x.d13==null?'–':rgNL(x.d13,5,10)+'%')),nn('dmr','MR1→2 drop',x=>(x.dmr==null?'–':rgNL(x.dmr,10,20)+'%'))],G,'p_'+a.k,1);
- if(EM){const nu=eucMi(EM)>=0;el('tEU').innerHTML='<tr><td class="empty">'+(nu?'UC coverage here stays year-to-date — the <b>doses table</b> above has this month at UC level.':'No UC-level detail exists for '+esc(emLab(EM))+' — UC rows exist for the 2023, 2025 and 2026 monthly exports; the 2024 exports are district-level, so that year has no UC grain. Use the <b>doses table</b> for district numbers, or set <b>EPI month</b> to Year to date.')+'</td></tr>';el('cntEU').textContent=nu?'UC coverage: year to date':'UC detail unavailable for this month';el('btnEUCSV').disabled=true;el('btnEUCSV').title='Set EPI month to Year to date to download UC coverage';}
+ const eMi=EM?eucMi(EM):-1, ePart=EM?eucPart(EM):0, eUp=EUCOK&&(!EM||(eMi>=0&&!ePart));
+ // the reader's grain is remembered, but a period with no UC rows falls back to district without
+ // discarding it, so returning to a complete month restores the UC table
+ const eGr=(EG==='u'&&eUp)?'u':'d';
+ const agCols=EAG.filter(x=>x.core||x.k===a.k).map(x=>({k:'p_'+x.k,l:x.l,n:1,cls:'ec',f:r=>pE(r['p_'+x.k]),sv:r=>r['p_'+x.k]==null?1e9:r['p_'+x.k]}));
+ const eGcnt=el('eGcnt'), eGcap=el('eGTCap');
+ el('eGT').textContent='Antigen coverage by '+(eGr==='u'?'UC':L.lvl);
+ if(eGr==='u'){
+  const U=(EM?EPI.map((r,i)=>eucRow(r,i,eMi)).filter(matchE):cur).map(r=>{const o2={...r};
+   EAG.forEach(x=>o2['p_'+x.k]=eP(r,x.k));
+   o2.d13=(r.p1&&r.p3!=null)?(r.p1-r.p3)/r.p1*100:null;
+   o2.dmr=(r.mr1&&r.mr2!=null)?(r.mr1-r.mr2)/r.mr1*100:null;return o2;});
+  if(eGcnt)eGcnt.textContent=fmt(U.length)+' UCs in view';
+  if(eGcap)eGcap.textContent='Coverage % = doses given ÷ target for '+(EM?emLab(EM):EPER)+', one row per EPI-MIS union council ('+(EM?'UC-wise single-month export':'UC-wise year-to-date export')+'). Over 100% usually means the target is set too low or children from other areas were vaccinated here. Dropout = share of children who got the first dose but not the later one. Lowest coverage first.';
+  drawTable('tEG',[{k:'d',l:'District',f:r=>dz(r.d)},{k:'t',l:'Tehsil'},{k:'en',l:'UC (EPI-MIS)'},nn('s','Target infants',r=>fmt(r.s)),...agCols,nn('d13','P1→P3 drop',r=>(r.d13==null?'–':rgNL(r.d13,5,10)+'%')),nn('dmr','MR1→2 drop',r=>(r.dmr==null?'–':rgNL(r.dmr,10,20)+'%'))],U,'p_'+a.k,1);
+ }else{
+  if(eGcnt)eGcnt.textContent=fmt(G.length)+' '+L.pl+' in view';
+  if(eGcap)eGcap.textContent=EM?'Coverage % = doses given ÷ target for '+emLab(EM)+' (district-level EPI-MIS monthly data). Over 100% usually means the monthly target is too low or children from other areas were vaccinated here. Dropout columns stay year-to-date.':'Coverage % = doses given ÷ target for Jan 2026 – Sep 2026 (newborns for BCG and OPV-0, surviving infants for the rest). Over 100% usually means the target is set too low or children from other areas were vaccinated here. Dropout = share of children who got the first dose but not the later one.';
+  drawTable('tEG',[{k:'k',l:L.Lvl,f:x=>L.key==='d'?dz(x.k):`<b>${esc(x.k)}</b>`},(EM?{k:'u',l:'UCs',n:1,f:()=>'<span style="color:var(--color-text-muted)">YTD</span>'}:nn('u','UCs')),nn('s','Target infants',x=>fmt(x.s)),...agCols,nn('d13','P1→P3 drop',x=>(x.d13==null?'–':rgNL(x.d13,5,10)+'%')),nn('dmr','MR1→2 drop',x=>(x.dmr==null?'–':rgNL(x.dmr,10,20)+'%'))],G,'p_'+a.k,1);
+ }
+ if(el('eGpills'))el('eGpills').querySelectorAll('button').forEach(b=>{const u=b.dataset.g==='u';
+  b.classList.toggle('on',b.dataset.g===eGr);
+  if(u){b.disabled=!eUp;b.textContent=ePart?'UC (part-report)':'UC';
+   b.title=!EUCOK?'UC rows are not embedded in this build':!EM?'One row per union council':eMi<0?'No UC-wise export exists for '+emLab(EM)+' — 2024 was published district-level only':ePart?'The UC-wise export for '+emLab(EM)+' is a mid-month part-report (about '+ePart+'% of the district total), so UC coverage is not shown for it':'One row per union council';}});
+ if(EM){const mi=eucMi(EM),pr=eucPart(EM);
+  el('tEU').innerHTML='<tr><td class="empty">'+(mi>=0&&!pr?'This table stays year to date — the <b>Antigen coverage</b> table above has '+esc(emLab(EM))+' at UC grain.':pr?'No UC coverage for '+esc(emLab(EM))+' — its UC-wise export is a mid-month part-report (about '+pr+'% of the district total), so the <b>Antigen coverage</b> table stays at district grain. The <b>doses table</b> has UC counts for the month; set <b>EPI month</b> to Year to date for UC coverage.':'No UC-level detail exists for '+esc(emLab(EM))+' — UC rows exist for the 2023, 2025 and 2026 monthly exports; the 2024 exports are district-level, so that year has no UC grain. Use the <b>doses table</b> for district numbers, or set <b>EPI month</b> to Year to date.')+'</td></tr>';
+  el('cntEU').textContent=(mi>=0&&!pr)?'UC coverage: year to date':'UC detail unavailable for this month';
+  el('btnEUCSV').disabled=true;el('btnEUCSV').title='Set EPI month to Year to date to download UC coverage';}
  else{el('btnEUCSV').disabled=false;el('btnEUCSV').title='';
  const U=cur.map(r=>{const o2={...r};EAG.forEach(x=>o2['p_'+x.k]=eP(r,x.k));o2.d13=r.p1?(r.p1-r.p3)/r.p1*100:null;return o2;});
  el('cntEU').textContent=`${fmt(U.length)} UCs`+(U.length>1500?' · first 1,500 shown; download for all':'');
