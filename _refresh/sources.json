@@ -383,6 +383,7 @@
    "exclude": [
     "neapreport*",
     "allneapreport*",
+    "neap_dec*",
     "~$*"
    ],
    "extractor": "extract_nepd.py",

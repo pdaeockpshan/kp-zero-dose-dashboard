@@ -328,3 +328,16 @@
 2026-10-30 09:29:03    1492fd8..e11cf78  main -> main
 2026-10-30 09:29:03 verify: no stored GitHub credential found - check the push manually
 2026-10-30 09:29:03 refresh exit=0
+2026-11-24 11:43:29 new readiness export: NEAP_Dec-26_district_grid_All_districts.csv (24-Nov-2026 11:08, 3694 bytes) - refreshing
+2026-11-24 11:43:32 refresh: 1 to extract, 0 skipped
+2026-11-24 11:43:32 # extracting nepd from NEAP_Dec-26_district_grid_All_districts.csv ...
+2026-11-24 11:43:32 SRC nepd district C:\Users\HD\Downloads\NEAP (65).xls
+2026-11-24 11:43:32 
+2026-11-24 11:43:32 SRC nepd uc C:\Users\HD\Downloads\NEAP (66).xls
+2026-11-24 11:43:32 
+2026-11-24 11:43:32 OK nepd 122243 NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 2 (TANK, WAZIR-S Lower), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 58 (TANK 22, WAZIR-S Lower 36)
+2026-11-24 11:43:32 
+2026-11-24 11:43:32   nepd NEPD     122,243 chars  NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 2 (TANK, WAZIR-S Lower), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 58 (TANK 22, WAZIR-S Lower 36)
+2026-11-24 11:43:32   swap NEPD  : payload already identical (no change)
+2026-11-24 11:43:32 NO_CHANGE (all regenerated payloads are byte-identical to what is embedded)
+2026-11-24 11:43:32 refresh exit=0

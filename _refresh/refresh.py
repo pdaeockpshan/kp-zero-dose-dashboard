@@ -449,9 +449,10 @@ def payload_line_re(cfg):
             if isinstance(const, str):
                 const = [const]
             for n in const or ():
-                if not re.fullmatch('[A-Za-z_$][A-Za-z0-9_$]*', n):
-                    raise SystemExit('sources.json const %r is not a plain identifier' % n)
-                names.add(n)
+                # a nested payload (`PKX.ms`) is written by its patch module, never by this route,
+                # so there is no top-level line here for the guard to wave through
+                if re.fullmatch('[A-Za-z_$][A-Za-z0-9_$]*', n):
+                    names.add(n)
     if not names:
         raise SystemExit('sources.json lists no payload consts - cannot tell what this route wrote')
     return re.compile('^ *(?:const|let|var) (?:%s)(?![A-Za-z0-9_$]) *=' % '|'.join(sorted(names)))

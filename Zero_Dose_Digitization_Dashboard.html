@@ -1148,7 +1148,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <section class="pane on" id="p-home">
  <div class="hero">
   <span id="hNdChip" style="cursor:pointer" title="NID Dec-2026 countdown — click to dismiss. The countdown and the district map stay available from the NID Dec-2026 button below and on the NID page.">NID Dec-2026 · starts 12 Dec · 8.16M children</span>
-  <span class="hupd" id="hUpd">Updated 25-Nov-2026 09:16</span>
+  <span class="hupd" id="hUpd">Updated 25-Nov-2026 09:23</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -16606,6 +16606,8 @@ function renderDEC(){
  const closed=PRE.filter(a=>a.stt==='closed'), running=PRE.filter(a=>a.stt==='running'), ahead=PRE.filter(a=>a.stt==='ahead');
  const mapped=PRE.filter(a=>a.k);
  const dpecC=PRE.find(a=>a.k==='dpec');
+ const wS=(dpecC&&dpecC.s)||'2026-11-25', wE=(dpecC&&dpecC.e)||'2026-11-26';
+ const dpecPos=D.asof<wS?', so the dates are filed ahead of the plan, not behind it.':(D.asof<=wE?', so the dates are filed within the window.':', so the round is past its planned DPEC date.');
  const secs=[];
  const t1=X.nothing, t2=X.S.filter(r=>r.nf&&!(r.aic>0)), t3=X.S.filter(r=>r.aic>0&&r.aic<90);
  const held=X.S.filter(r=>r.dpec>=100);
@@ -16624,7 +16626,7 @@ function renderDEC(){
  secs.push(['Against the countdown calendar',[
   'The NID Dec-26 calendar runs <b>'+esc(nactDm(NACD.from))+' to '+esc(nactDm(NACD.to))+'</b> with <b>'+CAL.length+' activities</b>, '+PRE.length+' of them before the '+esc(nactDm(NACD.st))+' campaign start: <b>'+closed.length+' closed</b>, <b>'+running.length+' in window today</b>, <b>'+ahead.length+' still ahead</b>.',
   'Four activities carry a NEAP reading: DPEC (4), AIC &amp; UCMO training (6), microplan desk review + field validation (7) and FLW team training (14) — '+(mapped.every(a=>!at(a.k))?'none of the four has a district at target yet.':'at target in '+mapped.map(a=>DEC_CALN[a.k]+' '+at(a.k)+'/'+n).join(', ')+'.'),
-  (held.length?'<b>'+held.map(r=>DNAME(r.d)).join(' and ')+'</b> report'+(held.length===1?'s':'')+' a DPEC held on '+esc(nactDm(D.asof))+' — a day before the calendar DPEC window ('+esc(nactDm('2026-11-25'))+'–'+esc(nactDm('2026-11-26'))+') opens, so the dates are filed ahead of the plan, not behind it.':'No district has filed a DPEC yet; the calendar opens that window on 25–26 Nov.'),
+  (held.length?'<b>'+held.map(r=>DNAME(r.d)).join(' and ')+'</b> report'+(held.length===1?'s':'')+' a DPEC held on '+esc(nactDm(D.asof))+'; the calendar DPEC window is '+esc(nactDm(wS))+'–'+esc(nactDm(wE))+dpecPos:'No district has filed a DPEC yet; the calendar opens that window on 25–26 Nov.'),
   'Calendar source: <b>'+esc((typeof NACD!=='undefined'&&NACD&&NACD.src)||'')+'</b>, read '+esc((typeof NACD!=='undefined'&&NACD&&NACD.asof)?nepDAd(NACD.asof):'')+'.']]);
  secs.push(['Tier 1 — nothing filed yet',[t1.length?('**'+t1.length+' of '+n+' districts** have filed no pre-campaign column — the push list is every district except '+X.filed.map(r=>DNAME(r.d)).join(' and ')+'.').replace(/\*\*/g,'<b>').replace(/\*\*/g,'</b>'):'Every district has filed at least one column.'].map(x=>x.replace(/\*\*/g,''))]);
  // fix tier 1 bold without regex helper

@@ -534,12 +534,12 @@
   }
  },
  "last_push": {
-  "at": "2026-11-24T11:15:48+05:00",
-  "chars": 23919015,
-  "internal_md5": "8c1c1993c04f44c865946ed0075ef719",
-  "master_md5": "02ab3744a93ba1cc6daf5f05c671452c",
-  "note": "NID Dec-26 pre-campaign: live briefing, countdown, chart, map and SITREP; SNID Nov-26 final and fIPV stored on Pre-campaign readiness (all rounds). Timestamp refresh 24-Nov-2026 11:15 PKT",
-  "stamp": "24-Nov-2026 11:15"
+  "at": "2026-11-25T09:23:08+05:00",
+  "chars": 23921512,
+  "internal_md5": "c98c567476c9f43a1ff5d8be4c71db70",
+  "master_md5": "4758845aa3c7c25d3616af92b91ff969",
+  "note": "NID Dec-26: NEAP read 25-Nov-2026 (10 of 36 districts, 339 of 1,402 UCs with a DPEC); DPEC window stated from the calendar. Timestamp refresh 25-Nov-2026 09:23 PKT",
+  "stamp": "25-Nov-2026 09:23"
  },
  "last_run": {
   "at": "2026-11-25T09:17:00+05:00",
