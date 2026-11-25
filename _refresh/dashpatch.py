@@ -92,6 +92,12 @@ def _scan_literal(s, i):
 def payload_span(s, name):
     """(start, end) of the JSON literal in `const <name> = {...};`"""
     hits = [m for m in re.finditer(r'(?:const|var|let)\s+' + re.escape(name) + r'\s*=\s*', s)]
+    if len(hits) > 1:
+        # a helper may hold a local `var <NAME> = SRC.<NAME> || []`; payloads are top-level
+        # statements, so only the column-0 hit can be the embedded literal
+        top = [m for m in hits if m.start() == 0 or s[m.start() - 1] == '\n']
+        if len(top) == 1:
+            hits = top
     if len(hits) != 1:
         raise AssertionError('const %s found %d times (expected 1)' % (name, len(hits)))
     m = hits[0]

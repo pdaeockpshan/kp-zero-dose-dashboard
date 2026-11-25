@@ -3,9 +3,16 @@
 Usage: python _refresh/extract_hra.py [--source PATH] [--out PATH]
 Prints one status line: OK hra <json chars> <summary> | ERR hra <reason>
 
-Source: the High Risk Analysis, one workbook per division or for the whole province,
-each carrying a "UC Level HRA Template" sheet - `*HRA*.xlsx` in Downloads, named as
-downloaded.
+Source: the High Risk Analysis. Two routes are read:
+
+  * the province compilation (25-Nov-2026, `HRA compiled.xlsx`), one sheet per round -
+    `May26`, `Sep26` - which is preferred whenever a workbook carries two or more
+    dated template sheets. Each sheet is published as its own round, newest first, and
+    the newest is the reading `const HRA` shows by default;
+  * otherwise the division-wise route: one workbook per division or for the whole
+    province, each carrying a "UC Level HRA Template" sheet, merged newest-first.
+
+Both routes read the same template and score it the same way.
 
 WHAT THE SCORE IS (read off the template's own formulas, 26-Oct-2026): 27 indicators in
 4 scored blocks, each scored 0-3, plus descriptive columns that carry no score (drainage
@@ -35,11 +42,12 @@ dashboard's own combined UC risk score. The two are never blended and HRA keeps 
 Low / Medium / High names.
 
 Rows are keyed by the 8-digit UC code, which is how they join `const ZD` (the zero-dose
-register). Every candidate file is read newest-first and a code already taken is skipped,
-so the freshest assessment of each UC wins: the 26-Oct-2026 Mardan Division round replaces
-the March province-wide rows for its UCs while the rest of the province keeps the
-26-Mar-2026 vintage. Each row carries its own vintage index because the province has no
-single as-of date.
+register). A sheet is named for its round (`May26`, `Sep26`, `May-2026`), and each sheet is
+published as its own round rather than merged: the province compilation carries one sheet per
+round, and the rounds are not blended because the point of a second round is to compare it
+with the first. Within the division route, every candidate file is read newest-first and a
+code already taken is skipped, so the freshest division round replaces older rows for its
+UCs; each row carries its own vintage index because that route has no single as-of date.
 
 Per-district roll-up is left to the dashboard (the repo convention: counts in, percentages
 recomputed), but the 27 scores are published per UC so a district can be read as "which
@@ -51,37 +59,54 @@ subtotals over its own maximum column. `HRA SW Lower.xlsx [HRA 2026]` prints
 card, so it is skipped and named rather than blended into a different scale.
 
 Asserted per row, aborting the run on any drift: each block subtotal equals the sum of its
-non-blank scores, the overall percentage equals achieved/possible, and wherever a row still
-carries live formulas the printed maximum equals what the "Total score" formula's own addends
-compute. UC codes are 8 digits and unique within a sheet, aggregates are numeric, every Risk
-label is one of the three known words, every district name resolves to a dashboard spelling,
-and a score is blank or an integer 0-3 - a score outside the card excludes that row and names
-it (two Abbottabad rows hold 13 and 23 in a score column, inflating their own percentage over
-100%), and a text cell there (`Q1`, `,`, `13%`) is read as no score, the way SUM/COUNT would.
+non-blank scores, and wherever a row still carries live formulas the printed maximum equals
+what the "Total score" formula's own addends compute. UC codes are 8 digits and unique within
+a sheet, aggregates are numeric, every Risk label is one of the three known words or
+`Exclude`, every district name resolves to a dashboard spelling, and a score is blank or an
+integer 0-3 - a score outside the card excludes that row and names it (two Abbottabad rows
+hold 13 and 23 in a score column, inflating their own percentage over 100%), and a text cell
+there (`Q1`, `,`, `13%`) is read as no score, the way SUM/COUNT would.
 
-1,382 of the 1,418 province rows have their aggregate columns pasted as values rather than
-formulas, so a displayed block percentage that prints over 100%, a Risk label left behind by
-an earlier state, a pasted maximum that no longer counts the cells its formula names, or a
-block percentage counted over a different cell list than the maximum are all counted, printed
-on stdout and recomputed - never published as printed. The join rate to `const ZD` is reported
-and refused below 95%.
+Aggregates are recomputed, never published as printed: a displayed block percentage that
+disagrees with its own subtotal, a Risk label left behind by an earlier state, a pasted
+maximum that no longer counts the cells its formula names, a pasted overall percentage, or a
+block percentage counted over a different cell list than the maximum are each counted, printed
+on stdout and recomputed. The province compilation of 25-Nov-2026 pastes its whole Risk
+column, so on `Sep26` 388 of the 1,402 printed labels disagree with the sheet's own arithmetic
+(610 Low / 529 Medium / 259 High / 4 Exclude printed, against 814 / 517 / 71 recomputed).
+The band published is the recomputed one, because a label that cannot be reproduced from the
+row beside it is not a reading.
+
+A row whose marks exceed a block's own maximum, or whose maximum is zero, has no percentage
+that can be formed: the template's adaptive maximum is `3 x COUNT(<the cells it names>)`, so
+a block answered in the score column but not in the raw one charges 18 marks against a
+maximum of 3. Those rows - 31 on `Sep26` (27 Mansehra, 4 Khyber Tirah, the last four also
+labelled `Exclude` by the sheet) and none on `May26` - are published with band index 3,
+"Excluded", and kept out of the Low/Medium/High counts rather than being graded on an
+understated denominator. Grading them over the marks they charged instead was rejected: it
+flips 207 of May's 1,415 clean rows, so it is a different model and not a repair.
+
+The join rate to `const ZD` is reported and refused below 95%.
 
 Excluded on purpose: the raw indicator values (the scores carry the decision), Rank, and
 any free-text column a division adds to the template - `Remarks` (HRA UC Level (Bannu).xlsx)
 is dropped and never published. No person-identifying field exists in this template.
 
-Payload: {"src":[files],"asof","gen","thr":[79,60],"b":[band labels],
+Payload: {"src":[files],"asof","lbl","gen","thr":[79,60],"b":[band labels],"bx":"Excluded",
           "k":[[block, indicator, portal scoring rule], ...27],
           "nx":[descriptive columns with no score], "d":[districts],
           "v":[vintage dates, newest first], "n":rows, "zj":rows whose code is in ZD,
           "zr":join rate, "lg":[rows read, pasted aggregates, stale display cells, stale
-          maxima, text score cells, off-scale rows excluded, block/maximum split-rule rows]
-          summed over every file, in LAGK order - the audit trail for the recomputation above,
-          and the reason no displayed aggregate is taken on trust, "u":[[districtIdx, ucName,
-          code, achieved, possible, pct, bandIdx, vIdx, [27 scores, -1 = not applicable]],
-          ...]}
+          maxima, text score cells, off-scale rows excluded, block/maximum split-rule rows,
+          pasted overall percentages, rows with no valid maximum, rows the sheet itself
+          labels Exclude] in LAGK order - the audit trail for the recomputation above, and the
+          reason no displayed aggregate is taken on trust, "u":[[districtIdx, ucName, code,
+          achieved, possible, pct, bandIdx, vIdx, [27 scores, -1 = not applicable]], ...],
+          "rd":[[roundId, label, asof, rows, zj, zr], newest first],
+          "may":{the second round in the same shape, or absent when only one round is read}}
 """
 import argparse
+import calendar
 import datetime
 import json
 import os
@@ -107,7 +132,8 @@ ADAPTIVE = re.compile(r'^\(?\s*3\s*\*\s*(COUNTA?)\s*\(([^()]*)\)\s*\)?$', re.I)
 LIT = re.compile(r'^\(?\s*(\d+)\s*\)?$')
 TERM = re.compile(r'^\(?\s*3\s*\*\s*(COUNTA?)\s*\(([^()]*)\)\s*\)?$', re.I)
 # the audit counters carried out of every sheet, in payload order
-LAGK = ['rows', 'pasted', 'stale', 'maxlag', 'text', 'offscale', 'splitrule']
+LAGK = ['rows', 'pasted', 'stale', 'maxlag', 'text', 'offscale', 'splitrule',
+        'otpct', 'nomax', 'excluded']
 # how each counter is put to the reader, in the same order
 LAG_TXT = {
     'pasted': 'carry their aggregates as pasted values rather than live formulas',
@@ -116,7 +142,13 @@ LAG_TXT = {
     'text': 'hold text where a score should be',
     'offscale': 'hold a number outside the card\'s 0-3 vocabulary, so the row is excluded',
     'splitrule': 'count the block percentages and the maximum over different columns',
+    'otpct': 'print an overall percentage that disagrees with their own arithmetic',
+    'nomax': 'earn marks in a block beyond that block\'s own maximum, so no percentage can be '
+             'formed and the row is carried as Excluded',
+    'excluded': 'are labelled Exclude by the sheet itself',
 }
+EXCL = ('exclude', 'excluded')
+MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 
 def stats():
@@ -129,6 +161,17 @@ ALIAS = {
     'LAKKIMARWT': 'LAKKIMRWT',
     'LAKKI MARWAT': 'LAKKIMRWT',   # the Lakki Marwat division file spells it with a space
     'NORTH WAZIRISTAN': 'WAZIR-N',
+    # the 25-Nov-2026 compiled workbook (HRA compiled.xlsx) writes the double-barrelled
+    # districts as two words and the rest in title case
+    'CHARSADDA': 'CHARSADA',
+    'CHITRAL LOWER': 'CHITRALLOWER',
+    'CHITRAL UPPER': 'CHITRALUPPER',
+    'D.I.KHAN': 'DIKHAN',
+    'DIR LOWER': 'DIRLOWER',
+    'DIR UPPER': 'DIRUPPER',
+    'KOHISTAN LOWER': 'KOHISTANLOWER',
+    'KOHISTAN UPPER': 'KOHISTANUPPER',
+    'KOLAI PALAS': 'KOLAIPALAS',
 }
 
 
@@ -522,6 +565,10 @@ def read_sheet(path, sheet, zmap):
                     pv = num(pc, 'block percentage', where)
                     if abs(pv * den - subs[bi]) > 0.02:
                         bad = True
+            # a block answered in its score column but not in the raw one the maximum counts
+            # charges more marks than the block can hold; the overall percentage is then built
+            # on an understated maximum and cannot be read
+            nobasis = sum(1 for bi in range(NBLK) if subs[bi] > dens[bi])
             # a row whose aggregates are pasted values is a snapshot: its printed maximum can
             # predate the criteria columns now sitting next to it, which only the live-formula
             # rows can be held to
@@ -547,20 +594,32 @@ def read_sheet(path, sheet, zmap):
             if norm(r[tp]):
                 pv = num(r[tp], 'overall percentage', where)
                 if abs(pv * possible - ach) > 0.02:
-                    raise SystemExit('ERR hra %s: overall %s%% on the sheet, %s%% recomputed'
-                                     % (where, r[tp], round(pct, 2)))
-            band = band_of(ach, possible, where)
+                    # the compilation pastes this column on 11 rows, leaving a stale constant
+                    # behind (a bare 1.0 where the row scores 113.7%). Recomputed, not refused:
+                    # the row's own subtotals are asserted above and are the reading.
+                    st['otpct'] += 1
+                    bad = True
             lab = norm(r[tail['risk'][0]])
             known = [key(b) for b in BANDS]
-            if key(lab) not in known:
+            if key(lab) in EXCL:
+                st['excluded'] += 1
+                band = 3
+            elif key(lab) in known:
+                if not possible or nobasis:
+                    st['nomax'] += 1
+                    band = 3
+                else:
+                    band = band_of(ach, possible, where)
+            else:
                 raise SystemExit('ERR hra %s: the Risk column says %r, want one of %s'
-                                 % (where, lab, ', '.join(BANDS)))
-            if key(lab) != key(BANDS[band]):
+                                 % (where, lab, ', '.join(BANDS + ['Exclude'])))
+            if band != 3 and key(lab) != key(BANDS[band]):
                 bad = True                       # a pasted label left behind by an earlier state
             if code in seen:
                 raise SystemExit('ERR hra %s [%s] lists UC code %s twice' % (base, sheet, code))
             seen.add(code)
-            out[code] = [dn, norm(r[ui]), ach, possible, round(pct, 1), band, sc]
+            out[code] = [dn, norm(r[ui]), ach, possible,
+                         round(pct, 1) if pct is not None else None, band, sc]
             st['rows'] += 1
             if not live:
                 st['pasted'] += 1                # no live formula in the aggregate columns
@@ -578,6 +637,31 @@ def read_sheet(path, sheet, zmap):
 def dkey(name):
     s = norm(name).upper().strip()
     return ALIAS.get(s, s)
+
+
+def round_of(name):
+    """Sheet name -> (round id, label, as-of date) for the round it assesses, or None.
+
+    The province compilation names each sheet for its round - `May26`, `Sep26` - and the
+    division files put the month in the sheet name too (`HRA Template Abbottabad` does
+    not, so those fall back to the file date). A sheet is a monthly compilation and
+    carries no day of its own, so the as-of date is the last day of that month: it is a
+    stable key for sorting rounds, not a claim about when the assessment was made.
+    """
+    s = norm(name)
+    m = re.search(r'\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*'
+                  r'[\s._\-/]*(\d{4}|\d{2})(?!\d)', s, re.I)
+    if not m:
+        return None
+    mo = MONTHS.index(m.group(1).lower()) + 1
+    y = int(m.group(2))
+    if len(m.group(2)) == 2:
+        y += 2000
+    if not 2020 <= y <= 2035:
+        return None
+    last = calendar.monthrange(y, mo)[1]
+    return ('%04d-%02d' % (y, mo), '%s %d' % (MONTHS[mo - 1].title(), y),
+            '%04d-%02d-%02d' % (y, mo, last))
 
 
 def band_of(ach, poss, where):
@@ -699,6 +783,94 @@ def build(cands, repo):
     return payload, summary, notes
 
 
+def payload_round(r, dists, zcodes):
+    """One round's rows in payload shape: [districtIdx, uc, code, achieved, possible, pct,
+    band, vintageIdx, [27 scores]]. One sheet is one round, so the vintage index is 0."""
+    out = []
+    for code, v in sorted(r['rows'].items(), key=lambda kv: (kv[1][0], kv[1][1], kv[0])):
+        dn, uc, ach, poss, pct, band, sc = v
+        out.append([dists.index(dn), uc, code, ach, poss, pct, band, 0, sc])
+    zj = sum(1 for x in out if x[2] in zcodes)
+    zr = round(100.0 * zj / len(out), 2) if out else 0.0
+    return out, zj, zr
+
+
+def build_compiled(rec, repo):
+    """The province compilation: one sheet per round, each published as its own round.
+
+    Sheets are not merged across rounds - the point of a second round is to compare it
+    with the first - and the compilation is not merged with the division files either: a
+    workbook that carries two dated rounds is the province reading, and its rows are the
+    only ones published.
+    """
+    s = srcutil.read_text(os.path.join(repo, 'index.html'))
+    i, e = dashpatch.payload_span(s, 'ZD')
+    zd = json.loads(s[i:e])
+    zcodes = {str(r['c']).strip() for r in zd}
+    zmap = {r['d'].upper(): r['d'] for r in zd}
+    sheets = []
+    for sh in template_sheets(rec['path']):
+        rd = round_of(sh)
+        if rd:
+            sheets.append((rd, sh))
+    sheets.sort(key=lambda x: x[0][2], reverse=True)
+    rounds, nx, notes = [], set(), []
+    for rd, sh in sheets:
+        found, unscored, st = read_sheet(rec['path'], sh, zmap)
+        if not found:
+            continue
+        nx.update(unscored or [])
+        rounds.append({'id': rd[0], 'lbl': rd[1], 'asof': rd[2], 'sheet': sh,
+                       'rows': found, 'st': st})
+        parts = [(x, st[x]) for x in LAGK if x != 'rows' and st[x]]
+        if parts:
+            notes.append('%s [%s] %d rows read - %s; recomputed from each row\'s own inputs, '
+                         'none of it published as printed'
+                         % (rec['name'], sh, st['rows'],
+                            '; '.join('%d %s' % (v, LAG_TXT[x]) for x, v in parts)))
+    if not rounds:
+        raise SystemExit('ERR hra %s carries no dated round sheet' % rec['name'])
+    k = rules_of(rec['path'])
+    if len(k) != NIND:
+        raise SystemExit('ERR hra the criteria card lists %d indicators, want %d'
+                         % (len(k), NIND))
+    dists = sorted({v[0] for r in rounds for v in r['rows'].values()})
+    for r in rounds:
+        u, zj, zr = payload_round(r, dists, zcodes)
+        if zr < MIN_JOIN:
+            raise SystemExit('ERR hra %s [%s] joins const ZD on only %d of %d codes (%.2f%%), '
+                             'want >= %.0f%%'
+                             % (rec['name'], r['sheet'], zj, len(u), zr, MIN_JOIN))
+        r['u'], r['zj'], r['zr'] = u, zj, zr
+    gen = datetime.datetime.now().strftime('%d-%b-%Y %H:%M')
+    day = datetime.date.fromtimestamp(rec['mtime']).isoformat()
+    top, older = rounds[0], (rounds[1] if len(rounds) > 1 else None)
+
+    def block(r):
+        return {'asof': r['asof'], 'lbl': r['lbl'], 'v': [r['asof']],
+                'n': len(r['u']), 'zj': r['zj'], 'zr': r['zr'],
+                'lg': [r['st'][x] for x in LAGK], 'u': r['u'],
+                'band': [sum(1 for x in r['u'] if x[6] == b) for b in range(4)]}
+
+    payload = {'src': ['%s [%s] %s'
+                       % (rec['name'], ', '.join(r['sheet'] for r in rounds), day)],
+               'asof': top['asof'], 'lbl': top['lbl'], 'gen': gen,
+               'thr': THR, 'b': BANDS, 'bx': 'Excluded',
+               'k': k, 'nx': sorted(nx), 'd': dists,
+               'rd': [[r['id'], r['lbl'], r['asof'], len(r['u'])] for r in rounds]}
+    payload.update(block(top))
+    if older:
+        payload['may'] = block(older)
+    summary = '; '.join(
+        '%s %d UCs over %d districts, %d codes matched to const ZD (%.2f%%), '
+        '%d Low / %d Medium / %d High / %d Excluded'
+        % (r['lbl'], len(r['u']), len({x[0] for x in r['u']}), r['zj'], r['zr'],
+           sum(1 for x in r['u'] if x[6] == 0), sum(1 for x in r['u'] if x[6] == 1),
+           sum(1 for x in r['u'] if x[6] == 2), sum(1 for x in r['u'] if x[6] == 3))
+        for r in rounds)
+    return payload, summary, notes
+
+
 def rules_of(path):
     """[[block, indicator, the portal's own scoring rule], ...] from a template sheet."""
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
@@ -732,7 +904,22 @@ def main():
     if not cands:
         raise SystemExit('ERR hra no *HRA*.xlsx under %s' % entry['roots'])
     cands.sort(key=lambda r: (-r['mtime'], r['name']))
-    payload, summary, notes = build(cands, cfg['repo'])
+    # the province compilation carries one dated sheet per round and supersedes the division
+    # merge: two or more dated template sheets in one workbook is what tells it apart
+    comp = None
+    for rec in cands:
+        try:
+            dated = [sh for sh in template_sheets(rec['path']) if round_of(sh)]
+        except Exception as ex:
+            print('SKIP hra %s (%s)' % (rec['name'], ex))
+            continue
+        if len(dated) >= 2:
+            comp = rec
+            break
+    if comp:
+        payload, summary, notes = build_compiled(comp, cfg['repo'])
+    else:
+        payload, summary, notes = build(cands, cfg['repo'])
     js = srcutil.dumps(payload)
     dest = a.out or os.path.join(srcutil.OUT, 'hra.json')
     srcutil.write_text(dest, js)

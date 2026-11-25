@@ -155,18 +155,18 @@
    "summary": "78 UCs (Peshawar 48, Khyber 30), fIPV target 1,184,376, HH 534,888, school 245,869, 26 new / 52 existing"
   },
   "hra": {
-   "at": "2026-10-27T09:54:30+05:00",
-   "chars": 146975,
-   "file_id": "C:\\Users\\HD\\Downloads\\HRA UC Level for September 2026 (Mardan Division).xlsx|1793026178|92944",
-   "payload_sha1": "4e3070351607212e",
+   "at": "2026-11-25T10:49:47+05:00",
+   "chars": 288047,
+   "file_id": "manual|hra.json",
+   "payload_sha1": "45cf060287cc9924",
    "source": {
-    "mtime": 1793026178.3159776,
-    "name": "HRA UC Level for September 2026 (Mardan Division).xlsx",
-    "path": "C:\\Users\\HD\\Downloads\\HRA UC Level for September 2026 (Mardan Division).xlsx",
-    "size": 92944
+    "mtime": 1795585588.465178,
+    "name": "hra.json",
+    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\hra.json",
+    "size": 288051
    },
-   "stamp": "27-Oct-2026 09:47",
-   "summary": "1418 UCs, 36 districts, 2 vintages (2026-10-26: 132, 2026-03-26: 1286), 1389 codes matched to const ZD (97.95%) - 916 Low / 414 Medium / 88 High Risk"
+   "stamp": "25-Nov-2026 09:23",
+   "summary": "manual inject"
   },
   "icm": {
    "at": "2026-10-12T13:53:07+05:00",
