@@ -9,7 +9,10 @@ on disk at all, so this payload covers exactly the months that have a UC row in 
 Rows are anchored to the embedded EPI payload by Uncode, name and district - the same rule
 extract_epi_ytd uses - so a UC cannot enter or change identity through this file. Every
 month's UC rows are then re-added per district and compared with EPIM's district figure for
-that month; a mismatch aborts the extract rather than publishing two numbers for one cell.
+that month. A month whose UC export is a mid-month snapshot - every district short on Penta-1
+and the province total under 90% of the district figure - is kept and named as a part-report,
+because the dashboard needs it present to label it and to hold its coverage at district
+grain. Any other mismatch aborts the extract rather than publishing two numbers for one cell.
 
 Usage: python _refresh/extract_epi_ucm.py [--out PATH]
 Prints: OK epiuc <json chars> <summary> | ERR epiuc <reason>
@@ -109,20 +112,41 @@ def build(cfg):
     if len(keys) < 3:
         raise SystemExit('ERR %s the UC rows carry no antigen doses (fields: %s)'
                          % (DS, ', '.join(sorted(sample))))    # re-add each month's UC rows per district and hold them against EPIM
+    snaps = []
     for mo in months:
         per = {}
         for code, u in by_mo[mo].items():
             d = per.setdefault(u['d'], {k: 0 for k in keys})
             for k in keys:
                 d[k] += u[k]
+        refs = {}
         for ed, v in per.items():
             ref = epim.get((mo, ed))
             if ref is None:
                 raise SystemExit('ERR %s EPIM has no %s row for %s' % (DS, mo, ed))
-            for k in keys:
-                if ref.get(k) != v[k]:
-                    raise SystemExit('ERR %s %s / %s: UC rows add to %d, EPIM says %s'
-                                     % (DS, mo, ed, v[k], ref.get(k)))
+            refs[ed] = ref
+        bad = [(ed, k, v[k], refs[ed].get(k)) for ed, v in per.items()
+               for k in keys if refs[ed].get(k) != v[k]]
+        if not bad:
+            continue
+        # A mid-month snapshot is short everywhere, never over, and far short at province level.
+        # One district out of line, a UC total above EPIM, or a near-complete month that still
+        # disagrees is a data fault, not a snapshot, and still aborts.
+        gk = 'p1' if 'p1' in keys else keys[0]
+        got = sum(v[gk] for v in per.values())
+        want = sum(r.get(gk) or 0 for r in refs.values())
+        short = all(v[gk] <= (refs[ed].get(gk) or 0) for ed, v in per.items())
+        ratio = got / want if want else 0
+        if short and ratio < 0.9:
+            snaps.append((mo, ratio))
+            continue
+        ed, k, got1, want1 = bad[0]
+        raise SystemExit('ERR %s %s / %s: UC rows add to %d, EPIM says %s'
+                         % (DS, mo, ed, got1, want1))
+    if snaps:
+        print('  note: %s kept as part-report month(s) - the district figure stays the EPIM figure: %s'
+              % (DS, '; '.join('%s carries %d%% of the district Penta-1 total'
+                               % (mo, round(q * 100)) for mo, q in snaps)))
 
     rows = []
     zero = 0
@@ -147,8 +171,10 @@ def build(cfg):
         'rows': rows,
     }
     summary = ('%d months x %d UCs x %d fields, extras %s, %d all-zero UC-dose series; '
-               'every district-month re-adds to EPIM'
-               % (len(months), len(base), len(keys), ','.join(ext) or 'none', zero))
+               'every complete district-month re-adds to EPIM%s'
+               % (len(months), len(base), len(keys), ','.join(ext) or 'none', zero,
+                  ('; part-report kept %s' % ', '.join('%s at %d%%' % (mo, round(q * 100))
+                                                      for mo, q in snaps)) if snaps else ''))
     return payload, payload['per'], summary
 
 
