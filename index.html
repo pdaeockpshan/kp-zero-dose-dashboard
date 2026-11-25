@@ -1148,7 +1148,7 @@ body.navopen .navtog .car{transform:rotate(180deg)}
 <section class="pane on" id="p-home">
  <div class="hero">
   <span id="hNdChip" style="cursor:pointer" title="NID Dec-2026 countdown — click to dismiss. The countdown and the district map stay available from the NID Dec-2026 button below and on the NID page.">NID Dec-2026 · starts 12 Dec · 8.16M children</span>
-  <span class="hupd" id="hUpd">Updated 25-Nov-2026 11:00</span>
+  <span class="hupd" id="hUpd">Updated 25-Nov-2026 11:38</span>
   <div class="htxt">
    <div class="hk">Khyber Pakhtunkhwa · Polio &amp; EPI</div>
    <h1>Every child <span>counts</span></h1>
@@ -2591,7 +2591,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 <div id="hratImp" style="display:none;margin:0 0 10px;padding:9px 12px;border-radius:6px;font-size:12.5px;line-height:1.55"></div>
 
 <div class="card" id="hratCov" style="margin-bottom:14px">
-<div class="tblhdr" style="margin-bottom:6px"><h3 style="margin:0">Upload coverage for this period</h3>
+<div class="tblhdr" style="margin-bottom:6px"><h3 style="margin:0" id="hratCovH">Upload coverage for this period</h3>
 <span style="flex:1"></span>
 <button class="btn" id="btnHRTcov" title="Register, received and awaited councils for every division and district on this period's sheet">Coverage (CSV)</button></div>
 <div class="cnt" id="hratCovNote" style="display:block;margin:0 0 8px"></div><div id="hratCovK" style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;margin:2px 0 10px"></div>
@@ -2629,7 +2629,7 @@ stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin=
 </div>
 <div class="card" style="margin-bottom:16px"><div class="tblhdr"><h3 style="margin:0">Where the card takes its points off</h3><span id="hrv3cap" style="font-size:12px;color:var(--color-text-secondary)"></span></div><div id="hrv3"></div><div class="cap" id="chrv3"></div></div>
 <div class="card"><div class="tblhdr"><h3 style="margin:0">HRA risk by district</h3><select class="hrc" id="hrvMK" aria-label="District measure"><option value="hi">High-Risk council share</option><option value="mean">District score</option></select><span style="flex:1"></span><button class="btn" id="btnHRVMpptx" title="One PowerPoint slide with this map and the ten worst districts on the measure shown">Slide (PPTX)</button><button class="btn" id="btnHRVMjpg">JPG</button><button class="btn" id="btnHRVMpng">PNG</button><button class="btn" id="btnHRVcsv" title="Division, district, council counts by band, High-Risk share, marks earned and the marks charged, one row per district">District roll-up (CSV)</button></div><div id="hrvMNote" class="cap" style="margin:0 0 8px"></div><div id="hrvMap" style="max-width:620px;margin:0 auto"></div><div class="cap" id="chrvMap"></div><div class="cap" style="margin:12px 0 6px"><b>District roll-up on screen</b> &mdash; the same rows the CSV carries, under the same division / district filter.</div><div style="overflow:auto;max-height:440px"><table class="shtbl" id="hrvTbl"></table></div></div>
-<div class="card" style="margin-top:16px"><div class="tblhdr"><h3 style="margin:0">Findings and recommendations</h3><button class="btn" id="btnHRVrep" title="A short PowerPoint deck built from the sheet compiled above and the division / district filter on it">Download the report (.pptx)</button></div><div class="cap" id="hrvRepSub" style="margin:0 0 8px"></div><div id="hrvRep"></div><div class="cap" id="hrvRepFoot">Read from the cells on this sheet only, and from the filter above it. A high percentage is a safe council &mdash; the card&rsquo;s own axis, not the combined UC risk score.</div></div>
+<div class="card" style="margin-top:16px"><div class="tblhdr"><h3 style="margin:0">Findings and recommendations</h3><button class="btn" id="btnHRVrep" title="A short PowerPoint deck built from the source selected under HRA at a glance, through the division / district filter on it">Download the report (.pptx)</button></div><div class="cap" id="hrvRepSub" style="margin:0 0 8px"></div><div id="hrvRep"></div><div class="cap" id="hrvRepFoot">Read from the source picked under HRA at a glance, through the division / district filter on it. A high percentage is a safe council &mdash; the card&rsquo;s own axis, not the combined UC risk score.</div></div>
 </section>
 
 <!-- ================= HUB: Pre-campaign readiness ================= -->
@@ -13665,7 +13665,13 @@ const hrtSlug=()=>{const p=HRT_P();
 const hrtTitle=()=>'HRA UC Level '+hrtSlug();
 function hrtPeriods(){
  const out=[],seen={};
- const add=(l,y,m)=>{if(!l||!y)return;l=String(l).trim();if(seen[l])return;seen[l]=1;
+ // One entry per round. SND and the campaign list spell the same campaign differently
+ // ("SNID Nov-26" / "SNID Nov 2026"), so the key is the campaign prefix plus CQK's year and
+ // month, not the raw label; SND is added first, so its spelling is the one kept.
+ const add=(l,y,m)=>{if(!l||!y)return;l=String(l).trim();
+  const p=/^\s*(S?NID)/i.exec(l),k=(p?p[1].toUpperCase():'')+((typeof CQK==='function'&&CQK(l))||'');
+  const key=k||l;
+  if(seen[key])return;seen[key]=1;
   out.push({l:l,y:+y,m:m?+m:null});};
  if(typeof SND!=='undefined'&&SND&&SND.n&&SND.st){const p=String(SND.st).split('-');
   add(SND.n,p[0],p[1]);}
@@ -13978,7 +13984,7 @@ function hrtTable(V){
   +'always carries all '+hrtRows.length+' rows on the sheet.';}
 function hrtTouch(){hrtStore();if(hrtTimer)clearTimeout(hrtTimer);
  hrtTimer=setTimeout(()=>{hrtTimer=null;hrtPaint(hrtVals());},320);}
-function hrtPaint(V){hrtAll=V;hrtTable(V);hrtKpi(V);hrtBadge();hrvRep(V);}
+function hrtPaint(V){hrtAll=V;hrtTable(V);hrtKpi(V);hrtBadge();hrvRep();}
 function hrtKpi(V){
  const idx=hrtView(),R=idx.map(i=>V[i]);
  const done=idx.filter(i=>HRTRAW.every(c=>r0(hrtRows[i],c))).length,
@@ -14146,8 +14152,12 @@ function hrvReg(){
   R.byCode[c]={c:c,d:d,dv:dv};
   R.byName[hrvDk(d)+'|'+HRTN(r[1])]=c;});
  return _HRVREG=R;}
-function hrvSlugLbl(sl){const m=/_(\d{4})-(\d{2})$/.exec(String(sl));
- return m?String(sl).slice(0,m.index)+' \u00b7 '+HRV_MO[+m[2]-1]+' '+m[1]:String(sl);}
+function hrvSlugLbl(sl){const s=String(sl),m=/_(\d{4})-(\d{2})$/.exec(s);
+ if(!m)return s;
+ // The label usually carries the year already ("SNID-Nov-26"); printing the month and year
+ // after it reads as a repeat, so only a label without a year gets the suffix.
+ const b=s.slice(0,m.index);
+ return /\b(19|20)\d{2}\b/.test(b)?b:b+' \u00b7 '+HRV_MO[+m[2]-1]+' '+m[1];}
 function hrvPer(){const s=el('hrvPer');return s&&s.value?s.value:'pub';}
 function hrvPerFill(){
  const s=el('hrvPer');if(!s)return;
@@ -14158,7 +14168,8 @@ function hrvPerFill(){
   opts.push(['rnd:'+r[0],r[1]+' round \u00b7 '+hrvD(r[2])+' \u00b7 '+fmt(r[3])+' councils']);});
  opts.push(['cur','Compiled sheet \u00b7 '+hrvSlugLbl(hrtSlug())+' \u00b7 '+fmt(hrtRows.length)
   +' councils (follows the picker above)']);
- const seen={cur:1};
+ // the current period's saved copy is the same sheet, so 'cur' stands for it
+ const seen={};seen[hrtSlug()]=1;
  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);
   if(!k||k.indexOf(HRTKEY(''))!==0)continue;const sl=k.slice(HRTKEY('').length);
   if(seen[sl])continue;seen[sl]=1;
@@ -14207,7 +14218,48 @@ function hrvPerMeta(P,CP){
   date:hrvD(R.asof),asof:R.asof,rows:R.n,skip:0,off:0,blank:0,dupe:0};
  return CP?CP.meta:{v:P,pub:false,slug:P,lbl:hrvSlugLbl(P),date:P,asof:P,
   rows:0,skip:0,off:0,blank:0,dupe:0};}
+// A round compiled into the dashboard has nothing to await: the workbook is the register. When
+// this browser holds no sheet for the period but the payload carries the round, the panel reads
+// that round's own rows instead of an empty tracker.
+function hrtCovRound(){
+ if(hrtRows.length)return null;
+ const R=hrtPerRound();if(!R)return null;
+ const rd=(typeof HRA!=='undefined'&&HRA&&HRA.rd)||[];
+ const cur=!!(rd[0]&&rd[0][0]===R[0]);
+ const U=cur?((HRA.u)||[]):((hrvRound('rnd:'+R[0])||{}).u||[]);
+ if(!U.length)return null;
+ return {R:R,U:U,cur:cur};}
+function hrtCovRowsPub(PB){
+ const D=(typeof HRA!=='undefined'&&HRA.d)||[],kg={};
+ (typeof KPGEO!=='undefined'?KPGEO.d:[]).forEach(function(p){kg[p.c]=p.v;});
+ const dvOf=function(c){const k=kg[c]||(typeof D2DV!=='undefined'?(D2DV[c]||null):null)||'Other';
+  return HRV_DV[k]||k;};
+ const seen={},by={};
+ PB.U.forEach(function(r){
+  const d=D[r[0]];if(!d)return;
+  const code=String(r[2]==null?'':r[2]).trim(),k=code||(d+'|'+HRTN(r[1]));
+  if(seen[k])return;seen[k]=1;
+  const o=by[d]||(by[d]={d:d,dv:dvOf(d),n:0,got:0});o.n++;o.got++;});
+ const dv=el('hrtDiv')?el('hrtDiv').value:'',dd=el('hrtDist')?el('hrtDist').value:'';
+ const sdv=dv?HRTN(dv):'',sdd=dd?HRTN(dd):'';
+ const list=Object.keys(by).map(function(d){const o=by[d];
+  return {d:d,dv:o.dv,n:o.n,got:o.got,await:0};})
+  .filter(function(o){
+  if(sdv&&HRTN(o.dv)!==sdv&&HRTN(o.dv).indexOf(sdv)!==0)return false;
+  if(sdd&&HRTN(DNAME(o.d))!==sdd&&HRTN(o.d)!==sdd&&hrvDk(DNAME(o.d))!==hrvDk(sdd))return false;
+  return true;})
+  .sort(function(a,b){return a.dv===b.dv?(DNAME(a.d)<DNAME(b.d)?-1:1):(a.dv<b.dv?-1:1);});
+ const N=list.reduce(function(s,o){return s+o.n;},0),G=list.reduce(function(s,o){return s+o.got;},0);
+ return {R:{n:N,lbl:PB.R[1]},list:list,N:N,G:G,off:0,dv:dv,dd:dd,wb:true,
+  note:'This period was compiled into the dashboard from the HRA workbook ('+esc(PB.R[1])+', dated '
+   +esc(hrvD(PB.R[2]))+'): every council in it is received, so nothing is awaited. The card in this '
+   +'browser holds no sheet for this period, so the tracker below has nothing to measure &mdash; '
+   +'download the blank card and import a division&rsquo;s file to compile or correct it here. A '
+   +'council counts once, by UC code.'
+   +(dv||dd?' Scope: <b>'+esc(dd||dv)+'</b>.':'')};}
 function hrtCovRows(){
+ const PB=hrtCovRound();
+ if(PB)return hrtCovRowsPub(PB);
  const R=hrvReg(),got={},gb={},seen={};let off=0;
  hrtRows.forEach(function(r){
   const code=String(r.D==null?'':r.D).trim(),dk=hrvDk(r.B),nm=HRTN(r.C);
@@ -14228,22 +14280,27 @@ function hrtCovRows(){
    return true;})
   .sort(function(a,b){return a.dv===b.dv?(DNAME(a.d)<DNAME(b.d)?-1:1):(a.dv<b.dv?-1:1);});
  const N=list.reduce(function(s,o){return s+o.n;},0),G=list.reduce(function(s,o){return s+o.got;},0);
- return {R:R,list:list,N:N,G:G,off:off,dv:dv,dd:dd};}
+ return {R:R,list:list,N:N,G:G,off:off,dv:dv,dd:dd,
+  note:'Measured against the '+fmt(R.n)+' union councils on the HRA card&rsquo;s own roster ('
+   +fmt(Object.keys(R.byDist).length)+' districts). A council counts as received when this period&rsquo;s '
+   +'sheet carries its UC code - or its district and UC name when the code is blank.'
+   +(dv||dd?' Scope: <b>'+esc(dd||dv)+'</b>.':'')
+   +(off?' '+fmt(off)+' row(s) on the sheet name a council outside the register.':'')};}
 function hrtCov(){
  const T=el('hratCovT');if(!T)return;
- const C=hrtCovRows(),R=C.R,pc=C.N?C.G/C.N*100:0;
+ const C=hrtCovRows(),pc=C.N?C.G/C.N*100:0;
+ const H=el('hratCovH');
+ if(H)H.textContent=C.wb?'Coverage in the compiled workbook':'Upload coverage for this period';
  const kp=function(l,v,s){return '<span>'+l+' <b style="font-size:15px">'+v+'</b> '
   +'<span style="color:var(--color-text-secondary)">'+s+'</span></span>';};
- el('hratCovK').innerHTML=kp('Register',fmt(C.N),'councils in '+fmt(C.list.length)+' district'
-   +(C.list.length===1?'':'s')+(C.dv||C.dd?' in scope':''))
+ el('hratCovK').innerHTML=kp(C.wb?'In the workbook':'Register',fmt(C.N),'councils in '
+   +fmt(C.list.length)+' district'+(C.list.length===1?'':'s')+(C.dv||C.dd?' in scope':''))
   +kp('Received',fmt(C.G),pc.toFixed(1)+'% of that register')
-  +kp('Awaited',fmt(C.N-C.G),'no row on this period&rsquo;s sheet')
-  +kp('Rows in view',fmt(hrtView().length),C.off?fmt(C.off)+' outside the register':'all matched');
- el('hratCovNote').innerHTML='Measured against the '+fmt(R.n)+' union councils on the HRA card&rsquo;s own '
-  +'roster ('+fmt(Object.keys(R.byDist).length)+' districts). A council counts as received when this '
-  +'period&rsquo;s sheet carries its UC code - or its district and UC name when the code is blank.'
-  +(C.dv||C.dd?' Scope: <b>'+esc(C.dd||C.dv)+'</b>.':'')
-  +(C.off?' '+fmt(C.off)+' row(s) on the sheet name a council outside the register.':'');
+  +kp('Awaited',fmt(C.N-C.G),C.wb?'nothing owed &mdash; the workbook is the register'
+   :'no row on this period&rsquo;s sheet')
+  +(C.wb?kp('Rows in the workbook',fmt(C.G),'one row a council, nothing outside it')
+   :kp('Rows in view',fmt(hrtView().length),C.off?fmt(C.off)+' outside the register':'all matched'));
+ el('hratCovNote').innerHTML=C.note;
  T.innerHTML='<thead><tr><th>Division</th><th>District</th><th>Register</th><th>Received</th>'
   +'<th>Awaited</th><th>Received %</th></tr></thead><tbody>'
   +(C.list.length?C.list.map(function(o){
@@ -14322,7 +14379,9 @@ function hrvData(){
   if(r[6]!==3){achT+=r[3];posT+=r[4];}});
  let mig=null;
  if(PUB&&typeof HRA!=='undefined'&&HRA.may&&HRA.may.u){
-  const old={};HRA.may.u.forEach(function(r){old[String(r[2])]={b:r[6]};});
+  const old={},mb=[0,0,0,0];
+  HRA.may.u.forEach(function(r){old[String(r[2])]={b:r[6]};
+   const o=ann[ix[D[r[0]]]];if(o&&inS(o))mb[r[6]]++;});
   const t={imp:0,wor:0,same:0,newu:0,nc:0},
    mx=[0,1,2,3,4].map(function(){return [0,0,0,0];}),by={};
   U.forEach(function(r){
@@ -14333,9 +14392,15 @@ function hrvData(){
    if(r[6]<o.b){t.imp++;m.imp++;}
    else if(r[6]>o.b){t.wor++;m.wor++;}
    else {t.same++;m.same++;}});
-  mig={tot:t,by:by,mx:mx,lbl:HRA.may.lbl||'the earlier round'};
+  mig={tot:t,by:by,mx:mx,oldB:mb,lbl:HRA.may.lbl||'the earlier round'};
   ann.forEach(function(o){o.mv=by[o.c]||null;});}
+ // Completeness for the findings card: a row counts as full when all 27 answers are there
+ let rFull=0,rMark=0,rNone=0,rBlank=0;
+ U.forEach(function(r){const ss=r[8]||[];let a=0;
+  ss.forEach(function(v){if(v!=null&&v>=0)a++;});
+  if(a===HRA.k.length)rFull++;if(a)rMark++;else rNone++;rBlank+=HRA.k.length-a;});
  _HRVD={k:K,per:hrvPerMeta(P,CP),pub:PUB,rnd:!!RND,asof:asof,
+  rep:{full:rFull,marked:rMark,none:rNone,blanks:rBlank},
   scope:!!(SC.dv||SC.dd),sdv:SC.dv,sdd:SC.dd,
   n:U.length,nb:bt[0]+bt[1]+bt[2],nd:ann.filter(function(o){return o.n;}).length,ann:ann,div:div,
   ind:ind,blocks:blocks,bt:bt,vint:vint,
@@ -14367,6 +14432,7 @@ function hrvRender(){
   el('chrv1').textContent='';el('chrv2').textContent='';el('chrv3').textContent='';['hrv1','hrv2','hrv3'].forEach(function(id){const c=el(id);if(!c)return;try{(Highcharts.charts||[]).forEach(function(ch){if(ch&&ch.renderTo===c)ch.destroy();});}catch(e){}c.innerHTML='';});
   el('hrvMNote').textContent='';el('chrvMap').textContent='';el('hrvMap').innerHTML='';
   hrvMig(X);
+  hrvRep();
   _HRVMAP=null;[el('btnHRVMjpg'),el('btnHRVMpng'),el('btnHRVMpptx')].forEach(function(b){if(b)b.disabled=true;});
   if(el('hrvTbl'))el('hrvTbl').innerHTML='';if(el('hrv3cap'))el('hrv3cap').textContent='';
   const S0=el('hrvPer');if(S0)S0.onchange=function(){hrvRender();};if(typeof ntPass==='function')ntPass();
@@ -14378,6 +14444,7 @@ function hrvRender(){
  hrvInd(X);
  hrvMap(X);
  hrvTable(X);
+ hrvRep();
  const K=el('hrvMK');
  if(K)K.onchange=function(){hrvMap(hrvData());};
  const B=el('btnHRVcsv');
@@ -14771,7 +14838,8 @@ function hrvMig(X){
  const rowS=mx.map(function(r){return r.reduce(function(s,v){return s+v;},0);});
  const colS=[0,0,0,0];mx.forEach(function(r){r.forEach(function(v,i){colS[i]+=v;});});
  const oldLbl=(HRA.may&&HRA.may.lbl)||'Earlier round',newLbl=HRA.lbl||'Latest round';
- const oldB=[0,1,2,3].map(function(i){return mx[0][i]+mx[1][i]+mx[2][i]+mx[3][i];});
+ const oldB=(M.oldB&&M.oldB.length===4)?M.oldB
+  :[0,1,2,3].map(function(i){return mx[0][i]+mx[1][i]+mx[2][i]+mx[3][i];});
  HC('hrv4',{
   chart:{type:'bar',height:260,backgroundColor:'transparent',spacing:[8,10,6,6]},
   title:{text:null},
@@ -14784,9 +14852,11 @@ function hrvMig(X){
   legend:{enabled:true},
   series:[0,1,2,3].map(function(i){return {name:L[i],color:i===3?'#94a3b8':HRVB[i].c,
    data:[oldB[i],colS[i]]};})});
- el('chrv4').innerHTML='The same two rounds the table is cut from, as counts: '+fmt(oldB[2])
+ el('chrv4').innerHTML='Each bar is a round&rsquo;s own register, band by band: '+fmt(oldB[2])
   +' High-Risk councils in '+esc(oldLbl)+' against '+fmt(colS[2])+' in '+esc(newLbl)
-  +'. The bars are absolute counts, so a round that assessed more councils shows a taller bar.';
+  +'. The bars are absolute counts, so a round that assessed more councils shows a taller bar. '
+  +'The table beside this chart follows only the '+fmt(M.tot.imp+M.tot.wor+M.tot.same+M.tot.nc)
+  +' councils present in both rounds.';
  const cell=function(r,c){const v=mx[r][c];
   return '<td'+(r===c&&r<4?' style="font-weight:600"':'')+'>'+fmt(v)+'</td>';};
  tb.innerHTML='<thead><tr><th>'+esc(oldLbl)+' \\ '+esc(newLbl)+'</th>'
@@ -14799,7 +14869,8 @@ function hrvMig(X){
   +'</tbody><tfoot><tr class="tot"><td>'+esc(newLbl)+' total</td>'
   +[0,1,2,3].map(function(c){return '<td>'+fmt(colS[c])+'</td>';}).join('')
   +'<td>'+fmt(colS[0]+colS[1]+colS[2]+colS[3])+'</td></tr></tfoot>';
- el('chrvMv').innerHTML='Each cell counts councils; the diagonal (bold) held its band. '
+ el('chrvMv').innerHTML='Rows count only the councils present in both rounds; the last row is new to '
+  +esc(newLbl)+'. Each cell counts councils; the diagonal (bold) held its band. '
   +fmt(M.tot.imp)+' moved to a lower-risk band, '+fmt(M.tot.wor)+' to a higher one, '
   +fmt(M.tot.same)+' held and '+fmt(M.tot.newu)+' are not in the earlier round'
   +(M.tot.nc?'; '+fmt(M.tot.nc)+' have no readable band in one of the two and appear only in the '
@@ -14875,7 +14946,8 @@ function hrvRepData(V){
  const idx=hrtView(),rows=idx.map(function(i){return hrtRows[i];}),
   vv=idx.map(function(i){return V[i];}),n=idx.length;
  const dv=el('hrtDiv')&&el('hrtDiv').value,dd=el('hrtDist')&&el('hrtDist').value,P=HRT_P();
- const out={n:n,dv:dv,dd:dd,slug:hrtSlug(),per:(P[2]||'Campaign')+' '+P[0]+'-'+P[1],
+ const out={n:n,dv:dv,dd:dd,slug:hrtSlug(),tot:hrtRows.length,
+  per:(P[2]||'Campaign')+' '+P[0]+'-'+P[1],
   band:[0,0,0],comp:[],over:0,other:0,districts:{},blocks:{},inds:[],textCols:{},offCols:{},
   dupe:0,nocode:0,blanks:0,full:0,marked:0,none:0,mean:null,_seen:{}};
  // indicator first: block achievement is taken from the answers themselves, not from the card's
@@ -14922,26 +14994,60 @@ function hrvRepData(V){
  if(out.comp.length)out.mean=out.comp.reduce(function(s,x){return s+x.p;},0)/out.comp.length*100;
  return out;}
 
-let _HRVRT='';
+let _HRVRT='',_HRVRD=null;
 function hrvRepSave(){
  if(!_HRVRT){toast('There is nothing to download yet');return;}
  const b=new Blob([_HRVRT],{type:'text/plain;charset=utf-8'}),u=URL.createObjectURL(b),
   a=document.createElement('a');
- a.href=u;a.download='HRA_findings_'+hrtSlug()+'.txt';
+ a.href=u;a.download='HRA_findings_'+((_HRVRD&&_HRVRD.slug)||hrtSlug())+'.txt';
  document.body.appendChild(a);a.click();a.remove();
  setTimeout(function(){URL.revokeObjectURL(u);},1500);
  toast('Report downloaded');}
-function hrvRep(V){
+// The findings card and the deck follow the source the "HRA at a glance" picker names, like every
+// chart above them: this browser's sheet, or the payload's own roll-up for a published round.
+// hrvRepData() scores the sheet; hrvRepFromX() reads the round's roll-ups without re-scoring it.
+function hrvRep(){
+ const P=(el('hrvPer')&&hrvPer())||'pub';
+ _HRVRD=(P==='pub'||P.indexOf('rnd:')===0)?hrvRepFromX(hrvData()):hrvRepData(hrtVals());
+ hrvRepDraw(_HRVRD);}
+function hrvRepFromX(X){
+ const per=X.per||{pub:true,lbl:'published reading'},D=(typeof HRA!=='undefined'&&HRA.d)||[],
+  bt=X.bt||[0,0,0,0],ann=X.ann||[],inds=X.ind||[],blks=X.blocks||[],sorted=X.sorted||[],rep=X.rep||{};
+ const nm=function(i){return i==null?'(no district)':DNAME(D[i]);};
+ const comp=[],districts={},blocks={};
+ let sum=0,nb=0;
+ sorted.forEach(function(x){comp.push({r:{C:x.u,B:nm(x.d)},p:x.p/100,b:x.b});});
+ ann.forEach(function(o,i){if(!o.n)return;
+  districts[nm(i)]={n:o.nb,sum:o.sum/100,hi:o.b[2],lo:o.b[0]};
+  sum+=o.sum;nb+=o.nb;});
+ HRVBK.forEach(function(x,i){const b=blks[i];if(!b||!b.pos)return;
+  blocks[i+1]={name:b.l,got:b.got,k:b.pos/3,ach:b.p};});
+ return {n:X.n||0,dv:X.sdv,dd:X.sdd,per:per.lbl,tot:per.rows||X.n||0,
+  slug:(X.pub?'published-'+HRA.asof:('round-'+X.asof)).replace(/[^A-Za-z0-9-]+/g,'_'),
+  band:bt.slice(0,3),comp:comp,over:bt[3]||0,other:0,
+  districts:districts,blocks:blocks,inds:inds.map(function(o){
+   return {name:o.nm,blk:o.blk,k:o.ap,blank:0,got:o.got,ach:o.ach};}),
+  textCols:{},offCols:{},dupe:0,nocode:0,
+  blanks:rep.blanks||0,full:rep.full||0,marked:rep.marked||0,none:rep.none||0,
+  mean:nb?sum/nb:null,wb:true,
+  srcTxt:'the HRA workbook compiled into the dashboard',
+  exNote:(bt[3]?fmt(bt[3])+' council(s) are carried as Excluded: their sheet earns marks in a block '
+   +'beyond that block&rsquo;s own maximum, or the sheet itself labels them excluded, so no percentage '
+   +'can be formed. They are counted in the KPIs on this card and left out of every share, average '
+   +'and district score above, exactly as on the HRA at a glance charts.':'')};}
+function hrvRepDraw(D){
  const box=el('hrvRep');if(!box)return;
- const D=hrvRepData(V||hrtVals()),B=D.band,tot=D.comp.length;
+ const B=D.band,tot=D.comp.length;
  const scope=(D.dv||D.dd?[(D.dv||'All divisions'),(D.dd||'All districts')].join(' / ')
   :'All divisions and districts')+' \u00b7 '+D.per
-  +(D.n?' \u00b7 '+fmt(D.n)+' of '+fmt(hrtRows.length)+' councils':'');
+  +(D.n?' \u00b7 '+fmt(D.n)+' of '+fmt(D.tot)+' councils':'');
  const sub=el('hrvRepSub');if(sub)sub.textContent=scope;
  const btn=el('btnHRVrep');
  if(btn){btn.disabled=!D.n;if(!btn.onclick)btn.onclick=hrvRepSave;}
- if(!D.n){box.innerHTML='<div class="hint" style="margin:0">This period is empty in this browser, so '
-  +'there is nothing to read yet. Import a card or seed the sheet above.</div>';_HRVRT='';return;}
+ if(!D.n){box.innerHTML='<div class="hint" style="margin:0">'
+  +(D.wb?'No council in the selected division or district carries a reading in this round.'
+   :'This period is empty in this browser, so there is nothing to read yet. Import a card or seed '
+    +'the sheet above.')+'</div>';_HRVRT='';return;}
  const bl=[1,2,3,4].map(function(b){return D.blocks[b];}).filter(Boolean)
   .sort(function(a,b){return a.ach-b.ach;});
  const dl=Object.keys(D.districts).map(function(k){const o=D.districts[k];
@@ -14969,18 +15075,18 @@ function hrvRep(V){
   +'. '+fmt(D.blanks)+' indicator cells are still blank.'});
  if(tot)F.push({h:'Risk mix.',t:B[0]+' Low, '+B[1]+' Medium and '+B[2]+' High Risk ('
   +pc(B[2]/tot*100)+' High) among the '+fmt(tot)+' councils the card can compare'
-  +(ex?' (the KPI row above counts every marked row, including the '+fmt(ex)
+  +(ex&&!D.wb?' (the KPI row above counts every marked row, including the '+fmt(ex)
    +' left out below)':'')+'. Mean overall score '+pc(D.mean)+'. The card\u2019s axis runs the other way: '+HRAT.band.hi
   +'% or more is Low Risk, under '+HRAT.band.lo+'% is High.'});
  else F.push({h:'Risk mix.',t:'No council on this sheet can be compared on the card\u2019s axis yet '
   +'- see the next point.'});
- if(ex)F.push({h:'Rows the card cannot compare.',t:fmt(D.over)+' marked row(s) score above 100% of '
+ if(ex)F.push({h:'Rows the card cannot compare.',t:D.exNote||(fmt(D.over)+' marked row(s) score above 100% of '
   +'the marks the card charges them'+(D.other?', and '+fmt(D.other)+' more carry no numeric score':'')
   +'. The card charges the SIA and EPI-indicator blocks only for the cells that are answered, while a '
   +'blank cell in those blocks can still earn its formula\u2019s default points, so a sparsely '
   +'answered row adds points without adding to the maximum. Those rows are left out of the risk '
   +'mix and the district scores; the indicator and block figures do count the cells they answered. '
-  +'Complete them and re-import or edit them in place.'});
+  +'Complete them and re-import or edit them in place.')});
  if(wBlk)F.push({h:'Where the marks go.',t:'Answered indicators earn from '+pc(wBlk.ach)+' ('
   +wBlk.name+') to '+pc(sBlk.ach)+' ('+sBlk.name+'), counted over the councils that answered each '
   +'indicator.'});
@@ -15020,10 +15126,11 @@ function hrvRep(V){
   +R.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
  const head='HRA UC-LEVEL FINDINGS - '+D.per+'\nScope: '+scope+'\nGenerated '
   +new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})
-  +' from the sheet held in this browser.\n';
+  +' from '+(D.srcTxt||'the sheet held in this browser')+'.\n';
  _HRVRT=head+'\nFINDINGS\n'+F.map(function(x,i){return (i+1)+'. '+x.h+' '+x.t;}).join('\n')
   +'\n\nRECOMMENDATIONS\n'+R.map(function(x,i){return (i+1)+'. '+x;}).join('\n')
-  +'\n\nNote: this report reads only the cells on this sheet. It does not verify them against the UC '
+  +'\n\nNote: this report reads only '+(D.wb?'the rows of that compiled workbook':'the cells on this sheet')
+  +'. It does not verify them against the UC '
   +'register, and it is not the combined UC risk score used on the Cross-cutting pages.\n';}
 
 // HRA AT A GLANCE (7/7): the findings report as a PowerPoint deck.
@@ -15040,7 +15147,7 @@ function hrvRepParts(){
  const lines=t.split('\n');
  const per=(lines[0]||'').replace(/^HRA UC-LEVEL FINDINGS - /,'').trim();
  const scope=(lines[1]||'').replace(/^Scope:\s*/,'').trim();
- const dm=/^Generated (.*?) from the sheet/.exec(lines[2]||'');
+ const dm=/^Generated (.*?) from (.*?)\.?\s*$/.exec(lines[2]||'');
  const iF=lines.indexOf('FINDINGS'),iR=lines.indexOf('RECOMMENDATIONS');
  if(iF<0||iR<0)return null;
  const F=[];
@@ -15055,12 +15162,13 @@ function hrvRepParts(){
  // The risk-mix sentence carries a parenthetical about the dashboard's KPI row; on a slide the row
  // is not there, so the comparison is dropped and the KPI on the summary slide stands on its own.
  F.forEach(function(f){f.t=f.t.replace(/\s*\(the KPI row above[^)]*\)/,'');});
- return {per:per,scope:scope,date:dm?dm[1]:'',F:F,R:R,note:nt};
+ return {per:per,scope:scope,date:dm?dm[1]:'',src:dm?dm[2]:'the sheet held in this browser',
+  F:F,R:R,note:nt};
 }
 
 function hrvRepDeck(P){
  const X=hrvRepParts();if(!X)return null;
- const D=hrvRepData(hrtVals()),B=D.band,tot=D.comp.length;
+ const D=_HRVRD||hrvRepData(hrtVals()),B=D.band,tot=D.comp.length;
  const F='Segoe UI',NV='0E7490',RED='B91C1C',AMB='B45309',GRN='15803D',GRY='6B7280',TXT='1F2937';
  const bl=[1,2,3,4].map(function(b){return D.blocks[b];}).filter(Boolean)
   .sort(function(a,b){return a.ach-b.ach;});
@@ -15087,19 +15195,22 @@ function hrvRepDeck(P){
    s.addText(o.v,{x:x+0.15,y:y+0.45,w:w-0.3,h:0.46,fontFace:F,fontSize:21,bold:true,color:o.vc||TXT});
    if(o.s)s.addText(o.s,{x:x+0.15,y:y+0.93,w:w-0.3,h:0.3,fontFace:F,fontSize:9,color:GRY});});};
  {const s=pptx.addSlide();pg++;s.background={color:NV};
-  s.addText('HRA COMPILATION \u00b7 '+X.per.toUpperCase(),{x:0.8,y:1.0,w:11.7,h:0.4,fontFace:F,
+  s.addText('HRA FINDINGS \u00b7 '+X.per.toUpperCase(),{x:0.8,y:1.0,w:11.7,h:0.4,fontFace:F,
    fontSize:15,bold:true,color:'A5F3FC',charSpacing:3});
   s.addText('Findings and recommendations',{x:0.8,y:1.5,w:11.7,h:1.0,fontFace:F,fontSize:40,
    bold:true,color:'FFFFFF'});
-  s.addText('What the '+fmt(D.n)+' compiled councils in scope say, and what to do before the next round',
+  s.addText('What the '+fmt(D.n)+' councils in scope say, and what to do before the next round',
    {x:0.8,y:2.5,w:11.7,h:0.6,fontFace:F,fontSize:16,color:'CFFAFE'});
   s.addShape(pptx.ShapeType.rect,{x:0.8,y:3.3,w:2.2,h:0.06,fill:{color:'67E8F9'},line:{color:'67E8F9'}});
   s.addText([{text:'Scope  ',options:{bold:true,color:'A5F3FC'}},{text:X.scope,options:{color:'FFFFFF'}}],
    {x:0.8,y:3.55,w:11.7,h:0.4,fontFace:F,fontSize:13});
   s.addText([{text:'Compiled  ',options:{bold:true,color:'A5F3FC'}},
-   {text:(X.date||'today')+' from the sheet held in this browser',options:{color:'FFFFFF'}}],
-   {x:0.8,y:4.0,w:11.7,h:0.4,fontFace:F,fontSize:13});
-  s.addText('Every figure is a roll-up of the cells on this sheet. A high percentage is a safe council \u2014 '
+   {text:(X.date||'today'),options:{color:'FFFFFF'}}],
+   {x:0.8,y:3.95,w:11.7,h:0.4,fontFace:F,fontSize:13});
+  s.addText([{text:'Read from  ',options:{bold:true,color:'A5F3FC'}},
+   {text:X.src,options:{color:'FFFFFF'}}],
+   {x:0.8,y:4.35,w:11.7,h:0.4,fontFace:F,fontSize:13});
+  s.addText('Every figure is a roll-up of '+X.src+'. A high percentage is a safe council \u2014 '
    +'the card\u2019s own axis, not the combined UC risk score used on the Cross-cutting pages.',
    {x:0.8,y:5.0,w:11.7,h:0.8,fontFace:F,fontSize:11,color:'A5F3FC',valign:'top'});}
  {const s=base('At a glance','The compiled card as it stands, and the two roll-ups behind the findings');
@@ -15151,12 +15262,12 @@ async function hrvRepPptx(){
   await loadPptx();
   const pptx=hrvRepDeck(window.PptxGenJS);
   if(!pptx)throw new Error('no report');
-  await saveDeck(pptx,'HRA_findings_'+hrtSlug()+'.pptx');
+  await saveDeck(pptx,'HRA_findings_'+((_HRVRD&&_HRVRD.slug)||hrtSlug())+'.pptx');
   toast('Report downloaded as a PowerPoint deck');
  }catch(e){
   console.error(e);
   toast('Could not build the deck \u2014 downloading the text report instead');
-  hrvRepTxt();
+  hrvRepSave();
  }finally{
   if(btn){btn.disabled=false;btn.textContent=old||'Download the report (.pptx)';}
  }}
@@ -15226,6 +15337,24 @@ function hrtWire(){
   if(el('hrtDelDist'))el('hrtDelDist').onchange=hrtDelCount;
   if(el('btnHRTDEL2'))el('btnHRTDEL2').onclick=hrtDelSel;}
  hraOwnUI();}
+// The period picker and the "HRA at a glance" picker are two questions, and a reader who changes
+// the first expects the lower half to follow. On a period change the glance takes this browser's
+// sheet if it holds one, else the round the payload carries for the same month, else the
+// published reading; a saved sheet the reader picked by hand is left alone.
+function hrtPerRound(){
+ const P=HRT_P(),ym=P[0]+'-'+('0'+P[1]).slice(-2);
+ const rd=(typeof HRA!=='undefined'&&HRA&&HRA.rd)||[];
+ for(let i=0;i<rd.length;i++)if(rd[i][0]===ym)return rd[i];
+ return null;}
+function hrtPerAuto(){
+ const s=el('hrvPer');if(!s)return;
+ const cur=s.value||'pub';
+ if(cur!=='pub'&&cur!=='cur'&&cur.indexOf('rnd:')!==0)return;
+ const R=hrtPerRound(),rd=(typeof HRA!=='undefined'&&HRA&&HRA.rd)||[];
+ let want='pub';
+ if(hrtRows.length)want='cur';
+ else if(R&&rd[1]&&rd[1][0]===R[0])want='rnd:'+R[0];
+ if(cur!==want&&[].some.call(s.options,function(o){return o.value===want;}))s.value=want;}
 function hrtRefresh(){
  hrtWire();
  hrtImpBox('');
@@ -15233,9 +15362,11 @@ function hrtRefresh(){
  hrtPage=0;hrtScope();
  hrtLogAdd(st==='kept'?'Loaded the sheet this browser saved for this period.'
   :'This period is empty in this browser.');
+ _HRVD=null;
+ hrvPerFill();hrtPerAuto();
  hrtPaint(hrtVals());
  hrtNote();
- _HRVD=null;hrvRender();}
+ hrvRender();}
 function hrtCsv(txt){
  const out=[],row=[];let s='',q=false;
  for(let i=0;i<txt.length;i++){const ch=txt.charAt(i);
