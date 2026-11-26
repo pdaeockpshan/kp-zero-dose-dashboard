@@ -17,7 +17,7 @@ sys.path.insert(0, HERE)
 import srcutil
 import dashpatch
 
-NAMES = ['EPI', 'CHD', 'LQR', 'LQM', 'PCM', 'ZD', 'WPV', 'WPVH', 'EPIUC', 'AFPUC', 'EMETA', 'EPIYTD']
+NAMES = ['EPI', 'CHD', 'LQR', 'LQM', 'PCM', 'ZD', 'WPV', 'WPVH', 'EPIUC', 'AFPUC', 'EMETA', 'EPIYTD', 'KPGEO']
 AGG_JS = """
 const EAG=(EMETA.ag||[]).map(a=>({k:a[0],l:a[1],t:a[2],core:a[3]})), EAGK=Object.fromEntries(EAG.map(a=>[a.k,a]));
 const eTg=(o,a)=>a.t==='n'?o.n:o.s;

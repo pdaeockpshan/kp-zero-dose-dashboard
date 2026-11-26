@@ -53,6 +53,8 @@ CARD = """<div class="card" id="wpvCard" style="border-top:5px solid #b91c1c">
   <div><label for="wpvTeh">Tehsil</label><select id="wpvTeh" aria-label="Tehsil"></select></div>
   <div><label for="wpvUc">Union council</label><select id="wpvUc" aria-label="Union council"></select></div>
   <button class="btn" id="wpvCsv" disabled><span data-ic></span> Download profile (CSV)</button>
+  <button class="btn" id="wpvXls" disabled><span data-ic></span> Formatted table (Excel)</button>
+  <button class="btn" id="wpvPptx" disabled><span data-ic></span> Presentation (PPTX)</button>
   <button class="btn" id="wpvReset"><span data-ic></span> Reset</button>
  </div>
 </div>
