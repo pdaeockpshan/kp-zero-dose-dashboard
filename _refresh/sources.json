@@ -46,6 +46,22 @@
     "C:\\Users\\HD\\Downloads"
    ]
   },
+  "afpuc": {
+   "const": "AFPUC",
+   "exclude": [
+    "~$*"
+   ],
+   "extractor": "extract_afpuc.py",
+   "label": "AFP case register at UC grain: every KP AFP case 2023-2026 with onset, age, sex, stool adequacy, notification and investigation timeliness, dose history, classification and sample status",
+   "note": "Four-sheet line list (2023 / 2024 / 2025 / 2026). This is the only vintage that carries UC alongside onset, timeliness, adequacy and classification at case level, so it feeds the WPV1 case-profile surveillance block; the AFP.DBF master (afpd) stays the source of the weekly log and the province KPIs. Person-level fields (NAME, ADDRESS, EPID, LABNO) are never read. CLASS 1 = WPV1, 2 = VDPV, 3 = discarded, blank = pending classification. Samples_Collected and the ERC column only exist from the 2024 sheet onward, so the 2023 sheet falls back to the two stool-condition columns. Cases registered with a district but no UC are kept as district-only counts (np) instead of being dropped or forced onto a guessed UC. 23-Nov-2026 vintage: 20,874 UC-placed cases across 1,419 UCs plus 90 district-only, 7 WPV1, 391 pending.",
+   "patterns": [
+    "LineList-*.xlsx"
+   ],
+   "portal": "EOC AFP line list (four yearly sheets)",
+   "roots": [
+    "C:\\Users\\HD\\Downloads"
+   ]
+  },
   "can": {
    "cache": "cache/ch_rows.pkl",
    "const": "CAN",
@@ -196,11 +212,13 @@
    ]
   },
   "hrat": {
+   "build_only": true,
    "const": "HRAT",
    "exclude": [
     "~$*"
    ],
    "extractor": "build_hrat.py",
+   "howto": "Build-only spec, not a data export: python _refresh/build_hrat.py --template <owner's 'HRA UC LEVEL TEMPLATE.xlsx'> --formulas <newest HRA workbook with all 39 computed columns live> --out _refresh/out/hrat.json, then python _refresh/refresh.py inject --const HRAT --from _refresh/out/hrat.json. refresh.py run skips it because the builder needs two named files and takes no --source. Rebuild after the owner replaces the template or a compiled round starts carrying live formulas again.",
    "label": "HRA UC-level compilation template (blank sheet + the divisions' own formulas)",
    "note": "The spec of the compilation sheet the dashboard reproduces online, not a dataset: column order, block merges, header wording, printed rules and number formats come from the template file, and every formula from the newest HRA workbook that still carries all 39 computed columns live and holds at least one answered cell. The template itself holds no formula by design, the Mardan Division round has its eleven epidemiology score columns pasted as values (28 of 39), and the blank card this page exports carries all 39 but no answers, so each is skipped by name and the builder aborts unless one candidate satisfies both. Named deviations, each in the payload warn list and said on the page: the NPEV rule compares a percent column with a bare 10 so the threshold is read as a percentage; the Rank range is anchored to a fixed block whatever the sheet length, so the grid ranks the rows loaded, names the count, and the download writes the range over the rows it writes (stored as _xlfn.RANK.EQ, because a bare RANK.EQ opens as #NAME?). The card's own 3*COUNT stays in the maximum: two of the three filled workbooks grade it that way, and restating it as COUNTA moves Charsadda's AGRA from 79.17% Low to 76% Medium, so a blank scores 0 as Excel does and the grid leaves an unanswered if-applicable indicator blank through ISBLANK. Pickers carry only the vocabulary the divisions type - Y/N on E and AK, Yes/No on M and BM, G1/G2/G3 plus the two compound values the province sheet writes, Green/COMVI/Red/Black, 1-4 - while F stays free text because no formula reads it and Charsadda writes Yes/No where Mardan writes Plain. Import divides a percent number by 100 in the percent columns, keeps an off-list value and names it, and names every computed cell that disagrees with the card's own formula. The downloadable workbook sets fullCalcOnLoad and writes one list validation per answered column over its exact range. Three files sit in the same family and are not this spec: HRA SW Lower.xlsx is an earlier draft of the criteria card, the per-division exports carry no live formulas, and the payload's own rows are the compiled results, not the sheet. Nothing personal is read - the sheet is geography, UC code, ratios and scores.",
    "patterns": [
@@ -417,14 +435,14 @@
   "novf": {
    "const": "NOVF",
    "exclude": [
-    "~$*"
+    "~$*",
+    "*_live*"
    ],
    "extractor": "extract_novf.py",
    "label": "SNID Nov-2026 final coverage summary (district grain)",
-   "note": "The 10-Nov-2026 close-out carries 27 district rows and a totals row, no Tehsil / UC columns and no ICM or LQAS figures. The totals row must re-add from the district rows (extract aborts otherwise). It supersedes only the district coverage layer; UC rows of the same round stay at their last UC-wise read. The 13-Nov-2026 re-download (coverage_SNID Nov 2026_*.xls, district and UC grain) is byte-equivalent to these files: district and UC figures match the embedded NOVF / NOVUC payloads exactly (4,183,183 target, 996 UCs, 4,071,582 vaccinated, 97.33%), so it is a re-read, not a data change.",
+   "min_bytes": 20000,
+   "note": "The 10-Nov-2026 close-out carries 27 district rows and a totals row, no Tehsil / UC columns and no ICM or LQAS figures. The totals row must re-add from the district rows (extract aborts otherwise). It supersedes only the district coverage layer; UC rows of the same round stay at their last UC-wise read. The 13-Nov-2026 re-download (coverage_SNID Nov 2026_*.xls, district and UC grain) is byte-equivalent to these files: district and UC figures match the embedded NOVF / NOVUC payloads exactly (4,183,183 target, 996 UCs, 4,071,582 vaccinated, 97.33%), so it is a re-read, not a data change. The 23-Nov-2026 summary_*Nov*.xls download is the UC-grain ZD-only export (an Excel frameset: 8 columns, 1,000 UC rows, its sheet inside the sibling _files folder), so it is not this district close-out; skip_frameset keeps it out of NOVF's discovery rather than letting a wrong-grain re-read pose as a newer close-out. The coverage_*Nov*.xls exports share the prefix but the pair is a binary district file and a 7.3 MB UC file under the same name shape, so they are not discovery candidates: NOVF reads only the single-sheet summary_* close-out. summary_*_live_district.xls and summary_*_uc_live.xls are hand-serialised live-page tables kept from the 11-Nov export-button fault; they are byte-equivalent per the 13-Nov check and are excluded so the close-out download stays the single NOVF source. min_bytes drops the 8-9 KB province-grain exports the Export button produced on 11-Nov (one KP row, 31 columns): the 27-district close-out is ~43 KB.",
    "patterns": [
-    "coverage_*NOV*.xls",
-    "coverage_*Nov*.xls",
     "summary_*NOV*.xls",
     "summary_*Nov*.xls"
    ],
@@ -432,7 +450,8 @@
    "roots": [
     "C:\\Users\\HD\\Downloads",
     "D:\\AMAZON DATA"
-   ]
+   ],
+   "skip_frameset": true
   },
   "novr": {
    "const": "NOVR",

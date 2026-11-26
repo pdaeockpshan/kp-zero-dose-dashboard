@@ -29,32 +29,46 @@
    "summary": "manual inject"
   },
   "can": {
-   "at": "2026-10-14T11:30:33+05:00",
-   "chars": 230786,
-   "file_id": "manual|can.json",
-   "payload_sha1": "d4a200fda9e687ff",
+   "at": "2026-11-26T10:16:34+05:00",
+   "chars": 240241,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx|1795424227|130823940",
+   "payload_sha1": "2f7cd9cf4c5bf1b0",
    "source": {
-    "mtime": 1791958368.109723,
-    "name": "can.json",
-    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\can.json",
-    "size": 230786
+    "mtime": 1795424227.0,
+    "name": "kp+td uc spotting update.xlsx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx",
+    "size": 130823940
    },
-   "stamp": "14-Oct-2026 11:30",
-   "summary": "manual inject"
+   "stamp": "26-Nov-2026 10:16",
+   "summary": "91 campaigns Sep2017-Nov2026, 38 districts, 2089 rows, 90 campaigns with ICM, 58 MS, 74 LQAS, 27 PCM"
   },
   "chd": {
-   "at": "2026-10-14T11:30:33+05:00",
-   "chars": 4429862,
-   "file_id": "manual|chd.json",
-   "payload_sha1": "997c23841950f8e5",
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 4578937,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx|1795424227|130823940",
+   "payload_sha1": "7abc79071dccd017",
    "source": {
-    "mtime": 1791958422.9459178,
-    "name": "chd.json",
-    "path": "C:\\Users\\HD\\Documents\\kp-zero-dose-dashboard\\_refresh\\out\\chd.json",
-    "size": 4429862
+    "mtime": 1795424227.0,
+    "name": "kp+td uc spotting update.xlsx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\1 Spotting\\kp+td uc spotting update.xlsx",
+    "size": 130823940
    },
-   "stamp": "14-Oct-2026 11:30",
-   "summary": "manual inject"
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "91 campaigns Sep2017-Nov2026, 38 districts, 1581 UCs, 78330 UC rows"
+  },
+  "cin": {
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 94033,
+   "file_id": "C:\\Users\\HD\\Downloads\\Khyber Pakhtunkhwa District and UCs Wise Campaign Indicators.xlsx|1793252074|696061",
+   "payload_sha1": "82920f04451ba412",
+   "source": {
+    "mtime": 1793252074.4468257,
+    "name": "Khyber Pakhtunkhwa District and UCs Wise Campaign Indicators.xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\Khyber Pakhtunkhwa District and UCs Wise Campaign Indicators.xlsx",
+    "size": 696061
+   },
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "37 districts, 1402 UC rows, SNID Sept 2026, 17415 values checked"
   },
   "epi": {
    "at": "2026-10-23T12:25:12+05:00",
@@ -113,18 +127,18 @@
    "summary": "Jan 2023 - Oct 2026 | 34 months x 1459 UCs x 21 fields, extras bcg,opv0,opv1,opv2,opv3,p1,p2,p3,pcv1,pcv2,pcv3,ipv1,ipv2,rota1,rota2,mr1,mr2,tcv,fi, 1171 all-zero UC-dose series; every district-month re-adds to EPIM"
   },
   "epm": {
-   "at": "2026-11-05T18:38:45+05:00",
+   "at": "2026-11-26T10:16:34+05:00",
    "chars": 3056,
-   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (46).xls|1793884162|7361224",
-   "payload_sha1": "55defc42b5277f58",
+   "file_id": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (48).xls|1795592096|7427622",
+   "payload_sha1": "ee8ee3f40a6d2dd7",
    "source": {
-    "mtime": 1793884162.8517017,
-    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (46).xls",
-    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (46).xls",
-    "size": 7361224
+    "mtime": 1795592096.6442752,
+    "name": "Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (48).xls",
+    "path": "C:\\Users\\HD\\Downloads\\Consolidated_Facility_Wise_Vaccination_of_Childern_and_Women (48).xls",
+    "size": 7427622
    },
-   "stamp": "05-Nov-2026 18:38",
-   "summary": "46 months (1 new: 2026-10..2026-10), 1702 district-months from 46 exports (0 parsed now)"
+   "stamp": "26-Nov-2026 10:16",
+   "summary": "46 months (0 new: -..-), 1702 district-months from 46 exports (0 parsed now)"
   },
   "esup": {
    "at": "2026-10-16T14:14:55+05:00",
@@ -211,17 +225,17 @@
    "summary": "85 campaigns 2017-2026, 37 districts, 1873 UCs, 75792 rows; UC detail for 12 campaigns (12065 Admin UC rows)"
   },
   "inda": {
-   "at": "2026-10-27T10:16:50+05:00",
+   "at": "2026-11-26T10:11:15+05:00",
    "chars": 122875,
-   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls|1792758413|1939012",
-   "payload_sha1": "9cde23568d7f0fe9",
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-11-23_033536.xls|1795430137|2357607",
+   "payload_sha1": "00524c6bdfd49f02",
    "source": {
-    "mtime": 1792758413.4351127,
-    "name": "summary_SNID Sept 2026_2026-10-23_052653.xls",
-    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-10-23_052653.xls",
-    "size": 1939012
+    "mtime": 1795430137.153546,
+    "name": "summary_SNID Sept 2026_2026-11-23_033536.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Sept 2026_2026-11-23_033536.xls",
+    "size": 2357607
    },
-   "stamp": "27-Oct-2026 09:47",
+   "stamp": "26-Nov-2026 10:11",
    "summary": "1402 UCs, 37 districts, target 6,348,405, vaccinated 6,235,824, still missed 121,677, ZD reported 62,128"
   },
   "mis": {
@@ -253,18 +267,18 @@
    "summary": "manual inject"
   },
   "mon": {
-   "at": "2026-10-14T13:35:16+05:00",
-   "chars": 7426,
-   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\7 SNID Sep 2026\\Team Monitoring.twbx|1791267446|7717476",
-   "payload_sha1": "1dc548921f07f77b",
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 7423,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\8 SNID Nov 2026\\AIC Monitoring.twbx|1794288485|724579",
+   "payload_sha1": "5f4dceb3e019dd42",
    "source": {
-    "mtime": 1791267446.0,
-    "name": "Team Monitoring.twbx",
-    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\7 SNID Sep 2026\\Team Monitoring.twbx",
-    "size": 7717476
+    "mtime": 1794288485.0,
+    "name": "AIC Monitoring.twbx",
+    "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\2. LS 2026\\8 SNID Nov 2026\\AIC Monitoring.twbx",
+    "size": 724579
    },
-   "stamp": "14-Oct-2026 13:34",
-   "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 381,214 team visits, 28,797 AIC checklists; unmapped ActivityName: KP-Special-1-Jul 2026"
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "6 campaigns (KP Special Aug 2026, KP Special Aug-Sep 2026, NID Apr 26, NID Feb 26, SNID May 2026, SNID Sept 2026), 149 district rows, 380,380 team visits, 28,797 AIC checklists; unmapped ActivityName: SNID November 2026"
   },
   "mpqa": {
    "at": "2026-11-01T12:48:17+05:00",
@@ -337,18 +351,18 @@
    "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (64).xls)"
   },
   "nepd": {
-   "at": "2026-11-25T09:17:00+05:00",
-   "chars": 124559,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (68).xls|1795580036|1850161",
-   "payload_sha1": "6a853659c358b7f2",
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 129257,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (68).xls|1795667641|1854753",
+   "payload_sha1": "111f8d52dc9f5103",
    "source": {
-    "mtime": 1795580036.5451362,
+    "mtime": 1795667641.7754471,
     "name": "NEAP (68).xls",
     "path": "C:\\Users\\HD\\Downloads\\NEAP (68).xls",
-    "size": 1850161
+    "size": 1854753
    },
-   "stamp": "25-Nov-2026 09:16",
-   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 10 (BAJOUR, BATAGRAM, DIKHAN, HANGU, HARIPUR, KOHAT, MOHMAND, TANK, WAZIR-S Lower, WAZIR-S Upper), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 339 (BAJOUR 39, BATAGRAM 20, DIKHAN 53, HANGU 19, HARIPUR 45, KOHAT 42, MOHMAND 29, TANK 22, WAZIR-S Lower 36, WAZIR-S Upper 34)"
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 15 (ABOTABAD, BAJOUR, BATAGRAM, DIKHAN, HANGU, HARIPUR, KOHAT, KURRAM, LAKKIMRWT, MOHMAND, ORAKZAI, TANK, TORGHAR, WAZIR-S Lower, WAZIR-S Upper), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 571 (ABOTABAD 54, BAJOUR 39, BATAGRAM 20, DIKHAN 53, HANGU 19, HARIPUR 45, KOHAT 42, KURRAM 76, LAKKIMRWT 40, MOHMAND 29, ORAKZAI 46, TANK 22, TORGHAR 16, WAZIR-S Lower 36, WAZIR-S Upper 34)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -363,6 +377,20 @@
    },
    "stamp": "14-Oct-2026 12:23",
    "summary": "manual inject (NEOC intra-campaign aggregates)"
+  },
+  "novf": {
+   "at": "2026-11-26T10:09:25+05:00",
+   "chars": 4162,
+   "file_id": "C:\\Users\\HD\\Downloads\\summary_SNID Nov 2026_2026-11-10_101428.xls|1794287669|43413",
+   "payload_sha1": "4c5d9111dcb87d6f",
+   "source": {
+    "mtime": 1794287669.551614,
+    "name": "summary_SNID Nov 2026_2026-11-10_101428.xls",
+    "path": "C:\\Users\\HD\\Downloads\\summary_SNID Nov 2026_2026-11-10_101428.xls",
+    "size": 43413
+   },
+   "stamp": "26-Nov-2026 10:09",
+   "summary": "27 districts · target 4,183,183 · vaccinated 4,069,297 (97.28%) · recorded 674,492 · covered 580,392 (86.05%) · still missed 165,159 (3.95%) · ZD 43,497"
   },
   "novr": {
    "at": "2026-10-14T13:02:08+05:00",
@@ -379,18 +407,18 @@
    "summary": "27 districts, target 4,820,511, MT members 36,594, MT AICs 4,717, CBV 3,323, uc 1000, 1 target diffs vs scope (KOHAT)"
   },
   "pcm": {
-   "at": "2026-10-23T18:58:57+05:00",
-   "chars": 467345,
-   "file_id": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx|1791870942|60964",
-   "payload_sha1": "6e96659a8f9fd98d",
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 763907,
+   "file_id": "C:\\Users\\HD\\Downloads\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx|1791870942|60964",
+   "payload_sha1": "3c387f9afd67cd83",
    "source": {
     "mtime": 1791870942.0931404,
     "name": "PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
-    "path": "D:\\AMAZON DATA\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
+    "path": "C:\\Users\\HD\\Downloads\\PCHS Data (Jan 26 to KP Special Aug 2026).xlsx",
     "size": 60964
    },
-   "stamp": "23-Oct-2026 18:58",
-   "summary": "117 trend pts (88 campaigns), 72 LQAS campaigns, 85 with coverage (35 with advance-report chain), 9 datasets, 4080 UC rows"
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "122 trend pts (91 campaigns), 74 LQAS campaigns, 90 with coverage (37 with advance-report chain), 14 datasets, 6703 UC rows"
   },
   "ptp": {
    "at": "2026-10-26T15:54:45+05:00",
@@ -463,18 +491,18 @@
    "summary": "14451 active visits 14,451/15,667 done (92.2%) across 36 districts; 45 zero-report rows over weeks 1-45, 98163/100,101 received (98.1%), 97.4% in time; pendency to 18-Nov-2026: stool 97.5% (4,436/4,551), case validation 3.3% (152/4551), geolocation 99.3%; VPD 2026 wk1-45: 2757 AFP / 17412 measles / 103 NNT in 36 districts; ERC 49 files tracked to 2026-11-18, 23 outstanding; snapshots stool 42, case 53, geo 53"
   },
   "sta": {
-   "at": "2026-10-27T09:47:23+05:00",
-   "chars": 94367,
-   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx|1793014326|940814",
-   "payload_sha1": "fc1e1dea49fb30d6",
+   "at": "2026-11-26T10:11:15+05:00",
+   "chars": 95549,
+   "file_id": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx|1794204413|944467",
+   "payload_sha1": "4fe426bf7d9830cf",
    "source": {
-    "mtime": 1793014326.0,
+    "mtime": 1794204413.0,
     "name": "Search Team Monitoring Check LIst.twbx",
     "path": "C:\\Users\\HD\\Dropbox\\Joint Database\\3. HRMP\\Search Team Monitoring Check LIst.twbx",
-    "size": 940814
+    "size": 944467
    },
-   "stamp": "27-Oct-2026 09:47",
-   "summary": "sact 2023-09..2026-10->26,698 smon 2023-09..2026-10->11,001"
+   "stamp": "26-Nov-2026 10:11",
+   "summary": "sact 2023-09..2026-11->26,854 smon 2023-09..2026-11->11,086"
   },
   "surv": {
    "at": "2026-11-23T15:10:50+05:00",
@@ -534,19 +562,20 @@
   }
  },
  "last_push": {
-  "at": "2026-11-25T12:55:38+05:00",
-  "chars": 24083373,
-  "internal_md5": "2992557b972190e2331e30bc00d05977",
-  "master_md5": "70466e98e0ff3576e6a3acd225a0bda6",
-  "note": "EPI coverage table: a District/UC switch on the antigen coverage table, UC rows following the month picker and the division/district/tehsil filters; Oct 2026 stays at district grain because its UC export covers 53% of the district total, and its UC download is switched off. Timestamp refresh 25-Nov-2026 12:55 PKT",
-  "stamp": "25-Nov-2026 12:55"
+  "at": "2026-11-26T11:25:57+05:00",
+  "chars": 25408101,
+  "internal_md5": "bc3059b14447a889c049031302eaaec0",
+  "master_md5": "41a58073da9a40df4f5072329d377c79",
+  "note": "Pushed the hand-edited index.html master to preview / public / internal builds (+877938 chars). Timestamp refresh 26-Nov-2026 11:25 PKT",
+  "stamp": "26-Nov-2026 11:25"
  },
  "last_run": {
-  "at": "2026-11-25T09:17:00+05:00",
+  "at": "2026-11-26T10:16:34+05:00",
   "datasets": [
-   "nepd"
+   "can",
+   "epm"
   ],
   "dry_run": false,
-  "stamp": "25-Nov-2026 09:16"
+  "stamp": "26-Nov-2026 10:16"
  }
 }

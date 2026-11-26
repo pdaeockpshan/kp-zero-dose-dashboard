@@ -119,7 +119,9 @@ def cmd_status(cfg, a):
         rec, desc = source_line(e)
         last = st['datasets'].get(ds)
         fid = srcutil.file_id(rec)
-        if last is None:
+        if e.get('build_only'):
+            verdict = 'build-only spec (rebuild by hand: see howto)'
+        elif last is None:
             verdict = 'NEVER APPLIED'
         elif last.get('file_id') == fid:
             verdict = 'up to date'
@@ -194,6 +196,9 @@ def cmd_run(cfg, a):
     todo, skipped = [], []
     for ds in only:
         e = cfg['auto'][ds]
+        if e.get('build_only') and not a.source:
+            skipped.append((ds, 'build-only spec - run its builder by hand (see howto)'))
+            continue
         if a.source:
             if len(only) != 1:
                 raise SystemExit('--source needs a single dataset: use --only %s' % ds)

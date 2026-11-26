@@ -58,11 +58,18 @@ def discover(entry):
                 if not _match(fn, pats, exc):
                     continue
                 p = os.path.join(dirpath, fn)
+                if entry.get('skip_frameset') and os.path.isdir(
+                        os.path.splitext(p)[0] + '_files'):
+                    # an Excel "web page" export stores its sheet in the sibling _files folder;
+                    # the wrapper has no data table of its own
+                    continue
                 try:
                     stt = os.stat(p)
                 except OSError:
                     continue
                 found.append({'path': p, 'name': fn, 'mtime': stt.st_mtime, 'size': stt.st_size})
+    floor = entry.get('min_bytes') or 0
+    found = [d for d in found if d['size'] >= floor]
     found.sort(key=lambda d: -d['mtime'])
     return found
 

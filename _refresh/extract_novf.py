@@ -116,7 +116,7 @@ def fnum(v):
 
 def main(argv):
     ap = argparse.ArgumentParser()
-    ap.add_argument('--path')
+    ap.add_argument('--path', '--source', dest='path')
     ap.add_argument('--out')
     ap.add_argument('--live', action='store_true',
                     help='table was serialised from the live District-Wise page because the '
@@ -132,9 +132,14 @@ def main(argv):
         raise SystemExit('ERR novf unrecognised filename %s' % os.path.basename(path))
     camp, asof = m.group(1).strip(), m.group(2)
 
-    d = pd.read_html(path, header=[0, 1, 2, 3])[0]
+    try:
+        d = pd.read_html(path, header=[0, 1, 2, 3])[0]
+    except ValueError:
+        raise SystemExit('ERR novf %s carries no data table of its own - an Excel frameset export '
+                         '(the UC-grain ZD summary keeps its sheet in the sibling _files folder), '
+                         'not the district close-out' % os.path.basename(path))
     if d.shape[1] != 32:
-        raise SystemExit('ERR novf expected 32 columns, got %d' % d.shape[1])
+        raise SystemExit('ERR novf expected 32 columns, got %d - not the district close-out' % d.shape[1])
     for key, pos, want in COLS:
         got = tuple(re.sub(r'\s+', ' ', str(x)).strip() for x in d.columns[pos])
         # the portal relabelled zcv from "by Next Round" to "before Next Round" on 11-Nov-2026;
