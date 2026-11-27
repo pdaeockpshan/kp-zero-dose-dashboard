@@ -351,18 +351,18 @@
    "summary": "SNID Nov-26, 27 districts, DPEC held on time 26, AIC training reported by 27 districts (best 100.0%), teams with a female member reported by 25; UC-wise: SNID Nov-26, 996 UCs, 118 tehsils, DPEC held on time 893, AIC training under way 995 (NEAP (64).xls)"
   },
   "nepd": {
-   "at": "2026-11-26T10:11:15+05:00",
-   "chars": 129257,
-   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (68).xls|1795667641|1854753",
-   "payload_sha1": "111f8d52dc9f5103",
+   "at": "2026-11-27T11:53:34+05:00",
+   "chars": 132989,
+   "file_id": "C:\\Users\\HD\\Downloads\\NEAP (70).xls|1795761911|1858476",
+   "payload_sha1": "5f65eca6d94a09ee",
    "source": {
-    "mtime": 1795667641.7754471,
-    "name": "NEAP (68).xls",
-    "path": "C:\\Users\\HD\\Downloads\\NEAP (68).xls",
-    "size": 1854753
+    "mtime": 1795761911.680365,
+    "name": "NEAP (70).xls",
+    "path": "C:\\Users\\HD\\Downloads\\NEAP (70).xls",
+    "size": 1858476
    },
-   "stamp": "26-Nov-2026 10:11",
-   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 15 (ABOTABAD, BAJOUR, BATAGRAM, DIKHAN, HANGU, HARIPUR, KOHAT, KURRAM, LAKKIMRWT, MOHMAND, ORAKZAI, TANK, TORGHAR, WAZIR-S Lower, WAZIR-S Upper), AIC training started in 0, teams trained in 0; UC-wise 1402 UCs, DPEC held in 571 (ABOTABAD 54, BAJOUR 39, BATAGRAM 20, DIKHAN 53, HANGU 19, HARIPUR 45, KOHAT 42, KURRAM 76, LAKKIMRWT 40, MOHMAND 29, ORAKZAI 46, TANK 22, TORGHAR 16, WAZIR-S Lower 36, WAZIR-S Upper 34)"
+   "stamp": "27-Nov-2026 11:53",
+   "summary": "NID Dec-26 grid (start 2026-12-12): 37 portal rows = 36 districts + BAR SWAT, DPEC held in 31 (ABOTABAD, BAJOUR, BANNU, BATAGRAM, CHARSADA, CHITRALLOWER, DIKHAN, DIRLOWER, DIRUPPER, HANGU, HARIPUR, KARAK, KHYBER, KOHAT, KOHISTANUPPER, KURRAM, LAKKIMRWT, MALAKAND, MANSEHRA, MARDAN, MOHMAND, NOWSHERA, ORAKZAI, PESHAWAR, SHANGLA, SWABI, SWAT, TANK, TORGHAR, WAZIR-S Lower, WAZIR-S Upper), AIC training started in 14, teams trained in 0; UC-wise 1402 UCs, DPEC held in 1289 (ABOTABAD 54, BAJOUR 39, BANNU 57, BATAGRAM 20, CHARSADA 49, CHITRALLOWER 14, DIKHAN 53, DIRLOWER 41, DIRUPPER 32, HANGU 19, HARIPUR 45, KARAK 21, KHYBER 53, KOHAT 42, KOHISTANUPPER 15, KURRAM 76, LAKKIMRWT 40, MALAKAND 28, MANSEHRA 59, MARDAN 76, MOHMAND 29, NOWSHERA 49, ORAKZAI 46, PESHAWAR 103, SHANGLA 28, SWABI 56, SWAT 37, TANK 22, TORGHAR 16, WAZIR-S Lower 36, WAZIR-S Upper 34)"
   },
   "noc": {
    "at": "2026-10-14T12:23:13+05:00",
@@ -570,12 +570,11 @@
   "stamp": "26-Nov-2026 13:32"
  },
  "last_run": {
-  "at": "2026-11-26T10:16:34+05:00",
+  "at": "2026-11-27T11:53:34+05:00",
   "datasets": [
-   "can",
-   "epm"
+   "nepd"
   ],
   "dry_run": false,
-  "stamp": "26-Nov-2026 10:16"
+  "stamp": "27-Nov-2026 11:53"
  }
 }
